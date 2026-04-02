@@ -315,23 +315,76 @@
         }
 
         .filter {
-            width: 200px;
+            width: 220px;
             background: var(--white);
             border-radius: 10px;
             padding: 16px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             flex-shrink: 0;
+            position: relative;
+        }
+
+        .sub-filter-popup {
+            position: absolute;
+            left: 75%;
+            top: 0;
+            width: 200px;
+            background: var(--white);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            margin-left: 10px;
+            border: 2px solid var(--hermes-orange);
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--deep-gray);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .filter-item {
-            padding: 10px 0;
+            padding: 10px 14px;
             cursor: pointer;
             font-size: 14px;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            border-radius: 6px;
         }
 
         .filter-item:hover {
             color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
+        }
+
+        #sub-filter-items .filter-item {
+            padding: 12px 16px;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        #sub-filter-items .filter-item:hover {
+            background-color: var(--klein-blue);
+            color: white;
         }
 
         .card-grid {
@@ -515,23 +568,49 @@
 
         .partner {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
         }
 
         .partner-item {
             background: var(--white);
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 24px 16px;
             text-align: center;
-            font-weight: bold;
-            color: #555;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: transform 0.2s;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
         }
 
         .partner-item:hover {
-            transform: scale(1.02);
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .partner-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .partner-name {
+            font-weight: 600;
+            color: var(--deep-gray);
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         /* 页脚样式 */
@@ -664,10 +743,19 @@
         <!-- 方案卡片区域 -->
         <div class="content-row">
             <div class="filter">
-                <div class="filter-item">全部方案</div>
-                <div class="filter-item">机器人应用</div>
-                <div class="filter-item">视觉检测</div>
-                <div class="filter-item">自动化产线</div>
+                <div class="filter-section">
+                    <div class="filter-title">产业</div>
+                    <div class="filter-items" id="industry-filter">
+                        <div class="filter-item">全部产业</div>
+                        <!-- 产业项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <!-- 三级筛选浮层 -->
+                <div class="sub-filter-popup" id="sub-filter" style="display: none;">
+                    <div class="filter-items" id="sub-filter-items">
+                        <!-- 细分领域将通过JavaScript动态生成 -->
+                    </div>
+                </div>
             </div>
             <div class="card-grid">
                 <div class="card">
@@ -778,12 +866,30 @@
         <div class="partner-section">
             <div class="partner-title">合作伙伴</div>
             <div class="partner">
-                <div class="partner-item">SIEMENS 西门子</div>
-                <div class="partner-item">FANUC 发那科</div>
-                <div class="partner-item">ABB</div>
-                <div class="partner-item">YASKAWA 安川电机</div>
-                <div class="partner-item">KUKA 库卡</div>
-                <div class="partner-item">汇川技术</div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #00aeef;">S</div>
+                    <div class="partner-name">SIEMENS 西门子</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #0073b7;">F</div>
+                    <div class="partner-name">FANUC 发那科</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #ed1c24;">A</div>
+                    <div class="partner-name">ABB</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #0066b3;">Y</div>
+                    <div class="partner-name">YASKAWA 安川电机</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #00a1e4;">K</div>
+                    <div class="partner-name">KUKA 库卡</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #e60012;">汇</div>
+                    <div class="partner-name">汇川技术</div>
+                </div>
             </div>
         </div>
     </main>
@@ -911,6 +1017,190 @@
         document.querySelector('.logo').addEventListener('click', () => {
             window.location.href = 'index.html';
         });
+
+        // 产业数据
+        const industryData = {
+            '农业方案库': [
+                { name: '种植业', sub: ['粮食作物', '经济作物', '蔬菜', '水果', '花卉'] },
+                { name: '养殖业', sub: ['畜牧业', '渔业', '家禽', '特种养殖'] },
+                { name: '农产品加工', sub: ['食品加工', '饮料制造', '纺织加工'] },
+                { name: '农业机械', sub: ['种植机械', '收获机械', '养殖设备', '加工设备'] },
+                { name: '智慧农业', sub: ['物联网', '无人机', '智能灌溉', '精准农业'] },
+                { name: '生态农业', sub: ['有机农业', '循环农业', '休闲农业'] }
+            ],
+            '制造业方案库': [
+                { name: '汽车制造', sub: ['整车制造', '零部件', '新能源汽车', '智能网联'] },
+                { name: '3C电子', sub: ['手机', '电脑', '家电', '智能设备'] },
+                { name: '机械加工', sub: ['金属加工', '模具制造', '精密加工'] },
+                { name: '新能源', sub: ['光伏', '风电', '锂电池', '氢能'] },
+                { name: '食品包装', sub: ['食品加工', '包装机械', '冷链物流'] },
+                { name: '物流仓储', sub: ['自动化仓储', 'AGV', '分拣系统'] },
+                { name: '化工', sub: ['基础化工', '精细化工', '新材料'] },
+                { name: '医药', sub: ['制药', '医疗器械', '生物工程'] }
+            ],
+            '服务业方案库': [
+                { name: '物流服务', sub: ['快递配送', '仓储服务', '供应链管理'] },
+                { name: '金融服务', sub: ['银行', '保险', '证券', '金融科技'] },
+                { name: '零售服务', sub: ['线下零售', '电商', '无人零售'] },
+                { name: '餐饮服务', sub: ['传统餐饮', '快餐', '外卖', '智慧餐厅'] },
+                { name: '酒店服务', sub: ['传统酒店', '民宿', '智慧酒店'] },
+                { name: '教育服务', sub: ['K12', '职业教育', '在线教育', '教育科技'] }
+            ],
+            '设备商城': [
+                { name: '工业机器人', sub: ['六轴机器人', 'SCARA机器人', '协作机器人'] },
+                { name: '自动化设备', sub: ['PLC', '传感器', '伺服系统', '视觉系统'] },
+                { name: '机床设备', sub: ['CNC机床', '加工中心', '车床', '铣床'] },
+                { name: '包装设备', sub: ['包装机', '贴标机', '灌装机'] },
+                { name: '检测设备', sub: ['无损检测', '精密测量', '环境监测'] },
+                { name: '物流设备', sub: ['AGV', '堆垛机', '分拣机'] }
+            ]
+        };
+
+        // 当前选中的tab
+        let currentTab = document.querySelector('.tab.active').textContent.trim();
+
+        // 生成产业列表
+        function generateIndustries(tabName) {
+            const industryFilter = document.getElementById('industry-filter');
+            // 保留"全部产业"选项
+            const allItem = industryFilter.querySelector('.filter-item');
+            industryFilter.innerHTML = '';
+            industryFilter.appendChild(allItem);
+            
+            // 为全部产业添加点击事件
+            allItem.addEventListener('click', () => {
+                document.getElementById('sub-filter').style.display = 'none';
+            });
+            
+            const industries = industryData[tabName] || [];
+            industries.forEach(industry => {
+                const item = document.createElement('div');
+                item.className = 'filter-item';
+                item.textContent = industry.name;
+                item.dataset.industry = industry.name;
+                item.dataset.sub = JSON.stringify(industry.sub);
+                
+                // 添加鼠标悬停事件
+                item.addEventListener('mouseenter', (e) => {
+                    showSubFilter(e.target);
+                });
+                
+                // 添加点击事件
+                item.addEventListener('click', () => {
+                    // 点击时显示三级筛选
+                    showSubFilter(item);
+                });
+                
+                industryFilter.appendChild(item);
+            });
+        }
+
+        // 显示三级筛选
+        function showSubFilter(item) {
+            const industry = item.dataset.industry;
+            const sub = JSON.parse(item.dataset.sub);
+            
+            const subFilter = document.getElementById('sub-filter');
+            if (industry) {
+                subFilter.style.display = 'block';
+                generateSubFilter(sub, item);
+            } else {
+                subFilter.style.display = 'none';
+            }
+        }
+
+        // 计算并调整三级筛选位置
+        function adjustSubFilterPosition(item) {
+            const subFilter = document.getElementById('sub-filter');
+            const rect = item.getBoundingClientRect();
+            const filterRect = document.querySelector('.filter').getBoundingClientRect();
+            
+            // 强制回流以获取正确的尺寸
+            subFilter.offsetHeight;
+            
+            const subFilterRect = subFilter.getBoundingClientRect();
+            
+            // 计算基础位置
+            let top = rect.top - filterRect.top;
+            
+            // 计算屏幕高度
+            const windowHeight = window.innerHeight;
+            
+            // 计算三级筛选框底部位置
+            const subFilterBottom = rect.top + subFilterRect.height;
+            
+            // 如果三级筛选框超出屏幕底部，调整位置
+            if (subFilterBottom > windowHeight - 20) { // 20px 底部边距
+                top = windowHeight - subFilterRect.height - filterRect.top - 20;
+                // 确保位置不会小于0
+                top = Math.max(0, top);
+            }
+            
+            subFilter.style.top = top + 'px';
+        }
+
+        // 生成三级筛选
+        function generateSubFilter(subItems, item) {
+            const subFilterItems = document.getElementById('sub-filter-items');
+            subFilterItems.innerHTML = '';
+            
+            subItems.forEach(sub => {
+                const subItem = document.createElement('div');
+                subItem.className = 'filter-item';
+                subItem.textContent = sub;
+                subItem.addEventListener('click', () => {
+                    // 点击时跳转到下一个页面
+                    // 这里可以添加跳转逻辑
+                    console.log('跳转到:', sub);
+                });
+                subFilterItems.appendChild(subItem);
+            });
+            
+            // 生成内容后调整位置
+            adjustSubFilterPosition(item);
+        }
+
+        // Tab切换事件
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除其他tab的active状态
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                // 添加当前tab的active状态
+                tab.classList.add('active');
+                
+                // 更新当前tab
+                currentTab = tab.textContent.trim();
+                // 生成对应产业列表
+                generateIndustries(currentTab);
+                // 隐藏三级筛选
+                document.getElementById('sub-filter').style.display = 'none';
+            });
+        });
+
+        // 鼠标离开筛选区域时隐藏三级筛选
+        document.querySelector('.filter').addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
+                    document.getElementById('sub-filter').style.display = 'none';
+                }
+            }, 200);
+        });
+
+        // 鼠标悬停在三级筛选上时保持显示
+        document.querySelector('.sub-filter-popup').addEventListener('mouseenter', () => {
+            document.getElementById('sub-filter').style.display = 'block';
+        });
+
+        document.querySelector('.sub-filter-popup').addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
+                    document.getElementById('sub-filter').style.display = 'none';
+                }
+            }, 200);
+        });
+
+        // 初始化
+        generateIndustries(currentTab);
     </script>
 </body>
 </html>
