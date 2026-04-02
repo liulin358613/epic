@@ -250,9 +250,6 @@
 
         /* 标签导航容器 */
         .tab-container {
-            position: sticky;
-            top: 70px;
-            z-index: 999;
             background: var(--white);
             border-bottom: 1px solid var(--border);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -677,6 +674,247 @@
                 gap: 12px;
                 align-items: flex-start;
             }
+        }
+
+        /* 登录弹窗样式 */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--deep-gray);
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--deep-gray);
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+        
+        .login-tab {
+            padding: 10px 0;
+            margin-right: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--deep-gray);
+            border-bottom: 2px solid transparent;
+        }
+        
+        .login-tab.active {
+            color: var(--klein-blue);
+            border-bottom-color: var(--klein-blue);
+        }
+        
+        .login-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 2px rgba(0, 81, 217, 0.1);
+        }
+        
+        .password-input {
+            position: relative;
+        }
+        
+        .password-input .form-input {
+            padding-right: 40px;
+        }
+        
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--ai-desc);
+            transition: color 0.3s;
+        }
+        
+        .eye-btn:hover {
+            color: var(--klein-blue);
+        }
+        
+        .code-input {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .code-input .form-input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .code-btn {
+            padding: 0 16px;
+            background-color: var(--light-bg);
+            color: var(--deep-gray);
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .code-btn:hover {
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--klein-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #0047c9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.2);
+        }
+        
+        .login-links {
+            text-align: center;
+            font-size: 14px;
+            color: var(--ai-desc);
+        }
+        
+        .login-links a {
+            color: var(--klein-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .login-links a:hover {
+            color: #0047c9;
+            text-decoration: underline;
+        }
+        
+        .login-links span {
+            margin: 0 8px;
+        }
+        
+        .other-login {
+            margin-top: 24px;
+        }
+        
+        .other-login-line {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .other-login-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--border-gray);
+            z-index: 1;
+        }
+        
+        .other-login-line span {
+            position: relative;
+            background-color: white;
+            padding: 0 16px;
+            z-index: 2;
+            font-size: 14px;
+            color: var(--ai-desc);
+        }
+        
+        .other-login-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        
+        .other-login-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--border-gray);
+            background-color: white;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .other-login-btn:hover {
+            border-color: var(--klein-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
         }
     </style>
 </head>
@@ -1201,6 +1439,103 @@
 
         // 初始化
         generateIndustries(currentTab);
+    </script>
+
+    <!-- 登录弹窗 -->
+    <div class="login-modal" id="loginModal" style="display: none;">
+        <div class="modal-overlay" onclick="closeLoginModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>用户登录</h2>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <div class="login-tabs">
+                <div class="login-tab active" onclick="switchLoginTab('password')">密码登录</div>
+                <div class="login-tab" onclick="switchLoginTab('code')">验证码登录</div>
+            </div>
+            <div class="login-form" id="passwordLogin">
+                <input type="text" placeholder="请输入手机号码或邮箱" class="form-input">
+                <div class="password-input">
+                    <input type="password" placeholder="请输入密码" class="form-input">
+                    <button class="eye-btn" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
+                <button class="login-button">登录</button>
+                <div class="login-links">
+                    <a href="#">忘记密码？</a>
+                    <span>|</span>
+                    <a href="#">免费注册</a>
+                </div>
+            </div>
+            <div class="login-form" id="codeLogin" style="display: none;">
+                <input type="text" placeholder="请输入手机号码" class="form-input">
+                <div class="code-input">
+                    <input type="text" placeholder="请输入验证码" class="form-input">
+                    <button class="code-btn">获取验证码</button>
+                </div>
+                <button class="login-button">登录</button>
+                <div class="login-links">
+                    <a href="#">忘记密码？</a>
+                    <span>|</span>
+                    <a href="#">免费注册</a>
+                </div>
+            </div>
+            <div class="other-login">
+                <div class="other-login-line">
+                    <span>其它方式登录</span>
+                </div>
+                <div class="other-login-buttons">
+                    <button class="other-login-btn">💬</button>
+                    <button class="other-login-btn">💗</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 登录弹窗功能
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function switchLoginTab(tab) {
+            if (tab === 'password') {
+                document.getElementById('passwordLogin').style.display = 'block';
+                document.getElementById('codeLogin').style.display = 'none';
+                document.querySelectorAll('.login-tab')[0].classList.add('active');
+                document.querySelectorAll('.login-tab')[1].classList.remove('active');
+            } else {
+                document.getElementById('passwordLogin').style.display = 'none';
+                document.getElementById('codeLogin').style.display = 'block';
+                document.querySelectorAll('.login-tab')[0].classList.remove('active');
+                document.querySelectorAll('.login-tab')[1].classList.add('active');
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.querySelector('.password-input input');
+            const eyeBtn = document.querySelector('.eye-btn');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeBtn.textContent = '👁️';
+            } else {
+                passwordInput.type = 'password';
+                eyeBtn.textContent = '👁️';
+            }
+        }
+
+        // 为登录按钮添加点击事件
+        document.querySelectorAll('.login').forEach(btn => {
+            btn.addEventListener('click', openLoginModal);
+        });
+        
+        // 为登录按钮添加点击事件（新的导航栏）
+        document.querySelectorAll('.login-btn').forEach(btn => {
+            btn.addEventListener('click', openLoginModal);
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工业智能生产力平台</title>
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        :root {
+            --klein-blue: #0051D9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-gray: #86909C;
+            --light-bg: #F2F3F5;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+            --border-radius: 12px;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        body {
+            background: var(--light-bg);
+            color: #333;
+            line-height: 1.5;
+            padding-top: 120px;
+        }
+
+        /* 通用容器 */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========== 顶部固定导航 ========== */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--klein-blue);
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        .fixed-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            width: 220px;
+            height: 50px;
+            background: var(--white);
+            color: var(--klein-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 6px;
+        }
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .welcome {
+            background: var(--white);
+            color: var(--deep-gray);
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .login {
+            background: var(--white);
+            color: var(--klein-blue);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .login:hover {
+            background: var(--hermes-orange);
+            color: #fff;
+        }
+
+        /* ========== TAB 固定在顶部，不滚动 ========== */
+        .tab-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            z-index: 9998;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .tab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+        .tabs {
+            display: flex;
+            gap: 44px;
+        }
+        .tab {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+            transition: 0.2s;
+        }
+        .tab.active {
+            color: var(--klein-blue);
+            font-weight: bold;
+            border-bottom: 3px solid var(--klein-blue);
+            padding-bottom: 12px;
+        }
+        .ai-team-btn {
+            background: var(--hermes-orange);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .ai-team-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ========== 内容整体容器：筛选 + 列表 一体化 ========== */
+        .content-wrapper {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-top: 24px;
+        }
+
+        /* ========== 筛选栏：优化排版 ========== */
+        .filter-bar {
+            padding: 15px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-label {
+            font-size: 14px;
+            color: var(--deep-gray);
+            font-weight: 500;
+            width: 50px;
+            text-align: right;
+        }
+        .filter-select {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 30px 8px 12px;
+            font-size: 14px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231D2129' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 14px;
+            width: 140px;
+        }
+
+        /* 搜索框 + 按钮 */
+        .filter-search {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-search input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .search-btn {
+            background: var(--klein-blue);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .search-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ========== 方案列表 ========== */
+        .solution-list {
+            padding: 10px;
+        }
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 26px;
+        }
+        .solution-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            height: 230px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.2s;
+            border: 1px solid var(--border);
+        }
+        .solution-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .solution-card__img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        }
+        .solution-card__content {
+            padding: 6px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        /* 标题 1行 ... */
+        .solution-card__title {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--deep-gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+        /* 描述 2行 ... */
+        .solution-card__desc {
+            font-size: 13px;
+            color: var(--light-gray);
+            line-height: 1.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ========== 分页：靠右 ========== */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            margin: 10px 0 10px 0;
+        }
+        .pagination__btn {
+            min-width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .pagination__btn--active {
+            background: var(--klein-blue);
+            color: #fff;
+            border-color: var(--klein-blue);
+        }
+        .pagination__btn--disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .pagination__ellipsis {
+            padding: 0 6px;
+            color: #999;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .solution-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .solution-grid { grid-template-columns: 1fr; }
+            .pagination { justify-content: center; }
+            .filter-label { width: 44px; }
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--deep-gray);
+            color: var(--white);
+            padding: 40px 20px;
+            margin-top: 30px;
+        }
+        .footer-wrap {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部固定导航 -->
+    <div class="fixed-header">
+        <div class="container">
+            <div class="logo">LOGO · 智能</div>
+            <div class="user-area">
+                <div class="welcome">欢迎使用智能生产力平台</div>
+                <button class="login">登录</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 固定在顶部，不滚动 -->
+    <div class="tab-container">
+        <div class="container">
+            <div class="tab-row">
+                <div class="tabs">
+                    <div class="tab active">农业方案库</div>
+                    <div class="tab">制造业方案库</div>
+                    <div class="tab">服务业方案库</div>
+                    <div class="tab">设备商城</div>
+                </div>
+                <button class="ai-team-btn">我的AI团队</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 内容区：筛选 + 列表 一体化 -->
+    <div class="container">
+        <div class="content-wrapper">
+            <!-- 筛选栏 -->
+            <div class="filter-bar">
+                <div class="filter-item">
+                    <span class="filter-label">产业:</span>
+                    <select class="filter-select">
+                        <option>全部</option><option>第一产业</option><option>第二产业</option><option>第三产业</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">行业:</span>
+                    <select class="filter-select">
+                        <option>全部</option><option>农业</option><option>制造业</option><option>服务业</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">产品:</span>
+                    <select class="filter-select">
+                        <option>全部</option><option>智能设备</option><option>软件系统</option><option>解决方案</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-label">工艺:</span>
+                    <select class="filter-select">
+                        <option>全部</option><option>冲压</option><option>焊接</option><option>装配</option>
+                    </select>
+                </div>
+                <div class="filter-search">
+                    <span class="filter-label">描述:</span>
+                    <input type="text" placeholder="关键词搜索">
+                    <button class="search-btn">搜索</button>
+                </div>
+            </div>
+
+            <!-- 方案列表 -->
+            <div class="solution-list">
+                <div class="solution-grid">
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/car1/400/200.jpg" alt="汽车制造" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【汽车制造】机器人焊接 + 自动上下料</h3>
+                            <p class="solution-card__desc">六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/phone1/400/200.jpg" alt="3C电子" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【3C电子】智能手表高精度装配检测</h3>
+                            <p class="solution-card__desc">微米级装配+AI视觉检测，不良率降至0.2%</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/cnc1/400/200.jpg" alt="机械加工" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【机械加工】CNC机床无人化上下料</h3>
+                            <p class="solution-card__desc">桁架机器人+机床联动，替代人工85%</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/battery1/400/200.jpg" alt="新能源" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【新能源】锂电池模组全自动组装线</h3>
+                            <p class="solution-card__desc">全流程自动化，产能提升60%，人力降低50%</p>
+                        </div>
+                    </div>
+
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/food1/400/200.jpg" alt="食品包装" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【食品包装】全自动装箱码垛生产线</h3>
+                            <p class="solution-card__desc">高速稳定，节省人工70%，效率提升50%</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/agv1/400/200.jpg" alt="物流仓储" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【物流仓储】AGV智能搬运系统</h3>
+                            <p class="solution-card__desc">全自动调度，24小时连续作业，降低物流成本</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/smt1/400/200.jpg" alt="电子制造" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【电子制造】SMT贴片全自动生产线</h3>
+                            <p class="solution-card__desc">高速贴装+在线检测，产能提升3倍，良率99.9%</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/machine1/400/200.jpg" alt="注塑成型" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【注塑成型】机械手自动取料+检测</h3>
+                            <p class="solution-card__desc">24小时无人值守，生产效率提升40%</p>
+                        </div>
+                    </div>
+
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/medicine1/400/200.jpg" alt="医药包装" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【医药包装】全自动装盒+赋码生产线</h3>
+                            <p class="solution-card__desc">符合GMP标准，追溯率100%，效率提升60%</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/furniture1/400/200.jpg" alt="家具制造" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【家具制造】数控开料+自动封边生产线</h3>
+                            <p class="solution-card__desc">定制化生产，板材利用率提升15%，人工减少60%</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/clothes1/400/200.jpg" alt="纺织服装" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【纺织服装】自动裁剪+缝纫机器人</h3>
+                            <p class="solution-card__desc">柔性生产，换款时间缩短80%，产能提升2倍</p>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <img src="https://picsum.photos/seed/metal1/400/200.jpg" alt="金属加工" class="solution-card__img">
+                        <div class="solution-card__content">
+                            <h3 class="solution-card__title">【金属加工】激光切割+自动上下料</h3>
+                            <p class="solution-card__desc">高精度切割，材料利用率提升20%，效率提升3倍</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination__btn pagination__btn--disabled">上一页</button>
+                    <button class="pagination__btn pagination__btn--active">1</button>
+                    <button class="pagination__btn">2</button>
+                    <button class="pagination__btn">3</button>
+                    <button class="pagination__btn">4</button>
+                    <button class="pagination__btn">5</button>
+                    <span class="pagination__ellipsis">...</span>
+                    <button class="pagination__btn">10</button>
+                    <button class="pagination__btn">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-col">
+                <h3>TECHBOT</h3>
+                <p>专注工业智能 · 让制造更高效</p>
+            </div>
+            <div class="footer-col">
+                <h3>快速入口</h3>
+                <p>生产力方案库<br>工业设备商城<br>智能知识库</p>
+            </div>
+            <div class="footer-col">
+                <h3>联系我们</h3>
+                <p>商务合作：service@techbot.com<br>服务热线：400-888-9999</p>
+            </div>
+            <div class="footer-col">
+                <h3>关于我们</h3>
+                <p>© 2026 工业智能生产力平台<br>版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // TAB切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // 分页
+        document.querySelectorAll('.pagination__btn:not(.pagination__btn--disabled)').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pagination__btn').forEach(item => item.classList.remove('pagination__btn--active'));
+                btn.classList.add('pagination__btn--active');
+            });
+        });
+    </script>
+</body>
+</html>
