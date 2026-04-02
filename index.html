@@ -82,6 +82,12 @@
             font-weight: bold;
             font-size: 18px;
             border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.9;
         }
         .user-area {
             display: flex;
@@ -900,6 +906,11 @@
 
         // 页面加载时执行
         window.addEventListener('load', selectTabByParam);
+
+        // logo 点击回到 index 初始页面
+        document.querySelector('.logo').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
     </script>
 </body>
 </html>
