@@ -157,15 +157,16 @@
         /* 左侧历史对话栏 */
         .sidebar {
             width: 220px;
-            background-color: var(--light-gray);
+            background-color: #ffffff;
             border-right: 1px solid var(--border-gray);
             display: flex;
             flex-direction: column;
             padding: 16px;
-            overflow-y: auto;
+            overflow-y: hidden;
             flex-shrink: 0;
-            /* 确保侧边栏在版心内左侧，不超出 */
             margin-right: 0;
+            height: 100%;
+            max-height: calc(100vh - 120px);
         }
 
         .new-chat-btn {
@@ -194,9 +195,10 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
+        /* 我的AI团队样式 - 添加折叠功能 */
         .menu-item {
             padding: 10px 12px;
             border-radius: 6px;
@@ -207,30 +209,59 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
+            justify-content: space-between; /* 内容和折叠图标分开 */
         }
 
         .menu-item:hover {
             background-color: var(--hover-gray);
         }
 
-        /* 团队成员样式 */
+        /* 折叠图标样式 - 使用更美观的箭头 */
+        .collapse-icon {
+            transition: transform 0.3s ease;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--classic-gray);
+        }
+
+        .collapse-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .collapse-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        /* 团队成员样式 - 优化高度和间距 */
         .team-members {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            margin-left: 36px;
+            gap: 2px; /* 进一步减小成员间距 */
+            margin-left: 28px;
+            max-height: 200px; /* 限制最大高度 */
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .team-members.collapsed {
+            max-height: 0;
         }
 
         .team-member {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 6px 12px;
-            border-radius: 6px;
+            gap: 6px; /* 减小内部间距 */
+            padding: 2px 8px; /* 减小上下内边距，降低高度 */
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
             background-color: var(--white);
             border: 1px solid var(--border-gray);
+            height: 38px; /* 进一步降低高度 */
         }
 
         .team-member:hover {
@@ -238,8 +269,8 @@
         }
 
         .member-avatar {
-            width: 40px;
-            height: 40px;
+            width: 24px; /* 进一步缩小头像 */
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -259,20 +290,22 @@
         }
 
         .member-name {
-            font-size: 14px;
+            font-size: 13px; /* 进一步缩小字体 */
             color: var(--deep-gray);
             font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 1.4;
         }
 
         .member-time {
-            font-size: 12px;
+            font-size: 10px; /* 进一步缩小字体 */
             color: var(--classic-gray);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 1.1;
         }
 
         .history-title {
@@ -282,16 +315,15 @@
             padding: 0 4px;
         }
 
+        /* 历史对话列表样式优化 */
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
             flex: 1;
-            overflow-y: auto;
         }
 
         .history-item {
-            padding: 10px 12px;
+            padding: 8px 12px; /* 减小内边距 */
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
@@ -303,6 +335,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            height: 40px; /* 固定历史对话项高度 */
+            line-height: 1.4; /* 优化行高 */
         }
 
         .history-item:hover {
@@ -626,20 +660,27 @@
                 </button>
             </div>
             <div class="sidebar-menu">
-                <div class="menu-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    我的AI团队
+                <div class="menu-item" id="teamMenu1">
+                    <div class="menu-item-content">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        我的AI团队
+                    </div>
+                    <div class="collapse-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 <!-- 团队成员 -->
-                <div class="team-members">
+                <div class="team-members" id="teamMembers1">
                     <div class="team-member">
                         <div class="member-avatar" style="background-color: #4CAF50;">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
                                 <circle cx="15" cy="18" r="2" fill="white"/>
                                 <circle cx="25" cy="18" r="2" fill="white"/>
@@ -654,7 +695,7 @@
                     </div>
                     <div class="team-member">
                         <div class="member-avatar" style="background-color: #2196F3;">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#2196F3"/>
                                 <circle cx="15" cy="18" r="2" fill="white"/>
                                 <circle cx="25" cy="18" r="2" fill="white"/>
@@ -669,7 +710,7 @@
                     </div>
                     <div class="team-member">
                         <div class="member-avatar" style="background-color: #FF9800;">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#FF9800"/>
                                 <circle cx="15" cy="18" r="2" fill="white"/>
                                 <circle cx="25" cy="18" r="2" fill="white"/>
@@ -679,6 +720,72 @@
                         </div>
                         <div class="member-info">
                             <div class="member-name">售后工程师</div>
+                            <div class="member-time">10分钟前</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item" id="teamMenu2">
+                    <div class="menu-item-content">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        我的朋友
+                    </div>
+                    <div class="collapse-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <!-- 团队成员 -->
+                <div class="team-members" id="teamMembers2">
+                    <div class="team-member">
+                        <div class="member-avatar" style="background-color: #4CAF50;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">张三</div>
+                            <div class="member-time">2分钟前</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar" style="background-color: #2196F3;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#2196F3"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">李四</div>
+                            <div class="member-time">5分钟前</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar" style="background-color: #FF9800;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#FF9800"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">欧阳娜娜(业务员)</div>
                             <div class="member-time">10分钟前</div>
                         </div>
                     </div>
@@ -946,6 +1053,27 @@
         window.addEventListener('load', () => {
             document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
         });
+
+        // 团队成员折叠功能
+        function initCollapse(menuId, membersId) {
+            const menu = document.getElementById(menuId);
+            const members = document.getElementById(membersId);
+            const icon = menu.querySelector('.collapse-icon');
+            
+            // 默认展开状态
+            members.classList.remove('collapsed');
+            icon.classList.remove('collapsed');
+            
+            // 点击切换折叠状态
+            menu.addEventListener('click', () => {
+                members.classList.toggle('collapsed');
+                icon.classList.toggle('collapsed');
+            });
+        }
+
+        // 初始化两个团队菜单的折叠功能
+        initCollapse('teamMenu1', 'teamMembers1');
+        initCollapse('teamMenu2', 'teamMembers2');
     </script>
 </body>
 </html>
