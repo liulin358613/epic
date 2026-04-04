@@ -34,160 +34,15 @@
             overflow: hidden;
         }
 
-        /* 通用容器 */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* ========== 固定在顶部的 Logo 导航栏 ========== */
-        .fixed-header {
+        /* ========== 顶部导航栏iframe ========== */
+        .header-iframe {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 70px;
-            background: var(--klein-blue);
-            z-index: 9999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-        }
-        .fixed-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .logo {
-            width: 220px;
-            height: 50px;
-            background: var(--white);
-            color: var(--klein-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .logo:hover {
-            opacity: 0.9;
-        }
-         .user-area {
-            display: flex;
-            align-items: center;
-            gap: 16px; /* 增加间距更美观 */
-        }
-        /* 优化欢迎信息样式 */
-        .welcome {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--deep-gray);
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        /* 公司名称样式 */
-        .company-name {
-            color: var(--klein-blue);
-            font-weight: 600;
-        }
-        /* 登录者名称样式 */
-        .user-name {
-            color: var(--hermes-orange);
-        }
-        /* 退出按钮样式 */
-        .logout-btn {
-            color: #FF4D4F;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        .logout-btn:hover {
-            background: #FFF1F0;
-            color: #F5222D;
-        }
-        /* 按钮通用样式优化 */
-        .login {
-            background: var(--white);
-            color: var(--klein-blue);
             border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-        }
-        .login:hover {
-            background: var(--hermes-orange);
-            color: var(--white);
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-        }
-        .login:nth-child(3) {
-            background: #E6F7FF;
-            border: 1px solid var(--klein-blue);
-        }
-        .login:nth-child(3):hover {
-            background: var(--klein-blue);
-            color: var(--white);
-        }
-        .login:nth-child(2) {
-            position: relative;
-        }
-        /* 消息红点优化 */
-        .login:nth-child(2)::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            background: #FF4D4F;
-            border-radius: 50%;
-            box-shadow: 0 0 0 2px rgba(255,77,79,0.2);
-        }
-        /* 消息图标样式 */
-        .msg-icon {
-            font-size: 16px;
-        }
-
-        /* 城市定位样式 */
-        .location {
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: default;
-        }
-
-        .location .location-icon {
-            width: 16px;
-            height: 16px;
-            color: var(--hermes-orange);
-        }
-
-        .location .city-name {
-            color: var(--hermes-orange);
-        }
-
-        .location .switch-city {
-            color: var(--classic-gray);
+            z-index: 9999;
         }
 
         /* ========== 二级导航栏 ========== */
@@ -201,12 +56,8 @@
             z-index: 9998;
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 180px;
             border-bottom: 1px solid var(--border-gray);
-        }
-        .sub-nav .container {
-            display: flex;
-            width: 100%;
         }
 
         .sub-nav-item {
@@ -243,14 +94,9 @@
             height: calc(100vh - 120px);
             overflow: hidden;
             /* 版心控制 - 整体内容居中，侧边栏在版心左侧 */
-            padding: 0 20px;
+            padding: 0 180px;
             width: 100%;
             box-sizing: border-box;
-        }
-        .main-container .container {
-            display: flex;
-            width: 100%;
-            height: 100%;
         }
 
         /* 左侧历史对话栏 */
@@ -479,7 +325,7 @@
         }
 
         .history-item {
-            padding: 8px 12px; /* 减小内边距 */
+            padding: 8px 0px; /* 减小内边距 */
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
@@ -507,6 +353,14 @@
             transform: translateX(4px);
         }
 
+        .history-item svg {
+            stroke: var(--deep-gray);
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        
         .history-item.active svg {
             stroke: var(--white);
         }
@@ -929,6 +783,366 @@
 
 
 
+        /* 登录弹窗样式 */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .login-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(29, 33, 41, 0.6);
+            backdrop-filter: blur(2px);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: var(--white);
+            padding: 30px 36px;
+            border-radius: 12px;
+            width: 420px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            line-height: 1.5;
+            font-family: "Microsoft Yahei", sans-serif;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        
+        .login-modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--deep-gray);
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--classic-gray);
+            transition: all 0.3s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close-btn:hover {
+            color: var(--klein-blue);
+            background-color: var(--light-gray);
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+        
+        .login-tab {
+            padding: 8px 0;
+            margin-right: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            color: var(--classic-gray);
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .login-tab.active {
+            color: var(--klein-blue);
+            border-bottom-color: var(--klein-blue);
+            font-weight: 500;
+        }
+        
+        .login-tab:hover:not(.active) {
+            color: var(--klein-blue);
+            opacity: 0.8;
+        }
+        
+        .login-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            line-height: 1.4;
+            color: var(--deep-gray);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: var(--classic-gray);
+        }
+        
+        .password-input {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .password-input .form-input {
+            padding-right: 40px;
+            margin-bottom: 0;
+        }
+        
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--classic-gray);
+            transition: all 0.3s;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .eye-btn:hover {
+            color: var(--klein-blue);
+        }
+        
+        .code-input {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .code-input .form-input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .code-btn {
+            padding: 0 16px;
+            background-color: var(--light-gray);
+            color: var(--deep-gray);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .code-btn:hover {
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+            background-color: var(--white);
+        }
+        
+        .code-btn:active {
+            background-color: var(--light-gray);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--klein-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-button:hover {
+            background-color: #0047c9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.2);
+        }
+        
+        .login-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.2);
+        }
+        
+        .login-links {
+            text-align: center;
+            font-size: 13px;
+            color: var(--classic-gray);
+            margin-bottom: 20px;
+        }
+        
+        .login-links a {
+            color: var(--klein-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .login-links a:hover {
+            color: #0047c9;
+            text-decoration: underline;
+        }
+        
+        .login-links span {
+            margin: 0 8px;
+        }
+        
+        .other-login {
+            margin-top: 20px;
+        }
+        
+        .other-login-line {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .other-login-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--border-gray);
+            z-index: 1;
+        }
+        
+        .other-login-line span {
+            position: relative;
+            background-color: var(--white);
+            padding: 0 16px;
+            z-index: 2;
+            font-size: 13px;
+            color: var(--classic-gray);
+        }
+        
+        .other-login-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        
+        .other-login-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--border-gray);
+            background-color: var(--white);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .other-login-btn:hover {
+            border-color: var(--klein-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
+        }
+        
+        .other-login-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.15);
+        }
+        
+        /* 第三方登录图标样式 */
+        .other-login-btn:nth-child(1) {
+            background-color: #07C160;
+            color: var(--white);
+            border-color: #07C160;
+        }
+        
+        .other-login-btn:nth-child(1):hover {
+            background-color: #06AD56;
+            border-color: #06AD56;
+        }
+        
+        .other-login-btn:nth-child(2) {
+            background-color: #FF6B35;
+            color: var(--white);
+            border-color: #FF6B35;
+        }
+        
+        .other-login-btn:nth-child(2):hover {
+            background-color: #E55A2B;
+            border-color: #E55A2B;
+        }
+        
+        /* 图标样式 */
+        .other-login-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 18px;
+        }
+        
+        .other-login-btn:nth-child(1)::before {
+            content: "📱";
+        }
+        
+        .other-login-btn:nth-child(2)::before {
+            content: "📧";
+        }
+
         /* 响应式适配 */
         @media (max-width: 1200px) {
             .top-nav, .sub-nav {
@@ -972,37 +1186,45 @@
     </style>
 </head>
 <body>
-    <!-- ========== 固定在顶部的 Logo 导航栏 ========== -->
-    <div class="fixed-header">
-        <div class="container">
-            <div class="logo">LOGO · 智能</div>
-            <div class="user-area">
-                <!-- 优化欢迎信息结构 -->
-                <div class="welcome">
-                    <span>👋</span>
-                    <span>
-                        <span class="company-name">东莞嘉东科技有限公司</span> 
-                        <span class="user-name">林工</span> 
-                        欢迎您！
-                        <span class="logout-btn">[退出]</span>
-                    </span>
+    <!-- 顶部导航栏 - 引用已登录的公共头部 header_logged.html -->
+    <iframe class="header-iframe" src="header_logged.html" scrolling="no"></iframe>
+
+    <!-- 登录弹窗 -->
+    <div class="login-modal" id="loginModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>账号登录</h2>
+                <button class="close-btn" id="closeBtn">×</button>
+            </div>
+            <div class="login-tabs">
+                <div class="login-tab active">密码登录</div>
+                <div class="login-tab">验证码登录</div>
+            </div>
+            <div class="login-form">
+                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
+                <div class="password-input">
+                    <input type="password" class="form-input" placeholder="请输入密码">
+                    <button class="eye-btn">👁️</button>
                 </div>
-                <!-- 消息按钮添加图标 -->
-                <button class="login">
-                    <span class="msg-icon">📩</span>
-                    <span>消息 12</span>
-                </button>
-                <button class="login">
-                    <span>👤</span>
-                    <span>个人中心</span>
-                </button>
-                <div class="location">
-                    <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    <span class="city-name">北京</span>
-                    <span class="switch-city">[切换城市]</span>
+                <div class="code-input" style="display: none;">
+                    <input type="text" class="form-input" placeholder="请输入验证码">
+                    <button class="code-btn">获取验证码</button>
+                </div>
+                <button class="login-button">登录</button>
+            </div>
+            <div class="login-links">
+                <a href="#">忘记密码</a>
+                <span>|</span>
+                <a href="#">注册账号</a>
+            </div>
+            <div class="other-login">
+                <div class="other-login-line">
+                    <span>其他登录方式</span>
+                </div>
+                <div class="other-login-buttons">
+                    <button class="other-login-btn">微信</button>
+                    <button class="other-login-btn">支付宝</button>
                 </div>
             </div>
         </div>
@@ -1010,20 +1232,17 @@
 
     <!-- 二级导航栏 -->
     <div class="sub-nav">
-        <div class="container">
-            <div class="sub-nav-item active">工元智能</div>
-            <div class="sub-nav-item">农业方案库</div>
-            <div class="sub-nav-item">制造业方案库</div>
-            <div class="sub-nav-item">服务业方案库</div>
-            <div class="sub-nav-item">设备商城</div>
-        </div>
+        <div class="sub-nav-item active">工元智能</div>
+        <div class="sub-nav-item">农业方案库</div>
+        <div class="sub-nav-item">制造业方案库</div>
+        <div class="sub-nav-item">服务业方案库</div>
+        <div class="sub-nav-item">设备商城</div>
     </div>
 
     <!-- 主内容区 -->
     <div class="main-container">
-        <div class="container">
-            <!-- 左侧历史对话栏 -->
-            <div class="sidebar">
+        <!-- 左侧历史对话栏 -->
+        <div class="sidebar">
             <div class="sidebar-top">
                 <button class="new-chat-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1321,7 +1540,6 @@
                     <button class="send-btn">↑</button>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 
@@ -1717,7 +1935,7 @@
             }
         });
 
-        // 历史对话项点击切换激活状态
+        // 历史对话项点击切换激活状态并显示对应AI对话内容
         document.querySelectorAll('.history-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
@@ -1729,6 +1947,66 @@
                 // 隐藏AI团队成员信息区域
                 document.getElementById('aiMemberInfo').classList.remove('show');
 
+                // 获取对话标题
+                const conversationTitle = item.textContent.trim();
+                
+                // 生成AI对话内容
+                let chatContent = `
+                    <!-- 用户提问 -->
+                    <div class="chat-message user">
+                        <div class="message-content">
+                            ${conversationTitle}
+                            <span class="message-time">06-05 10:00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- AI回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar">AI</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">工元智能</span>
+                            </div>
+                            <div class="message-content">
+                                您好，针对"${conversationTitle}"，我们提供以下解决方案：<br>
+                                1. <strong>智能生产规划</strong>：基于AI算法优化生产流程，提高生产效率<br>
+                                2. <strong>质量检测系统</strong>：部署视觉检测设备，实时监控产品质量<br>
+                                3. <strong>数据分析平台</strong>：收集生产数据，提供决策支持<br>
+                                4. <strong>设备预测性维护</strong>：通过传感器监测设备状态，减少停机时间
+                                <span class="message-time">06-05 10:01</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 用户提问 -->
+                    <div class="chat-message user">
+                        <div class="message-content">
+                            这个方案的实施成本大概是多少？
+                            <span class="message-time">06-05 10:05</span>
+                        </div>
+                    </div>
+                    
+                    <!-- AI回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar">AI</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">工元智能</span>
+                            </div>
+                            <div class="message-content">
+                                实施成本根据具体规模和需求而定，一般在80-150万元之间。
+                                我们可以根据您的实际情况提供详细的报价方案。
+                                <span class="message-time">06-05 10:06</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 更新对话区
+                document.querySelector('.chat-content').innerHTML = chatContent;
+                
+                // 滚动到底部
+                document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
             });
         });
 
@@ -1896,14 +2174,68 @@
         initCollapse('teamMenu1', 'teamMembers1');
         initCollapse('teamMenu2', 'teamMembers2');
 
-        // logo 点击回到 index 初始页面
-        document.querySelector('.logo').addEventListener('click', () => {
-            window.location.href = 'index.html';
+        // ========== 登录弹窗功能 ==========
+        const loginModal = document.getElementById('loginModal');
+        const closeBtn = document.getElementById('closeBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const loginTabs = document.querySelectorAll('.login-tab');
+        const passwordInput = document.querySelector('.password-input');
+        const codeInput = document.querySelector('.code-input');
+        const eyeBtn = document.querySelector('.eye-btn');
+        const passwordField = document.querySelector('.password-input .form-input');
+
+        // 打开弹窗
+        function openLoginModal() {
+            loginModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭弹窗
+        function closeLoginModal() {
+            loginModal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeLoginModal);
+        modalOverlay.addEventListener('click', closeLoginModal);
+
+        // 登录方式切换
+        loginTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                loginTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                if (index === 0) {
+                    // 密码登录
+                    passwordInput.style.display = 'block';
+                    codeInput.style.display = 'none';
+                } else {
+                    // 验证码登录
+                    passwordInput.style.display = 'none';
+                    codeInput.style.display = 'flex';
+                }
+            });
         });
 
-        // 消息按钮点击跳转到 AI 页面
-        document.querySelectorAll('.login')[0].addEventListener('click', () => {
-            window.location.href = 'ai.html';
+        // 密码显示/隐藏
+        eyeBtn.addEventListener('click', () => {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // 登录按钮点击事件（已登录状态下无需跳转）
+        document.querySelector('.login-button').addEventListener('click', () => {
+            // 已登录状态，无需跳转
+            closeLoginModal();
+        });
+
+        // 监听iframe发送的消息
+        window.addEventListener('message', (event) => {
+            // 安全检查：验证消息来源
+            if (event.data && event.data.type === 'SHOW_LOGIN_MODAL') {
+                openLoginModal();
+            }
         });
     </script>
 </body>

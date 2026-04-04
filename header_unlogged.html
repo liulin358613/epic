@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能生产力平台</title>
+    <style>
+        /* 全局样式重置与变量定义 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        :root {
+            /* 主色调 - 严格匹配需求 */
+            --klein-blue: #0051D9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-gray: #F2F3F5;
+            --classic-gray: #86909C;
+            --white: #FFFFFF;
+            --border-gray: #E5E7EB;
+            --hover-gray: #F7F8FA;
+        }
+
+        /* 通用容器 */
+        .container {
+            /* max-width: 1300px; */
+            margin: 0 180px;
+        }
+
+        /* ========== 固定在顶部的 Logo 导航栏 ========== */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--klein-blue);
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        .fixed-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .top-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 200px;
+            height: 50px;
+            background: var(--white);
+            color: var(--klein-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.9;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .welcome {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--deep-gray);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-btn {
+            background: var(--white);
+            color: var(--klein-blue);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        .login-btn:hover {
+            background: var(--hermes-orange);
+            color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+
+        /* 城市定位样式 */
+        .location {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+        }
+
+        .location .location-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--hermes-orange);
+        }
+
+        .location .city-name {
+            color: var(--hermes-orange);
+        }
+
+        .location .switch-city {
+            color: var(--classic-gray);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1200px) {
+            .top-nav {
+                padding: 0 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== 固定在顶部的 Logo 导航栏 ========== -->
+    <div class="fixed-header">
+        <div class="container">
+            <div class="logo" onclick="goToIndex()">RaaS.Dao</div>
+            <div class="top-nav-right">
+                <div class="user-area">
+                    <div class="welcome">
+                        <span>👋</span>
+                        <span>欢迎使用智能生产力平台</span>
+                    </div>
+                    <button class="login-btn" onclick="showLoginModal()">
+                        <span>👤</span>
+                        <span>登录</span>
+                    </button>
+                </div>
+                <div class="location">
+                    <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span class="city-name">北京</span>
+                    <span class="switch-city">[切换城市]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 跳转到首页函数 - 支持iframe内外跳转
+        function goToIndex() {
+            // 检查是否在iframe中
+            if (window.parent !== window) {
+                // 在iframe中，让父页面跳转
+                window.parent.location.href = 'index.html';
+            } else {
+                // 不在iframe中，直接跳转
+                window.location.href = 'index.html';
+            }
+        }
+
+        // 显示登录弹窗函数 - 支持iframe内外
+        function showLoginModal() {
+            // 检查是否在iframe中
+            if (window.parent !== window) {
+                // 在iframe中，通过postMessage通知父页面显示弹窗
+                window.parent.postMessage({ type: 'SHOW_LOGIN_MODAL' }, '*');
+            } else {
+                // 不在iframe中，跳转到登录页面
+                window.location.href = 'login_modal.html';
+            }
+        }
+    </script>
+</body>
+</html>
