@@ -100,6 +100,24 @@
             color: var(--white);
         }
 
+        /* 城市定位样式 */
+        .location {
+            background: var(--white);
+            color: var(--deep-gray);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+        }
+
+        .location svg {
+            width: 16px;
+            height: 16px;
+        }
+
         /* ========== 二级导航栏 ========== */
         .sub-nav {
             position: fixed;
@@ -240,7 +258,7 @@
         .team-members {
             display: flex;
             flex-direction: column;
-            gap: 2px; /* 进一步减小成员间距 */
+            gap: 3px; /* 进一步减小成员间距 */
             margin-left: 28px;
             max-height: 200px; /* 限制最大高度 */
             overflow: hidden;
@@ -261,7 +279,7 @@
             transition: all 0.3s;
             background-color: var(--white);
             border: 1px solid var(--border-gray);
-            height: 38px; /* 进一步降低高度 */
+            height: 40px; /* 进一步降低高度 */
         }
 
         .team-member:hover {
@@ -490,7 +508,7 @@
             max-width: 100%;
             padding: 12px 16px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.5;
             word-wrap: break-word;
         }
@@ -507,6 +525,15 @@
             color: var(--deep-gray);
             border: 1px solid var(--border-gray);
             border-bottom-left-radius: 4px;
+        }
+
+        /* 消息时间戳样式 */
+        .message-time {
+            font-size: 11px;
+            color: var(--classic-gray);
+            text-align: right;
+            margin-top: 8px;
+            display: block;
         }
 
         .welcome-container {
@@ -802,6 +829,13 @@
         <div class="logo" onclick="window.location.href='index.html'">LOGO · 智能</div>
         <div class="user-area">
             <div class="welcome">欢迎使用智能生产力平台</div>
+            <div class="location">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>北京</span>
+            </div>
             <button class="login-btn">登录</button>
         </div>
     </div>
@@ -915,7 +949,7 @@
                 </div>
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers2">
-                    <div class="team-member">
+                    <div class="team-member" data-member-id="zhangsan" data-member-name="张三" data-avatar-color="#4CAF50">
                         <div class="member-avatar" style="background-color: #4CAF50;">
                             <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
@@ -931,7 +965,7 @@
                         </div>
                         <div class="member-unread-icon">2</div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-member" data-member-id="lisi" data-member-name="李四" data-avatar-color="#2196F3">
                         <div class="member-avatar" style="background-color: #2196F3;">
                             <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#2196F3"/>
@@ -946,7 +980,7 @@
                             <div class="member-time">5分钟前</div>
                         </div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-member" data-member-id="ouyang" data-member-name="欧阳娜娜(业务员)" data-avatar-color="#FF9800">
                         <div class="member-avatar" style="background-color: #FF9800;">
                             <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#FF9800"/>
@@ -1179,6 +1213,7 @@
                         <div class="chat-message user">
                             <div class="message-content">
                                 您好，请问公司的请假流程是怎样的？
+                                <span class="message-time">06-05 14:30</span>
                             </div>
                         </div>
                         
@@ -1196,6 +1231,7 @@
                                     3. 填写请假原因、时间等信息<br>
                                     4. 提交审批<br>
                                     5. 等待主管审批通过
+                                    <span class="message-time">06-05 14:31</span>
                                 </div>
                             </div>
                         </div>
@@ -1204,6 +1240,7 @@
                         <div class="chat-message user">
                             <div class="message-content">
                                 好的，谢谢！另外，公司的福利政策有哪些？
+                                <span class="message-time">06-05 14:32</span>
                             </div>
                         </div>
                         
@@ -1221,6 +1258,7 @@
                                     - 节日福利<br>
                                     - 定期体检<br>
                                     - 员工培训
+                                    <span class="message-time">06-05 14:33</span>
                                 </div>
                             </div>
                         </div>
@@ -1234,6 +1272,7 @@
                                 </div>
                                 <div class="message-content">
                                     有什么我能帮你的吗？
+                                    <span class="message-time">06-05 14:33</span>
                                 </div>
                             </div>
                         </div>
@@ -1244,6 +1283,7 @@
                         <div class="chat-message user">
                             <div class="message-content">
                                 您好，我想了解一下我们的智能生产线解决方案的价格。
+                                <span class="message-time">06-05 10:15</span>
                             </div>
                         </div>
                         
@@ -1257,6 +1297,7 @@
                                 <div class="message-content">
                                     您好！我们的智能生产线解决方案价格根据具体配置和规模而定，大致在80-150万元之间。
                                     我们可以根据您的具体需求提供详细的报价方案。
+                                    <span class="message-time">06-05 10:16</span>
                                 </div>
                             </div>
                         </div>
@@ -1273,6 +1314,7 @@
                                     <div class="chat-image" onclick="openImageModal('https://picsum.photos/800/500?random=2')" style="cursor: pointer; margin-top: 10px;">
                                         <img src="https://picsum.photos/800/500?random=2" alt="智能手表高精度装配检测" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
                                     </div>
+                                    <span class="message-time">06-05 10:17</span>
                                 </div>
                             </div>
                         </div>
@@ -1286,6 +1328,7 @@
                                 </div>
                                 <div class="message-content">
                                     有什么我能帮你的吗？
+                                    <span class="message-time">06-05 10:17</span>
                                 </div>
                             </div>
                         </div>
@@ -1296,6 +1339,7 @@
                         <div class="chat-message user">
                             <div class="message-content">
                                 您好，我们的设备出现了故障，需要技术支持。
+                                <span class="message-time">06-05 09:45</span>
                             </div>
                         </div>
                         
@@ -1309,6 +1353,7 @@
                                 <div class="message-content">
                                     您好！请描述一下设备的具体故障情况，我们的技术团队会尽快为您提供支持。
                                     您也可以拨打我们的技术支持热线：400-123-4567
+                                    <span class="message-time">06-05 09:46</span>
                                 </div>
                             </div>
                         </div>
@@ -1317,6 +1362,7 @@
                         <div class="chat-message user">
                             <div class="message-content">
                                 设备启动时显示错误代码E102，无法正常运行。
+                                <span class="message-time">06-05 09:48</span>
                             </div>
                         </div>
                         
@@ -1331,6 +1377,7 @@
                                     错误代码E102通常表示传感器连接异常。
                                     请检查传感器的连接线是否松动，或者传感器本身是否损坏。
                                     如果问题仍然存在，我们可以安排技术人员上门维修。
+                                    <span class="message-time">06-05 09:50</span>
                                 </div>
                             </div>
                         </div>
@@ -1344,6 +1391,145 @@
                                 </div>
                                 <div class="message-content">
                                     有什么我能帮你的吗？
+                                    <span class="message-time">06-05 09:50</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'zhangsan') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                张三，最近工作怎么样？
+                                <span class="message-time">06-05 16:20</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 张三回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">张</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    挺好的，最近在跟进一个重要项目，进展顺利。你呢？
+                                    <span class="message-time">06-05 16:21</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                我也挺好的，就是最近有点忙。对了，上次说的合作方案你看了吗？
+                                <span class="message-time">06-05 16:22</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 张三回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">张</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    看了，方案不错，我已经转发给团队成员了，我们正在讨论细节。
+                                    <span class="message-time">06-05 16:23</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'lisi') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                李四，你好！
+                                <span class="message-time">06-05 11:05</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 李四回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">李</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    你好！有什么事吗？
+                                    <span class="message-time">06-05 11:06</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                想问问你对新的项目计划有什么看法？
+                                <span class="message-time">06-05 11:07</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 李四回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">李</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    我觉得计划整体不错，不过在时间安排上可能需要调整一下，有些环节可能会比预期耗时。
+                                    <span class="message-time">06-05 11:08</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'ouyang') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                欧阳，最近业务怎么样？
+                                <span class="message-time">06-05 15:30</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 欧阳娜娜回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">欧</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    还可以，最近谈成了几个新客户，正在跟进。你有什么需要帮忙的吗？
+                                    <span class="message-time">06-05 15:31</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                想了解一下最近的市场情况，有没有什么新的趋势？
+                                <span class="message-time">06-05 15:32</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 欧阳娜娜回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">欧</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    最近智能制造业的需求增长很快，尤其是自动化生产线和AI检测方面，很多客户都在咨询相关解决方案。
+                                    <span class="message-time">06-05 15:33</span>
                                 </div>
                             </div>
                         </div>
@@ -1352,6 +1538,9 @@
                 
                 // 更新对话区
                 document.querySelector('.chat-content').innerHTML = chatContent;
+                
+                // 滚动到底部
+                document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
                 
                 // 清空输入框
                 textarea.value = '';
@@ -1414,11 +1603,19 @@
         document.querySelector('.send-btn').addEventListener('click', () => {
             const content = textarea.value.trim();
             if (content) {
+                // 获取当前时间
+                const now = new Date();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const currentTime = `${month}-${day} ${hours}:${minutes}`;
+                
                 // 创建用户消息元素
                 const userMessage = document.createElement('div');
                 userMessage.className = 'chat-message user';
                 userMessage.innerHTML = `
-                    <div class="message-content">${content}</div>
+                    <div class="message-content">${content}<span class="message-time">${currentTime}</span></div>
                 `;
                 document.querySelector('.chat-content').appendChild(userMessage);
                 
@@ -1435,6 +1632,7 @@
                             <div class="message-content">
                                 感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。
                                 如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。
+                                <span class="message-time">${currentTime}</span>
                             </div>
                         </div>
                     `;
