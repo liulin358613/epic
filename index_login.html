@@ -47,9 +47,8 @@
 
         /* 通用容器 */
         .container {
-            max-width: 1300px;
+            width: 1300px;
             margin: 0 auto;
-            padding: 0 20px;
         }
 
         /* ========== 固定顶部导航栏（单独一行） ========== */
@@ -89,93 +88,31 @@
         .logo:hover {
             opacity: 0.9;
         }
-         .user-area {
+        .user-area {
             display: flex;
             align-items: center;
-            gap: 16px; /* 增加间距更美观 */
+            gap: 12px;
         }
-        /* 优化欢迎信息样式 */
         .welcome {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--white);
             color: var(--deep-gray);
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        /* 公司名称样式 */
-        .company-name {
-            color: var(--klein-blue);
-            font-weight: 600;
-        }
-        /* 登录者名称样式 */
-        .user-name {
-            color: var(--hermes-orange);
-        }
-        /* 退出按钮样式 */
-        .logout-btn {
-            color: #FF4D4F;
-            cursor: pointer;
-            padding: 2px 6px;
+            padding: 8px 14px;
             border-radius: 4px;
-            transition: all 0.2s;
+            font-size: 14px;
         }
-        .logout-btn:hover {
-            background: #FFF1F0;
-            color: #F5222D;
-        }
-        /* 按钮通用样式优化 */
         .login {
             background: var(--white);
             color: var(--klein-blue);
             border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
         }
         .login:hover {
             background: var(--hermes-orange);
             color: var(--white);
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-        }
-        .login:nth-child(3) {
-            background: #E6F7FF;
-            border: 1px solid var(--klein-blue);
-        }
-        .login:nth-child(3):hover {
-            background: var(--klein-blue);
-            color: var(--white);
-        }
-        .login:nth-child(2) {
-            position: relative;
-        }
-        /* 消息红点优化 */
-        .login:nth-child(2)::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            background: #FF4D4F;
-            border-radius: 50%;
-            box-shadow: 0 0 0 2px rgba(255,77,79,0.2);
-        }
-        /* 消息图标样式 */
-        .msg-icon {
-            font-size: 16px;
         }
 
         /* 头部区域 */
@@ -392,7 +329,7 @@
             border-radius: 10px;
             padding: 16px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+            z-index: 10000;
             margin-left: 10px;
             border: 2px solid var(--hermes-orange);
         }
@@ -701,6 +638,20 @@
         }
 
         /* 响应式适配 */
+        @media (max-width: 1350px) {
+            .container {
+                width: 100%;
+                padding: 0 40px;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+        }
+
         @media (max-width: 992px) {
             .case-know-row {
                 grid-template-columns: 1fr;
@@ -1101,33 +1052,8 @@
 </head>
 
 <body>
-    <!-- ========== 固定在顶部的 Logo 导航栏 ========== -->
-    <div class="fixed-header">
-        <div class="container">
-            <div class="logo">RaaS.Dao</div>
-            <div class="user-area">
-                <!-- 优化欢迎信息结构 -->
-                <div class="welcome">
-                    <span>👋</span>
-                    <span>
-                        <span class="company-name">东莞嘉东科技有限公司</span> 
-                        <span class="user-name">林工</span> 
-                        欢迎您！
-                        <span class="logout-btn">[退出]</span>
-                    </span>
-                </div>
-                <!-- 消息按钮添加图标 -->
-                <button class="login">
-                    <span class="msg-icon">📩</span>
-                    <span>消息 12</span>
-                </button>
-                <button class="login">
-                    <span>👤</span>
-                    <span>个人中心</span>
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- ========== 固定在顶部的 Logo 导航栏 (引用登录状态的公共头部) ========== -->
+    <iframe src="header_logged.html" frameborder="0" width="100%" height="70px" style="position: fixed; top: 0; left: 0; z-index: 9999;"></iframe>
 
     <!-- 头部区域 -->
     <header>
@@ -1184,6 +1110,12 @@
                     <div class="filter-items" id="industry-filter">
                         <div class="filter-item">全部产业</div>
                         <!-- 产业项将通过JavaScript动态生成 -->
+                        <script>
+                            // 测试获取industry-filter元素
+                            console.log('Inline script inside industry-filter - this:', this);
+                            console.log('Inline script inside industry-filter - parentNode:', this.parentNode);
+                            console.log('Inline script inside industry-filter - getElementById("industry-filter"):', document.getElementById('industry-filter'));
+                        </script>
                     </div>
                 </div>
                 <!-- 三级筛选浮层 -->
@@ -1193,6 +1125,17 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // 测试获取industry-filter元素
+                console.log('Inline script - getElementById("industry-filter"):', document.getElementById('industry-filter'));
+                console.log('Inline script - querySelector("#industry-filter"):', document.querySelector('#industry-filter'));
+                
+                // 延迟执行，确保DOM元素已经完全加载
+                setTimeout(() => {
+                    console.log('Inline script with timeout - getElementById("industry-filter"):', document.getElementById('industry-filter'));
+                    console.log('Inline script with timeout - querySelector("#industry-filter"):', document.querySelector('#industry-filter'));
+                }, 100);
+            </script>
             <div class="card-grid">
                 <div class="card">
                     <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=1')"></div>
@@ -1436,7 +1379,7 @@
 
         // 发送按钮点击跳转到AI页面
         document.querySelector('.send-btn').addEventListener('click', () => {
-            window.location.href = 'ai.html';
+            window.location.href = 'ai_login.html';
         });
 
         // 根据URL参数选中对应tab并定位到tab栏位置
@@ -1476,8 +1419,9 @@
                         if (tabContainer) {
                             // 计算tab栏顶部位置，设置滚动位置
                             const tabTop = tabContainer.offsetTop;
+                            // console.log(tabTop);
                             window.scrollTo({ 
-                                top: tabTop - 70, // 70px是logo栏的高度
+                                top: tabTop - 42, // 70px是logo栏的高度
                                 behavior: 'smooth'
                             });
                         }
@@ -1485,19 +1429,6 @@
                 }
             }
         }
-
-        // 页面加载时执行
-        window.addEventListener('load', selectTabByParam);
-
-        // logo 点击回到 index 初始页面
-        document.querySelector('.logo').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-
-        // 消息按钮点击跳转到 AI 页面
-        document.querySelectorAll('.login')[0].addEventListener('click', () => {
-            window.location.href = 'ai.html';
-        });
 
         // 产业数据
         const industryData = {
@@ -1542,39 +1473,137 @@
 
         // 生成产业列表
         function generateIndustries(tabName) {
-            const industryFilter = document.getElementById('industry-filter');
-            // 保留"全部产业"选项
-            const allItem = industryFilter.querySelector('.filter-item');
-            industryFilter.innerHTML = '';
-            industryFilter.appendChild(allItem);
+            // console.log('generateIndustries called with tabName:', tabName);
+            // console.log('industryData:', industryData);
+            // console.log('industryData[tabName]:', industryData[tabName]);
             
-            // 为全部产业添加点击事件
-            allItem.addEventListener('click', () => {
-                document.getElementById('sub-filter').style.display = 'none';
-            });
+            // 尝试通过遍历document.body.children来查找main.container元素
+            let mainContainer = null;
+            for (let i = 0; i < document.body.children.length; i++) {
+                const child = document.body.children[i];
+                // console.log('Child', i, ':', child.tagName, child.className, child.id);
+                if (child.tagName === 'MAIN' && child.classList.contains('container')) {
+                    mainContainer = child;
+                    break;
+                }
+            }
+            // console.log('mainContainer:', mainContainer);
             
-            const industries = industryData[tabName] || [];
-            industries.forEach(industry => {
-                const item = document.createElement('div');
-                item.className = 'filter-item';
-                item.textContent = industry.name;
-                item.dataset.industry = industry.name;
-                item.dataset.sub = JSON.stringify(industry.sub);
+            // 从主内容区域中查找filter元素
+            let filterElement = null;
+            if (mainContainer) {
+                for (let i = 0; i < mainContainer.children.length; i++) {
+                    const child = mainContainer.children[i];
+                    // console.log('Main child', i, ':', child.tagName, child.className, child.id);
+                    if (child.classList.contains('content-row')) {
+                        // 从content-row元素中查找filter元素
+                        for (let j = 0; j < child.children.length; j++) {
+                            const contentChild = child.children[j];
+                            // console.log('Content child', j, ':', contentChild.tagName, contentChild.className, contentChild.id);
+                            if (contentChild.classList.contains('filter')) {
+                                filterElement = contentChild;
+                                break;
+                            }
+                        }
+                        if (filterElement) {
+                            break;
+                        }
+                    }
+                }
+            }
+            // console.log('filterElement:', filterElement);
+            
+            // 从filter元素中查找industry-filter元素
+            let industryFilter = null;
+            if (filterElement) {
+                for (let i = 0; i < filterElement.children.length; i++) {
+                    const child = filterElement.children[i];
+                    // console.log('Filter child', i, ':', child.tagName, child.className, child.id);
+                    if (child.classList.contains('filter-section')) {
+                        // 从filter-section元素中查找industry-filter元素
+                        for (let j = 0; j < child.children.length; j++) {
+                            const sectionChild = child.children[j];
+                            // console.log('Section child', j, ':', sectionChild.tagName, sectionChild.className, sectionChild.id);
+                            if (sectionChild.id === 'industry-filter') {
+                                industryFilter = sectionChild;
+                                break;
+                            }
+                        }
+                        if (industryFilter) {
+                            break;
+                        }
+                    }
+                }
+            }
+            // console.log('industryFilter:', industryFilter);
+            
+            if (industryFilter) {
+                // 保留"全部产业"选项
+                let allItem = null;
+                for (let i = 0; i < industryFilter.children.length; i++) {
+                    const child = industryFilter.children[i];
+                    console.log('Industry filter child', i, ':', child.tagName, child.className, child.id);
+                    if (child.classList.contains('filter-item')) {
+                        allItem = child;
+                        break;
+                    }
+                }
+                // console.log('allItem:', allItem);
                 
-                // 添加鼠标悬停事件
-                item.addEventListener('mouseenter', (e) => {
-                    showSubFilter(e.target);
-                });
-                
-                // 添加点击事件
-                item.addEventListener('click', () => {
-                    // 点击时显示三级筛选
-                    showSubFilter(item);
-                });
-                
-                industryFilter.appendChild(item);
-            });
+                if (allItem) {
+                    // 先将allItem元素从industryFilter元素中移除
+                    allItem.remove();
+                    // 清空industryFilter元素的内容
+                    industryFilter.innerHTML = '';
+                    // 将allItem元素添加回去
+                    industryFilter.appendChild(allItem);
+                    
+                    // 为全部产业添加点击事件
+                    allItem.addEventListener('click', () => {
+                        document.getElementById('sub-filter').style.display = 'none';
+                    });
+                    
+                    const industries = industryData[tabName] || [];
+                    // console.log('industries:', industries);
+                    // console.log('industries.length:', industries.length);
+                    
+                    industries.forEach((industry, index) => {
+                        // console.log('Processing industry', index, ':', industry);
+                        const item = document.createElement('div');
+                        item.className = 'filter-item';
+                        item.textContent = industry.name;
+                        item.dataset.industry = industry.name;
+                        item.dataset.sub = JSON.stringify(industry.sub);
+                        
+                        // 添加鼠标悬停事件
+                        item.addEventListener('mouseenter', (e) => {
+                            showSubFilter(e.target);
+                        });
+                        
+                        // 添加点击事件
+                        item.addEventListener('click', () => {
+                            // 点击时显示三级筛选
+                            showSubFilter(item);
+                        });
+                        
+                        industryFilter.appendChild(item);
+                        // console.log('Added industry item:', industry.name);
+                    });
+                    
+                    // 查看industryFilter元素的内容
+                    // console.log('industryFilter.innerHTML:', industryFilter.innerHTML);
+                }
+            }
         }
+
+        // 页面加载时执行
+        window.addEventListener('DOMContentLoaded', () => {
+            selectTabByParam();
+            // 延迟执行，确保DOM元素已经完全加载
+            setTimeout(() => {
+                generateIndustries(currentTab);
+            }, 100);
+        });
 
         // 显示三级筛选
         function showSubFilter(item) {
@@ -1679,8 +1708,16 @@
             }, 200);
         });
 
-        // 初始化
-        generateIndustries(currentTab);
+
+    </script>
+
+    <script>
+        // 测试获取industry-filter元素
+        // console.log('Testing getElementById("industry-filter"):', document.getElementById('industry-filter'));
+        // console.log('Testing querySelector("#industry-filter"):', document.querySelector('#industry-filter'));
+        // console.log('Testing document.body:', document.body);
+        // console.log('Testing document.body.children:', document.body.children);
+        //  console.log('Testing document.body.childNodes:', document.body.childNodes);
     </script>
 
     <script>
@@ -1695,16 +1732,13 @@
         const eyeBtn = document.querySelector('.eye-btn');
         const passwordField = document.querySelector('.password-input .form-input');
 
-        // 登录后状态，取消登录弹窗事件
-        // 为消息和个人中心按钮添加新的点击事件
-        const messageBtn = document.querySelector('.login:nth-child(2)');
-        const workbenchBtn = document.querySelector('.login:nth-child(3)');
-    
-        if (workbenchBtn) {
-            workbenchBtn.addEventListener('click', () => {
-                alert('打开个人中心');
+        // 打开弹窗
+        loginBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
             });
-        }
+        });
 
         // 关闭弹窗
         function closeModal() {
@@ -1738,6 +1772,19 @@
             const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordField.setAttribute('type', type);
             eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // 登录按钮点击跳转到 index_login 页面
+        document.querySelector('.login-button').addEventListener('click', () => {
+            window.location.href = 'index_login.html';
+        });
+
+        // 处理来自iframe的postMessage消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'SHOW_LOGIN_MODAL') {
+                loginModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
         });
     </script>
 </body>

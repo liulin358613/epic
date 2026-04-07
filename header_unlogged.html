@@ -27,8 +27,8 @@
 
         /* 通用容器 */
         .container {
-            /* max-width: 1300px; */
-            margin: 0 180px;
+            width: 1300px;
+            margin: 0 auto;
         }
 
         /* ========== 固定在顶部的 Logo 导航栏 ========== */
@@ -48,7 +48,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            width: 1300px;
         }
         
         .top-nav-right {
@@ -142,14 +142,16 @@
         }
 
         /* 响应式适配 */
-        @media (max-width: 1200px) {
-            .top-nav {
+        @media (max-width: 1350px) {
+            .container {
+                width: 100%;
                 padding: 0 40px;
+                box-sizing: border-box;
             }
         }
 
         @media (max-width: 768px) {
-            .top-nav {
+            .container {
                 padding: 0 20px;
             }
         }
