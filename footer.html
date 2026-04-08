@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公共页脚</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #1D2129;
+            color: #FFFFFF;
+            font-family: "Microsoft Yahei", sans-serif;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background: #1D2129;
+            color: #FFFFFF;
+            padding: 40px 20px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .footer-wrap {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-col {
+            transition: transform 0.3s ease;
+        }
+
+        .footer-col:hover {
+            transform: translateY(-5px);
+        }
+
+        .footer-col h3 {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #FFFFFF;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: #F37021;
+        }
+
+        .footer-col p {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.8;
+            color: #E5E7EB;
+        }
+
+        .footer-col p:hover {
+            opacity: 1;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .footer-wrap {
+                gap: 30px;
+                padding: 0 20px;
+            }
+            
+            .footer-col h3 {
+                font-size: 16px;
+            }
+            
+            .footer-col p {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-col">
+                <h3>TECHBOT</h3>
+                <p>专注工业智能 · 让制造更高效</p>
+            </div>
+            <div class="footer-col">
+                <h3>快速入口</h3>
+                <p>
+                    生产力方案库<br>
+                    工业设备商城<br>
+                    智能知识库
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>联系我们</h3>
+                <p>
+                    商务合作：service@techbot.com<br>
+                    服务热线：400-888-9999
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>关于我们</h3>
+                <p>
+                    © 2026 工业智能生产力平台<br>
+                    版权所有
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

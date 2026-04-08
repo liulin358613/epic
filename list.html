@@ -103,7 +103,7 @@
             top: 70px;
             left: 0;
             width: 100%;
-            background: var(--white);
+            background: var(--light-bg);
             border-bottom: 1px solid var(--border);
             z-index: 9998;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -112,23 +112,39 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
+            height: 60px;
+            gap: 0;
         }
         .tabs {
             display: flex;
-            gap: 44px;
+            gap: 0;
+            height: 50px;
         }
         .tab {
             cursor: pointer;
-            font-size: 16px;
-            padding: 0 4px;
-            transition: 0.2s;
+            font-size: 15px;
+            color: var(--light-gray);
+            padding: 0 24px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            text-align: left;
+            justify-content: flex-start;
         }
         .tab.active {
             color: var(--klein-blue);
             font-weight: bold;
             border-bottom: 3px solid var(--klein-blue);
-            padding-bottom: 12px;
+            width: 200px;
+            font-size: 20px;
+            text-align: center;
+            justify-content: center;
+        }
+        .tab:hover:not(.active) {
+            color: var(--klein-blue);
+            background-color: var(--light-bg);
         }
         .ai-team-btn {
             background: var(--hermes-orange);
@@ -320,20 +336,7 @@
             .filter-label { width: 44px; }
         }
 
-        /* 页脚 */
-        footer {
-            background: var(--deep-gray);
-            color: var(--white);
-            padding: 40px 20px;
-            margin-top: 30px;
-        }
-        .footer-wrap {
-            max-width: 1300px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-        }
+
     </style>
 </head>
 
@@ -341,13 +344,614 @@
     <!-- 顶部固定导航 -->
     <div class="fixed-header">
         <div class="container">
-            <a href="index.html" style="text-decoration: none;"><div class="logo">RaaS.Dao</div></a>
-            <div class="user-area">
-                <div class="welcome">欢迎使用智能生产力平台</div>
-                <button class="login">登录</button>
+            <div class="logo" onclick="goToIndex()">RaaS.Dao</div>
+            <div class="user-area" id="userArea">
+                <!-- 登录状态将通过JavaScript动态更新 -->
             </div>
         </div>
     </div>
+    <!-- 退出确认对话框 -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <h3 class="logout-modal-title">确认退出</h3>
+            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+            <div class="logout-modal-buttons">
+                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
+                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
+            </div>
+        </div>
+    </div>
+    <!-- 登录弹窗 -->
+    <div id="loginModal" class="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>账号登录</h2>
+                <button class="close-btn" id="closeBtn">×</button>
+            </div>
+            <div class="login-tabs">
+                <div class="login-tab active">密码登录</div>
+                <div class="login-tab">验证码登录</div>
+            </div>
+            <div class="login-form">
+                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
+                <div class="password-input">
+                    <input type="password" class="form-input" placeholder="请输入密码">
+                    <button class="eye-btn">👁️</button>
+                </div>
+                <div class="code-input" style="display: none;">
+                    <input type="text" class="form-input" placeholder="请输入验证码">
+                    <button class="code-btn">获取验证码</button>
+                </div>
+                <button class="login-button">登录</button>
+            </div>
+            <div class="login-links">
+                <a href="#">忘记密码</a>
+                <span>|</span>
+                <a href="#">注册账号</a>
+            </div>
+            <div class="other-login">
+                <div class="other-login-line">
+                    <span>其他登录方式</span>
+                </div>
+                <div class="other-login-buttons">
+                    <button class="other-login-btn">微信</button>
+                    <button class="other-login-btn">支付宝</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* 弹窗通用样式 */
+        .login-modal,
+        .logout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            background-color: rgba(29, 33, 41, 0.6);
+            backdrop-filter: blur(2px);
+        }
+        .login-modal.show,
+        .logout-modal.show {
+            display: flex;
+        }
+        /* 登录弹窗样式 */
+        .modal-content {
+            position: relative;
+            background-color: #FFFFFF;
+            padding: 30px 36px;
+            border-radius: 12px;
+            width: 420px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            line-height: 1.5;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #1D2129;
+            font-weight: 600;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #86909C;
+            transition: all 0.3s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .close-btn:hover {
+            color: #0051D9;
+            background-color: #F2F3F5;
+        }
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .login-tab {
+            padding: 8px 0;
+            margin-right: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #86909C;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .login-tab.active {
+            color: #0051D9;
+            border-bottom-color: #0051D9;
+            font-weight: 500;
+        }
+        .login-tab:hover:not(.active) {
+            color: #0051D9;
+            opacity: 0.8;
+        }
+        .login-form {
+            margin-bottom: 20px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            line-height: 1.4;
+            color: #1D2129;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #0051D9;
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        .form-input::placeholder {
+            color: #86909C;
+        }
+        .password-input {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .password-input .form-input {
+            padding-right: 40px;
+            margin-bottom: 0;
+        }
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #86909C;
+            transition: all 0.3s;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .eye-btn:hover {
+            color: #0051D9;
+        }
+        .code-input {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .code-input .form-input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .code-btn {
+            padding: 0 16px;
+            background-color: #F2F3F5;
+            color: #1D2129;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .code-btn:hover {
+            border-color: #0051D9;
+            color: #0051D9;
+            background-color: #FFFFFF;
+        }
+        .code-btn:active {
+            background-color: #F2F3F5;
+        }
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0051D9;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-button:hover {
+            background-color: #0047c9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.2);
+        }
+        .login-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.2);
+        }
+        .login-links {
+            text-align: center;
+            font-size: 13px;
+            color: #86909C;
+            margin-bottom: 20px;
+        }
+        .login-links a {
+            color: #0051D9;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .login-links a:hover {
+            color: #0047c9;
+            text-decoration: underline;
+        }
+        .login-links span {
+            margin: 0 8px;
+        }
+        .other-login {
+            margin-top: 20px;
+        }
+        .other-login-line {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .other-login-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #E5E7EB;
+            z-index: 1;
+        }
+        .other-login-line span {
+            position: relative;
+            background-color: #FFFFFF;
+            padding: 0 16px;
+            z-index: 2;
+            font-size: 13px;
+            color: #86909C;
+        }
+        .other-login-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        .other-login-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid #E5E7EB;
+            background-color: #FFFFFF;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .other-login-btn:hover {
+            border-color: #0051D9;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
+        }
+        .other-login-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.15);
+        }
+        /* 第三方登录图标样式 */
+        .other-login-btn:nth-child(1) {
+            background-color: #07C160;
+            color: #FFFFFF;
+            border-color: #07C160;
+        }
+        .other-login-btn:nth-child(1):hover {
+            background-color: #06AD56;
+            border-color: #06AD56;
+        }
+        .other-login-btn:nth-child(2) {
+            background-color: #FF6B35;
+            color: #FFFFFF;
+            border-color: #FF6B35;
+        }
+        .other-login-btn:nth-child(2):hover {
+            background-color: #E55A2B;
+            border-color: #E55A2B;
+        }
+        /* 图标样式 */
+        .other-login-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 18px;
+        }
+        .other-login-btn:nth-child(1)::before {
+            content: "📱";
+        }
+        .other-login-btn:nth-child(2)::before {
+            content: "📧";
+        }
+        /* 退出确认对话框样式 */
+        .logout-modal-content {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            padding: 30px 36px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            text-align: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .logout-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1D2129;
+            margin-bottom: 16px;
+        }
+        .logout-modal-message {
+            font-size: 14px;
+            color: #86909C;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .logout-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .logout-modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+        }
+        .logout-modal-btn.cancel {
+            background-color: #FFFFFF;
+            color: #1D2129;
+        }
+        .logout-modal-btn.cancel:hover {
+            background-color: #F7F8FA;
+        }
+        .logout-modal-btn.confirm {
+            background-color: #F37021;
+            color: #FFFFFF;
+            border-color: #F37021;
+        }
+        .logout-modal-btn.confirm:hover {
+            background-color: #e0631d;
+            border-color: #e0631d;
+        }
+        /* 确保头部样式正确 */
+        .user-area .login-btn {
+            background: #FFFFFF;
+            color: #0051D9;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+        .user-area .login-btn:hover {
+            background: #F37021;
+            color: #fff;
+        }
+        .user-area .location {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+        }
+        .user-area .location .location-icon {
+            width: 16px;
+            height: 16px;
+            color: #F37021;
+        }
+        .user-area .location .city-name {
+            color: #F37021;
+        }
+        .user-area .location .switch-city {
+            color: #86909C;
+        }
+        .user-area .company-name {
+            color: #0051D9;
+            font-weight: 600;
+        }
+        .user-area .user-name {
+            color: #F37021;
+        }
+        .user-area .logout-btn {
+            color: #FF4D4F;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .user-area .logout-btn:hover {
+            background: #FFF1F0;
+            color: #F5222D;
+        }
+    </style>
+    <script>
+        // 页面加载时更新头部
+        window.addEventListener('DOMContentLoaded', function() {
+            const userArea = document.getElementById('userArea');
+            // 检查登录状态
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            console.log('登录状态:', isLoggedIn);
+            
+            if (isLoggedIn) {
+                // 已登录状态
+                userArea.innerHTML = `
+                    <div class="welcome">
+                        <span>👋</span>
+                        <span>
+                            <span class="company-name">东莞嘉东科技有限公司</span> 
+                            <span class="user-name">林工</span> 
+                            欢迎您！
+                            <span class="logout-btn" onclick="showLogoutConfirm()">[退出]</span>
+                        </span>
+                    </div>
+                    <button class="login-btn">
+                        <span class="msg-icon">📩</span>
+                        <span>消息 12</span>
+                    </button>
+                    <button class="login-btn" onclick="goToPersonalCenter()">
+                        <span>👤</span>
+                        <span>个人中心</span>
+                    </button>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
+                `;
+                console.log('已登录状态头部加载完成');
+            } else {
+                // 未登录状态
+                userArea.innerHTML = `
+                    <div class="welcome">
+                        <span>👋</span>
+                        <span>欢迎使用智能生产力平台</span>
+                    </div>
+                    <button class="login-btn" onclick="showLoginModal()">
+                        <span>👤</span>
+                        <span>登录</span>
+                    </button>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
+                `;
+                console.log('未登录状态头部加载完成');
+            }
+        });
+        
+        // 跳转到首页函数
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+        
+        // 跳转到个人中心函数
+        function goToPersonalCenter() {
+            window.location.href = 'personal_center.html';
+        }
+        
+        // 显示登录弹窗函数
+        function showLoginModal() {
+            window.location.href = 'login_modal.html';
+        }
+        
+        // 显示退出确认对话框
+        function showLogoutConfirm() {
+            const logoutModal = document.getElementById('logoutModal');
+            if (logoutModal) {
+                logoutModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // 隐藏退出确认对话框
+        function hideLogoutConfirm() {
+            const logoutModal = document.getElementById('logoutModal');
+            if (logoutModal) {
+                logoutModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // 退出登录函数
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.reload();
+        }
+        
+        // 初始化退出确认对话框
+        window.addEventListener('DOMContentLoaded', function() {
+            const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+            const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+            const logoutModal = document.getElementById('logoutModal');
+            
+            if (logoutCancelBtn) {
+                logoutCancelBtn.addEventListener('click', hideLogoutConfirm);
+            }
+            
+            if (logoutConfirmBtn) {
+                logoutConfirmBtn.addEventListener('click', function() {
+                    hideLogoutConfirm();
+                    logout();
+                });
+            }
+            
+            if (logoutModal) {
+                logoutModal.addEventListener('click', function(e) {
+                    if (e.target === logoutModal) {
+                        hideLogoutConfirm();
+                    }
+                });
+                
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
+                        hideLogoutConfirm();
+                    }
+                });
+            }
+        });
+    </script>
 
     <!-- TAB 固定在顶部，不滚动 -->
     <div class="tab-container">
@@ -507,26 +1111,7 @@
     </div>
 
     <!-- 页脚 -->
-    <footer>
-        <div class="footer-wrap">
-            <div class="footer-col">
-                <h3>TECHBOT</h3>
-                <p>专注工业智能 · 让制造更高效</p>
-            </div>
-            <div class="footer-col">
-                <h3>快速入口</h3>
-                <p>生产力方案库<br>工业设备商城<br>智能知识库</p>
-            </div>
-            <div class="footer-col">
-                <h3>联系我们</h3>
-                <p>商务合作：service@techbot.com<br>服务热线：400-888-9999</p>
-            </div>
-            <div class="footer-col">
-                <h3>关于我们</h3>
-                <p>© 2026 工业智能生产力平台<br>版权所有</p>
-            </div>
-        </div>
-    </footer>
+    <iframe src="footer.html" frameborder="0" width="100%" height="220px"></iframe>
 
     <script>
         // TAB切换
@@ -543,6 +1128,98 @@
                 document.querySelectorAll('.pagination__btn').forEach(item => item.classList.remove('pagination__btn--active'));
                 btn.classList.add('pagination__btn--active');
             });
+        });
+    </script>
+    <script>
+        // 显示登录弹窗函数
+        function showLoginModal() {
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                loginModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // 隐藏登录弹窗函数
+        function hideLoginModal() {
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                loginModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // 初始化登录弹窗
+        window.addEventListener('DOMContentLoaded', function() {
+            const closeBtn = document.getElementById('closeBtn');
+            const loginModal = document.getElementById('loginModal');
+            const loginTabs = document.querySelectorAll('.login-tab');
+            const passwordInput = document.querySelector('.password-input');
+            const codeInput = document.querySelector('.code-input');
+            const eyeBtn = document.querySelector('.eye-btn');
+            const passwordField = document.querySelector('.password-input .form-input');
+            const loginButton = document.querySelector('.login-button');
+            
+            // 关闭登录弹窗
+            if (closeBtn) {
+                closeBtn.addEventListener('click', hideLoginModal);
+            }
+            
+            // 点击弹窗外部关闭
+            if (loginModal) {
+                loginModal.addEventListener('click', function(e) {
+                    if (e.target === loginModal) {
+                        hideLoginModal();
+                    }
+                });
+                
+                // 按ESC键关闭弹窗
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && loginModal.classList.contains('show')) {
+                        hideLoginModal();
+                    }
+                });
+            }
+            
+            // 登录方式切换
+            if (loginTabs) {
+                loginTabs.forEach((tab, index) => {
+                    tab.addEventListener('click', () => {
+                        loginTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        if (index === 0) {
+                            // 密码登录
+                            if (passwordInput) passwordInput.style.display = 'block';
+                            if (codeInput) codeInput.style.display = 'none';
+                        } else {
+                            // 验证码登录
+                            if (passwordInput) passwordInput.style.display = 'none';
+                            if (codeInput) codeInput.style.display = 'flex';
+                        }
+                    });
+                });
+            }
+            
+            // 密码显示/隐藏
+            if (eyeBtn && passwordField) {
+                eyeBtn.addEventListener('click', () => {
+                    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordField.setAttribute('type', type);
+                    eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
+                });
+            }
+            
+            // 登录按钮点击
+            if (loginButton) {
+                loginButton.addEventListener('click', () => {
+                    // 模拟登录成功
+                    localStorage.setItem('isLoggedIn', 'true');
+                    hideLoginModal();
+                    // 刷新页面，显示已登录头部
+                    window.location.reload();
+                });
+            }
         });
     </script>
 </body>

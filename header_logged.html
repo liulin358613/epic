@@ -321,7 +321,7 @@
                     <span class="msg-icon">📩</span>
                     <span>消息 12</span>
                 </button>
-                <button class="login">
+                <button class="login" onclick="goToPersonalCenter()">
                     <span>👤</span>
                     <span>个人中心</span>
                 </button>
@@ -346,6 +346,18 @@
             } else {
                 // 不在iframe中，直接跳转
                 window.location.href = 'index.html';
+            }
+        }
+
+        // 跳转到个人中心函数 - 支持iframe内外跳转
+        function goToPersonalCenter() {
+            // 检查是否在iframe中
+            if (window.parent !== window) {
+                // 在iframe中，让父页面跳转
+                window.parent.location.href = 'personal_center.html';
+            } else {
+                // 不在iframe中，直接跳转
+                window.location.href = 'personal_center.html';
             }
         }
 
