@@ -824,26 +824,67 @@
             position: relative;
         }
 
-        .history-item .history-icon {
-            transition: all 0.3s;
+        .history-item-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-item-content svg {
             flex-shrink: 0;
             width: 14px;
             height: 14px;
+            stroke: var(--deep-gray);
         }
 
-        .history-item span {
+        .history-item.active .history-item-content svg {
+            stroke: #3b7ef4;
+        }
+
+        .history-item-content span {
             flex: 1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             min-width: 0;
-            width: 0;
         }
 
-        .history-item:hover .history-icon,
-        .history-item.active .history-icon {
+        .history-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0;
+            transition: all 0.2s ease;
+            width: 0;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .history-item:hover .history-item-actions,
+        .history-item.active .history-item-actions {
             opacity: 1;
-            visibility: visible;
+            width: auto;
+        }
+
+        .history-item-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--deep-gray);
+        }
+
+        .history-item-menu:hover {
+            background-color: #f0f6ff;
+            color: var(--klein-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 81, 217, 0.15);
         }
 
         .history-item:hover {
@@ -859,16 +900,45 @@
              color: #3b7ef4; 
         }
 
-        .history-item .history-icon svg {
-            stroke: var(--deep-gray);
+        /* 通用二级操作菜单浮窗 */
+        .common-submenu {
+            position: fixed;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 8px 0;
+            min-width: 120px;
+            z-index: 9999;
+            display: none;
+            pointer-events: auto;
+        }
+
+        .common-submenu.show {
+            display: block;
+        }
+
+        .common-submenu-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            color: var(--deep-gray);
+        }
+
+        .common-submenu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .common-submenu-item.delete {
+            color: #ff4d4f;
+        }
+
+        .common-submenu-item svg {
+            margin-right: 8px;
             width: 14px;
             height: 14px;
-            display: inline-block;
-            flex-shrink: 0;
-        }
-        
-        .history-item.active .history-icon svg {
-            stroke: #3b7ef4;
         }
 
         /* 历史对话列表项HTML结构示例 */
@@ -1176,15 +1246,30 @@
             background: var(--border-gray);
         }
 
+        /* AI团队成员信息容器 */
+        .ai-member-info-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
         /* AI团队成员信息区域（输入框上方） */
         .ai-member-info {
             display: none;
             align-items: center;
             gap: 8px;
-            margin: 0 auto 10px;
-            padding: 0 16px;
-            width: 80%;
+            margin: 0 0 10px;
+            padding: 8px 16px;
+            width: fit-content;
             box-sizing: border-box;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .ai-member-info.active {
+            background-color: rgba(23, 162, 184, 0.1);
+            border: 1px solid rgba(23, 162, 184, 0.3);
         }
 
         .ai-member-info.show {
@@ -2478,70 +2563,191 @@
             <div class="history-title">历史对话</div>
             <div class="history-list">
                 <div class="history-item active">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    汽车零部件智能生产方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>汽车零部件智能生产智能生产方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    智能生产解决方案讨论
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>智能生产解决方案讨论</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    工厂改造方案评估
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>工厂改造方案评估</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    智能生产技术咨询
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>智能生产技术咨询</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    生产效率提升方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>生产效率提升方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    次品率降低方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>次品率降低方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    设备预测性维护方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>设备预测性维护方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    生产线数据采集与分析方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>生产线数据采集与分析方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    仓储物流自动化解决方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>仓储物流自动化解决方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    工厂设备预测性维护方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>工厂设备预测性维护方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="history-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    柔性生产线搭建实施方案
+                    <div class="history-item-content">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>柔性生产线搭建实施方案</span>
+                    </div>
+                    <div class="history-item-actions">
+                        <div class="history-item-menu" title="菜单">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2721,10 +2927,12 @@
 
             </div>
             <!-- AI团队成员信息（输入框上方） -->
-            <div class="ai-member-info" id="aiMemberInfo">
-                <div class="member-avatar" id="aiMemberAvatar" style="background-color: #E91E63;">秘</div>
-                <span class="member-name" id="aiMemberName">我的秘书</span>
-                <span class="welcome-text">我在</span>
+            <div class="ai-member-info-container">
+                <div class="ai-member-info" id="aiMemberInfo">
+                    <div class="member-avatar" id="aiMemberAvatar" style="background-color: #E91E63;">秘</div>
+                    <span class="member-name" id="aiMemberName">我的秘书</span>
+                    <span class="welcome-text">我在</span>
+                </div>
             </div>
 
             <!-- 底部输入框 -->
@@ -2870,8 +3078,8 @@
             // 页面加载时显示模型标签和分割符号
             document.querySelector('.model-tags').style.display = 'flex';
             document.querySelector('.divider').style.display = 'inline';
-            // 显示AI团队成员信息区域
-            document.getElementById('aiMemberInfo').classList.add('show');
+            // 默认不显示AI团队成员信息区域
+            document.getElementById('aiMemberInfo').classList.remove('show');
         });
 
         // 标签点击填入输入框
@@ -2947,6 +3155,7 @@
                 
                 // 群聊模式的内容
                 if (isAiMember) {
+                    // 始终显示群聊内容，不根据选中的成员过滤
                     chatContent = `
                         <!-- 用户提问1 -->
                         <div class="chat-message user">
@@ -3257,7 +3466,7 @@
                     `;
                 }
                 
-                // 更新对话区
+                // 更新聊天内容
                 document.querySelector('.chat-content').innerHTML = chatContent;
                 
                 // 滚动到底部
@@ -3270,6 +3479,435 @@
                 // 移除历史对话的选中状态
                 document.querySelectorAll('.history-item').forEach(item => item.classList.remove('active'));
             }
+        });
+
+        // 为输入框上面的员工信息区域添加点击事件
+        document.getElementById('aiMemberInfo').addEventListener('click', function() {
+            // 切换选中状态
+            this.classList.toggle('active');
+            
+            // 获取当前显示的员工信息
+            const aiMemberName = document.getElementById('aiMemberName').textContent;
+            
+            // 生成对应员工的对话记录
+            let chatContent = '';
+            
+            // 检查是否是选中状态
+            if (this.classList.contains('active')) {
+                // 选中状态：显示该员工的对话记录
+                if (aiMemberName === '方案工程师') {
+                    chatContent = `
+                        <!-- 用户提问1 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我们工厂是做汽车零部件生产的，目前生产线效率偏低，次品率大概在3%左右，想通过智能生产方案提升效率并降低次品率，请问有什么具体的解决方案？
+                                <span class="message-time">06-06 10:30</span>
+                            </div>
+                        </div>
+
+                        <!-- 方案工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #4CAF50;">工</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">方案工程师</span>
+                                </div>
+                                <div class="message-content">
+                                    您好，针对汽车零部件生产的效率提升和次品率降低需求，我们提供以下智能生产解决方案：<br>
+                                    1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，检测准确率可达99.8%以上；<br>
+                                    2. <strong>设备状态预测性维护</strong>：安装传感器实时监测设备运行状态，预测故障并提前维护；<br>
+                                    3. <strong>生产数据分析优化</strong>：建立MES系统，收集分析生产数据，优化生产流程。
+                                    <span class="message-time">06-06 10:31</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 用户提问3 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                非常感谢各位的详细解答！我对这个方案很感兴趣，想了解一下实施过程中需要我们工厂配合做哪些工作？另外，是否可以提供一些成功案例参考？
+                                <span class="message-time">06-06 10:40</span>
+                            </div>
+                        </div>
+
+                        <!-- 方案工程师回答2 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #4CAF50;">工</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">方案工程师</span>
+                                </div>
+                                <div class="message-content">
+                                    实施过程中，需要贵工厂配合的工作包括：<br>
+                                    1. 安排专人负责项目对接和协调<br>
+                                    2. 提供设备相关技术资料和生产工艺信息<br>
+                                    3. 为施工和调试提供必要的场地和时间窗口<br>
+                                    4. 组织相关人员参加培训
+
+                                    关于成功案例，我们在汽车零部件行业有多个成功实施的项目，例如：<br>
+                                    - 某汽车发动机零部件制造商：实施后次品率从2.8%降低到0.5%，生产效率提升18%<br>
+                                    - 某汽车底盘零部件企业：实施后设备故障率降低60%，维护成本减少40%
+                                    <div style="margin-top: 10px; display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                    </div>
+                                    <span class="message-time">06-06 10:42</span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (aiMemberName === '项目经理') {
+                    chatContent = `
+                        <!-- 用户提问1 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我们工厂是做汽车零部件生产的，目前生产线效率偏低，次品率大概在3%左右，想通过智能生产方案提升效率并降低次品率，请问有什么具体的解决方案？
+                                <span class="message-time">06-06 10:30</span>
+                            </div>
+                        </div>
+
+                        <!-- 项目经理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #FF5722;">项</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">项目经理</span>
+                                </div>
+                                <div class="message-content">
+                                    我们可以根据您工厂的具体情况，制定分阶段实施计划，先从最关键的工序开始改造，逐步扩展到整个生产线。我们的团队会为您提供全方位的技术支持和实施指导。
+                                    <span class="message-time">06-06 10:32</span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (aiMemberName === '销售工程师') {
+                    chatContent = `
+                        <!-- 用户提问2 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
+                                <div style="margin-top: 10px; cursor: pointer;" onclick="openImageModal('images/equipment1.png')">
+                                    <div class="chat-image">
+                                        <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                                    </div>
+                                </div>
+                                <span class="message-time">06-06 10:35</span>
+                            </div>
+                        </div>
+
+                        <!-- 销售工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #2196F3;">销</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">销售工程师</span>
+                                </div>
+                                <div class="message-content">
+                                    针对您的问题，具体解答如下：<br>
+                                    一、<strong>实施成本</strong>：<br>
+                                    按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础。
+                                    <span class="message-time">06-06 10:36</span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (aiMemberName === '售后工程师') {
+                    chatContent = `
+                        <!-- 用户提问2 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
+                                <div style="margin-top: 10px; cursor: pointer;" onclick="openImageModal('images/equipment1.png')">
+                                    <div class="chat-image">
+                                        <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                                    </div>
+                                </div>
+                                <span class="message-time">06-06 10:35</span>
+                            </div>
+                        </div>
+
+                        <!-- 售后工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #FF9800;">售</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">售后工程师</span>
+                                </div>
+                                <div class="message-content">
+                                    二、<strong>回报周期</strong>：<br>
+                                    根据我们的项目经验，一般情况下，投资回报周期在12-18个月左右，主要来自于：<br>
+                                    1. 次品率降低带来的成本节约（按3%次品率计算，每年可节约大量成本）<br>
+                                    2. 生产效率提升带来的产量增加（预计可提升15-20%的生产效率）<br>
+                                    3. 设备故障减少带来的维护成本降低
+                                    <span class="message-time">06-06 10:37</span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (aiMemberName === '产品经理') {
+                    chatContent = `
+                        <!-- 用户提问2 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
+                                <div style="margin-top: 10px; cursor: pointer;" onclick="openImageModal('images/equipment1.png')">
+                                    <div class="chat-image">
+                                        <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                                    </div>
+                                </div>
+                                <span class="message-time">06-06 10:35</span>
+                            </div>
+                        </div>
+
+                        <!-- 产品经理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #FFC107;">产</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">产品经理</span>
+                                </div>
+                                <div class="message-content">
+                                    三、<strong>改造难度</strong>：<br>
+                                    对于20台加工中心的改造，难度适中。我们会采用模块化设计，分阶段实施，确保改造过程中不影响正常生产。具体步骤：<br>
+                                    1. 前期评估和方案设计（1-2周）<br>
+                                    2. 设备传感器安装和网络搭建（2-3周）<br>
+                                    3. 系统调试和人员培训（2周）<br>
+                                    4. 试运行和优化（1-2周）
+                                    <div style="margin-top: 10px;">
+                                        <div style="display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
+                                            <div class="chat-image" style="flex: 1;">
+                                                <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                            </div>
+                                            <div class="chat-image" style="flex: 1;">
+                                                <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                        </div>
+                                    </div><br>
+                                    <span class="message-time">06-06 10:38</span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (aiMemberName === '我的秘书') {
+                    chatContent = `
+                        <!-- 我的秘书回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #E91E63;">秘</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">我的秘书</span>
+                                </div>
+                                <div class="message-content">
+                                    您好，我已经为您整理了以上方案的详细资料，包括实施计划、成本明细和预期收益分析。如果您需要进一步了解，我可以安排我们的技术团队上门为您做更详细的评估和演示。
+                                    <span class="message-time">06-06 10:39</span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (aiMemberName === '资深顾问') {
+                    chatContent = `
+                        <!-- 用户提问1 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我们工厂是做汽车零部件生产的，目前生产线效率偏低，次品率大概在3%左右，想通过智能生产方案提升效率并降低次品率，请问有什么具体的解决方案？
+                                <span class="message-time">06-06 10:30</span>
+                            </div>
+                        </div>
+
+                        <!-- 资深顾问回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: #9C27B0;">顾</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">资深顾问</span>
+                                </div>
+                                <div class="message-content">
+                                    您好，针对汽车零部件生产的效率提升和次品率降低，我建议从以下几个方面入手：首先，引入智能检测设备提高产品质量控制；其次，优化生产流程减少不必要的环节；最后，建立数据监控系统实时追踪生产状态。我们可以根据您的具体情况制定详细的实施方案。
+                                    <span class="message-time">06-06 10:31</span>
+                                </div>
+                            </div>
+                        </div>`;
+                }
+            } else {
+                // 取消选中状态：显示全部群聊信息
+                chatContent = `
+                    <!-- 用户提问1 -->
+                    <div class="chat-message user">
+                        <div class="message-content">
+                            您好，我们工厂是做汽车零部件生产的，目前生产线效率偏低，次品率大概在3%左右，想通过智能生产方案提升效率并降低次品率，请问有什么具体的解决方案？
+                            <span class="message-time">06-06 10:30</span>
+                        </div>
+                    </div>
+
+                    <!-- 方案工程师回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #4CAF50;">工</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">方案工程师</span>
+                            </div>
+                            <div class="message-content">
+                                您好，针对汽车零部件生产的效率提升和次品率降低需求，我们提供以下智能生产解决方案：<br>
+                                1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，检测准确率可达99.8%以上；<br>
+                                2. <strong>设备状态预测性维护</strong>：安装传感器实时监测设备运行状态，预测故障并提前维护；<br>
+                                3. <strong>生产数据分析优化</strong>：建立MES系统，收集分析生产数据，优化生产流程。
+                                <span class="message-time">06-06 10:31</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 项目经理回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #FF5722;">项</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">项目经理</span>
+                            </div>
+                            <div class="message-content">
+                                方案工程师的建议很全面。我们可以根据您工厂的具体情况，制定分阶段实施计划，先从最关键的工序开始改造，逐步扩展到整个生产线。
+                                <span class="message-time">06-06 10:32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 用户提问2 -->
+                    <div class="chat-message user">
+                        <div class="message-content">
+                            这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
+                            <div style="margin-top: 10px; cursor: pointer;" onclick="openImageModal('images/equipment1.png')">
+                                <div class="chat-image">
+                                    <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                                </div>
+                            </div>
+                            <span class="message-time">06-06 10:35</span>
+                        </div>
+                    </div>
+
+                    <!-- 销售工程师回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #2196F3;">销</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">销售工程师</span>
+                            </div>
+                            <div class="message-content">
+                                针对您的问题，具体解答如下：<br>
+                                一、<strong>实施成本</strong>：<br>
+                                按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础。
+                                <span class="message-time">06-06 10:36</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 售后工程师回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #FF9800;">售</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">售后工程师</span>
+                            </div>
+                            <div class="message-content">
+                                二、<strong>回报周期</strong>：<br>
+                                根据我们的项目经验，一般情况下，投资回报周期在12-18个月左右，主要来自于：<br>
+                                1. 次品率降低带来的成本节约（按3%次品率计算，每年可节约大量成本）<br>
+                                2. 生产效率提升带来的产量增加（预计可提升15-20%的生产效率）<br>
+                                3. 设备故障减少带来的维护成本降低
+                                <span class="message-time">06-06 10:37</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 产品经理回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #FFC107;">产</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">产品经理</span>
+                            </div>
+                            <div class="message-content">
+                                三、<strong>改造难度</strong>：<br>
+                                对于20台加工中心的改造，难度适中。我们会采用模块化设计，分阶段实施，确保改造过程中不影响正常生产。具体步骤：<br>
+                                1. 前期评估和方案设计（1-2周）<br>
+                                2. 设备传感器安装和网络搭建（2-3周）<br>
+                                3. 系统调试和人员培训（2周）<br>
+                                4. 试运行和优化（1-2周）
+                                <div style="margin-top: 10px;">
+                                    <div style="display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                    </div>
+                                </div><br>
+                                <span class="message-time">06-06 10:38</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 我的秘书回答 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #E91E63;">秘</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">我的秘书</span>
+                            </div>
+                            <div class="message-content">
+                                您好，我已经为您整理了以上方案的详细资料，包括实施计划、成本明细和预期收益分析。如果您需要进一步了解，我可以安排我们的技术团队上门为您做更详细的评估和演示。
+                                <span class="message-time">06-06 10:39</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 用户提问3 -->
+                    <div class="chat-message user">
+                        <div class="message-content">
+                            非常感谢各位的详细解答！我对这个方案很感兴趣，想了解一下实施过程中需要我们工厂配合做哪些工作？另外，是否可以提供一些成功案例参考？
+                            <span class="message-time">06-06 10:40</span>
+                        </div>
+                    </div>
+
+                    <!-- 方案工程师回答2 -->
+                    <div class="chat-message ai">
+                        <div class="message-avatar" style="background-color: #4CAF50;">工</div>
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">方案工程师</span>
+                            </div>
+                            <div class="message-content">
+                                实施过程中，需要贵工厂配合的工作包括：<br>
+                                1. 安排专人负责项目对接和协调<br>
+                                2. 提供设备相关技术资料和生产工艺信息<br>
+                                3. 为施工和调试提供必要的场地和时间窗口<br>
+                                4. 组织相关人员参加培训
+
+                                关于成功案例，我们在汽车零部件行业有多个成功实施的项目，例如：<br>
+                                - 某汽车发动机零部件制造商：实施后次品率从2.8%降低到0.5%，生产效率提升18%<br>
+                                - 某汽车底盘零部件企业：实施后设备故障率降低60%，维护成本减少40%
+                                <div style="margin-top: 10px; display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
+                                    <div class="chat-image" style="flex: 1;">
+                                        <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                    </div>
+                                    <div class="chat-image" style="flex: 1;">
+                                        <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                    </div>
+                                </div>
+                                <span class="message-time">06-06 10:42</span>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            
+            // 更新聊天内容
+            document.querySelector('.chat-content').innerHTML = chatContent;
+            
+            // 滚动到底部
+            document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
         });
 
         // 历史对话项点击切换激活状态并显示对应AI对话内容
@@ -3854,8 +4492,59 @@
             });
         }
         
+        // 为历史对话项的操作按钮添加点击事件
+        function initHistoryMenu() {
+            // 直接为每个.history-item-menu添加点击事件
+            const menuButtons = document.querySelectorAll('.history-item-menu');
+            const commonSubmenu = document.getElementById('commonSubmenu');
+            
+            menuButtons.forEach(menuBtn => {
+                menuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // 计算操作按钮的位置
+                    const rect = this.getBoundingClientRect();
+                    
+                    // 预设二级菜单的高度（实际高度约为150px）
+                    const menuHeight = 150;
+                    
+                    // 计算屏幕高度
+                    const screenHeight = window.innerHeight;
+                    
+                    // 设置通用二级菜单的水平位置（与操作按钮左对齐）
+                    commonSubmenu.style.left = `${rect.left}px`;
+                    
+                    // 计算垂直位置，确保菜单不会超出屏幕
+                    let menuTop;
+                    if (rect.bottom + menuHeight > screenHeight) {
+                        // 如果菜单会超出屏幕底部，显示在按钮上方
+                        // 调整位置，确保当前点击的图标能够展示出来
+                        menuTop = `${rect.top - menuHeight - 45}px`;
+                    } else {
+                        // 否则显示在按钮下方
+                        menuTop = `${rect.bottom + 8}px`;
+                    }
+                    
+                    commonSubmenu.style.top = menuTop;
+                    
+                    // 显示通用二级菜单
+                    commonSubmenu.classList.add('show');
+                });
+            });
+
+            // 点击页面其他地方关闭二级菜单
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.history-item-menu') && !e.target.closest('.common-submenu')) {
+                    commonSubmenu.classList.remove('show');
+                }
+            });
+        }
+
         // 页面加载完成后初始化
-        window.addEventListener('load', initResizer);
+        window.addEventListener('load', () => {
+            initResizer();
+            initHistoryMenu();
+        });
 
         // 监听iframe发送的消息
         window.addEventListener('message', (event) => {
@@ -3867,5 +4556,47 @@
             }
         });
     </script>
+    <!-- 通用二级操作菜单浮窗 -->
+    <div class="common-submenu" id="commonSubmenu">
+        <div class="common-submenu-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+            <span>置顶</span>
+        </div>
+        <div class="common-submenu-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>分享</span>
+        </div>
+        <div class="common-submenu-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>重命名</span>
+        </div>
+        <div class="common-submenu-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>举报</span>
+        </div>
+        <div class="common-submenu-item delete">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>删除</span>
+        </div>
+    </div>
 </body>
 </html>
