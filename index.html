@@ -1827,6 +1827,13 @@
             }, 200);
         });
 
+        // 为方案卡片添加点击跳转到详情页面的功能
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                window.location.href = 'solution_detail.html';
+            });
+        });
 
     </script>
 
