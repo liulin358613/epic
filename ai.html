@@ -299,6 +299,9 @@
             // 初始化历史对话列表项
             initHistoryItems();
             
+            // 初始化团队成员设置按钮
+            initTeamMemberSettings();
+            
             // 初始化默认全屏模式
             const mainContainer = document.querySelector('.main-container');
             mainContainer.classList.add('fullscreen');
@@ -356,6 +359,88 @@
                 });
             });
         }
+
+        // 为团队成员设置按钮添加事件
+        function initTeamMemberSettings() {
+            const settingsButtons = document.querySelectorAll('.team-member-settings');
+            settingsButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // 隐藏所有其他菜单
+                    const allMenus = document.querySelectorAll('.common-submenu');
+                    allMenus.forEach(menu => menu.classList.remove('show'));
+                    
+                    // 创建或获取二级菜单
+                    let submenu = document.querySelector('.common-submenu');
+                    if (!submenu) {
+                        submenu = document.createElement('div');
+                        submenu.className = 'common-submenu';
+                        document.body.appendChild(submenu);
+                    }
+                    
+                    // 检查是哪个团队的成员
+                    const teamMember = this.closest('.team-member');
+                    const teamMembersContainer = teamMember.closest('.team-members');
+                    const isAiTeam = teamMembersContainer.id === 'teamMembers1'; // 我的AI团队
+                    
+                    // 设置菜单内容
+                    if (isAiTeam) {
+                        // 我的AI团队 - 个性设置
+                        submenu.innerHTML = `
+                            <div class="common-submenu-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                </svg>
+                                <span>个性设置</span>
+                            </div>
+                        `;
+                    } else {
+                        // 我的人类伙伴 - 备注昵称、删除
+                        submenu.innerHTML = `
+                            <div class="common-submenu-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <span>备注昵称</span>
+                            </div>
+                            <div class="common-submenu-item delete">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                                <span>删除</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // 设置菜单位置
+                    const rect = this.getBoundingClientRect();
+                    submenu.style.left = rect.right + 8 + 'px';
+                    submenu.style.top = rect.top + 'px';
+                    
+                    // 显示菜单
+                    submenu.classList.add('show');
+                });
+            });
+        }
+
+        // 点击其他区域关闭菜单
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.team-member-settings') && !e.target.closest('.common-submenu')) {
+                const submenu = document.querySelector('.common-submenu');
+                if (submenu) {
+                    submenu.classList.remove('show');
+                }
+            }
+        });
     </script>
     <style>
         /* 全局样式重置与变量定义 */
@@ -934,6 +1019,26 @@
         }
 
         .history-item-menu:hover {
+            background-color: #f0f6ff;
+            color: var(--klein-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 81, 217, 0.15);
+        }
+
+        /* 团队成员设置按钮 */
+        .team-member-settings {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--deep-gray);
+            transition: all 0.2s ease;
+        }
+
+        .team-member-settings:hover {
             background-color: #f0f6ff;
             color: var(--klein-blue);
             transform: translateY(-1px);
@@ -4680,101 +4785,75 @@
             previewContent.innerHTML = `
                 <div style="width: 100%; height: 100%; box-sizing: border-box;">
                     <!-- 我的日程 -->
-                    <div style="margin-bottom: 30px;">
+                    <div style="margin-bottom: 16px;">
                         <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的日程</h3>
                         <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
                             <div style="display: flex; gap: 40px;">
                                 <!-- 左边日历 -->
                                 <div style="flex: 1;">
-                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 15px;">日历</div>
                                     <div id="calendar_${tabId}" style="width: 100%;"></div>
                                 </div>
                                 
                                 <!-- 右边时间轴 -->
                                 <div style="flex: 2;">
-                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 15px;">时间轴</div>
                                     <div style="position: relative; padding-left: 40px;">
                                         <!-- 垂直虚线 -->
                                         <div style="position: absolute; left: 10px; top: 15px; bottom: 15px; width: 2px; background-color: #e0e0e0;"></div>
                                         
-                                        <!-- 时间点1 -->
-                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; transition: all 0.3s ease;">
-                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-15 09:30</div>
-                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">团队周会</div>
-                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                                                <span style="font-size: 12px; color: #999;">状态：</span>
-                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #e0e0e0; border-radius: 12px; color: #666;">已过时</span>
+                                        <!-- 时间点1 - 已完成 -->
+                                        <div style="position: relative; margin-bottom: 10px; padding: 8px; background-color: #f5f5f5; border-radius: 8px; transition: all 0.3s ease; opacity: 0.7;">
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #9e9e9e; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #999; margin-bottom: 4px;">04-14 16:00</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                                <div style="font-size: 14px; font-weight: 500; color: #666;">项目启动会</div>
+                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #c8e6c9; border-radius: 10px; color: #2e7d32;">已完成</span>
                                             </div>
                                             <div style="font-size: 12px; color: #666;">
-                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span style="margin-right: 8px;">备注：</span>
+                                                <span>项目正式启动，明确分工</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 时间点2 - 已过时 -->
+                                        <div style="position: relative; margin-bottom: 10px; padding: 8px; background-color: #f8f9fa; border-radius: 8px; transition: all 0.3s ease;">
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">04-15 09:30</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                                <div style="font-size: 14px; font-weight: 500;">团队周会</div>
+                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #e0e0e0; border-radius: 10px; color: #666;">已过时</span>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                <span style="margin-right: 8px;">备注：</span>
                                                 <span>讨论本周工作安排和项目进展</span>
                                             </div>
                                         </div>
                                         
-                                        <!-- 时间点2 -->
-                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; transition: all 0.3s ease;">
-                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-15 14:00</div>
-                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">客户项目评审</div>
-                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                                                <span style="font-size: 12px; color: #999;">状态：</span>
-                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #e0e0e0; border-radius: 12px; color: #666;">已过时</span>
+                                        <!-- 时间点3 - 待完成 -->
+                                        <div style="position: relative; margin-bottom: 10px; padding: 8px; background-color: #e3f2fd; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #2196f3;">
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">04-17 11:00</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                                <div style="font-size: 14px; font-weight: 500;">技术培训</div>
+                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #bbdefb; border-radius: 10px; color: #1976d2;">待完成</span>
                                             </div>
                                             <div style="font-size: 12px; color: #666;">
-                                                <span style="margin-right: 10px;">备注：</span>
-                                                <span>与客户讨论项目需求和进度</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- 时间点3 -->
-                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #e3f2fd; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #2196f3;">
-                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-16 10:00</div>
-                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">产品设计讨论</div>
-                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                                                <span style="font-size: 12px; color: #999;">状态：</span>
-                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #bbdefb; border-radius: 12px; color: #1976d2;">待完成</span>
-                                            </div>
-                                            <div style="font-size: 12px; color: #666;">
-                                                <span style="margin-right: 10px;">备注：</span>
-                                                <span>讨论新产品设计方案和功能需求</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- 时间点4 -->
-                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #e8f5e8; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #4caf50;">
-                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-17 11:00</div>
-                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">技术培训</div>
-                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                                                <span style="font-size: 12px; color: #999;">状态：</span>
-                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #c8e6c9; border-radius: 12px; color: #2e7d32;">待完成</span>
-                                            </div>
-                                            <div style="font-size: 12px; color: #666;">
-                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span style="margin-right: 8px;">备注：</span>
                                                 <span>参加新技术培训课程</span>
                                             </div>
                                         </div>
                                         
-                                        <!-- 时间点5 -->
-                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #fff3e0; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #ff9800;">
-                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-18 15:30</div>
-                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">季度总结会议</div>
-                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
-                                                <span style="font-size: 12px; color: #999;">状态：</span>
-                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #ffe0b2; border-radius: 12px; color: #e65100;">待完成</span>
+                                        <!-- 时间点4 - 待完成 -->
+                                        <div style="position: relative; padding: 8px; background-color: #fff3e0; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #ff9800;">
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">04-18 15:30</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                                <div style="font-size: 14px; font-weight: 500;">季度总结会议</div>
+                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #ffe0b2; border-radius: 10px; color: #e65100;">待完成</span>
                                             </div>
                                             <div style="font-size: 12px; color: #666;">
-                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span style="margin-right: 8px;">备注：</span>
                                                 <span>总结本季度工作成果和不足</span>
                                             </div>
-                                        </div>
-                                        
-                                        <!-- 底部结束点 -->
-                                        <div style="position: relative;">
-                                            <div style="position: absolute; left: -40px; top: 0; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
                                         </div>
                                     </div>
                                 </div>
@@ -4782,39 +4861,79 @@
                         </div>
                     </div>
                     
-                    <!-- 我的代办 -->
+                    <!-- 我的待办 -->
                     <div>
-                        <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的代办</h3>
+                        <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的待办</h3>
                         <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
-                            <div style="margin-bottom: 15px;">
-                                <input type="text" placeholder="添加新任务" style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                            <!-- 搜索和筛选 -->
+                            <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;">
+                                <div style="width: 250px;">
+                                    <input type="text" placeholder="关键字搜索（标题、编号）" style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                                </div>
+                                <div style="width: 150px;">
+                                    <select style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                                        <option value="">全部状态</option>
+                                        <option value="pending">待审核</option>
+                                        <option value="approved">已通过</option>
+                                        <option value="rejected">已驳回</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button style="padding: 8px 16px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">搜索</button>
+                                    <button style="padding: 8px 16px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px; cursor: pointer;">重置</button>
+                                </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
-                                    <input type="checkbox" style="width: 16px; height: 16px;">
-                                    <span style="flex: 1; font-size: 14px;">完成项目方案文档</span>
-                                    <span style="font-size: 12px; color: #666;">今天</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
-                                    <input type="checkbox" style="width: 16px; height: 16px;">
-                                    <span style="flex: 1; font-size: 14px;">准备客户会议材料</span>
-                                    <span style="font-size: 12px; color: #666;">明天</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
-                                    <input type="checkbox" style="width: 16px; height: 16px;">
-                                    <span style="flex: 1; font-size: 14px;">提交周报</span>
-                                    <span style="font-size: 12px; color: #666;">周五</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
-                                    <input type="checkbox" style="width: 16px; height: 16px;">
-                                    <span style="flex: 1; font-size: 14px;">与技术团队讨论需求</span>
-                                    <span style="font-size: 12px; color: #666;">下周一</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
-                                    <input type="checkbox" style="width: 16px; height: 16px;">
-                                    <span style="flex: 1; font-size: 14px;">更新项目进度计划</span>
-                                    <span style="font-size: 12px; color: #666;">下周二</span>
-                                </div>
+                            
+                            <!-- 表格 -->
+                            <div style="overflow-x: auto;">
+                                <table style="width: auto; border-collapse: collapse; font-size: 13px; min-width: 100%;">
+                                    <thead>
+                                        <tr style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">标题</th>
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">编号</th>
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">申请人</th>
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">发起时间</th>
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">截止审核时间</th>
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">审核状态</th>
+                                            <th style="padding: 10px; text-align: left; font-weight: 600; white-space: nowrap;">备注</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid #dee2e6;">
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">项目方案审批</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">APK-2026-001</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">张三</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-15</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-18</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">
+                                                <span style="padding: 2px 8px; background-color: #ffecb3; border-radius: 10px; color: #ff8f00; font-size: 11px;">待审核</span>
+                                            </td>
+                                            <td style="padding: 10px;">需要审批新项目方案</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid #dee2e6;">
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">预算申请</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">APK-2026-002</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">李四</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-14</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-17</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">
+                                                <span style="padding: 2px 8px; background-color: #c8e6c9; border-radius: 10px; color: #2e7d32; font-size: 11px;">已通过</span>
+                                            </td>
+                                            <td style="padding: 10px;">Q2季度预算申请</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">设备采购</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">APK-2026-003</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">王五</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-16</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-19</td>
+                                            <td style="padding: 10px; border-right: 1px solid #dee2e6;">
+                                                <span style="padding: 2px 8px; background-color: #ffcdd2; border-radius: 10px; color: #c62828; font-size: 11px;">已驳回</span>
+                                            </td>
+                                            <td style="padding: 10px;">需要补充设备清单</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
