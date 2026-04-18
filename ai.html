@@ -4314,8 +4314,28 @@
             } else {
                 console.log('没有找到当前Tab');
             }
+            // 更新预览区内边距
+            updatePreviewPadding(currentTab.title);
         }
         
+        //跟新预览区内边距
+        function updatePreviewPadding(title) {
+             const previewContent = document.getElementById('previewContent');
+            // 检查是否需要移除内边距
+            if (title === '文件管理') {
+                // 移除下内边距
+                previewContent.style.paddingBottom = '0';
+                // 移除上内边距
+                previewContent.style.paddingTop = '0';
+                // 移除右内边距
+                previewContent.style.paddingRight = '0';
+            }else{
+                previewContent.style.paddingBottom = '16px';
+                previewContent.style.paddingTop = '16px';
+                previewContent.style.paddingRight = '16px';
+            }
+        }
+
         // 更新预览内容
         function updatePreviewContent(tabId) {
             // 清空预览内容并添加美化样式
@@ -4980,12 +5000,6 @@
         // 更新文件管理内容
         function updateFileManagementContent(tabId) {
             const previewContent = document.getElementById('previewContent');
-            // 移除下内边距
-            previewContent.style.paddingBottom = '0';
-            // 移除上内边距
-            previewContent.style.paddingTop = '0';
-            // 移除右内边距
-            previewContent.style.paddingRight = '0';
             previewContent.innerHTML = `
                 <div style="width: 100%; height: 100%; box-sizing: border-box;">
                     <iframe src="file-management.html" style="width: 100%; height: 100%; border: none;"></iframe>
