@@ -4042,6 +4042,30 @@
             textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
         });
         
+        // 全局变量
+        let currentChatWidth = '50%';
+        let currentPreviewWidth = '50%';
+        
+        // 保存当前宽度
+        function saveCurrentWidths() {
+            const chatArea = document.querySelector('.chat-area');
+            const previewArea = document.getElementById('previewArea');
+            if (chatArea && previewArea) {
+                currentChatWidth = chatArea.style.flexBasis || '50%';
+                currentPreviewWidth = previewArea.style.flexBasis || '50%';
+            }
+        }
+        
+        // 应用保存的宽度
+        function applySavedWidths() {
+            const chatArea = document.querySelector('.chat-area');
+            const previewArea = document.getElementById('previewArea');
+            if (chatArea && previewArea) {
+                chatArea.style.flexBasis = currentChatWidth;
+                previewArea.style.flexBasis = currentPreviewWidth;
+            }
+        }
+        
         // 全局变量存储tabs
         let previewTabs = [];
         
@@ -6849,6 +6873,9 @@
                     // 直接设置为50%宽度
                     chatArea.style.flexBasis = '50%';
                     previewArea.style.flexBasis = '50%';
+                    // 初始化全局宽度变量
+                    currentChatWidth = '50%';
+                    currentPreviewWidth = '50%';
                 }
             }
             
@@ -6903,6 +6930,9 @@
                     document.body.style.cursor = '';
                     document.body.style.userSelect = '';
                     resizer.classList.remove('dragging');
+                    
+                    // 保存当前宽度
+                    saveCurrentWidths();
                     
                     // 恢复所有iframe的指针事件
                     const iframes = document.querySelectorAll('iframe');
@@ -7362,16 +7392,19 @@
         function initPreviewToggle() {
             const toggleBtn = document.getElementById('togglePreviewBtn');
             const previewArea = document.getElementById('previewArea');
+            const chatArea = document.querySelector('.chat-area');
             const resizer = document.getElementById('resizer');
             const inputContainer = document.querySelector('.input-container');
             const chatContent = document.querySelector('.chat-content');
 
-            if (toggleBtn && previewArea) {
+            if (toggleBtn && previewArea && chatArea) {
                 toggleBtn.addEventListener('click', () => {
                     if (previewArea.style.display === 'none') {
                         // 展开预览区
-                        // previewArea.style.flexBasis = '50%';
                         previewArea.style.display = 'flex';
+                        // 应用保存的宽度
+                        chatArea.style.flexBasis = currentChatWidth;
+                        previewArea.style.flexBasis = currentPreviewWidth;
                         if (resizer) resizer.style.display = 'block';
                         if (inputContainer) inputContainer.style.width = '';
                         if (chatContent) chatContent.style.padding = '';
@@ -7392,29 +7425,26 @@
             const chatArea = document.querySelector('.chat-area');
             const previewArea = document.getElementById('previewArea');
             const resizer = document.getElementById('resizer');
-            let previousPreviewWidth = '';
 
             if (toggleBtn && chatArea && previewArea) {
                 toggleBtn.addEventListener('click', () => {
                     if (chatArea.style.display === 'none') {
                         // 展开对话区
                         chatArea.style.display = 'flex';
+                        // 应用保存的宽度
+                        chatArea.style.flexBasis = currentChatWidth;
+                        previewArea.style.flexBasis = currentPreviewWidth;
                         if (resizer) resizer.style.display = 'block';
                         // 恢复全屏状态
                         const mainContainer = document.querySelector('.main-container');
                         mainContainer.classList.add('fullscreen');
                         document.body.classList.add('fullscreen-preview');
-                        // 恢复预览区宽度
-                        if (previewTabs.length === 0) {
-                            previewArea.style.flexBasis = previousPreviewWidth || '50%';
-                        }
                     } else {
                         // 收起对话区
                         chatArea.style.display = 'none';
                         if (resizer) resizer.style.display = 'none';
                         // 如果预览区没有Tab，设置为100%宽度
                         if (previewTabs.length === 0) {
-                            previousPreviewWidth = previewArea.style.flexBasis;
                             previewArea.style.flexBasis = '100%';
                         }
                     }
