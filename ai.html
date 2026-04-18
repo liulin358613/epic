@@ -1661,7 +1661,6 @@
 
         /* 底部输入框 */
         .input-container {
-            width: 80%;
             margin: 0 auto 24px;
             background-color: var(--white);
             border-radius: 16px;
@@ -1763,16 +1762,18 @@
             background: var(--border-gray);
         }
 
+        /* chat-input-wrapper 容器 */
+        .chat-input-wrapper {
+            padding: 0 10%;
+        }
+
         /* AI团队成员信息容器 */
         /* AI团队成员信息区域（输入框上方） */
         .ai-member-info-container {
-            position: absolute;
-            bottom: 70px;
-            left: 0;
-            right: 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             pointer-events: none;
+            margin-bottom: 4px;
         }
 
         .ai-member-info {
@@ -3717,33 +3718,36 @@
                 </div>
 
             </div>
-            <!-- AI团队成员信息（输入框上方） -->
-            <div class="ai-member-info-container">
-                <div class="ai-member-info" id="aiMemberInfo">
-                    <div class="member-avatar" id="aiMemberAvatar" style="background-color: #E91E63;">秘</div>
-                    <span class="member-name" id="aiMemberName">我的秘书</span>
-                    <span class="welcome-text">我在</span>
-                </div>
-            </div>
-
-            <!-- 底部输入框 -->
-            <div class="input-container">
-                <div class="input-box">
-                    <textarea placeholder="输入你的问题..."></textarea>
-                </div>
-                <div class="input-tool-row">
-                    <div class="input-tool-left">
-                        <label class="upload-btn">
-                            <input type="file">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                            </svg>
-                            上传文件
-                        </label>
-
-
+            <!-- 输入框区域（包含AI成员信息） -->
+            <div class="chat-input-wrapper">
+                <!-- AI团队成员信息（输入框上方） -->
+                <div class="ai-member-info-container">
+                    <div class="ai-member-info" id="aiMemberInfo">
+                        <div class="member-avatar" id="aiMemberAvatar" style="background-color: #E91E63;">秘</div>
+                        <span class="member-name" id="aiMemberName">我的秘书</span>
+                        <span class="welcome-text">我在</span>
                     </div>
-                    <button class="send-btn">↑</button>
+                </div>
+
+                <!-- 底部输入框 -->
+                <div class="input-container">
+                    <div class="input-box">
+                        <textarea placeholder="输入你的问题..."></textarea>
+                    </div>
+                    <div class="input-tool-row">
+                        <div class="input-tool-left">
+                            <label class="upload-btn">
+                                <input type="file">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                </svg>
+                                上传文件
+                            </label>
+
+
+                        </div>
+                        <button class="send-btn">↑</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -7394,7 +7398,7 @@
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const resizer = document.getElementById('resizer');
-            const inputContainer = document.querySelector('.input-container');
+            const chatInputWrapper = document.querySelector('.chat-input-wrapper');
             const chatContent = document.querySelector('.chat-content');
 
             if (toggleBtn && previewArea && chatArea) {
@@ -7412,7 +7416,7 @@
                         // 收起预览区
                         previewArea.style.display = 'none';
                         if (resizer) resizer.style.display = 'none';
-                        if (inputContainer) inputContainer.style.width = '54%';
+                        if (chatInputWrapper) chatInputWrapper.style.padding = '0 23%';
                         if (chatContent) chatContent.style.padding = '20px 20%';
                     }
                 });
