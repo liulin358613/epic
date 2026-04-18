@@ -1397,7 +1397,7 @@
             align-items: center;
             justify-content: center;
             width: 32px;
-            height: 32px;
+            height: 24px;
             margin-left: 8px;
             border: 1px solid var(--border-gray);
             border-radius: 6px;
@@ -1448,7 +1448,7 @@
             align-items: center;
             justify-content: center;
             width: 32px;
-            height: 32px;
+            height: 24px;
             border: 1px solid var(--border-gray);
             border-radius: 6px;
             background-color: white;
@@ -1984,7 +1984,7 @@
             align-items: center;
             justify-content: center;
             width: 32px;
-            height: 32px;
+            height: 24px;
             margin-right: 10px;
             margin-left: 10px;
             border: 1px solid var(--border-gray);
@@ -4052,6 +4052,33 @@
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
             
+            // 显示预览区并恢复默认布局
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            const chatArea = document.querySelector('.chat-area');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+                previewArea.style.flexBasis = '50%';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            if (chatArea) {
+                chatArea.style.flexBasis = '50%';
+            }
+            const memberInfoContainer = document.querySelector('.ai-member-info-container');
+            if (memberInfoContainer) {
+                memberInfoContainer.style.width = '80%';
+            }
+            
             // 显示预览区标题栏（包含Tab栏）
             const previewHeader = document.querySelector('.preview-header');
             if (previewHeader) {
@@ -4062,22 +4089,7 @@
             document.querySelector('.preview-file-list').style.display = 'none';
             document.querySelector('.preview-toolbar').style.display = 'none';
             
-            // 预览区有内容时，只有在首次创建时设置默认宽度
-            const previewArea = document.getElementById('previewArea');
-            const chatArea = document.querySelector('.chat-area');
-            const container = document.querySelector('.main-container-inner');
-            if (container) {
-                // 检查是否已经有flexBasis设置，如果没有则设置默认值
-                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
-                    // 对话区域和预览区域各占50%
-                    chatArea.style.flexBasis = '50%';
-                    previewArea.style.flexBasis = '50%';
-                }
-                // 否则保持当前设置
-            }
-            
             // 显示分隔线
-            const resizer = document.getElementById('resizer');
             if (resizer) {
                 resizer.style.display = 'block';
             }
@@ -4888,6 +4900,33 @@
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
             
+            // 显示预览区并恢复默认布局
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            const chatArea = document.querySelector('.chat-area');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+                previewArea.style.flexBasis = '50%';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            if (chatArea) {
+                chatArea.style.flexBasis = '50%';
+            }
+            const memberInfoContainer = document.querySelector('.ai-member-info-container');
+            if (memberInfoContainer) {
+                memberInfoContainer.style.width = '80%';
+            }
+            
             // 显示预览区标题栏（包含Tab栏）
             const previewHeader = document.querySelector('.preview-header');
             if (previewHeader) {
@@ -4898,22 +4937,7 @@
             document.querySelector('.preview-file-list').style.display = 'none';
             document.querySelector('.preview-toolbar').style.display = 'none';
             
-            // 预览区有内容时，只有在首次创建时设置默认宽度
-            const previewArea = document.getElementById('previewArea');
-            const chatArea = document.querySelector('.chat-area');
-            const container = document.querySelector('.main-container-inner');
-            if (container) {
-                // 检查是否已经有flexBasis设置，如果没有则设置默认值
-                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
-                    // 对话区域和预览区域各占50%
-                    chatArea.style.flexBasis = '50%';
-                    previewArea.style.flexBasis = '50%';
-                }
-                // 否则保持当前设置
-            }
-            
             // 显示分隔线
-            const resizer = document.getElementById('resizer');
             if (resizer) {
                 resizer.style.display = 'block';
             }
@@ -4950,6 +4974,33 @@
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
             
+            // 显示预览区并恢复默认布局
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            const chatArea = document.querySelector('.chat-area');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+                previewArea.style.flexBasis = '50%';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            if (chatArea) {
+                chatArea.style.flexBasis = '50%';
+            }
+            const memberInfoContainer = document.querySelector('.ai-member-info-container');
+            if (memberInfoContainer) {
+                memberInfoContainer.style.width = '80%';
+            }
+            
             // 显示预览区标题栏（包含Tab栏）
             const previewHeader = document.querySelector('.preview-header');
             if (previewHeader) {
@@ -4960,22 +5011,7 @@
             document.querySelector('.preview-file-list').style.display = 'none';
             document.querySelector('.preview-toolbar').style.display = 'none';
             
-            // 预览区有内容时，只有在首次创建时设置默认宽度
-            const previewArea = document.getElementById('previewArea');
-            const chatArea = document.querySelector('.chat-area');
-            const container = document.querySelector('.main-container-inner');
-            if (container) {
-                // 检查是否已经有flexBasis设置，如果没有则设置默认值
-                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
-                    // 对话区域和预览区域各占50%
-                    chatArea.style.flexBasis = '50%';
-                    previewArea.style.flexBasis = '50%';
-                }
-                // 否则保持当前设置
-            }
-            
             // 显示分隔线
-            const resizer = document.getElementById('resizer');
             if (resizer) {
                 resizer.style.display = 'block';
             }
@@ -6484,6 +6520,33 @@
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
             
+            // 显示预览区并恢复默认布局
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            const chatArea = document.querySelector('.chat-area');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+                previewArea.style.flexBasis = '50%';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            if (chatArea) {
+                chatArea.style.flexBasis = '50%';
+            }
+            const memberInfoContainer = document.querySelector('.ai-member-info-container');
+            if (memberInfoContainer) {
+                memberInfoContainer.style.width = '80%';
+            }
+            
             // 清空现有文件列表，只保留当前对话的文件
             previewFiles = [];
             
@@ -6508,22 +6571,7 @@
             document.querySelector('.preview-file-list').style.display = 'block';
             document.querySelector('.preview-toolbar').style.display = 'flex';
             
-            // 预览区有内容时，只有在首次创建时设置默认宽度
-            const previewArea = document.getElementById('previewArea');
-            const chatArea = document.querySelector('.chat-area');
-            const container = document.querySelector('.main-container-inner');
-            if (container) {
-                // 检查是否已经有flexBasis设置，如果没有则设置默认值
-                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
-                    // 对话区域和预览区域各占50%
-                    chatArea.style.flexBasis = '50%';
-                    previewArea.style.flexBasis = '50%';
-                }
-                // 否则保持当前设置
-            }
-            
             // 显示分隔线
-            const resizer = document.getElementById('resizer');
             if (resizer) {
                 resizer.style.display = 'block';
             }
@@ -6545,6 +6593,10 @@
             
             // 激活当前Tab
             activateImageTab(tabId);
+
+            //更新预览区边距
+            updatePreviewPadding(tabTitle);
+            
         }
 
         // 打开多个图片
@@ -6553,6 +6605,33 @@
             const mainContainer = document.querySelector('.main-container');
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
+            
+            // 显示预览区并恢复默认布局
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            const chatArea = document.querySelector('.chat-area');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+                previewArea.style.flexBasis = '50%';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            if (chatArea) {
+                chatArea.style.flexBasis = '50%';
+            }
+            const memberInfoContainer = document.querySelector('.ai-member-info-container');
+            if (memberInfoContainer) {
+                memberInfoContainer.style.width = '80%';
+            }
             
             // 清空现有文件列表，只保留当前对话的文件
             previewFiles = [];
@@ -6580,22 +6659,7 @@
             document.querySelector('.preview-file-list').style.display = 'block';
             document.querySelector('.preview-toolbar').style.display = 'flex';
             
-            // 预览区有内容时，只有在首次创建时设置默认宽度
-            const previewArea = document.getElementById('previewArea');
-            const chatArea = document.querySelector('.chat-area');
-            const container = document.querySelector('.main-container-inner');
-            if (container) {
-                // 检查是否已经有flexBasis设置，如果没有则设置默认值
-                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
-                    // 对话区域和预览区域各占50%
-                    chatArea.style.flexBasis = '50%';
-                    previewArea.style.flexBasis = '50%';
-                }
-                // 否则保持当前设置
-            }
-            
             // 显示分隔线
-            const resizer = document.getElementById('resizer');
             if (resizer) {
                 resizer.style.display = 'block';
             }
@@ -6617,6 +6681,10 @@
             
             // 激活当前Tab
             activateImageTab(tabId);
+
+            //更新预览区边距
+            updatePreviewPadding(tabTitle);
+
         }
 
         // 激活图片预览Tab
