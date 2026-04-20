@@ -1090,7 +1090,9 @@
         }
 
         .common-submenu-item:hover {
-            background-color: #f5f5f5;
+            background-color: #e4edfd;
+            color: #0051D9;
+            transform: translateX(4px);
         }
 
         .common-submenu-item.delete {
@@ -1101,6 +1103,56 @@
             margin-right: 8px;
             width: 14px;
             height: 14px;
+        }
+
+        /* Tooltip styles */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            margin-left: auto;
+        }
+
+        .tooltip-icon {
+            cursor: help;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .tooltip-icon:hover {
+            opacity: 1;
+        }
+
+        .tooltip-text {
+            position: absolute;
+            bottom: 125%;
+            right: 0;
+            background-color: #1D2129;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            right: 8px;
+            border-width: 4px;
+            border-style: solid;
+            border-color: #1D2129 transparent transparent transparent;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-4px);
         }
 
         /* 重命名弹窗样式 */
@@ -2916,10 +2968,11 @@
     <!-- 二级导航栏 -->
     <div class="sub-nav">
         <div class="sub-nav-inner">
-            <div class="sub-nav-item active">工元智能</div>
-            <div class="sub-nav-item">生产力方案商城</div>
-            <div class="sub-nav-item">设备商城</div>
-            <div class="sub-nav-item">消费商城</div>
+            <div class="sub-nav-item active">创造中心</div>
+            <div class="sub-nav-item">生产力方案共享</div>
+            <div class="sub-nav-item">机器人设备共享</div>
+            <div class="sub-nav-item has-submenu">资源共享</div>
+            <div class="sub-nav-item has-submenu">共享消费</div>
             <div class="sub-nav-item">我的社群</div>
         </div>
     </div>
@@ -6419,18 +6472,21 @@
                 e.preventDefault();
                 e.stopPropagation();
                 const tabText = item.textContent.trim();
-                // 除了"工元智能"，其他tab点击跳转到index.html并带上参数
-                if (tabText !== '工元智能') {
+                // 除了"创造中心"，其他tab点击跳转到index.html并带上参数
+                if (tabText !== '创造中心') {
                     let tabParam = '';
                     switch(tabText) {
-                        case '生产力方案商城':
+                        case '生产力方案共享':
                             tabParam = 'productivity';
                             break;
-                        case '设备商城':
-                            tabParam = 'equipment';
+                        case '机器人设备共享':
+                            tabParam = 'robot';
                             break;
-                        case '消费商城':
-                            tabParam = 'consumption';
+                        case '资源共享':
+                            tabParam = 'resource';
+                            break;
+                        case '共享消费':
+                            tabParam = 'share';
                             break;
                         case '我的社群':
                             tabParam = 'community';
@@ -6441,6 +6497,220 @@
                 }
             });
         });
+
+        // 资源共享hover显示二级菜单
+        const resourceShareItem = document.querySelector('.sub-nav-item.has-submenu');
+        if (resourceShareItem) {
+            // 创建二级菜单
+            const submenu = document.createElement('div');
+            submenu.className = 'common-submenu resource-submenu';
+            submenu.innerHTML = `
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>AI员工资源</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>人类资源</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <span>MCP资源</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span>应用软件资源</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>数据资源</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                    <span>虚拟币资源</span>
+                </div>
+            `;
+            document.body.appendChild(submenu);
+
+            // hover事件
+            let hideTimeout;
+            resourceShareItem.addEventListener('mouseenter', function(e) {
+                e.stopPropagation();
+                clearTimeout(hideTimeout);
+                const rect = this.getBoundingClientRect();
+                submenu.style.left = rect.left + 'px';
+                submenu.style.top = rect.bottom + 8 + 'px';
+                submenu.classList.add('show');
+            });
+
+            resourceShareItem.addEventListener('mouseleave', function() {
+                hideTimeout = setTimeout(() => {
+                    submenu.classList.remove('show');
+                }, 200);
+            });
+
+            // 鼠标在菜单上时保持显示
+            submenu.addEventListener('mouseenter', function() {
+                clearTimeout(hideTimeout);
+                this.classList.add('show');
+            });
+
+            submenu.addEventListener('mouseleave', function() {
+                hideTimeout = setTimeout(() => {
+                    this.classList.remove('show');
+                }, 200);
+            });
+
+            // 菜单项点击事件
+            submenu.querySelectorAll('.common-submenu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const menuText = this.textContent.trim();
+                    // 跳转到资源共享页面并带上子菜单参数
+                    window.location.href = `index.html?tab=resource&sub=${encodeURIComponent(menuText)}`;
+                });
+            });
+        }
+
+        // 点击其他区域关闭菜单
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.sub-nav-item.has-submenu') && !e.target.closest('.resource-submenu') && !e.target.closest('.consumption-submenu')) {
+                const resourceSubmenu = document.querySelector('.resource-submenu');
+                if (resourceSubmenu) {
+                    resourceSubmenu.classList.remove('show');
+                }
+                const consumptionSubmenu = document.querySelector('.consumption-submenu');
+                if (consumptionSubmenu) {
+                    consumptionSubmenu.classList.remove('show');
+                }
+            }
+        });
+
+        // 共享消费hover显示二级菜单
+        const consumptionItem = document.querySelectorAll('.sub-nav-item.has-submenu')[1];
+        if (consumptionItem) {
+            // 创建二级菜单
+            const submenu = document.createElement('div');
+            submenu.className = 'common-submenu consumption-submenu';
+            submenu.innerHTML = `
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>智造品</span>
+                    <div class="tooltip-container">
+                        <svg class="tooltip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <div class="tooltip-text">由 AI 智能赋能生产的实物产品，覆盖工业、农业、服务业全品类</div>
+                    </div>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <span>应用软件产品</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>游戏产品</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>影视/文学</span>
+                </div>
+                <div class="common-submenu-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                    <span>游乐/服务产品</span>
+                </div>
+            `;
+            document.body.appendChild(submenu);
+
+            // hover事件
+            let hideTimeout;
+            consumptionItem.addEventListener('mouseenter', function(e) {
+                e.stopPropagation();
+                clearTimeout(hideTimeout);
+                const rect = this.getBoundingClientRect();
+                submenu.style.left = rect.left + 'px';
+                submenu.style.top = rect.bottom + 8 + 'px';
+                submenu.classList.add('show');
+            });
+
+            consumptionItem.addEventListener('mouseleave', function() {
+                hideTimeout = setTimeout(() => {
+                    submenu.classList.remove('show');
+                }, 200);
+            });
+
+            // 鼠标在菜单上时保持显示
+            submenu.addEventListener('mouseenter', function() {
+                clearTimeout(hideTimeout);
+                this.classList.add('show');
+            });
+
+            submenu.addEventListener('mouseleave', function() {
+                hideTimeout = setTimeout(() => {
+                    this.classList.remove('show');
+                }, 200);
+            });
+
+            // 菜单项点击事件
+            submenu.querySelectorAll('.common-submenu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const menuText = this.textContent.trim();
+                    // 跳转到共享消费页面并带上子菜单参数
+                    window.location.href = `index.html?tab=share&sub=${encodeURIComponent(menuText)}`;
+                });
+            });
+        }
 
         // 页面加载时滚动到对话底部
         window.addEventListener('load', () => {
@@ -7550,7 +7820,7 @@
         <div class="ai-chat-header">
             <div class="ai-chat-title">
                 <div class="ai-chat-avatar">🤖</div>
-                <div class="ai-chat-name">工元智能</div>
+                <div class="ai-chat-name">创造中心</div>
             </div>
             <button class="ai-chat-close" onclick="closeAIChat()">×</button>
         </div>
@@ -7559,7 +7829,7 @@
                 <div class="ai-message-wrapper">
                     <div class="message-content">
                         欢迎您！
-                        欢迎咨询工元智能，很高兴为您服务！请问您需要咨询哪款产品或应用呢？
+                        欢迎咨询，很高兴为您服务！请问您需要咨询哪款产品或应用呢？
                         <span class="message-time">06-06 10:30</span>
                     </div>
                 </div>

@@ -54,10 +54,12 @@
 
         .logo {
             width: 220px;
-            height: 50px;
+            height: auto;
+            min-height: 50px;
             background: var(--white);
             color: var(--klein-blue);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-weight: bold;
@@ -65,10 +67,18 @@
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
+            padding: 6px 0;
         }
 
         .logo:hover {
             opacity: 0.9;
+        }
+
+        .logo-slogan {
+            font-size: 12px;
+            font-weight: normal;
+            color: var(--klein-blue);
+            margin-top: 2px;
         }
 
         .user-area {
@@ -156,7 +166,10 @@
 <body>
     <!-- ========== 固定在顶部的 Logo 导航栏 ========== -->
     <div class="fixed-header">
-        <div class="logo" onclick="goToIndex()">RaaS.Dao</div>
+        <div class="logo" onclick="goToIndex()">
+            RaaS.Dao
+            <span class="logo-slogan">共创・共享・共赢</span>
+        </div>
         <div class="top-nav-right">
             <div class="user-area">
                 <div class="welcome">
