@@ -96,7 +96,7 @@
             --ai-text: #1D2129;
             --ai-desc: #86909C;
             --ai-border: #E5E7EB;
-            --ai-send: #06b6d4;
+            --ai-send: var(--hermes-orange);
             --ai-tag-bg: #F2F3F5;
             --ai-tag-hover: #E5E7EB;
 
@@ -106,9 +106,51 @@
         }
 
         body {
-            background: var(--light-bg);
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
             color: #333;
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 36px;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                rgba(0, 81, 217, 0.3), 
+                rgba(243, 112, 33, 0.3), 
+                transparent);
+            z-index: 1;
+            animation: glow 4s ease-in-out infinite alternate;
+        }
+
+        body::before {
+            left: 30px;
+        }
+
+        body::after {
+            right: 30px;
+        }
+
+        @keyframes glow {
+            0% {
+                opacity: 0.2;
+                box-shadow: 0 0 15px rgba(0, 81, 217, 0.3);
+            }
+            50% {
+                opacity: 0.4;
+                box-shadow: 0 0 25px rgba(243, 112, 33, 0.4);
+            }
+            100% {
+                opacity: 0.2;
+                box-shadow: 0 0 15px rgba(0, 81, 217, 0.3);
+            }
         }
 
         /* 通用容器 */
@@ -208,126 +250,194 @@
             width: 100%;
             max-width: 1440px;
             background: var(--ai-chat-bg);
-            padding: 30px 80px;
+            padding: 50px 80px;
+            /* border-radius: 16px; */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            /* margin: 20px auto; */
         }
 
         .search-container {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 24px;
-            margin-bottom: 12px;
-            margin-top: 16px;
+            margin-bottom: 0;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .search-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--klein-blue);
+            white-space: nowrap;
+            font-family: 'Arial', sans-serif;
+            text-shadow: 0 2px 4px rgba(0, 81, 217, 0.1);
+        }
+
+        .logo-slogan {
+            font-size: 13px;
+            color: var(--deep-gray);
+            font-weight: 500;
+            background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-main {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .search-input-row {
+            display: flex;
+            align-items: center;
         }
 
         .search-input-wrapper {
             flex: 1;
             position: relative;
+            display: flex;
+            align-items: center;
+            height: 44px;
         }
 
         .search-input {
             width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--ai-border);
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 12px 20px;
+            border: 1px solid #e0e7ff;
+            border-radius: 12px;
+            font-size: 15px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .search-input:focus {
             border-color: var(--klein-blue);
+            box-shadow: 0 0 0 4px rgba(0, 81, 217, 0.1);
         }
 
         .search-btn {
             position: absolute;
-            right: 0px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #007bff;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background: var(--klein-blue);
             color: white;
             border: none;
-            border-radius: 0px 6px 6px  0px;
-            padding: 15px 30px;
-            font-size: 16px;
+            border-radius: 0 12px 12px 0;
+            padding: 0 24px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 81, 217, 0.2);
         }
 
         .search-btn:hover {
-            background: #0056b3;
+            background: #0047c9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(0, 81, 217, 0.3);
         }
 
         .search-actions {
             display: flex;
-            gap: 24px;
+            gap: 12px;
+            align-items: center;
         }
 
         .quote-btn {
-            background: #ff7f00;
+            background: var(--hermes-orange);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 14px 24px;
-            font-size: 16px;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(243, 112, 33, 0.2);
         }
 
         .quote-btn:hover {
-            background: #e67e22;
+            background: #e66a1a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(243, 112, 33, 0.3);
         }
 
         .cart-btn {
-            background: transparent;
-            color: #333;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 14px 30px;
-            font-size: 16px;
+            background: white;
+            color: var(--klein-blue);
+            border: 1px solid var(--klein-blue);
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .cart-btn:hover {
-            border-color: #0051D9;
-            color: #0051D9;
+            background: var(--klein-blue);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 81, 217, 0.2);
         }
 
         .cart-badge {
             position: absolute;
             top: -8px;
             right: -8px;
-            background: #ff4444;
+            background: var(--hermes-orange);
             color: white;
             border-radius: 50%;
             width: 20px;
             height: 20px;
             font-size: 12px;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .search-tags {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            margin-top: 8px;
         }
 
         .tag {
-            background: #f0f0f0;
-            color: #333;
-            padding: 4px 12px;
-            border-radius: 12px;
+            background: white;
+            color: var(--deep-gray);
+            padding: 4px 16px;
+            border-radius: 20px;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .tag:hover {
-            background: #e0e0e0;
-            color: var(--klein-blue);
+            background: var(--klein-blue);
+            color: white;
+            border-color: var(--klein-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 81, 217, 0.2);
         }
 
         .ai-input-box textarea {
@@ -472,6 +582,8 @@
             border-bottom: 1px solid var(--border);
             border-top: 1px solid var(--border);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 99999;
         }
 
         /* 导航标签栏 */
@@ -557,8 +669,10 @@
         .content-row {
             display: flex;
             gap: 18px;
-            margin-top: 20px;
+            /* margin-top: 20px; */
             align-items: stretch;
+            background: #FFFFFF;
+            padding: 20px 0;
         }
 
         .filter {
@@ -1298,20 +1412,20 @@
 
 <body>
     <!-- 顶部导航栏 -->
-    <div style="background: #e5e7eb;height: 36px;">
+    <div style="background: #0051d9;height: 36px; position: fixed; top: 0; left: 0; width: 100%; z-index: 99998;">
         <div style="width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d;">
+            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #FFFFFF; line-height: 36px;">
                 <span>您好！欢迎您的登录</span>
-                <a href="#" style="color: #0051D9; text-decoration: none;">登录</a>
-                <a href="#" style="color: #0051D9; text-decoration: none;">注册</a>
-                <a href="#" style="color: #0051D9; text-decoration: none;">会员中心</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">登录</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">注册</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">会员中心</a>
             </div>
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d;">
-                <a href="#" style="color: #6c757d; text-decoration: none;">消息中心</a>
-                <a href="#" style="color: #6c757d; text-decoration: none;">我的订单</a>
-                <a href="#" style="color: #6c757d; text-decoration: none;">个人中心</a>
-                <a href="#" style="color: #6c757d; text-decoration: none;">采购中心</a>
-                <a href="#" style="color: #6c757d; text-decoration: none;">资质认证</a>
+            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">采购中心</a>
+                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">资质认证</a>
             </div>
         </div>
     </div>
@@ -1321,29 +1435,32 @@
         <div class="container">
             <!-- 搜索容器 -->
             <div class="blank-container">
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div class="search-container">
-                        <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-                            <div style="font-size: 24px; font-weight: bold; color: var(--klein-blue);">怡合达</div>
-                            <div style="flex: 1; display: flex; align-items: center;">
-                                <input type="text" placeholder="请输入产品名称/型号/型号" class="search-input">
+                <div class="search-container">
+                        <div class="logo-section">
+                            <div class="search-logo">Raas.Dao</div>
+                            <div class="logo-slogan">共创・共享・共赢</div>
+                        </div>
+                    <div class="search-main">
+                        <div class="search-input-row">
+                            <div class="search-input-wrapper">
+                                <input type="text" placeholder="请输入" class="search-input">
                                 <button class="search-btn">搜索</button>
                             </div>
                         </div>
-                        <div class="search-actions">
-                            <button class="ai-team-btn" style="background: #ff7f00;" onclick="window.location.href='ai.html'">快速报价</button>
-                            <button class="cart-btn" style="background: #007bff; color: white; border: 1px solid #007bff;">
-                                🛒 采购购物车
+                        <div class="search-tags">
+                            <span class="tag">同步比价</span>
+                            <span class="tag">应有尽有</span>
+                            <span class="tag">品牌库</span>
+                            <span class="tag">设计公社</span>
+                        </div>
+                    </div>
+                    <div class="search-actions">
+                            <button class="quote-btn" onclick="window.location.href='ai.html'">创造中心</button>
+                            <button class="cart-btn">
+                                🛒 购物车
                                 <span class="cart-badge">1</span>
                             </button>
                         </div>
-                    </div>
-                    <div class="search-tags" style="padding-left: 120px;">
-                        <span class="tag">同步比价</span>
-                        <span class="tag">应有尽有</span>
-                        <span class="tag">品牌库</span>
-                        <span class="tag">设计公社</span>
-                    </div>
                 </div>
             </div>
         </div>
