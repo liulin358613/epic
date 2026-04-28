@@ -313,7 +313,7 @@
         .input-tool-row {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
             padding-top: 10px;
             border-top: 1px solid var(--border-gray);
             gap: 12px;
@@ -861,27 +861,10 @@
         .content-row {
             display: flex;
             gap: 8px;
-            margin: 14px 0;
+            margin: 0 0 14px 0;
             position: relative;
             min-height: 630px;
             align-items: stretch;
-        }
-        
-        .filter-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 220px;
-            flex-shrink: 0;
-        }
-        
-        .filter:first-child {
-            flex-shrink: 0;
-        }
-        
-        .filter:last-child {
-            flex: 1;
-            min-height: 300px;
         }
         
         .card-grid {
@@ -894,10 +877,13 @@
         }
         
         .sort-stats-container {
-            padding: 16px 20px;
-            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 20px;
+            background-color: #f5f5f5;
         }
-        
+
         .card-content-container {
             min-height: 400px;
             display: grid;
@@ -905,128 +891,9 @@
             gap: 8px;
             padding: 16px 10px;
             flex: 1;
+            align-items: start;
         }
 
-        .filter-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 220px;
-            flex-shrink: 0;
-        }
-
-        .filter {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            position: static;
-        }
-        
-        .filter-section .filter-items {
-            display: flex;
-            flex-direction: column;
-            gap: 0px;
-        }
-
-        /* 自定义滚动条样式 */
-        .filter::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .filter::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .filter::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        .filter::-webkit-scrollbar-thumb:hover {
-            background: var(--ai-desc);
-        }
-
-        .filter-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--deep-gray);
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .filter-items {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .filter-item {
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--deep-gray);
-            transition: all 0.2s;
-            position: relative;
-            width: 100%;
-            text-align: left;
-        }
-
-        .filter-item:hover {
-            color: var(--klein-blue);
-            background-color: #f0f7ff;
-            font-weight: 500;
-            transform: translateX(4px);
-        }
-
-        #sub-filter-items .filter-item {
-            padding: 8px 14px;
-            font-size: 14px;
-        }
-
-        #sub-filter-items .filter-item:hover {
-            color: var(--klein-blue);
-            background-color: #f0f7ff;
-            font-weight: 500;
-            transform: translateX(4px);
-        }
-
-        .filter-item.active {
-            background-color: var(--light-bg);
-            color: var(--klein-blue);
-            font-weight: 500;
-        }
-
-        /* 三级筛选浮层 */
-        .sub-filter-popup {
-            position: absolute;
-            left: 200px;
-            top: 0;
-            width: 200px;
-            background: var(--white);
-            /* border-radius: 0 12px 12px 0; */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-left: none;
-            padding: 8px;
-            z-index: 1000;
-            display: none;
-        }
-
-        .sub-filter-popup:hover {
-            display: block;
-        }
-
-        .sort-stats-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 20px;
-            background-color: #f5f5f5;
-        }
-        
         .sort-options {
             display: flex;
             gap: 10px;
@@ -1052,11 +919,82 @@
             border-color: #4a90e2;
         }
         
-        .stats-controls {
+        .filter-control {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
+
+        .filter-dropdown {
+            position: relative;
+        }
+
+        .filter-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            min-width: 200px;
+            overflow: visible;
+        }
+
+        .filter-dropdown-content {
+            padding: 8px;
+        }
+
+        .filter-dropdown-item {
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--deep-gray);
+            transition: all 0.2s;
+        }
+
+        .filter-dropdown-item:hover {
+            color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
+        }
+
+        .sub-filter-popup {
+            position: absolute;
+            left: 180px;
+            top: 36px;
+            width: 200px;
+            background: var(--white);
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
+            border: 1px solid var(--border);
+            /* border-radius: 8px; */
+            overflow: hidden;
+        }
+
+        #sub-filter-items .filter-item {
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+            width: 100%;
+            text-align: left;
+        }
+
+        #sub-filter-items .filter-item:hover {
+            color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
+        }
+
+
         
         .product-count {
             font-size: 14px;
@@ -1119,14 +1057,6 @@
             min-width: 0;
             border-radius: 8px;
             background:#ffffff;
-        }
-        
-        .card-content-container {
-            min-height: 400px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            padding: 16px 10px;
         }
         
         .content-card {
@@ -1298,63 +1228,42 @@
             <div class="breadcrumb">
                 <a href="index.html">首页</a>
                 <span class="breadcrumb-separator">/</span>
-                <span class="breadcrumb-current">产品列表</span>
+                <span class="breadcrumb-current">全部</span>
+            </div>
+
+            <!-- 筛选容器 -->
+            <div style="background-color: #ffffff; border-bottom: 1px solid #e5e7eb;">
+                <!-- 全部分类筛选行 -->
+                <div id="industry-filter-row" style="display: flex; align-items: center; padding:28px;">
+                    <span style="font-size: 14px; color: #374151; font-weight: 500;">全部分类</span>
+                    <div class="filter-dropdown" style="margin-left: 16px; position: relative;">
+                        <button class="filter-btn" id="filterToggle" style="padding: 6px 16px; border: 1px solid #e5e7eb; background-color: white; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 30px; color: #374151;" onclick="toggleFilterDropdown()" onmouseover="this.style.borderColor='#0066cc'; this.style.color='#0066cc';" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#374151';">
+                            <span id="filterSelection">全部分类</span>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="transition: transform 0.3s;" id="filterArrow"><path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="filter-dropdown-menu" id="filterDropdownMenu" style="display: none;">
+                            <div class="filter-dropdown-content" id="industry-filter">
+                                <!-- 筛选内容将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+                        <!-- 三级筛选浮层 -->
+                        <div class="sub-filter-popup" id="sub-filter" style="display: none;">
+                            <div id="sub-filter-items"></div>
+                        </div>
+                    </div>
+                    <!-- 全部分类下拉筛选后面的重置按钮 -->
+                    <button id="resetIndustryBtn" style="margin-left: 12px; padding: 6px 16px; border: 1px solid #e5e7eb; background-color: white; border-radius: 6px; cursor: pointer; font-size: 14px; color: #6b7280; transition: all 0.3s;" onmouseover="this.style.borderColor='#ef4444'; this.style.color='#ef4444';" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#6b7280';" onclick="resetIndustryFilter()">
+                        重置
+                    </button>
+                </div>
+                <!-- 其他筛选项空白容器 -->
+                <div class="other-filters-container" style="display: flex; align-items: center; gap: 8px; padding:28px;">
+                    <span style="font-size: 14px; color: #374151; font-weight: 500; margin-right: 16px;">全部分类</span>
+                    <!-- 其他筛选项将通过JavaScript动态生成 -->
+                </div>
             </div>
             
             <div class="content-row">
-                <div class="filter-container">
-                    <div class="filter">
-                        <div class="filter-section">
-                            <div class="filter-items" id="industry-filter">
-                                <div class="filter-item">全部产业</div>
-                                <!-- 产业项将通过JavaScript动态生成 -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="filter">
-                        <div class="filter-section">
-                            <div class="filter-title">热门推荐</div>
-                            <div class="filter-items" style="gap: 8px;">
-                                <div class="content-card">
-                                    <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://picsum.photos/200/200?random=201" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
-                                    </div>
-                                    <div style="padding: 8px;">
-                                        <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">工业机器人</div>
-                                        <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>12.50<span style="font-size: 12px;">万</span></div>
-                                    </div>
-                                </div>
-                                <div class="content-card">
-                                    <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://picsum.photos/200/200?random=202" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
-                                    </div>
-                                    <div style="padding: 8px;">
-                                        <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">AGV移动机器人</div>
-                                        <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.20<span style="font-size: 12px;">万</span></div>
-                                    </div>
-                                </div>
-                                 <div class="content-card">
-                                    <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
-                                        <img src="https://picsum.photos/200/200?random=202" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
-                                    </div>
-                                    <div style="padding: 8px;">
-                                        <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">AGV移动机器人</div>
-                                        <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.20<span style="font-size: 12px;">万</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 三级筛选浮层 -->
-                <div class="sub-filter-popup" id="sub-filter" style="display: none;">
-                    <div class="filter-items" id="sub-filter-items">
-                        <!-- 细分领域将通过JavaScript动态生成 -->
-                    </div>
-                </div>
                 <div class="card-grid">
                     <!-- 排序、统计容器 -->
                     <div class="sort-stats-container">
@@ -1363,9 +1272,7 @@
                             <button class="sort-btn">人气</button>
                             <button class="sort-btn">销量</button>
                         </div>
-                        <div class="stats-controls">
-                            <span class="product-count">共 23 条</span>
-                        </div>
+                        <span class="product-count">共 23 条</span>
                     </div>
                     <!-- 内容容器 -->
                     <div class="card-content-container">
@@ -1813,17 +1720,12 @@
                 item.addEventListener('mouseleave', (e) => {
                     // 延迟检查鼠标是否在三级菜单上
                     setTimeout(() => {
-                        const subFilter = document.getElementById('sub-filter');
-                        const isHoveringSubFilter = subFilter && subFilter.matches(':hover');
-                        const isHoveringOtherFilterItem = document.querySelector('.filter-item:hover');
-                        
-                        if (!isHoveringSubFilter && !isHoveringOtherFilterItem) {
-                            // 鼠标不在三级菜单上，也不在其他二级菜单上，取消二级菜单的选中状态
+                        if (!document.querySelector('.sub-filter-popup:hover')) {
+                            // 鼠标不在三级菜单上，取消二级菜单的选中状态
                             item.style.color = '';
                             item.style.backgroundColor = '';
                             item.style.fontWeight = '';
-                            // 隐藏三级菜单
-                            hideSubFilter();
+                            item.style.transform = '';
                         }
                     }, 200);
                 });
@@ -1833,8 +1735,14 @@
                     // 获取当前选中的tab
                     const activeTab = document.querySelector('.main-tab.active');
                     const tabName = activeTab ? activeTab.dataset.tab : '';
-                    // 跳转到带有参数的URL
-                    window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(industry.name)}`;
+                    // 动态更新内容
+                    updateContent(tabName, industry.name, null);
+                    // 更新筛选按钮显示
+                    updateFilterButton(industry.name, null);
+                    // 更新面包屑导航（不传递tab，直接显示首页 > 二级菜单）
+                    updateBreadcrumb(null, industry.name, null);
+                    // 关闭下拉菜单
+                    toggleFilterDropdown();
                 });
                 
                 industryFilter.appendChild(item);
@@ -1907,8 +1815,8 @@
                     // 获取当前选中的tab
                     const activeTab = document.querySelector('.main-tab.active');
                     const tabName = activeTab ? activeTab.dataset.tab : '';
-                    // 跳转到带有参数的URL
-                    window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(item.dataset.industry)}&sub=${encodeURIComponent(sub)}`;
+                    // 动态更新内容
+                    updateContent(tabName, item.dataset.industry, sub);
                 });
                 
                 subFilterItems.appendChild(subItem);
@@ -1946,14 +1854,14 @@
             const subFilter = document.getElementById('sub-filter');
             if (subFilter) {
                 subFilter.style.display = 'none';
-                // 取消所有二级菜单的选中状态
-                document.querySelectorAll('.filter-item').forEach(navItem => {
-                    navItem.style.color = '';
-                    navItem.style.backgroundColor = '';
-                    navItem.style.fontWeight = '';
-                    navItem.style.transform = '';
-                });
             }
+            // 取消所有二级菜单的选中状态
+            document.querySelectorAll('.filter-item').forEach(navItem => {
+                navItem.style.color = '';
+                navItem.style.backgroundColor = '';
+                navItem.style.fontWeight = '';
+                navItem.style.transform = '';
+            });
         }
 
         // 处理产业点击
@@ -1968,6 +1876,77 @@
             // 这里可以添加细分领域点击后的逻辑
         }
 
+        // 动态更新内容
+        function updateContent(tab, industry, sub) {
+            // 保存当前滚动位置
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // 更新面包屑导航
+            updateBreadcrumb(tab, industry, sub);
+            
+            // 模拟加载内容（这里可以根据实际需求从后端获取数据）
+            const cardContentContainer = document.querySelector('.card-content-container');
+            if (cardContentContainer) {
+                // 直接更新内容，无任何效果
+                const newContent = generateCardContent(tab, industry, sub);
+                cardContentContainer.innerHTML = newContent;
+                
+                // 恢复滚动位置
+                window.scrollTo(0, scrollTop);
+                
+                // 为新卡片添加点击事件
+                addCardClickEvents();
+            }
+        }
+
+        // 生成卡片内容
+        function generateCardContent(tab, industry, sub) {
+            // 卡片数据
+            const cardData = [
+                { name: '六轴工业机器人', description: '高精度工业自动化解决方案', price: '12.50万', rent: '10000/天', img: '101', icon: '🤖' },
+                { name: '协作机器人', description: '灵活协作型机器人解决方案', price: '6.80万', rent: '5440/天', img: '102', icon: '🦾' },
+                { name: 'AGV移动机器人', description: '智能物流搬运解决方案', price: '8.20万', rent: '6560/天', img: '103', icon: '🚜' },
+                { name: '焊接机器人', description: '高精度焊接解决方案', price: '9.80万', rent: '7840/天', img: '104', icon: '🤖' },
+                { name: '码垛机器人', description: '高效码垛解决方案', price: '7.50万', rent: '6000/天', img: '105', icon: '🦾' },
+                { name: '巡检机器人', description: '智能巡检解决方案', price: '6.20万', rent: '4960/天', img: '106', icon: '🚜' },
+                { name: '清洁机器人', description: '智能清洁解决方案', price: '3.50万', rent: '2800/天', img: '107', icon: '🤖' },
+                { name: '矿山机器人', description: '智能矿山解决方案', price: '18.50万', rent: '14800/天', img: '108', icon: '🤖' },
+                { name: '水下机器人', description: '智能水下作业解决方案', price: '15.20万', rent: '12160/天', img: '109', icon: '🦾' },
+                { name: '消防机器人', description: '智能消防解决方案', price: '13.80万', rent: '11040/天', img: '110', icon: '🚒' },
+                { name: '医疗机器人', description: '智能医疗解决方案', price: '15.80万', rent: '12640/天', img: '111', icon: '🏥' },
+                { name: '教育机器人', description: '智能教育解决方案', price: '4.20万', rent: '3360/天', img: '112', icon: '📚' },
+                { name: '配送机器人', description: '智能配送解决方案', price: '5.20万', rent: '4160/天', img: '113', icon: '📦' },
+                { name: '农业机器人', description: '智能农业解决方案', price: '8.80万', rent: '7040/天', img: '114', icon: '🌾' },
+                { name: '建筑机器人', description: '智能建筑解决方案', price: '22.50万', rent: '18000/天', img: '115', icon: '🏗️' },
+                { name: '安保机器人', description: '智能安保解决方案', price: '7.80万', rent: '6240/天', img: '116', icon: '🛡️' },
+                { name: '餐饮机器人', description: '智能餐饮解决方案', price: '3.80万', rent: '3040/天', img: '117', icon: '🍽️' },
+                { name: '迎宾机器人', description: '智能迎宾解决方案', price: '4.50万', rent: '3600/天', img: '118', icon: '🤝' },
+                { name: '物流机器人', description: '智能物流解决方案', price: '9.20万', rent: '7360/天', img: '119', icon: '🚚' },
+                { name: '采摘机器人', description: '智能采摘解决方案', price: '11.50万', rent: '9200/天', img: '120', icon: '🍎' }
+            ];
+            
+            // 根据参数生成不同的卡片内容
+            let content = '';
+            for (let i = 0; i < 20; i++) {
+                const data = cardData[i % cardData.length];
+                content += `
+                    <div class="content-card">
+                        <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                            <img src="https://picsum.photos/200/200?random=${data.img}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">${data.icon}</div>
+                        </div>
+                        <div style="padding: 8px;">
+                            <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">${data.name}</div>
+                            <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">${data.description}</div>
+                            <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>${data.price}<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>${data.rent})</span></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return content;
+        }
+
         // 处理标签切换
         function handleTabClick(tabName) {
             // 这里可以添加标签切换后的逻辑
@@ -1976,10 +1955,431 @@
             populateIndustries(tabName);
         }
 
+        // 切换筛选下拉菜单
+        function toggleFilterDropdown() {
+            const menu = document.getElementById('filterDropdownMenu');
+            const arrow = document.getElementById('filterArrow');
+            const subFilter = document.getElementById('sub-filter');
+            const isDisplayed = menu.style.display === 'block';
+            
+            if (isDisplayed) {
+                menu.style.display = 'none';
+                if (subFilter) subFilter.style.display = 'none';
+                arrow.innerHTML = '<path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+            } else {
+                menu.style.display = 'block';
+                arrow.innerHTML = '<path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+                generateFilterContent();
+            }
+        }
+
+        // 生成筛选内容
+        function generateFilterContent() {
+            const content = document.querySelector('.filter-dropdown-content');
+            const industries = [
+                { name: '全部分类', sub: [] },
+                { name: '机器人、设备共享', sub: ['工业机器人', '服务机器人', '协作机器人', '移动机器人'] },
+                { name: '共享工厂', sub: ['智能工厂', '柔性制造', '定制化生产', '协同制造'] },
+                { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备', '自动化设备'] },
+                { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务', '研发成果'] },
+                { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务', '管理咨询'] },
+                { name: '场地资源', sub: ['厂房', '仓库', '实验室', '办公空间'] },
+                { name: '智造品', sub: ['工业产品', '农业产品', '服务业产品', '智能硬件'] },
+                { name: '应用软件产品', sub: ['工业软件', '管理软件', '设计软件', '数据分析'] },
+                { name: '游戏产品', sub: ['手机游戏', 'PC游戏', 'VR游戏', '休闲游戏'] },
+                { name: '影视文学', sub: ['电影', '电视剧', '小说', '动漫'] },
+                { name: '游乐服务产品', sub: ['主题乐园', '休闲娱乐', '文化体验', '旅游服务'] },
+                { name: '教育培训产品', sub: ['职业培训', '技能提升', '认证考试', '在线课程'] },
+                { name: '健康医疗产品', sub: ['医疗器械', '健康管理', '医疗服务', '康复护理'] },
+                { name: '智能家居产品', sub: ['智能家电', '安防系统', '环境控制', '家庭自动化'] },
+                { name: '绿色环保产品', sub: ['节能设备', '环保材料', '可再生能源', '循环利用'] }
+            ];
+            
+            content.innerHTML = '';
+            industries.forEach(industry => {
+                const item = document.createElement('div');
+                item.className = 'filter-dropdown-item filter-item';
+                item.textContent = industry.name;
+                item.dataset.industry = industry.name;
+                item.dataset.sub = JSON.stringify(industry.sub);
+                
+                item.addEventListener('mouseenter', (e) => {
+                    showSubFilter(e.target);
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    // 延迟检查鼠标是否在三级菜单上
+                    setTimeout(() => {
+                        if (!document.querySelector('.sub-filter-popup:hover')) {
+                            // 鼠标不在三级菜单上，取消二级菜单的选中状态
+                            item.style.color = '';
+                            item.style.backgroundColor = '';
+                            item.style.fontWeight = '';
+                            item.style.transform = '';
+                        }
+                    }, 200);
+                });
+                
+                item.addEventListener('click', () => {
+                    const currentTab = document.querySelector('.tab-item.active')?.textContent || document.querySelector('.tab-item.selected')?.textContent || '全部';
+                    
+                    if (industry.name === '全部分类' || industry.name === '全部产业') {
+                        updateContent(null, null, null);
+                        updateFilterButton(null, null);
+                        updateBreadcrumb(currentTab, null, null);
+                    } else if (!industry.sub || industry.sub.length === 0) {
+                        updateContent(null, industry.name, null);
+                        updateFilterButton(industry.name, null);
+                        updateBreadcrumb(null, industry.name, null);
+                    } else {
+                        // 如果有子菜单，更新按钮显示二级菜单名称
+                        updateFilterButton(industry.name, null);
+                        updateBreadcrumb(null, industry.name, null);
+                    }
+                    // 选择后立即关闭下拉菜单
+                    toggleFilterDropdown();
+                });
+                
+                content.appendChild(item);
+            });
+        }
+        
+        // 显示三级筛选
+        function showSubFilter(item) {
+            const industry = item.dataset.industry;
+            const sub = JSON.parse(item.dataset.sub || '[]');
+            
+            const subFilter = document.getElementById('sub-filter');
+            
+            if (industry && sub && sub.length > 0) {
+                if (subFilter) subFilter.style.display = 'block';
+                generateSubFilter(sub, item);
+                highlightParentSideNav(item);
+            } else {
+                if (subFilter) subFilter.style.display = 'none';
+            }
+        }
+        
+        // 高亮对应的二级菜单
+        function highlightParentSideNav(item) {
+            document.querySelectorAll('.filter-item').forEach(navItem => {
+                navItem.style.color = '';
+                navItem.style.backgroundColor = '';
+                navItem.style.fontWeight = '';
+                navItem.style.transform = '';
+            });
+            
+            item.style.color = 'var(--klein-blue)';
+            item.style.backgroundColor = '#f0f7ff';
+            item.style.fontWeight = '500';
+            item.style.transform = 'translateX(4px)';
+        }
+        
+        // 计算并调整三级筛选位置
+        function adjustSubFilterPosition(item) {
+            const subFilter = document.getElementById('sub-filter');
+            if (!subFilter) return;
+            
+            const dropdownRect = document.querySelector('.filter-dropdown').getBoundingClientRect();
+            const rect = item.getBoundingClientRect();
+            
+            // 计算相对于filter-dropdown的top位置
+            let top = rect.top - dropdownRect.top;
+            
+            // 强制回流以获取正确的尺寸
+            subFilter.offsetHeight;
+            const subFilterRect = subFilter.getBoundingClientRect();
+            
+            // 确保不会超出屏幕底部
+            const windowHeight = window.innerHeight;
+            const subFilterBottom = rect.top + subFilterRect.height;
+            
+            if (subFilterBottom > windowHeight - 20) {
+                top = windowHeight - subFilterRect.height - dropdownRect.top - 20;
+                top = Math.max(36, top); // 最小36px，避免覆盖按钮
+            }
+            
+            subFilter.style.top = top + 'px';
+        }
+        
+        // 生成三级筛选
+        function generateSubFilter(subItems, item) {
+            const subFilterItems = document.getElementById('sub-filter-items');
+            subFilterItems.innerHTML = '';
+            
+            subItems.forEach(sub => {
+                const subItem = document.createElement('div');
+                subItem.className = 'filter-item';
+                subItem.textContent = sub;
+                
+                subItem.addEventListener('mouseenter', () => {
+                    highlightParentSideNav(item);
+                });
+                
+                subItem.addEventListener('click', () => {
+                    const industryName = item.dataset.industry;
+                    updateContent(null, industryName, sub);
+                    updateFilterButton(industryName, sub);
+                    toggleFilterDropdown();
+                });
+                
+                subFilterItems.appendChild(subItem);
+            });
+            
+            adjustSubFilterPosition(item);
+        }
+
+        // 更新筛选按钮显示
+        function updateFilterButton(industry, sub) {
+            const filterSelection = document.getElementById('filterSelection');
+            if (!filterSelection) return;
+            
+            if (!industry || industry === '全部分类' || industry === '全部产业') {
+                filterSelection.textContent = '全部分类';
+            } else if (!sub) {
+                filterSelection.textContent = industry;
+            } else {
+                filterSelection.textContent = industry + ' > ' + sub;
+            }
+        }
+
+        // 分类筛选函数
+        function filterByCategory() {
+            const select = document.getElementById('categoryFilter');
+            const category = select.value;
+            
+            if (category) {
+                updateContent(null, category, null);
+            } else {
+                updateContent(null, null, null);
+            }
+        }
+
+        // 点击其他地方关闭筛选菜单
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('filterDropdownMenu');
+            const toggle = document.getElementById('filterToggle');
+            
+            if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target) && !document.querySelector('.sub-filter-popup').contains(e.target)) {
+                menu.style.display = 'none';
+                const arrow = document.getElementById('filterArrow');
+                if (arrow) {
+                    arrow.innerHTML = '<path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+                }
+                
+                document.getElementById('sub-filter').style.display = 'none';
+                
+                document.querySelectorAll('.filter-item').forEach(navItem => {
+                    navItem.style.color = '';
+                    navItem.style.backgroundColor = '';
+                    navItem.style.fontWeight = '';
+                    navItem.style.transform = '';
+                });
+            }
+        });
+        
         // 从URL参数中获取值
         function getUrlParam(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
+        }
+        
+        // 生成其他筛选项标签
+        function generateOtherFilters(tabName) {
+            const container = document.querySelector('.other-filters-container');
+            if (!container) return;
+            
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 添加标题
+            const titleElement = document.createElement('span');
+            titleElement.style.cssText = `font-size: 14px; color: #374151; font-weight: 500; margin-right: 16px;`;
+            titleElement.textContent = '全部分类';
+            container.appendChild(titleElement);
+            
+            // 根据tab动态获取标签列表
+            const tabTags = {
+                '生产力方案共享': ['工业', '农业', '服务业'],
+                '机器人设备共享': ['机器人', '专机设备', '作业工具', '周边工具设备', '手抓/夹治具', '零配件'],
+                '资源共享': ['场地共享', '设备租赁', '技术服务', '人才派遣', '资金对接'],
+                '共享消费': ['共享办公', '共享出行', '共享充电', '共享存储', '共享厨房'],
+                '我的社群': ['技术交流', '项目合作', '招聘求职', '资源互换', '经验分享']
+            };
+            
+            const filterTags = tabTags[tabName] || ['工业', '农业', '服务业'];
+            
+            filterTags.forEach((tag, index) => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'filter-tag';
+                tagElement.textContent = tag;
+                // 美化标签样式，与页面整体配色一致
+                tagElement.style.cssText = `
+                    padding: 6px 30px;
+                    border: 1.5px solid #E5E7EB;
+                    background: linear-gradient(135deg, #ffffff 0%, #F7FAFF 100%);
+                    border-radius: 22px;
+                    font-size: 13px;
+                    color: #4B5563;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    box-shadow: 0 2px 4px rgba(0, 81, 217, 0.06);
+                    font-weight: 500;
+                    letter-spacing: 0.3px;
+                    position: relative;
+                    overflow: hidden;
+                `;
+                
+                // 保留原有文本
+                tagElement.textContent = tag;
+                
+                tagElement.addEventListener('mouseenter', () => {
+                    const isSelected = tagElement.classList.contains('selected');
+                    if (isSelected) {
+                        // 选中状态的hover效果：橙色增强
+                        tagElement.style.borderColor = '#EA580C';
+                        tagElement.style.color = '#9A3412';
+                        tagElement.style.background = 'linear-gradient(135deg, #FFEDD5 0%, #FED7AA 100%)';
+                        tagElement.style.boxShadow = '0 6px 16px rgba(243, 112, 33, 0.35)';
+                    } else {
+                        // 默认状态的hover效果：蓝色渐变背景
+                        tagElement.style.borderColor = '#0051D9';
+                        tagElement.style.color = '#0051D9';
+                        tagElement.style.background = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)';
+                        tagElement.style.boxShadow = '0 4px 12px rgba(0, 81, 217, 0.2)';
+                    }
+                    tagElement.style.transform = 'translateY(-2px)';
+                    tagElement.style.letterSpacing = '0.5px';
+                });
+                
+                tagElement.addEventListener('mouseleave', () => {
+                    const isSelected = tagElement.classList.contains('selected');
+                    if (isSelected) {
+                        tagElement.style.borderColor = '#F37021';
+                        tagElement.style.color = '#C2410C';
+                        tagElement.style.background = 'linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)';
+                        tagElement.style.boxShadow = '0 4px 12px rgba(243, 112, 33, 0.25)';
+                    } else {
+                        tagElement.style.borderColor = '#E5E7EB';
+                        tagElement.style.color = '#4B5563';
+                        tagElement.style.background = 'linear-gradient(135deg, #ffffff 0%, #F7FAFF 100%)';
+                        tagElement.style.boxShadow = '0 2px 4px rgba(0, 81, 217, 0.06)';
+                    }
+                    tagElement.style.transform = 'translateY(0)';
+                    tagElement.style.letterSpacing = '0.3px';
+                });
+                
+                tagElement.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    
+                    // 获取当前选中的tab
+                    const currentTab = document.querySelector('.main-tab.active')?.textContent || document.querySelector('.main-tab.selected')?.textContent || '生产力方案共享';
+                    
+                    // 检查当前标签是否已选中（通过类名判断）
+                    const isSelected = tagElement.classList.contains('selected');
+                    
+                    if (isSelected) {
+                        // 取消选中状态
+                        tagElement.classList.remove('selected');
+                        tagElement.style.background = 'linear-gradient(135deg, #ffffff 0%, #F7FAFF 100%)';
+                        tagElement.style.borderColor = '#E5E7EB';
+                        tagElement.style.color = '#4B5563';
+                        tagElement.style.boxShadow = '0 2px 4px rgba(0, 81, 217, 0.06)';
+                        
+                        // 更新内容显示全部
+                        updateContent(null, null, null);
+                        // 更新面包屑导航
+                        updateBreadcrumb(currentTab, null, null);
+                    } else {
+                        // 移除其他标签的选中状态
+                        document.querySelectorAll('.filter-tag').forEach(t => {
+                            t.classList.remove('selected');
+                            t.style.background = 'linear-gradient(135deg, #ffffff 0%, #F7FAFF 100%)';
+                            t.style.borderColor = '#E5E7EB';
+                            t.style.color = '#4B5563';
+                            t.style.boxShadow = '0 2px 4px rgba(0, 81, 217, 0.06)';
+                        });
+                        
+                        // 设置当前标签为选中状态（橙色主题）
+                        tagElement.classList.add('selected');
+                        tagElement.style.background = 'linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)';
+                        tagElement.style.borderColor = '#F37021';
+                        tagElement.style.color = '#C2410C';
+                        tagElement.style.boxShadow = '0 4px 12px rgba(243, 112, 33, 0.25)';
+                        
+                        // 更新内容
+                        updateContent(null, tag, null);
+                        // 更新面包屑导航（标签作为三级筛选跟在tab后面）
+                        updateBreadcrumb(currentTab, null, tag);
+                    }
+                    // 不更新 filterButton，不关闭下拉菜单
+                });
+                
+                container.appendChild(tagElement);
+                
+                // 在最后一个标签后面添加重置按钮
+                if (index === filterTags.length - 1) {
+                    const resetBtn = document.createElement('button');
+                    resetBtn.id = 'resetTagBtn';
+                    resetBtn.textContent = '重置';
+                    resetBtn.style.cssText = `
+                        margin-left: 12px;
+                        padding: 6px 16px;
+                        border: 1px solid #e5e7eb;
+                        background-color: white;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        color: #6b7280;
+                        transition: all 0.3s;
+                    `;
+                    
+                    resetBtn.addEventListener('mouseenter', () => {
+                        resetBtn.style.borderColor = '#ef4444';
+                        resetBtn.style.color = '#ef4444';
+                    });
+                    
+                    resetBtn.addEventListener('mouseleave', () => {
+                        resetBtn.style.borderColor = '#e5e7eb';
+                        resetBtn.style.color = '#6b7280';
+                    });
+                    
+                    resetBtn.addEventListener('click', () => {
+                        resetTagFilter();
+                    });
+                    
+                    container.appendChild(resetBtn);
+                }
+            });
+        }
+        
+        // 重置全部分类筛选
+        function resetIndustryFilter() {
+            const filterSelection = document.getElementById('filterSelection');
+            if (filterSelection) {
+                filterSelection.textContent = '全部分类';
+            }
+            
+            updateContent(null, null, null);
+            updateBreadcrumb(null, null, null);
+            toggleFilterDropdown();
+        }
+        
+        // 重置标签筛选
+        function resetTagFilter() {
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.classList.remove('selected');
+                tag.style.background = 'linear-gradient(135deg, #ffffff 0%, #F7FAFF 100%)';
+                tag.style.borderColor = '#E5E7EB';
+                tag.style.color = '#4B5563';
+                tag.style.boxShadow = '0 2px 4px rgba(0, 81, 217, 0.06)';
+            });
+            
+            updateContent(null, null, null);
+            
+            // 更新面包屑导航，显示当前选中的tab
+            const currentTab = document.querySelector('.main-tab.active')?.textContent || document.querySelector('.main-tab.selected')?.textContent || '生产力方案共享';
+            updateBreadcrumb(currentTab, null, null);
         }
 
         // 更新面包屑导航
@@ -1994,32 +2394,34 @@
             const validIndustry = industry && industry !== 'null' && industry !== 'undefined';
             const validSub = sub && sub !== 'null' && sub !== 'undefined';
             
-            // 构建面包屑导航
-            if (validIndustry) {
-                // 如果有industry参数，显示二级菜单
-                if (validTab) {
-                    // 如果有tab参数，显示一级tab
-                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><a href="list.html?tab=${encodeURIComponent(tab)}">${tab}</a>`;
-                }
-                
-                // 如果有sub参数，显示二级菜单作为链接，三级菜单作为当前页
+            // 构建面包屑导航：首页 > 选中tab > 标签筛选（三级）
+            if (validTab) {
                 if (validSub) {
-                    const tabParam = validTab ? encodeURIComponent(tab) : '';
-                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><a href="list.html?tab=${tabParam}&industry=${encodeURIComponent(industry)}">${industry}</a>`;
+                    // 有三级标签时，tab显示为可点击链接（样式与全部分类的二级菜单一致）
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><a href="#" class="breadcrumb-tab-link" data-tab="${tab}">${tab}</a>`;
+                    // 标签栏筛选作为三级筛选，跟在tab后面
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${sub}</span>`;
+                } else if (validIndustry) {
+                    // 全部分类下拉筛选的二级菜单
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${industry}</span>`;
+                } else {
+                    // 只选择tab时，样式与全部分类的二级菜单保持一致
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${tab}</span>`;
+                }
+            } else if (validIndustry) {
+                // 没有tab，但有industry
+                if (validSub) {
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><a href="list.html?industry=${encodeURIComponent(industry)}">${industry}</a>`;
                     breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${sub}</span>`;
                 } else {
-                    // 如果没有sub参数，当前页是二级菜单
                     breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${industry}</span>`;
                 }
-            } else if (validTab) {
-                // 如果只有tab参数，显示一级tab
-                breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${tab}</span>`;
             } else if (validSub) {
                 // 如果只有sub参数，显示三级菜单
                 breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${sub}</span>`;
             } else {
                 // 如果没有任何参数，显示产品列表
-                breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">产品列表</span>`;
+                breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">全部</span>`;
             }
             
             breadcrumb.innerHTML = breadcrumbHTML;
@@ -2032,9 +2434,7 @@
             const industryParam = getUrlParam('industry');
             const subParam = getUrlParam('sub');
             const searchParam = getUrlParam('search');
-            
-            // 初始化产业数据
-            populateIndustries(tabParam);
+            const tagParam = getUrlParam('tag');
             
             // 选中对应的tab
             const mainTabs = document.querySelectorAll('.main-tab');
@@ -2053,6 +2453,57 @@
                 mainTabs[0].classList.add('active');
             }
             
+            // 获取当前选中的tab名称
+            const currentTabName = document.querySelector('.main-tab.active')?.textContent || document.querySelector('.main-tab.selected')?.textContent || '生产力方案共享';
+            
+            // 初始化产业数据
+            populateIndustries(tabParam);
+            
+            // 生成其他筛选项标签（根据tab动态变化）
+            generateOtherFilters(currentTabName);
+            
+            // 获取filter参数
+            const filterParam = getUrlParam('filter');
+            
+            // 根据URL参数决定显示哪个筛选
+            const industryFilterRow = document.getElementById('industry-filter-row');
+            const otherFiltersContainer = document.querySelector('.other-filters-container');
+            
+            if (tagParam && tagParam !== 'null' && tagParam !== 'undefined') {
+                // 选中tab下的侧边导航，展示标签筛选项，隐藏全部分类筛选整行
+                if (industryFilterRow) industryFilterRow.style.display = 'none';
+                if (otherFiltersContainer) otherFiltersContainer.style.display = 'flex';
+                
+                // 选中对应的标签
+                setTimeout(() => {
+                    document.querySelectorAll('.filter-tag').forEach(tag => {
+                        if (tag.textContent === tagParam) {
+                            tag.click();
+                        }
+                    });
+                }, 100);
+            } else if (industryParam && industryParam !== 'null' && industryParam !== 'undefined') {
+                // 默认侧边导航，展示全部分类筛选项，隐藏标签筛选
+                if (industryFilterRow) industryFilterRow.style.display = 'flex';
+                if (otherFiltersContainer) otherFiltersContainer.style.display = 'none';
+                
+                // 更新筛选按钮显示
+                const filterSelection = document.getElementById('filterSelection');
+                if (filterSelection) {
+                    filterSelection.textContent = industryParam;
+                }
+            } else if (filterParam === 'industry') {
+                // 搜索跳转，展示全部分类筛选，隐藏标签筛选，保持重置状态
+                if (industryFilterRow) industryFilterRow.style.display = 'flex';
+                if (otherFiltersContainer) otherFiltersContainer.style.display = 'none';
+                
+                // 保持全部分类重置状态
+                const filterSelection = document.getElementById('filterSelection');
+                if (filterSelection) {
+                    filterSelection.textContent = '全部分类';
+                }
+            }
+            
             // 填充搜索框内容
             const searchInput = document.querySelector('.search-input');
             if (searchInput && searchParam && searchParam !== 'null' && searchParam !== 'undefined') {
@@ -2065,7 +2516,7 @@
                 searchSendBtn.addEventListener('click', function() {
                     const searchInput = document.querySelector('.search-input');
                     const searchText = searchInput ? searchInput.value.trim() : '';
-                    window.location.href = `list.html?search=${encodeURIComponent(searchText)}`;
+                    window.location.href = `list.html?search=${encodeURIComponent(searchText)}&filter=industry`;
                 });
             }
             
@@ -2080,19 +2531,27 @@
                     const tabName = tab.dataset.tab;
                     handleTabClick(tabName);
                     // 隐藏三级筛选
-                    document.getElementById('sub-filter').style.display = 'none';
+                    const subFilter = document.getElementById('sub-filter');
+                    if (subFilter) subFilter.style.display = 'none';
                     // 更新面包屑导航
                     updateBreadcrumb(tabName, null, null);
+                    // 更新筛选标签（根据tab动态变化）
+                    generateOtherFilters(tabName);
+                    
+                    // 切换到标签筛选模式：隐藏全部分类筛选，显示标签筛选
+                    const industryFilterRow = document.getElementById('industry-filter-row');
+                    const otherFiltersContainer = document.querySelector('.other-filters-container');
+                    if (industryFilterRow) industryFilterRow.style.display = 'none';
+                    if (otherFiltersContainer) otherFiltersContainer.style.display = 'flex';
                 });
             });
-            
+
             // 鼠标离开筛选区域时隐藏三级筛选
-            const filterElement = document.querySelector('.filter');
-            if (filterElement) {
-                filterElement.addEventListener('mouseleave', () => {
+            const filterDropdownMenu = document.querySelector('.filter-dropdown-menu');
+            if (filterDropdownMenu) {
+                filterDropdownMenu.addEventListener('mouseleave', () => {
                     setTimeout(() => {
-                        const subFilter = document.getElementById('sub-filter');
-                        if (!document.querySelector('.filter:hover') && (!subFilter || !subFilter.matches(':hover'))) {
+                        if (!document.querySelector('.filter-dropdown-menu:hover') && !document.querySelector('.sub-filter-popup:hover')) {
                             document.getElementById('sub-filter').style.display = 'none';
                             // 鼠标离开筛选区域，取消所有二级菜单的选中状态
                             document.querySelectorAll('.filter-item').forEach(navItem => {
@@ -2107,17 +2566,16 @@
             }
             
             // 鼠标悬停在三级筛选上时保持显示
-            const subFilter = document.getElementById('sub-filter');
-            if (subFilter) {
-                subFilter.addEventListener('mouseenter', () => {
-                    subFilter.style.display = 'block';
+            const subFilterPopup = document.querySelector('.sub-filter-popup');
+            if (subFilterPopup) {
+                subFilterPopup.addEventListener('mouseenter', () => {
+                    document.getElementById('sub-filter').style.display = 'block';
                 });
-                
-                subFilter.addEventListener('mouseleave', () => {
+
+                subFilterPopup.addEventListener('mouseleave', () => {
                     setTimeout(() => {
-                        const filterElement = document.querySelector('.filter');
-                        if ((!filterElement || !filterElement.matches(':hover')) && !subFilter.matches(':hover')) {
-                            subFilter.style.display = 'none';
+                        if (!document.querySelector('.filter-dropdown-menu:hover') && !document.querySelector('.sub-filter-popup:hover')) {
+                            document.getElementById('sub-filter').style.display = 'none';
                             // 鼠标离开三级筛选，取消所有二级菜单的选中状态
                             document.querySelectorAll('.filter-item').forEach(navItem => {
                                 navItem.style.color = '';
@@ -2145,12 +2603,38 @@
             // 更新面包屑导航
             updateBreadcrumb(tabParam, finalIndustryParam, subParam);
             
+            // 为面包屑tab链接添加点击事件
+            addBreadcrumbTabClickEvent();
+            
             // 动态填充推荐区卡片
             populateRecommendedCards();
             
             // 为所有卡片添加点击事件
             addCardClickEvents();
         });
+        
+        // 为面包屑tab链接添加点击事件
+        function addBreadcrumbTabClickEvent() {
+            document.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.classList.contains('breadcrumb-tab-link')) {
+                    e.preventDefault();
+                    const tabName = target.dataset.tab;
+                    // 更新面包屑导航为只显示tab
+                    updateBreadcrumb(tabName, null, null);
+                    // 更新内容显示全部
+                    updateContent(null, null, null);
+                    // 取消所有标签的选中状态
+                    document.querySelectorAll('.filter-tag').forEach(tag => {
+                        tag.classList.remove('selected');
+                        tag.style.background = 'linear-gradient(135deg, #ffffff 0%, #F7FAFF 100%)';
+                        tag.style.borderColor = '#E5E7EB';
+                        tag.style.color = '#4B5563';
+                        tag.style.boxShadow = '0 2px 4px rgba(0, 81, 217, 0.06)';
+                    });
+                }
+            });
+        }
         
         // 为所有卡片添加点击事件
         function addCardClickEvents() {

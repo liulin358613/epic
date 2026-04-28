@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "sessions": {
+    "fa110a82b9214ec18f845242cbe2ffb6": [
+      {
+        "expertId": "OutboundStrategist",
+        "name": "拨必通",
+        "profession": "外呼策略师",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/05-Sales/OutboundStrategist/OutboundStrategist.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/05-Sales/OutboundStrategist/OutboundStrategist_zh.md",
+        "usedAt": 1777355019740,
+        "industryId": "05-Sales"
+      }
+    ]
+  },
+  "lastUpdated": 1777358614792
+}

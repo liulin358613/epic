@@ -2474,8 +2474,13 @@
                     
                     // 添加点击事件
                     item.addEventListener('click', () => {
-                        // 跳转到list页面，带上tab和industry参数
-                        window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(industry.name)}`;
+                        if (!tabName) {
+                            // 默认侧边导航（无tab），跳转list页面，展示全部分类筛选项
+                            window.location.href = `list.html?industry=${encodeURIComponent(industry.name)}`;
+                        } else {
+                            // 选中tab下的侧边导航，跳转list页面，展示标签筛选项
+                            window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&tag=${encodeURIComponent(industry.name)}`;
+                        }
                     });
                     
                     industryFilter.appendChild(item);
