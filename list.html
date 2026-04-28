@@ -1556,6 +1556,28 @@
                 });
             }
 
+            // 根据URL参数设置选中的Tab
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabName = urlParams.get('tab');
+            if (tabName) {
+                // 移除所有Tab的active类
+                document.querySelectorAll('.main-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                // 找到对应的Tab并添加active类
+                const targetTab = document.querySelector(`.main-tab[data-tab="${tabName}"]`);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+                // 加载对应tab的筛选标签
+                populateIndustries(tabName);
+                // 隐藏全部分类筛选区域
+                const industryFilterRow = document.getElementById('industry-filter-row');
+                if (industryFilterRow) {
+                    industryFilterRow.style.display = 'none';
+                }
+            }
+
             // 处理来自子页面的消息
             window.addEventListener('message', (event) => {
                 if (event.data.type === 'SHOW_LOGIN_MODAL') {
@@ -2427,6 +2449,21 @@
             breadcrumb.innerHTML = breadcrumbHTML;
         }
 
+        // 面包屑tab链接点击事件（使用事件委托）
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('breadcrumb-tab-link')) {
+                e.preventDefault();
+                // 点击面包屑中的tab时，保持当前选中tab标题不变，不更新为【全部】
+                const currentTab = document.querySelector('.main-tab.active');
+                if (currentTab) {
+                    const currentTabName = currentTab.dataset.tab;
+                    // 重新加载当前tab的内容，面包屑保持为当前tab标题
+                    updateContent(currentTabName, null, null);
+                    updateBreadcrumb(currentTabName, null, null);
+                }
+            }
+        });
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             // 从URL参数中获取值
@@ -2620,10 +2657,10 @@
                 if (target.classList.contains('breadcrumb-tab-link')) {
                     e.preventDefault();
                     const tabName = target.dataset.tab;
-                    // 更新面包屑导航为只显示tab
+                    // 更新面包屑导航为只显示tab，保持当前选中tab标题不变
                     updateBreadcrumb(tabName, null, null);
-                    // 更新内容显示全部
-                    updateContent(null, null, null);
+                    // 更新内容，保持当前tab选中状态
+                    updateContent(tabName, null, null);
                     // 取消所有标签的选中状态
                     document.querySelectorAll('.filter-tag').forEach(tag => {
                         tag.classList.remove('selected');

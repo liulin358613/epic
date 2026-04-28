@@ -986,7 +986,7 @@
                                             });
                                         </script>
                                     </div>
-                                    <button class="send-btn" onclick="window.location.href='list.html'" style="background: #06b6d4; width: 36px; height: 36px;">
+                                    <button class="send-btn" onclick="window.location.href='list.html?filter=industry'" style="background: #06b6d4; width: 36px; height: 36px;">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <line x1="12" y1="3" x2="12" y2="21"></line>
                                             <polyline points="3 12 12 3 21 12"></polyline>
@@ -1150,6 +1150,32 @@
                 window.location.reload();
             }, 500);
         }
+
+        // 跳转到AI聊天页面并携带方案信息
+        function goToAIChat() {
+            // 获取方案信息
+            const mainImage = document.getElementById('mainImage');
+            const imageUrl = mainImage ? mainImage.src : 'images/1.png';
+            
+            // 获取方案标题（名称）
+            const titleElement = document.querySelector('div[style="font-size: 16px; color: var(--deep-gray); font-weight: 500; line-height: 1.4;"]');
+            const title = titleElement ? titleElement.textContent.trim().split('（')[0] : '【汽车制造】机器人焊接 + 自动上下料';
+            
+            // 获取方案描述（概述）
+            const descriptionElement = document.querySelector('div[style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;"]');
+            const description = descriptionElement ? descriptionElement.textContent.trim() : '六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。';
+            
+            // 构建URL参数
+            const params = new URLSearchParams({
+                type: 'consult',
+                image: imageUrl,
+                title: title,
+                description: description
+            });
+            
+            // 跳转到AI页面
+            window.location.href = `ai.html?${params.toString()}`;
+        }
     </script>
 
     <!-- 内容区 -->
@@ -1262,7 +1288,7 @@
                                             </button>
                                             
                                             <!-- 方案咨询按钮 -->
-                                            <button onclick="showAIChat()" onmouseover="this.style.backgroundColor='#0051D9'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0, 81, 217, 0.3)';" onmouseout="this.style.backgroundColor='#0066cc'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 102, 204, 0.2)';" style="background-color: #0066cc; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                                            <button onclick="goToAIChat()" onmouseover="this.style.backgroundColor='#0051D9'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0, 81, 217, 0.3)';" onmouseout="this.style.backgroundColor='#0066cc'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 102, 204, 0.2)';" style="background-color: #0066cc; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
                                                 <span>💬</span>
                                                 <span>方案咨询</span>
                                             </button>

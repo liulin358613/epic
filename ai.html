@@ -332,7 +332,135 @@
                     closeImageModal();
                 });
             }
+            
+            // 处理URL参数，添加方案咨询消息
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            if (type === 'consult') {
+                const image = urlParams.get('image') || 'images/1.png';
+                const title = urlParams.get('title') || '【汽车制造】机器人焊接 + 自动上下料';
+                const description = urlParams.get('description') || '六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。';
+                
+                // 等待聊天区域加载完成
+                setTimeout(() => {
+                    addConsultMessage(image, title, description);
+                }, 500);
+            }
         });
+
+        // 添加方案咨询消息
+        function addConsultMessage(image, title, description) {
+            const chatContent = document.querySelector('.chat-content');
+            if (!chatContent) return;
+            
+            // 获取当前时间
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeStr = `${month}-${day} ${hours}:${minutes}`;
+            
+            // 创建用户消息
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user';
+            userMessage.innerHTML = `
+                <div class="message-content">
+                    <div style="margin-bottom: 8px;">方案咨询</div>
+                    <div class="consult-card" style="display: flex; gap: 12px; align-items: flex-start; background-color: #f5f7fa; padding: 12px; border-radius: 8px; cursor: pointer;">
+                        <img src="${image}" alt="${title}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">
+                        <div>
+                            <div style="font-weight: 600; color: #1D2129; margin-bottom: 6px;">${title}</div>
+                            <div style="font-size: 14px; color: #86909C; line-height: 1.6;">${description}</div>
+                        </div>
+                    </div>
+                    <span class="message-time">${timeStr}</span>
+                </div>
+            `;
+            
+            // 添加到聊天区域
+            chatContent.appendChild(userMessage);
+            
+            // 滚动到底部
+            chatContent.scrollTop = chatContent.scrollHeight;
+            
+            // 清除URL参数
+            window.history.replaceState({}, document.title, 'ai.html');
+            
+            // 为方案咨询卡片添加点击事件
+            const consultCard = userMessage.querySelector('.consult-card');
+            if (consultCard) {
+                consultCard.addEventListener('click', function() {
+                    openConsultPreview();
+                });
+            }
+        }
+        
+        // 打开方案咨询预览
+        function openConsultPreview() {
+            // 切换到全屏布局
+            const mainContainer = document.querySelector('.main-container');
+            mainContainer.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-preview');
+            
+            // 显示标题栏
+            const previewHeader = document.querySelector('.preview-header');
+            if (previewHeader) {
+                previewHeader.style.display = 'flex';
+            }
+            
+            // 隐藏图片列表区域和工具栏（只保留空白预览区）
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 设置对话区域和预览区域各占50%
+            const previewArea = document.getElementById('previewArea');
+            const chatArea = document.querySelector('.chat-area');
+            const container = document.querySelector('.main-container-inner');
+            if (container) {
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+            }
+            
+            // 检查是否已经存在"方案咨询"tab
+            const existingTab = previewTabs.find(tab => tab.title === '方案咨询');
+            if (!existingTab) {
+                // 添加新tab
+                previewTabs.push({
+                    id: 'consult-tab',
+                    title: '方案咨询'
+                });
+                
+                // 更新Tab栏
+                updateTabs();
+            }
+            
+            // 激活方案咨询tab
+            activateTab('consult-tab');
+            
+            // 更新预览内容为fangan_yl.html
+            loadFanganYL();
+            
+            // 更新标题栏
+            const previewTitle = document.querySelector('.preview-title');
+            if (previewTitle) {
+                previewTitle.textContent = '方案咨询';
+            }
+        }
+        
+        // 加载方案预览页面
+        function loadFanganYL() {
+            const previewContent = document.querySelector('.preview-content');
+            if (previewContent) {
+                previewContent.style.paddingTop = '0';
+                previewContent.style.paddingRight = '0';
+                previewContent.style.paddingBottom = '0';
+                previewContent.style.paddingLeft = '0';
+                previewContent.innerHTML = '<iframe src="fangan_yl.html" style="width: 100%; height: 100%; border: none; display: block;"></iframe>';
+            }
+        }
         
         // 初始化历史对话列表项
         function initHistoryItems() {
@@ -4578,6 +4706,12 @@
                     document.querySelector('.preview-toolbar').style.display = 'none';
                     // 更新预览内容
                     updateFileManagementContent(tabId);
+                } else if (currentTab.title === '方案咨询') {
+                    // 隐藏图片列表区域和工具栏
+                    document.querySelector('.preview-file-list').style.display = 'none';
+                    document.querySelector('.preview-toolbar').style.display = 'none';
+                    // 加载方案预览页面
+                    loadFanganYL();
                 }
             } else {
                 console.log('没有找到当前Tab');
