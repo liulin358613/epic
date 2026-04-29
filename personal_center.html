@@ -1260,7 +1260,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="team-members" id="members1" style="max-height: 200px;">
+                        <div class="team-members" id="members1">
                             <div class="team-member active">
                                 <div class="member-info">
                                     <div class="member-name">个人信息</div>
@@ -1672,9 +1672,11 @@
             const members = document.getElementById(membersId);
             const icon = menu.querySelector('.collapse-icon');
             
-            // 默认折叠状态
-            members.classList.add('collapsed');
-            icon.classList.add('collapsed');
+            // 默认折叠状态，但个人中心菜单默认展开
+            if (menuId !== 'menu1') {
+                members.classList.add('collapsed');
+                icon.classList.add('collapsed');
+            }
             
             // 点击切换折叠状态
             menu.addEventListener('click', () => {
