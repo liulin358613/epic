@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作日志</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+        .table thead {
+            background: #f8fafc;
+        }
+        .table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        .table td {
+            padding: 14px 20px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+            white-space: nowrap;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .action-edit {
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+        .action-delete {
+            color: #ef4444;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 700px;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 24px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            background: #e2e8f0;
+        }
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-label {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        .modal-body .form-group {
+            margin-bottom: 20px;
+        }
+        .modal-body .form-group span {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .form-label.required::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 4px;
+        }
+        .form-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .tab-content {
+            padding: 8px 0;
+        }
+        .permission-group {
+            margin-bottom: 8px;
+        }
+        .permission-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+            padding: 6px 0;
+        }
+        .permission-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .permission-children {
+            margin-left: 32px;
+            margin-top: 4px;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 12px;
+        }
+        .permission-children .permission-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+        .permission-children .permission-children .permission-label {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        .expand-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 开关样式 */
+        .switch-container {
+            display: flex;
+            align-items: center;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 68px;
+            height: 28px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ef4444;
+            transition: .3s;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .slider-text {
+            font-size: 12px;
+            color: white;
+            font-weight: 500;
+            position: relative;
+            z-index: 0;
+        }
+        .slider-text-on {
+            display: none;
+        }
+        .slider-text-off {
+            display: block;
+        }
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        input:checked + .slider:before {
+            transform: translateX(40px);
+        }
+        input:checked + .slider .slider-text-on {
+            display: block;
+        }
+        input:checked + .slider .slider-text-off {
+            display: none;
+        }
+        .switch-label {
+            margin-left: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">操作日志</h1>
+            <p class="page-subtitle">管理系统操作记录日志</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div style="padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 14px; color: #475569; white-space: nowrap;">关键词：</span>
+                        <input type="text" class="form-control" style="width: 180px;" placeholder="请输入">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 14px; color: #475569; white-space: nowrap;">操作类型：</span>
+                        <select class="form-control" style="width: 150px;">
+                            <option>请选择</option>
+                            <option>查询</option>
+                            <option>添加</option>
+                            <option>修改</option>
+                            <option>删除</option>
+                            <option>登录</option>
+                            <option>退出</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 14px; color: #475569; white-space: nowrap;">操作时间：</span>
+                        <input type="date" class="form-control" style="width: 150px;">
+                        <span style="font-size: 14px; color: #475569;">~</span>
+                        <input type="date" class="form-control" style="width: 150px;">
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fa fa-search"></i>
+                        查询
+                    </button>
+                    <button class="btn btn-secondary">
+                        重置
+                    </button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <div class="table-container">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>业务模块</th>
+                            <th>操作对象</th>
+                            <th>操作类型</th>
+                            <th>操作人</th>
+                            <th>操作结果</th>
+                            <th>操作时间</th>
+                            <th>客户端IP</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>用户管理</td>
+                            <td>用户列表</td>
+                            <td>登录</td>
+                            <td>张三</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 08:30:15</td>
+                            <td>192.168.1.105</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>订单管理</td>
+                            <td>订单查询</td>
+                            <td>查询</td>
+                            <td>李四</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 08:45:32</td>
+                            <td>192.168.1.120</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>商品管理</td>
+                            <td>新增商品</td>
+                            <td>添加</td>
+                            <td>王五</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 09:10:45</td>
+                            <td>192.168.1.112</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>订单管理</td>
+                            <td>修改订单状态</td>
+                            <td>修改</td>
+                            <td>赵六</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 09:25:18</td>
+                            <td>192.168.1.133</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>权限管理</td>
+                            <td>角色配置</td>
+                            <td>修改</td>
+                            <td>张三</td>
+                            <td><span style="color: #ef4444;">失败</span></td>
+                            <td>2026-05-03 10:05:52</td>
+                            <td>192.168.1.105</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>客户管理</td>
+                            <td>删除客户</td>
+                            <td>删除</td>
+                            <td>李四</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 10:30:11</td>
+                            <td>192.168.1.120</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>系统设置</td>
+                            <td>系统参数配置</td>
+                            <td>修改</td>
+                            <td>王五</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 11:00:23</td>
+                            <td>192.168.1.112</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>用户管理</td>
+                            <td>用户登出</td>
+                            <td>退出</td>
+                            <td>王五</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 12:00:00</td>
+                            <td>192.168.1.112</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>财务管理</td>
+                            <td>导出财务报表</td>
+                            <td>查询</td>
+                            <td>赵六</td>
+                            <td><span style="color: #10b981;">成功</span></td>
+                            <td>2026-05-03 14:15:36</td>
+                            <td>192.168.1.133</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>库存管理</td>
+                            <td>库存盘点</td>
+                            <td>修改</td>
+                            <td>钱七</td>
+                            <td><span style="color: #ef4444;">失败</span></td>
+                            <td>2026-05-03 15:40:48</td>
+                            <td>192.168.1.145</td>
+                            <td>
+                                <a href="#" class="action-edit">详情</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100">
+                <div class="pagination">
+                    <button class="pagination-btn">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">4</button>
+                    <button class="pagination-btn">5</button>
+                    <button class="pagination-btn">6</button>
+                    <button class="pagination-btn">7</button>
+                    <button class="pagination-btn">8</button>
+                    <button class="pagination-btn">9</button>
+                    <button class="pagination-btn">
+                        <i class="fa fa-angle-right"></i>
+                    </button>
+                    <select class="form-control w-auto ml-2">
+                        <option>10条/页</option>
+                        <option>20条/页</option>
+                        <option>50条/页</option>
+                    </select>
+                    <span class="text-gray-500 text-sm ml-2">跳至</span>
+                    <input type="text" class="form-control w-16 ml-2" value="5">
+                    <span class="text-gray-500 text-sm ml-2">页</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- 详情弹窗 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">日志详情</h2>
+                <button class="modal-close" id="closeDetailModal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">业务模块：</label>
+                    <span id="detailModule">订单管理</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">操作对象：</label>
+                    <span id="detailObject">修改订单</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">操作类型：</label>
+                    <span id="detailType">修改</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">操作人：</label>
+                    <span id="detailUser">张三</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">操作结果：</label>
+                    <span id="detailResult">成功</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">操作时间：</label>
+                    <span id="detailTime">2026-03-01 10:10:10</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">客户端IP：</label>
+                    <span id="detailIP">192.168.52.252</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">客户端信息：</label>
+                    <span id="detailUA">Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeDetailBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // 弹窗相关元素
+        const detailModal = document.getElementById('detailModal');
+        const closeDetailModal = document.getElementById('closeDetailModal');
+        const closeDetailBtn = document.getElementById('closeDetailBtn');
+        
+        // 详情展示元素
+        const detailModule = document.getElementById('detailModule');
+        const detailObject = document.getElementById('detailObject');
+        const detailType = document.getElementById('detailType');
+        const detailUser = document.getElementById('detailUser');
+        const detailResult = document.getElementById('detailResult');
+        const detailTime = document.getElementById('detailTime');
+        const detailIP = document.getElementById('detailIP');
+        
+        // 日志数据
+        const logData = [
+            { id: 1, module: '用户管理', object: '用户列表', type: '登录', user: '张三', result: '成功', time: '2026-05-03 08:30:15', ip: '192.168.1.105', ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+            { id: 2, module: '订单管理', object: '订单查询', type: '查询', user: '李四', result: '成功', time: '2026-05-03 08:45:32', ip: '192.168.1.120', ua: 'Chrome/120.0.0.0 Safari/537.36' },
+            { id: 3, module: '商品管理', object: '新增商品', type: '添加', user: '王五', result: '成功', time: '2026-05-03 09:10:45', ip: '192.168.1.112', ua: 'Firefox/121.0' },
+            { id: 4, module: '订单管理', object: '修改订单状态', type: '修改', user: '赵六', result: '成功', time: '2026-05-03 09:25:18', ip: '192.168.1.133', ua: 'Safari/604.1' },
+            { id: 5, module: '权限管理', object: '角色配置', type: '修改', user: '张三', result: '失败', time: '2026-05-03 10:05:52', ip: '192.168.1.105', ua: 'Edge/120.0.0.0' },
+            { id: 6, module: '客户管理', object: '删除客户', type: '删除', user: '李四', result: '成功', time: '2026-05-03 10:30:11', ip: '192.168.1.120', ua: 'Opera/106.0.0.0' },
+            { id: 7, module: '系统设置', object: '系统参数配置', type: '修改', user: '王五', result: '成功', time: '2026-05-03 11:00:23', ip: '192.168.1.112', ua: 'Brave/1.61.120' },
+            { id: 8, module: '用户管理', object: '用户登出', type: '退出', user: '王五', result: '成功', time: '2026-05-03 12:00:00', ip: '192.168.1.112', ua: 'Vivaldi/6.5.3206.63' },
+            { id: 9, module: '财务管理', object: '导出财务报表', type: '查询', user: '赵六', result: '成功', time: '2026-05-03 14:15:36', ip: '192.168.1.133', ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
+            { id: 10, module: '库存管理', object: '库存盘点', type: '修改', user: '钱七', result: '失败', time: '2026-05-03 15:40:48', ip: '192.168.1.145', ua: 'Mozilla/5.0 (Linux; Android 10; SM-G981B)' }
+        ];
+        
+        // 打开详情弹窗
+        function openDetailModal(id) {
+            const log = logData.find(item => item.id === id);
+            if (log) {
+                detailModule.textContent = log.module;
+                detailObject.textContent = log.object;
+                detailType.textContent = log.type;
+                detailUser.textContent = log.user;
+                detailResult.textContent = log.result;
+                detailResult.style.color = log.result === '成功' ? '#10b981' : '#ef4444';
+                detailTime.textContent = log.time;
+                detailIP.textContent = log.ip;
+                document.getElementById('detailUA').textContent = log.ua;
+            }
+            detailModal.classList.add('show');
+        }
+        
+        // 关闭详情弹窗
+        function closeDetailModalFunc() {
+            detailModal.classList.remove('show');
+        }
+        
+        // 绑定事件
+        closeDetailModal.addEventListener('click', closeDetailModalFunc);
+        closeDetailBtn.addEventListener('click', closeDetailModalFunc);
+        detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) {
+                closeDetailModalFunc();
+            }
+        });
+        
+        // 绑定详情按钮点击事件
+        document.querySelectorAll('.action-edit').forEach((btn, index) => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openDetailModal(index + 1);
+            });
+        });
+    </script>
+</body>
+</html>

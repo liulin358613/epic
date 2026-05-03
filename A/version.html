@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统版本</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .action-delete {
+            color: #ef4444;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .action-delete:hover {
+            text-decoration: underline;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        
+        /* 版本列表样式 */
+        .version-list {
+            padding: 20px;
+        }
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .version-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+        .version-item::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 2px solid #1d4ed8;
+        }
+        .version-item::after {
+            content: '';
+            position: absolute;
+            left: 13px;
+            top: 18px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: #d1d5db;
+        }
+        .version-item:last-child::after {
+            display: none;
+        }
+        .version-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .version-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .version-date {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .version-detail {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .detail-section {
+            margin-bottom: 16px;
+        }
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .section-content {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.8;
+            padding-left: 16px;
+        }
+        .section-content ul {
+            margin: 0;
+            padding: 0;
+            list-style: decimal;
+        }
+        .section-content li {
+            margin-bottom: 8px;
+        }
+        .section-content li:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">系统版本</h1>
+            <p class="page-subtitle">管理系统版本信息</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="version-list">
+                <div class="version-header">
+                    <span></span>
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-info">
+                        <div>
+                            <span class="version-number">V2.0.0</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 32px;">
+                            <span class="version-date">2026-03-03 10:10:10</span>
+                            <span style="font-size: 14px; color: #64748b;">发布人：张三</span>
+                            <span class="action-delete" onclick="showDeleteConfirm()">删除</span>
+                        </div>
+                    </div>
+                    <div class="version-detail">
+                        <div class="detail-section">
+                            <div class="section-title">新增功能</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>支持数据权限自定义维度配置</li>
+                                    <li>新增操作日志模块，支持审计追溯</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="section-title">优化改进</div>
+                            <div class="section-content">
+                                优化角色管理页面加载速度
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="section-title">问题修复</div>
+                            <div class="section-content">
+                                修复字段权限配置保存失败的问题
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-info">
+                        <div>
+                            <span class="version-number">V1.5.0</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 32px;">
+                            <span class="version-date">2026-03-03 10:10:10</span>
+                            <span style="font-size: 14px; color: #64748b;">发布人：李四</span>
+                            <span class="action-delete" onclick="showDeleteConfirm()">删除</span>
+                        </div>
+                    </div>
+                    <div class="version-detail">
+                        <div class="detail-section">
+                            <div class="section-title">新增功能</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>支持数据权限自定义维度配置</li>
+                                    <li>新增操作日志模块，支持审计追溯</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="version-item">
+                    <div class="version-info">
+                        <div>
+                            <span class="version-number">V1.0.0</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 32px;">
+                            <span class="version-date">2026-03-03 10:10:10</span>
+                            <span style="font-size: 14px; color: #64748b;">发布人：王五</span>
+                            <span class="action-delete" onclick="showDeleteConfirm()">删除</span>
+                        </div>
+                    </div>
+                    <div class="version-detail">
+                        <div class="detail-section">
+                            <div class="section-title">新增功能</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>支持数据权限自定义维度配置</li>
+                                    <li>新增操作日志模块，支持审计追溯</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="addVersionModal" class="dialog-overlay hidden">
+        <div class="dialog-content" style="max-width: 500px;" onclick="event.stopPropagation()">
+            <div class="dialog-body" style="text-align: left;">
+                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">添加版本</h3>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>版本号</label>
+                    <input type="text" class="form-control" style="width: 100%;" placeholder="请输入版本号">
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">新增功能</label>
+                    <textarea class="form-control" style="width: 100%; min-height: 80px;" placeholder="请输入新增功能"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">优化改进</label>
+                    <textarea class="form-control" style="width: 100%; min-height: 80px;" placeholder="请输入优化改进"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">问题修复</label>
+                    <textarea class="form-control" style="width: 100%; min-height: 80px;" placeholder="请输入问题修复"></textarea>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeAddModal()">取消</button>
+                <button class="btn btn-primary" onclick="closeAddModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteRoleModal" class="dialog-overlay hidden">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除吗？删除后不可恢复</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
+                <button class="btn btn-danger" style="background: #ef4444; color: white; border: none;" onclick="closeDeleteDialog()">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const addModal = document.getElementById('addVersionModal');
+        const deleteModal = document.getElementById('deleteRoleModal');
+
+        function openAddModal() {
+            addModal.classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            addModal.classList.add('hidden');
+        }
+
+        function showDeleteConfirm() {
+            deleteModal.classList.remove('hidden');
+        }
+
+        function closeDeleteDialog() {
+            deleteModal.classList.add('hidden');
+        }
+
+        addModal.addEventListener('click', (e) => {
+            if (e.target === addModal) {
+                closeAddModal();
+            }
+        });
+
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) {
+                closeDeleteDialog();
+            }
+        });
+    </script>
+</body>
+</html>

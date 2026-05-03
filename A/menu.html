@@ -57,6 +57,7 @@
         .table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
         .table thead {
             background: #f8fafc;
@@ -70,11 +71,13 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
         }
         .table td {
             padding: 14px 20px;
             color: #475569;
             border-bottom: 1px solid #f1f5f9;
+            white-space: nowrap;
         }
         .btn {
             padding: 8px 20px;
@@ -89,13 +92,13 @@
             gap: 6px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
         }
         .badge {
             padding: 4px 12px;
@@ -110,6 +113,15 @@
         .badge-green {
             background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
             color: #16a34a;
+        }
+        .indent-2 {
+            padding-left: 2em !important;
+        }
+        .indent-4 {
+            padding-left: 4em !important;
+        }
+        .indent-6 {
+            padding-left: 6em !important;
         }
         .pagination {
             display: flex;
@@ -159,7 +171,7 @@
             border-bottom: 1px solid #f1f5f9;
         }
         .page-title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #1e293b;
         }
@@ -177,6 +189,18 @@
         }
         .expand-icon.collapsed {
             transform: rotate(-90deg);
+        }
+        .menu-cell {
+            position: relative;
+        }
+        .menu-name {
+            margin-right: 30px;
+        }
+        .menu-toggle {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .child-row {
             display: table-row;
@@ -211,7 +235,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         .modal-header {
-            padding: 20px 24px;
+            padding: 8px 24px;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
@@ -231,17 +255,18 @@
             padding: 4px;
         }
         .modal-body {
-            padding: 24px;
+            padding: 20px;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         .form-group label {
             display: block;
             font-size: 14px;
             font-weight: 500;
             color: #475569;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+            line-height: 1.2;
         }
         .form-group label .required {
             color: #ef4444;
@@ -249,7 +274,7 @@
         }
         .form-control {
             width: 100%;
-            padding: 12px 14px;
+            padding: 8px 12px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
@@ -330,12 +355,12 @@
             transition: all 0.3s ease;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
         }
         .btn-outline {
             background: white;
@@ -421,7 +446,7 @@
             position: relative;
             padding: 14px 40px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             color: #64748b;
             font-weight: 500;
             transition: color 0.3s ease;
@@ -595,8 +620,47 @@
                             </tr>
                             <tr>
                                 <td>2</td>
+                                <td><i class="fa fa-building text-gray-500"></i></td>
+                                <td class="menu-cell">
+                                    <span class="menu-name">运营中心基础信息</span>
+                                    <i class="fa fa-chevron-down expand-icon menu-toggle" onclick="toggleExpand('operate-child')"></i>
+                                </td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/operate/base-info</td>
+                                <td>运营中心基础信息管理</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">下移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="operate-child">
+                                <td>3</td>
+                                <td><i class="fa fa-info-circle text-gray-500"></i></td>
+                                <td class="menu-cell indent-2">
+                                    <span class="menu-name">基础信息</span>
+                                    <i class="fa fa-chevron-down expand-icon menu-toggle" onclick="toggleExpand('base-info-child')"></i>
+                                </td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/system/base-info</td>
+                                <td>基础信息管理</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">下移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="base-info-child">
+                                <td>4</td>
                                 <td><i class="fa fa-list text-gray-500"></i></td>
-                                <td>功能菜单 <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('menu-child')"></i></td>
+                                <td class="menu-cell indent-4">
+                                    <span class="menu-name">功能菜单</span>
+                                    <i class="fa fa-chevron-down expand-icon menu-toggle" onclick="toggleExpand('menu-child')"></i>
+                                </td>
                                 <td><span class="badge badge-blue">菜单</span></td>
                                 <td>/system/menu</td>
                                 <td>-</td>
@@ -609,9 +673,9 @@
                                 </td>
                             </tr>
                             <tr class="child-row" id="menu-child">
-                                <td>3</td>
+                                <td>5</td>
                                 <td></td>
-                                <td class="child-name">添加菜单</td>
+                                <td class="child-name indent-6">添加菜单</td>
                                 <td><span class="badge badge-green">按钮</span></td>
                                 <td>/system/menu/add</td>
                                 <td>-</td>
@@ -624,9 +688,9 @@
                                 </td>
                             </tr>
                             <tr class="child-row" id="menu-child">
-                                <td>4</td>
+                                <td>6</td>
                                 <td></td>
-                                <td class="child-name">编辑菜单</td>
+                                <td class="child-name indent-6">编辑菜单</td>
                                 <td><span class="badge badge-green">按钮</span></td>
                                 <td>/system/menu/edit</td>
                                 <td>编辑已有菜单项</td>
@@ -639,9 +703,9 @@
                                 </td>
                             </tr>
                             <tr class="child-row" id="menu-child">
-                                <td>5</td>
+                                <td>7</td>
                                 <td></td>
-                                <td class="child-name">删除菜单</td>
+                                <td class="child-name indent-6">删除菜单</td>
                                 <td><span class="badge badge-green">按钮</span></td>
                                 <td>/system/menu/delete</td>
                                 <td>删除指定菜单项</td>
@@ -654,7 +718,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>6</td>
+                                <td>8</td>
                                 <td><i class="fa fa-users text-gray-500"></i></td>
                                 <td>角色管理</td>
                                 <td><span class="badge badge-blue">菜单</span></td>
@@ -669,7 +733,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>7</td>
+                                <td>9</td>
                                 <td><i class="fa fa-user-circle text-gray-500"></i></td>
                                 <td>账号管理</td>
                                 <td><span class="badge badge-blue">菜单</span></td>
@@ -684,7 +748,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>8</td>
+                                <td>10</td>
                                 <td><i class="fa fa-shopping-cart text-gray-500"></i></td>
                                 <td>现货订单</td>
                                 <td><span class="badge badge-blue">菜单</span></td>
@@ -699,7 +763,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>9</td>
+                                <td>11</td>
                                 <td><i class="fa fa-wrench text-gray-500"></i></td>
                                 <td>设备管理</td>
                                 <td><span class="badge badge-blue">菜单</span></td>
@@ -714,7 +778,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>10</td>
+                                <td>12</td>
                                 <td><i class="fa fa-user text-gray-500"></i></td>
                                 <td>客户管理</td>
                                 <td><span class="badge badge-blue">菜单</span></td>
@@ -1581,11 +1645,56 @@
             const icon = event.target;
             const childRows = document.querySelectorAll(`tr[id="${childClass}"]`);
             
+            const isExpanding = !childRows[0]?.classList.contains('hidden');
+            
+            // 处理直接子行
             childRows.forEach(row => {
-                row.classList.toggle('hidden');
+                if (isExpanding) {
+                    row.classList.add('hidden');
+                } else {
+                    row.classList.remove('hidden');
+                }
+                
+                // 如果是折叠操作，同时处理这一行下的所有子级
+                if (isExpanding) {
+                    const nestedIcon = row.querySelector('.expand-icon');
+                    if (nestedIcon) {
+                        const onclickText = nestedIcon.getAttribute('onclick');
+                        const match = onclickText.match(/toggleExpand\('([^']+)'\)/);
+                        if (match) {
+                            const nestedId = match[1];
+                            const nestedRows = document.querySelectorAll(`tr[id="${nestedId}"]`);
+                            
+                            // 递归折叠
+                            const collapseAll = (id) => {
+                                const rows = document.querySelectorAll(`tr[id="${id}"]`);
+                                rows.forEach(r => {
+                                    r.classList.add('hidden');
+                                    const i = r.querySelector('.expand-icon');
+                                    if (i) {
+                                        i.classList.add('collapsed');
+                                        const onclick = i.getAttribute('onclick');
+                                        const m = onclick.match(/toggleExpand\('([^']+)'\)/);
+                                        if (m) {
+                                            collapseAll(m[1]);
+                                        }
+                                    }
+                                });
+                            };
+                            
+                            nestedIcon.classList.add('collapsed');
+                            collapseAll(nestedId);
+                        }
+                    }
+                }
             });
             
-            icon.classList.toggle('collapsed');
+            // 更新当前点击的折叠符
+            if (isExpanding) {
+                icon.classList.add('collapsed');
+            } else {
+                icon.classList.remove('collapsed');
+            }
         }
 
         function openAddModal() {

@@ -40,6 +40,7 @@
         .table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
         .table thead {
             background: #f8fafc;
@@ -53,11 +54,13 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
         }
         .table td {
             padding: 14px 20px;
             color: #475569;
             border-bottom: 1px solid #f1f5f9;
+            white-space: nowrap;
         }
         .btn {
             padding: 8px 20px;
@@ -79,6 +82,15 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
         }
         .pagination {
             display: flex;
@@ -107,7 +119,7 @@
             color: white;
         }
         .form-control {
-            padding: 10px 14px;
+            padding: 8px 12px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
@@ -128,7 +140,7 @@
             border-bottom: 1px solid #f1f5f9;
         }
         .page-title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #1e293b;
         }
@@ -165,6 +177,259 @@
             text-decoration: none;
             font-size: 14px;
         }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 24px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            background: #e2e8f0;
+        }
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        .form-label.required::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 4px;
+        }
+        .form-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .tab-content {
+            padding: 8px 0;
+        }
+        .permission-group {
+            margin-bottom: 8px;
+        }
+        .permission-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+            padding: 6px 0;
+        }
+        .permission-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .permission-children {
+            margin-left: 32px;
+            margin-top: 4px;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 12px;
+        }
+        .permission-children .permission-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+        .permission-children .permission-children .permission-label {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        .expand-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
     </style>
 </head>
 <body>
@@ -178,7 +443,7 @@
     <main class="main-content">
         <div class="card">
             <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" id="addRoleBtn">
                     <i class="fa fa-plus"></i>
                     添加
                 </button>
@@ -341,5 +606,931 @@
             </div>
         </div>
     </main>
+
+    <div class="modal-overlay" id="addRoleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">添加角色</h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">字段名称</label>
+                    <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">备注说明</label>
+                    <textarea class="form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="function">功能权限</div>
+                    <div class="tab" data-tab="data">数据权限</div>
+                    <div class="tab" data-tab="field">字段权限</div>
+                </div>
+                
+                <div class="tab-content" id="functionTab">
+                    <div class="permission-group">
+                        <label class="permission-label">
+                            <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                            <input type="checkbox" checked class="parent-checkbox" data-group="order-center">
+                            <span>订单中心</span>
+                        </label>
+                        <div class="permission-children" id="order-center-children">
+                            <label class="permission-label">
+                                <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                <input type="checkbox" checked class="child-checkbox" data-parent="order-center" data-group="order">
+                                <span>订单管理</span>
+                            </label>
+                            <div class="permission-children" id="order-children">
+                                <label class="permission-label">
+                                    <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                    <input type="checkbox" checked class="child-checkbox" data-parent="order" data-group="purchase">
+                                    <span>采购订单</span>
+                                </label>
+                                <div class="permission-children" id="purchase-children">
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="purchase">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="purchase">
+                                        <span>新增</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                        <span>编辑</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                        <span>删除</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                        <span>审核</span>
+                                    </label>
+                                </div>
+                                <label class="permission-label">
+                                    <span class="expand-icon expanded" data-target="sales-children">▶</span>
+                                    <input type="checkbox" checked class="child-checkbox" data-parent="order" data-group="sales">
+                                    <span>销售订单</span>
+                                </label>
+                                <div class="permission-children" id="sales-children">
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="sales">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="sales">
+                                        <span>新增</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                        <span>编辑</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                        <span>删除</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                        <span>审核</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="permission-group">
+                        <label class="permission-label">
+                            <span class="expand-icon" data-target="warehouse-center-children">▶</span>
+                            <input type="checkbox" class="parent-checkbox" data-group="warehouse-center">
+                            <span>仓储中心</span>
+                        </label>
+                        <div class="permission-children" id="warehouse-center-children" style="display: none;">
+                            <label class="permission-label">
+                                <span class="expand-icon" data-target="warehouse-children">▶</span>
+                                <input type="checkbox" class="child-checkbox" data-parent="warehouse-center" data-group="warehouse">
+                                <span>仓库管理</span>
+                            </label>
+                            <div class="permission-children" id="warehouse-children" style="display: none;">
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="inventory-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="inventory">
+                                    <span>库存管理</span>
+                                </label>
+                                <div class="permission-children" id="inventory-children" style="display: none;">
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                        <span>盘点</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                        <span>调拨</span>
+                                    </label>
+                                </div>
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="stock-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="stock">
+                                    <span>出入库管理</span>
+                                </label>
+                                <div class="permission-children" id="stock-children" style="display: none;">
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="stock">
+                                        <span>入库</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="stock">
+                                        <span>出库</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="stock">
+                                        <span>批量导入</span>
+                                    </label>
+                                </div>
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="location-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="location">
+                                    <span>货位管理</span>
+                                </label>
+                                <div class="permission-children" id="location-children" style="display: none;">
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                        <span>分配</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                        <span>编辑</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="permission-group">
+                        <label class="permission-label">
+                            <span class="expand-icon" data-target="user-center-children">▶</span>
+                            <input type="checkbox" class="parent-checkbox" data-group="user-center">
+                            <span>人员中心</span>
+                        </label>
+                        <div class="permission-children" id="user-center-children" style="display: none;">
+                            <label class="permission-label">
+                                <span class="expand-icon" data-target="user-children">▶</span>
+                                <input type="checkbox" class="child-checkbox" data-parent="user-center" data-group="user">
+                                <span>用户管理</span>
+                            </label>
+                            <div class="permission-children" id="user-children" style="display: none;">
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="user-list-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="user" data-group="user-list">
+                                    <span>用户列表</span>
+                                </label>
+                                <div class="permission-children" id="user-list-children" style="display: none;">
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="user-list">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="user-list">
+                                        <span>新增</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="user-list">
+                                        <span>编辑</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="user-list">
+                                        <span>删除</span>
+                                    </label>
+                                </div>
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="role-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="user" data-group="role">
+                                <span>角色管理</span>
+                            </label>
+                            <div class="permission-children" id="role-children" style="display: none;">
+                                <label class="permission-label">
+                                    <input type="checkbox" class="leaf-checkbox" data-parent="role">
+                                    <span>查看</span>
+                                </label>
+                                <label class="permission-label">
+                                    <input type="checkbox" class="leaf-checkbox" data-parent="role">
+                                    <span>新增</span>
+                                </label>
+                                <label class="permission-label">
+                                    <input type="checkbox" class="leaf-checkbox" data-parent="role">
+                                    <span>编辑</span>
+                                </label>
+                                <label class="permission-label">
+                                    <input type="checkbox" class="leaf-checkbox" data-parent="role">
+                                    <span>删除</span>
+                                </label>
+                                <label class="permission-label">
+                                    <input type="checkbox" class="leaf-checkbox" data-parent="role">
+                                    <span>权限配置</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="permission-group">
+                        <label class="permission-label">
+                            <span class="expand-icon" data-target="system-center-children">▶</span>
+                            <input type="checkbox" class="parent-checkbox" data-group="system-center">
+                            <span>系统中心</span>
+                        </label>
+                        <div class="permission-children" id="system-center-children" style="display: none;">
+                            <label class="permission-label">
+                                <span class="expand-icon" data-target="system-children">▶</span>
+                                <input type="checkbox" class="child-checkbox" data-parent="system-center" data-group="system">
+                                <span>系统设置</span>
+                            </label>
+                            <div class="permission-children" id="system-children" style="display: none;">
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="config-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="system" data-group="config">
+                                    <span>基础配置</span>
+                                </label>
+                                <div class="permission-children" id="config-children" style="display: none;">
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="config">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="config">
+                                        <span>修改</span>
+                                    </label>
+                                </div>
+                                <label class="permission-label">
+                                    <span class="expand-icon" data-target="log-children">▶</span>
+                                    <input type="checkbox" class="child-checkbox" data-parent="system" data-group="log">
+                                    <span>日志管理</span>
+                                </label>
+                                <div class="permission-children" id="log-children" style="display: none;">
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                        <span>导出</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                        <span>清空</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="dataTab" style="display: none;">
+                    <div class="permission-group" style="margin-bottom: 16px;">
+                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部数据</p>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <label style="font-weight: 500;">
+                                    <span style="color: #dc2626;">*</span>业务模块：
+                                </label>
+                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
+                                    <option>销售订单</option>
+                                    <option>采购订单</option>
+                                    <option>库存管理</option>
+                                    <option>用户管理</option>
+                                </select>
+                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                            </div>
+                            <div style="padding: 16px; border: 1px solid #d1d5db; margin-left: 100px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                    <input type="checkbox" checked>
+                                    <span>全选</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span>隔离维度：</span>
+                                    <div style="display: flex; gap: 32px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>业务员</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>部门</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>公司</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <label style="font-weight: 500;">
+                                    <span style="color: #dc2626;">*</span>业务模块：
+                                </label>
+                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
+                                    <option>请选择</option>
+                                    <option>销售订单</option>
+                                    <option>采购订单</option>
+                                    <option>库存管理</option>
+                                    <option>用户管理</option>
+                                </select>
+                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-left: 100px;">
+                            <button style="display: flex; align-items: center; gap: 8px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
+                                <i class="fa fa-plus"></i>
+                                添加
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="fieldTab" style="display: none;">
+                    <div class="permission-group" style="margin-bottom: 16px;">
+                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部字段【可操作、可见】</p>
+                        
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #e5e7eb;">
+                                    <th style="text-align: left; padding: 12px 8px; font-weight: 600;">
+                                        <span style="color: #dc2626;">*</span>字段名称
+                                    </th>
+                                    <th style="text-align: center; padding: 12px 8px; font-weight: 600;">
+                                        <span style="color: #dc2626;">*</span>权限
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>全选</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" checked>
+                                                <span>全选</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox">
+                                                <span>全选</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox">
+                                                <span>全选</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>产品成本(订单模块)</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field1">
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field1" checked>
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field1">
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>供应商报价(采购模块)</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field2">
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field2" checked>
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field2">
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>销售金额(订单模块)</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field3">
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field3" checked>
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field3">
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>销售金额</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field4">
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field4" checked>
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="field4">
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editRoleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑角色</h2>
+                <button class="modal-close" id="closeEditModal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">字段名称</label>
+                    <input type="text" class="form-control" placeholder="请输入" value="管理员">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">备注说明</label>
+                    <textarea class="form-textarea" placeholder="请输入备注">系统管理员，拥有所有权限</textarea>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="editFunction">功能权限</div>
+                    <div class="tab" data-tab="editData">数据权限</div>
+                    <div class="tab" data-tab="editField">字段权限</div>
+                </div>
+                
+                <div class="tab-content" id="editFunctionTab">
+                    <div class="permission-group">
+                        <label class="permission-label">
+                            <span class="expand-icon expanded" data-target="edit-order-center-children">▶</span>
+                            <input type="checkbox" checked class="parent-checkbox" data-group="edit-order-center">
+                            <span>订单中心</span>
+                        </label>
+                        <div class="permission-children" id="edit-order-center-children">
+                            <label class="permission-label">
+                                <span class="expand-icon expanded" data-target="edit-order-children">▶</span>
+                                <input type="checkbox" checked class="child-checkbox" data-parent="edit-order-center" data-group="edit-order">
+                                <span>订单管理</span>
+                            </label>
+                            <div class="permission-children" id="edit-order-children">
+                                <label class="permission-label">
+                                    <span class="expand-icon expanded" data-target="edit-purchase-children">▶</span>
+                                    <input type="checkbox" checked class="child-checkbox" data-parent="edit-order" data-group="edit-purchase">
+                                    <span>采购订单</span>
+                                </label>
+                                <div class="permission-children" id="edit-purchase-children">
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-purchase">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-purchase">
+                                        <span>新增</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-purchase">
+                                        <span>编辑</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-purchase">
+                                        <span>删除</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-purchase">
+                                        <span>审核</span>
+                                    </label>
+                                </div>
+                                <label class="permission-label">
+                                    <span class="expand-icon expanded" data-target="edit-sales-children">▶</span>
+                                    <input type="checkbox" checked class="child-checkbox" data-parent="edit-order" data-group="edit-sales">
+                                    <span>销售订单</span>
+                                </label>
+                                <div class="permission-children" id="edit-sales-children">
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-sales">
+                                        <span>查看</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-sales">
+                                        <span>新增</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-sales">
+                                        <span>编辑</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-sales">
+                                        <span>删除</span>
+                                    </label>
+                                    <label class="permission-label">
+                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="edit-sales">
+                                        <span>审核</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="editDataTab" style="display: none;">
+                    <div class="permission-group" style="margin-bottom: 16px;">
+                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部数据</p>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <label style="font-weight: 500;">
+                                    <span style="color: #dc2626;">*</span>业务模块：
+                                </label>
+                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
+                                    <option>销售订单</option>
+                                    <option>采购订单</option>
+                                    <option>库存管理</option>
+                                    <option>用户管理</option>
+                                </select>
+                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                            </div>
+                            <div style="padding: 16px; border: 1px solid #d1d5db; margin-left: 80px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                    <input type="checkbox" checked>
+                                    <span>全选</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span>隔离维度：</span>
+                                    <div style="display: flex; gap: 32px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>业务员</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>部门</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox">
+                                            <span>公司</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-left: 80px;">
+                            <button style="display: flex; align-items: center; gap: 8px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
+                                <i class="fa fa-plus"></i>
+                                添加
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="editFieldTab" style="display: none;">
+                    <div class="permission-group" style="margin-bottom: 16px;">
+                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部字段【可操作、可见】</p>
+                        
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #e5e7eb;">
+                                    <th style="text-align: left; padding: 12px 8px; font-weight: 600;">
+                                        <span style="color: #dc2626;">*</span>字段名称
+                                    </th>
+                                    <th style="text-align: center; padding: 12px 8px; font-weight: 600;">
+                                        <span style="color: #dc2626;">*</span>权限
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>全选</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" checked>
+                                                <span>全选</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" checked>
+                                                <span>全选</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" checked>
+                                                <span>全选</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>产品成本(订单模块)</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field1">
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field1" checked>
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field1">
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>供应商报价(采购模块)</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field2">
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field2">
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field2" checked>
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" checked>
+                                            <span>销售金额(订单模块)</span>
+                                        </label>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; justify-content: space-around;">
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field3" checked>
+                                                <span>隐藏</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field3">
+                                                <span>只读</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="radio" name="edit-field3">
+                                                <span>可编辑</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelEditBtn">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteRoleModal" class="dialog-overlay hidden">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除吗？删除后不可恢复</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
+                <button class="btn btn-danger" style="background: #ef4444; color: white; border: none;" onclick="closeDeleteDialog()">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const addRoleBtn = document.getElementById('addRoleBtn');
+        const modal = document.getElementById('addRoleModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const tabs = document.querySelectorAll('.tab');
+
+        const editModal = document.getElementById('editRoleModal');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const editBtns = document.querySelectorAll('.action-edit');
+
+        const deleteModal = document.getElementById('deleteRoleModal');
+        const closeDeleteModal = document.getElementById('closeDeleteModal');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const deleteBtns = document.querySelectorAll('.action-delete');
+
+        addRoleBtn.addEventListener('click', () => {
+            modal.classList.add('show');
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                editModal.classList.add('show');
+            });
+        });
+
+        closeEditModal.addEventListener('click', () => {
+            editModal.classList.remove('show');
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            editModal.classList.remove('show');
+        });
+
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                editModal.classList.remove('show');
+            }
+        });
+
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                deleteModal.classList.remove('hidden');
+            });
+        });
+
+        function closeDeleteDialog() {
+            deleteModal.classList.add('hidden');
+        }
+
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) {
+                closeDeleteDialog();
+            }
+        });
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById(tabId + 'Tab').style.display = 'block';
+            });
+        });
+
+        document.querySelectorAll('.expand-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const targetId = icon.dataset.target;
+                const target = document.getElementById(targetId);
+                if (target) {
+                    const isExpanded = icon.classList.toggle('expanded');
+                    target.style.display = isExpanded ? 'block' : 'none';
+                }
+            });
+        });
+
+        // 递归选中所有子级
+        function checkAllChildren(checkbox, checked) {
+            const group = checkbox.dataset.group;
+            if (group) {
+                document.querySelectorAll(`[data-parent="${group}"]`).forEach(child => {
+                    child.checked = checked;
+                    checkAllChildren(child, checked);
+                });
+            }
+        }
+
+        // 递归检查并选中所有父级
+        function checkAllParents(checkbox) {
+            const parentGroup = checkbox.dataset.parent;
+            if (parentGroup) {
+                const parentCheckbox = document.querySelector(`[data-group="${parentGroup}"]`);
+                if (parentCheckbox) {
+                    parentCheckbox.checked = true;
+                    checkAllParents(parentCheckbox);
+                }
+            }
+        }
+
+        // 所有复选框都使用统一的事件处理
+        document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                
+                // 选中/取消选中所有子级
+                checkAllChildren(e.target, isChecked);
+                
+                // 如果选中，选中所有父级
+                if (isChecked) {
+                    checkAllParents(e.target);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
