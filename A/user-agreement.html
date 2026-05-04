@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户协议</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .action-delete {
+            color: #ef4444;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .action-delete:hover {
+            text-decoration: underline;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        
+        /* 用户协议样式 */
+        .agreement-list {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .agreement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .agreement-item {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .agreement-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .agreement-meta {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .agreement-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .agreement-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+        .agreement-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.8;
+        }
+        .badge {
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+        .badge-active {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-inactive {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">用户协议</h1>
+            <p class="page-subtitle">管理平台用户协议内容</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="agreement-list">
+                <div class="agreement-header">
+                    <span></span>
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fa fa-plus"></i>
+                        添加协议
+                    </button>
+                </div>
+
+                <div class="agreement-item">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="agreement-title">用户服务协议</div>
+                            <div class="agreement-meta">
+                                <span><i class="fa fa-calendar"></i> 2026-03-03</span>
+                                <span><i class="fa fa-user"></i> 张三</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-active">生效中</span>
+                    </div>
+                    <div class="agreement-preview">
+                        <p>欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。</p>
+                        <p style="margin-top: 8px;">一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。</p>
+                        <p style="margin-top: 8px;">二、用户注册：用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。</p>
+                    </div>
+                    <div class="agreement-actions">
+                        <button class="btn btn-outline" onclick="openEditModal()">编辑</button>
+                        <button class="btn btn-primary" onclick="openPreviewModal()">预览</button>
+                        <span class="action-delete" onclick="showDeleteConfirm()">删除</span>
+                    </div>
+                </div>
+
+                <div class="agreement-item">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="agreement-title">隐私政策</div>
+                            <div class="agreement-meta">
+                                <span><i class="fa fa-calendar"></i> 2026-03-03</span>
+                                <span><i class="fa fa-user"></i> 李四</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-active">生效中</span>
+                    </div>
+                    <div class="agreement-preview">
+                        <p>我们非常重视您的个人信息保护。本隐私政策将说明我们如何收集、使用、存储和保护您的个人信息。</p>
+                        <p style="margin-top: 8px;">一、信息收集：我们会收集您在使用服务过程中主动提供的信息，包括但不限于姓名、邮箱、手机号码等。</p>
+                    </div>
+                    <div class="agreement-actions">
+                        <button class="btn btn-outline" onclick="openEditModal()">编辑</button>
+                        <button class="btn btn-primary" onclick="openPreviewModal()">预览</button>
+                        <span class="action-delete" onclick="showDeleteConfirm()">删除</span>
+                    </div>
+                </div>
+
+                <div class="agreement-item">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="agreement-title">社区规范</div>
+                            <div class="agreement-meta">
+                                <span><i class="fa fa-calendar"></i> 2026-02-15</span>
+                                <span><i class="fa fa-user"></i> 王五</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-inactive">已失效</span>
+                    </div>
+                    <div class="agreement-preview">
+                        <p>为维护良好的社区环境，保障用户合法权益，特制定本社区规范。</p>
+                    </div>
+                    <div class="agreement-actions">
+                        <button class="btn btn-outline" onclick="openEditModal()">编辑</button>
+                        <button class="btn btn-primary" onclick="openPreviewModal()">预览</button>
+                        <span class="action-delete" onclick="showDeleteConfirm()">删除</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="addAgreementModal" class="dialog-overlay hidden">
+        <div class="dialog-content" style="max-width: 600px;" onclick="event.stopPropagation()">
+            <div class="dialog-body" style="text-align: left;">
+                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">添加协议</h3>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
+                    <input type="text" class="form-control" style="width: 100%;" placeholder="请输入协议名称">
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
+                    <textarea class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">状态</label>
+                    <select class="form-control" style="width: 100%;">
+                        <option>生效中</option>
+                        <option>已失效</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeAddModal()">取消</button>
+                <button class="btn btn-primary" onclick="closeAddModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editAgreementModal" class="dialog-overlay hidden">
+        <div class="dialog-content" style="max-width: 600px;" onclick="event.stopPropagation()">
+            <div class="dialog-body" style="text-align: left;">
+                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">编辑协议</h3>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
+                    <input type="text" class="form-control" style="width: 100%;" placeholder="请输入协议名称" value="用户服务协议">
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
+                    <textarea class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容">欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。
+
+一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。
+二、用户注册：用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。
+三、用户行为规范：用户在使用本平台服务时，应当遵守法律法规，不得从事任何违法活动。</textarea>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">状态</label>
+                    <select class="form-control" style="width: 100%;">
+                        <option>生效中</option>
+                        <option>已失效</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+                <button class="btn btn-primary" onclick="closeEditModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="previewModal" class="dialog-overlay hidden">
+        <div class="dialog-content" style="max-width: 700px;" onclick="event.stopPropagation()">
+            <div class="dialog-body" style="text-align: left; max-height: 60vh; overflow-y: auto;">
+                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">用户服务协议</h3>
+                <div style="font-size: 14px; color: #475569; line-height: 1.8;">
+                    <p>欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。</p>
+                    <p style="margin-top: 16px;"><strong>一、服务内容</strong></p>
+                    <p style="margin-top: 8px;">本平台提供DAO组织管理、用户管理、权限管理等服务。</p>
+                    <p style="margin-top: 16px;"><strong>二、用户注册</strong></p>
+                    <p style="margin-top: 8px;">用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。</p>
+                    <p style="margin-top: 16px;"><strong>三、用户行为规范</strong></p>
+                    <p style="margin-top: 8px;">用户在使用本平台服务时，应当遵守法律法规，不得从事任何违法活动。</p>
+                    <p style="margin-top: 16px;"><strong>四、知识产权</strong></p>
+                    <p style="margin-top: 8px;">本平台所有内容的知识产权归平台所有。</p>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-primary" onclick="closePreviewModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteAgreementModal" class="dialog-overlay hidden">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除该协议吗？删除后不可恢复</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
+                <button class="btn btn-danger" style="background: #ef4444; color: white; border: none;" onclick="closeDeleteDialog()">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const addModal = document.getElementById('addAgreementModal');
+        const editModal = document.getElementById('editAgreementModal');
+        const deleteModal = document.getElementById('deleteAgreementModal');
+        const previewModal = document.getElementById('previewModal');
+
+        function openAddModal() {
+            addModal.classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            addModal.classList.add('hidden');
+        }
+
+        function openEditModal() {
+            editModal.classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            editModal.classList.add('hidden');
+        }
+
+        function openPreviewModal() {
+            previewModal.classList.remove('hidden');
+        }
+
+        function closePreviewModal() {
+            previewModal.classList.add('hidden');
+        }
+
+        function showDeleteConfirm() {
+            deleteModal.classList.remove('hidden');
+        }
+
+        function closeDeleteDialog() {
+            deleteModal.classList.add('hidden');
+        }
+
+        addModal.addEventListener('click', (e) => {
+            if (e.target === addModal) {
+                closeAddModal();
+            }
+        });
+
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) {
+                closeDeleteDialog();
+            }
+        });
+
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal) {
+                closePreviewModal();
+            }
+        });
+    </script>
+</body>
+</html>

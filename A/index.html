@@ -563,8 +563,8 @@
             background: #f8fafc;
         }
         .pagination-btn.active {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            border-color: #6366f1;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
             color: white;
         }
         .update-log-item {
@@ -631,7 +631,7 @@
             <div class="nav-divider"></div>
             
             <div class="nav-section">
-                <div class="nav-section-title">RaaS.Dao平台</div>
+                <div class="nav-section-title">RaaS.Dao平台管理</div>
                 <div class="nav-item has-submenu" onclick="toggleSubmenu('website-submenu')">
                     <i class="fa fa-globe"></i>
                     <span>网站设置</span>
@@ -645,6 +645,10 @@
                     <div class="submenu-item" data-module="about" onclick="showModule('about'); event.stopPropagation()">
                         <i class="fa fa-info"></i>
                         <span>关于我们</span>
+                    </div>
+                    <div class="submenu-item" data-module="user-agreement" onclick="showModule('user-agreement'); event.stopPropagation()">
+                        <i class="fa fa-file-text"></i>
+                        <span>用户协议</span>
                     </div>
                 </div>
                 
@@ -755,6 +759,15 @@
 
                 <div id="version-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
                     <iframe src="version.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+                <div id="logo-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="logo.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+                <div id="user-list-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="user-list.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+                <div id="user-agreement-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="user-agreement.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
                 </div>
             </div>
         </main>
@@ -908,6 +921,7 @@
             version: { name: '系统版本', icon: 'fa-info-circle' },
             logo: { name: '网站logo', icon: 'fa-image' },
             about: { name: '关于我们', icon: 'fa-info' },
+            'user-agreement': { name: '用户协议', icon: 'fa-file-text' },
             'func-menu': { name: '功能菜单', icon: 'fa-list' },
             'data-perm': { name: '数据权限', icon: 'fa-database' },
             'field-perm': { name: '字段权限', icon: 'fa-columns' },

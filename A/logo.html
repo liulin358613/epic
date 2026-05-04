@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站logo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #64748b;
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+        .form-control {
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 14px 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .settings-container {
+            padding: 40px;
+            width: fit-content;
+            margin: 0;
+        }
+        .setting-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+        .setting-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #374151;
+            width: 80px;
+            flex-shrink: 0;
+            padding-top: 4px;
+        }
+        .setting-value {
+            flex: 1;
+        }
+        .logo-preview-box {
+            width: 300px;
+            height: 150px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-preview-box:hover {
+            border-color: #3b82f6;
+            background: #dbeafe;
+        }
+        .logo-preview-box.has-image {
+            border-style: solid;
+            border-color: #e5e7eb;
+            background: white;
+            cursor: default;
+        }
+        .logo-preview-box.has-image:hover {
+            border-color: #e5e7eb;
+            background: white;
+        }
+        .logo-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-placeholder {
+            width: 100%;
+            height: 100%;
+        }
+        .upload-hint {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+        }
+        .upload-hint i {
+            font-size: 32px;
+        }
+        .upload-hint span {
+            font-size: 13px;
+        }
+        .slogan-display {
+            font-size: 16px;
+            color: #374151;
+            font-weight: 500;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            min-width: 200px;
+        }
+        .edit-section {
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #f3f4f6;
+        }
+        .edit-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 10px 50px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+        }
+        .save-section {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 24px;
+            border-top: 1px solid #f1f5f9;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+        .form-group .form-control {
+            width: 500px;
+        }
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #f9fafb;
+            border: 1px dashed #d1d5db;
+            border-radius: 8px;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .file-upload-btn:hover {
+            border-color: #3b82f6;
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+        .file-upload-btn i {
+            font-size: 18px;
+        }
+        .file-input {
+            display: none;
+        }
+        .file-info {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">网站logo</h1>
+            <p class="page-subtitle">配置网站logo和slogan</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="settings-container" id="viewMode">
+                <div class="setting-item">
+                    <div class="setting-label">logo：</div>
+                    <div class="setting-value">
+                        <div class="logo-preview-box" id="logoPreview">
+                            <div class="upload-hint">
+                                <i class="fa fa-upload"></i>
+                                <span>请上传logo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">slogan：</div>
+                    <div class="setting-value">
+                        <span class="slogan-display" id="sloganPreview">共创 · 共享</span>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <button class="edit-btn" id="editBtn" onclick="toggleEdit()">编辑</button>
+                </div>
+            </div>
+
+            <div class="settings-container" id="editMode" style="display: none;">
+                <div class="setting-item">
+                    <div class="setting-label">logo：</div>
+                    <div class="setting-value">
+                        <div class="logo-preview-box" id="logoEditPreview">
+                            <div class="upload-hint">
+                                <i class="fa fa-upload"></i>
+                                <span>点击或拖拽上传logo</span>
+                            </div>
+                        </div>
+                        <button class="file-upload-btn" onclick="document.getElementById('logoInput').click()">
+                            <i class="fa fa-plus-circle"></i>
+                            选择图片
+                        </button>
+                        <input type="file" id="logoInput" class="file-input" accept="image/*" onchange="handleLogoUpload(event)">
+                        <p class="file-info">支持 JPG、PNG、GIF 格式，建议尺寸 200×200px</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>slogan：</label>
+                    <input type="text" class="form-control" id="sloganInput" value="共创 · 共享" placeholder="请输入slogan">
+                </div>
+                <div class="save-section">
+                    <button class="btn btn-secondary" onclick="cancelEdit()">取消</button>
+                    <button class="btn btn-primary" onclick="saveSettings()">保存</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let isEditing = false;
+        let hasLogo = false;
+        let currentLogoHtml = '<div class="upload-hint"><i class="fa fa-upload"></i><span>请上传logo</span></div>';
+        let currentSlogan = '共创 · 共享';
+
+        function toggleEdit() {
+            isEditing = !isEditing;
+            const viewMode = document.getElementById('viewMode');
+            const editMode = document.getElementById('editMode');
+            
+            if (isEditing) {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+                document.getElementById('sloganInput').value = currentSlogan;
+                
+                const logoEditPreview = document.getElementById('logoEditPreview');
+                if (hasLogo && currentLogoHtml.includes('<img')) {
+                    logoEditPreview.innerHTML = currentLogoHtml;
+                    logoEditPreview.classList.add('has-image');
+                } else {
+                    logoEditPreview.innerHTML = '<div class="upload-hint"><i class="fa fa-upload"></i><span>点击或拖拽上传logo</span></div>';
+                    logoEditPreview.classList.remove('has-image');
+                }
+            } else {
+                if (confirm('确定要取消编辑吗？修改将不会保存。')) {
+                    cancelEdit();
+                } else {
+                    isEditing = true;
+                }
+            }
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgHtml = '<img src="' + e.target.result + '" alt="Logo">';
+                    const logoEditPreview = document.getElementById('logoEditPreview');
+                    logoEditPreview.innerHTML = imgHtml;
+                    logoEditPreview.classList.add('has-image');
+                    hasLogo = true;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveSettings() {
+            const newSlogan = document.getElementById('sloganInput').value;
+            const logoEditPreview = document.getElementById('logoEditPreview');
+            const newLogoHtml = logoEditPreview.innerHTML;
+            
+            currentLogoHtml = newLogoHtml;
+            currentSlogan = newSlogan || '共创 · 共享';
+            
+            const logoPreview = document.getElementById('logoPreview');
+            if (newLogoHtml.includes('<img')) {
+                logoPreview.innerHTML = newLogoHtml;
+                logoPreview.classList.add('has-image');
+                hasLogo = true;
+            } else {
+                logoPreview.innerHTML = '<div class="upload-hint"><i class="fa fa-upload"></i><span>请上传logo</span></div>';
+                logoPreview.classList.remove('has-image');
+                hasLogo = false;
+            }
+            
+            document.getElementById('sloganPreview').textContent = currentSlogan;
+            
+            cancelEdit();
+        }
+
+        function cancelEdit() {
+            isEditing = false;
+            const viewMode = document.getElementById('viewMode');
+            const editMode = document.getElementById('editMode');
+            
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+            
+            document.getElementById('sloganInput').value = currentSlogan;
+            document.getElementById('logoInput').value = '';
+        }
+    </script>
+</body>
+</html>

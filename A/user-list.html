@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户列表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            min-width: 150px;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .search-bar {
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .table-container {
+            flex: 1;
+            overflow: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background: #f8fafc;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        td {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+        .badge {
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .badge-level {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-level-0 {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #94a3b8;
+        }
+        .badge-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .badge-inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .badge-company {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+            border-radius: 4px;
+            padding: 2px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+        .badge-company::before {
+            content: "✓";
+            font-size: 12px;
+        }
+        .badge-user-normal {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #64748b;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        .badge-company-certified {
+            background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
+            color: #16a34a;
+            border-radius: 4px;
+            padding: 2px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+        .badge-company-certified::before {
+            content: "✓";
+            font-size: 12px;
+        }
+        .auth-scope-tag {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            color: #7c3aed;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .action-link {
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar i {
+            font-size: 16px;
+            color: #94a3b8;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-close:hover {
+            color: #64748b;
+        }
+        .modal-body {
+            padding: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .detail-profile {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 24px;
+            display: flex;
+            gap: 24px;
+        }
+        .detail-left {
+            flex: 1;
+        }
+        .detail-right {
+            flex: 1;
+        }
+        .detail-user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .detail-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .detail-avatar i {
+            font-size: 32px;
+            color: #94a3b8;
+        }
+        .detail-user-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .detail-user-company {
+            font-size: 14px;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .detail-user-company i {
+            color: #94a3b8;
+        }
+        .detail-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-card:last-child {
+            margin-bottom: 0;
+        }
+        .detail-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+        .detail-info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #475569;
+        }
+        .detail-info-row:last-child {
+            margin-bottom: 0;
+        }
+        .detail-info-row i {
+            color: #94a3b8;
+            width: 16px;
+            text-align: center;
+        }
+        .detail-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .detail-tag {
+            padding: 4px 12px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .detail-highlight {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+        .detail-section {
+            padding: 24px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .detail-grid-item {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .detail-grid-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .detail-grid-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .detail-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 16px 0;
+        }
+        .detail-divider-vertical {
+            width: 1px;
+            background: #e2e8f0;
+            margin: 0 24px;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">用户列表</h1>
+            <p class="page-subtitle">用户信息管理</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="search-bar">
+                <input type="text" class="form-control" placeholder="搜索用户名称/手机号" style="min-width: 200px;">
+                <select class="form-control">
+                    <option>全部企业</option>
+                    <option>东莞市蓓佳尔工艺品有限公司</option>
+                </select>
+                <select class="form-control">
+                    <option>全部等级</option>
+                    <option>Lv.0</option>
+                    <option>Lv.1</option>
+                    <option>Lv.2</option>
+                    <option>Lv.3</option>
+                    <option>Lv.4</option>
+                    <option>Lv.5</option>
+                </select>
+                <select class="form-control">
+                    <option>全部类型</option>
+                    <option>普通用户</option>
+                    <option>普通企业</option>
+                    <option>认证企业</option>
+                </select>
+                <button class="btn btn-outline"><i class="fa fa-search"></i> 搜索</button>
+                <button class="btn btn-outline"><i class="fa fa-refresh"></i> 重置</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>用户信息</th>
+                            <th>手机号码</th>
+                            <th>所属企业</th>
+                            <th>用户类型</th>
+                            <th>职务</th>
+                            <th>等级</th>
+                            <th>注册时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10001</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-1.png" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <span>工元0001</span>
+                                </div>
+                            </td>
+                            <td>13826469793</td>
+                            <td>东莞市蓓佳尔工艺品有限公司</td>
+                            <td><span class="badge badge-company">普通企业</span></td>
+                            <td>工程师</td>
+                            <td><span class="badge badge-level">Lv.5</span></td>
+                            <td>2024-01-15</td>
+                            <td><span class="action-link" onclick="showDetail(10001)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10002</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>张小明</span>
+                                </div>
+                            </td>
+                            <td>13912345678</td>
+                            <td>深圳市科技有限公司</td>
+                            <td><span class="badge badge-company-certified">认证企业</span></td>
+                            <td>产品经理</td>
+                            <td><span class="badge badge-level">Lv.3</span></td>
+                            <td>2024-02-20</td>
+                            <td><span class="action-link" onclick="showDetail(10002)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10003</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-2.png" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <span>工元0003</span>
+                                </div>
+                            </td>
+                            <td>13698765432</td>
+                            <td>广州市贸易有限公司</td>
+                            <td><span class="badge badge-company">普通企业</span></td>
+                            <td>设计师</td>
+                            <td><span class="badge badge-level">Lv.4</span></td>
+                            <td>2024-03-10</td>
+                            <td><span class="action-link" onclick="showDetail(10003)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10004</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>王芳</span>
+                                </div>
+                            </td>
+                            <td>13523456789</td>
+                            <td>-</td>
+                            <td><span class="badge badge-user-normal">普通用户</span></td>
+                            <td>行政主管</td>
+                            <td><span class="badge badge-level">Lv.2</span></td>
+                            <td>2024-04-05</td>
+                            <td><span class="action-link" onclick="showDetail(10004)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10005</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>工元0005</span>
+                                </div>
+                            </td>
+                            <td>15834567890</td>
+                            <td>佛山市制造有限公司</td>
+                            <td><span class="badge badge-company-certified">认证企业</span></td>
+                            <td>技术总监</td>
+                            <td><span class="badge badge-level">Lv.5</span></td>
+                            <td>2024-05-18</td>
+                            <td><span class="action-link" onclick="showDetail(10005)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10006</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-1.png" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <span>工元0006</span>
+                                </div>
+                            </td>
+                            <td>18612345678</td>
+                            <td>杭州市科技有限公司</td>
+                            <td><span class="badge badge-company">普通企业</span></td>
+                            <td>运营经理</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td>2024-06-01</td>
+                            <td><span class="action-link" onclick="showDetail(10006)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10007</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>工元0007</span>
+                                </div>
+                            </td>
+                            <td>17723456789</td>
+                            <td>-</td>
+                            <td><span class="badge badge-user-normal">普通用户</span></td>
+                            <td>-</td>
+                            <td><span class="badge badge-level badge-level-0">Lv.0</span></td>
+                            <td>2024-06-15</td>
+                            <td><span class="action-link" onclick="showDetail(10007)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10008</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-2.png" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <span>周杰</span>
+                                </div>
+                            </td>
+                            <td>15934567890</td>
+                            <td>武汉市食品有限公司</td>
+                            <td><span class="badge badge-company-certified">认证企业</span></td>
+                            <td>营销总监</td>
+                            <td><span class="badge badge-level">Lv.5</span></td>
+                            <td>2024-07-01</td>
+                            <td><span class="action-link" onclick="showDetail(10008)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10009</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>吴敏</span>
+                                </div>
+                            </td>
+                            <td>13745678901</td>
+                            <td>-</td>
+                            <td><span class="badge badge-user-normal">普通用户</span></td>
+                            <td>客服</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td>2024-07-15</td>
+                            <td><span class="action-link" onclick="showDetail(10009)">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>10010</td>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-1.png" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <span>工元0010</span>
+                                </div>
+                            </td>
+                            <td>18856789012</td>
+                            <td>成都市贸易有限公司</td>
+                            <td><span class="badge badge-company">普通企业</span></td>
+                            <td>会计</td>
+                            <td><span class="badge badge-level">Lv.2</span></td>
+                            <td>2024-08-01</td>
+                            <td><span class="action-link" onclick="showDetail(10010)">查看详情</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <span class="text-gray-500 text-sm">共 50 条</span>
+                    <div class="pagination">
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">4</button>
+                        <button class="pagination-btn">5</button>
+                        <button class="pagination-btn">6</button>
+                        <button class="pagination-btn">7</button>
+                        <button class="pagination-btn">8</button>
+                        <button class="pagination-btn">9</button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                        <select class="form-control w-auto ml-2">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                            <option>50条/页</option>
+                        </select>
+                        <span class="text-gray-500 text-sm ml-2">跳至</span>
+                        <input type="text" class="form-control w-16 ml-2" value="1">
+                        <span class="text-gray-500 text-sm ml-2">页</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="detailModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 1100px;">
+            <div class="modal-header">
+                <h3>用户详情</h3>
+                <button class="modal-close" onclick="closeDetail()"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-profile">
+                    <div class="detail-left">
+                        <div class="detail-user-info">
+                            <div class="detail-avatar">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="detail-user-name" id="detail-name">林工</div>
+                                    <span class="badge badge-level" id="detail-level">Lv.5</span>
+                                </div>
+                                <div class="detail-user-company" style="margin-top: 12px; display: flex; align-items: center; gap: 12px;">
+                                    <i class="fa fa-building"></i>
+                                    <span id="detail-company">东莞市蓓佳尔工艺品有限公司</span>
+                                    <span class="badge badge-company" style="display: inline-flex;">普通企业</span>
+                                    <span class="badge badge-company-certified" style="display: none;">认证企业</span>
+                                    <span class="badge badge-user-normal" style="display: none;">普通用户</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                            <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569;">
+                                <i class="fa fa-id-badge" style="color: #94a3b8;"></i>
+                                <span>职务：<span id="detail-position">工程师</span></span>
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569;">
+                                <i class="fa fa-calendar" style="color: #94a3b8;"></i>
+                                <span>生日：1990-01-15</span>
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569;">
+                                <i class="fa fa-user-circle" style="color: #94a3b8;"></i>
+                                <span>性别：男</span>
+                            </span>
+                        </div>
+
+                        <div class="detail-card" style="margin-top: 16px;">
+                            <div class="detail-card-title"><i class="fa fa-file-text-o"></i> 简介</div>
+                            <p style="font-size: 14px; color: #475569; line-height: 1.6;">
+                                专业从事工艺品设计与开发，拥有10年行业经验，擅长3D建模和产品渲染。
+                            </p>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-card-title"><i class="fa fa-user-o"></i> 他的能力 <span style="font-weight: normal; color: #64748b; font-size: 12px;"></span><span id="detail-auth-scope" class="auth-scope-tag">全开放</span><span style="font-weight: normal; color: #64748b; font-size: 12px;"></span></div>
+                            <div style="margin-bottom: 8px;">
+                                <span style="font-size: 13px; color: #64748b;">行业：</span>
+                                <div class="detail-tag-list" id="detail-industry-tags">
+                                    <span class="detail-tag">制造业</span>
+                                    <span class="detail-tag">互联网</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span style="font-size: 13px; color: #64748b;">技能：</span>
+                                <div class="detail-tag-list" id="detail-skill-tags">
+                                    <span class="detail-tag">项目管理</span>
+                                    <span class="detail-tag">数据分析</span>
+                                    <span class="detail-tag">产品设计</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-divider-vertical"></div>
+
+                    <div class="detail-right">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: stretch;">
+                            <div class="detail-card" style="margin-bottom: 0;">
+                                <div class="detail-card-title">
+                                    <i class="fa fa-mobile"></i> 手机
+                                </div>
+                                <div style="font-size: 18px; font-weight: 600; color: #1e293b;" id="detail-phone">13826469793</div>
+                            </div>
+                            <div class="detail-card" style="margin-bottom: 0;">
+                                <div class="detail-card-title">
+                                    <i class="fa fa-envelope"></i> 邮箱
+                                </div>
+                                <div style="font-size: 14px; color: #64748b;" id="detail-email">未绑定</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: stretch;">
+                            <div class="detail-card" style="margin-bottom: 0;">
+                                <div class="detail-card-title">
+                                    <i class="fa fa-link"></i> 第三方账号
+                                </div>
+                                <div class="detail-info-row">
+                                    <i class="fa fa-weixin" style="color: #07c160; font-size: 18px;"></i>
+                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                        <span>微信：</span>
+                                        <div id="detail-wechat-avatar" style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-user" style="font-size: 14px; color: #94a3b8;"></i>
+                                        </div>
+                                        <span id="detail-wechat-name">林工</span>
+                                    </span>
+                                </div>
+                                <div style="margin-top: 12px;">
+                                    <div class="detail-info-row">
+                                        <i class="fa fa-credit-card" style="color: #1677ff; font-size: 18px;"></i>
+                                        <span>支付宝：未绑定</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card" style="margin-bottom: 0;">
+                                <div class="detail-card-title">
+                                    <i class="fa fa-coins"></i> 剩余元宝
+                                </div>
+                                <div class="detail-highlight" id="detail-coins">375</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-card-title">
+                                <i class="fa fa-user"></i> 账号
+                            </div>
+                            <div class="detail-info-row">
+                                <span style="width: 80px;">账号：</span>
+                                <span>liulin965565</span>
+                            </div>
+                            <div class="detail-info-row">
+                                <span style="width: 80px;">密码：</span>
+                                <span>**********</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userData = {
+            10001: {
+                id: '10001',
+                name: '工元0001',
+                avatar: 'images/tx-1.png',
+                phone: '13826469793',
+                email: '未绑定',
+                company: '东莞市蓓佳尔工艺品有限公司',
+                position: '工程师',
+                level: 'Lv.5',
+                coins: '375',
+                authScope: '全开放',
+                industryTags: ['制造业', '互联网'],
+                skillTags: ['项目管理', '数据分析', '产品设计'],
+                createTime: '2024-01-15',
+                status: '正常'
+            },
+            10002: {
+                id: '10002',
+                name: '张小明',
+                avatar: '',
+                phone: '13912345678',
+                email: 'zhangxm@163.com',
+                company: '深圳市科技有限公司',
+                position: '产品经理',
+                level: 'Lv.3',
+                coins: '128',
+                authScope: '行业内开放',
+                industryTags: ['互联网', '服务业'],
+                skillTags: ['产品设计', '需求分析'],
+                createTime: '2024-02-20',
+                status: '正常'
+            },
+            10003: {
+                id: '10003',
+                name: '工元0003',
+                avatar: 'images/tx-2.png',
+                phone: '13698765432',
+                email: 'lihua@qq.com',
+                company: '广州市贸易有限公司',
+                position: '设计师',
+                level: 'Lv.4',
+                coins: '256',
+                authScope: '区域内开放',
+                industryTags: ['服务业'],
+                skillTags: ['UI设计', '3D建模'],
+                createTime: '2024-03-10',
+                status: '正常'
+            },
+            10004: {
+                id: '10004',
+                name: '王芳',
+                avatar: '',
+                phone: '13523456789',
+                email: '未绑定',
+                company: '-',
+                position: '行政主管',
+                level: 'Lv.2',
+                coins: '50',
+                authScope: '私域开放',
+                industryTags: ['服务业'],
+                skillTags: ['行政管理'],
+                createTime: '2024-04-05',
+                status: '禁用'
+            },
+            10005: {
+                id: '10005',
+                name: '工元0005',
+                avatar: '',
+                phone: '15834567890',
+                email: 'chenzy@gmail.com',
+                company: '佛山市制造有限公司',
+                position: '技术总监',
+                level: 'Lv.5',
+                coins: '890',
+                authScope: '组织内开放',
+                industryTags: ['制造业'],
+                skillTags: ['技术开发', '架构设计', '团队管理'],
+                createTime: '2024-05-18',
+                status: '正常'
+            },
+            10006: {
+                id: '10006',
+                name: '工元0006',
+                avatar: 'images/tx-1.png',
+                phone: '18612345678',
+                email: '未绑定',
+                company: '杭州市科技有限公司',
+                position: '运营经理',
+                level: 'Lv.1',
+                coins: '88',
+                authScope: '全开放',
+                industryTags: ['互联网'],
+                skillTags: ['运营策划', '数据分析'],
+                createTime: '2024-06-01',
+                status: '正常'
+            },
+            10007: {
+                id: '10007',
+                name: '工元0007',
+                avatar: '',
+                phone: '17723456789',
+                email: '未绑定',
+                company: '-',
+                position: '-',
+                level: 'Lv.0',
+                coins: '0',
+                authScope: '不开放',
+                industryTags: [],
+                skillTags: [],
+                createTime: '2024-06-15',
+                status: '正常'
+            },
+            10008: {
+                id: '10008',
+                name: '周杰',
+                avatar: 'images/tx-2.png',
+                phone: '15934567890',
+                email: 'zhoujie@163.com',
+                company: '武汉市食品有限公司',
+                position: '营销总监',
+                level: 'Lv.5',
+                coins: '560',
+                authScope: '行业内开放',
+                industryTags: ['食品', '零售业'],
+                skillTags: ['市场营销', '品牌策划'],
+                createTime: '2024-07-01',
+                status: '正常'
+            },
+            10009: {
+                id: '10009',
+                name: '吴敏',
+                avatar: '',
+                phone: '13745678901',
+                email: 'wu@qq.com',
+                company: '-',
+                position: '客服',
+                level: 'Lv.1',
+                coins: '30',
+                authScope: '私域开放',
+                industryTags: ['服务业'],
+                skillTags: ['客户服务'],
+                createTime: '2024-07-15',
+                status: '正常'
+            },
+            10010: {
+                id: '10010',
+                name: '工元0010',
+                avatar: 'images/tx-1.png',
+                phone: '18856789012',
+                email: 'gongyuan@163.com',
+                company: '成都市贸易有限公司',
+                position: '会计',
+                level: 'Lv.2',
+                coins: '100',
+                authScope: '区域内开放',
+                industryTags: ['贸易'],
+                skillTags: ['财务管理'],
+                createTime: '2024-08-01',
+                status: '正常'
+            }
+        };
+
+        function showDetail(userId) {
+            const user = userData[userId];
+            if (!user) return;
+
+            const avatarDiv = document.querySelector('#detailModal .detail-avatar');
+            if (user.avatar) {
+                avatarDiv.innerHTML = `<img src="${user.avatar}" alt="avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            } else {
+                avatarDiv.innerHTML = `<i class="fa fa-user"></i>`;
+            }
+
+            const wechatAvatarDiv = document.getElementById('detail-wechat-avatar');
+            if (user.avatar) {
+                wechatAvatarDiv.innerHTML = `<img src="${user.avatar}" alt="avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            } else {
+                wechatAvatarDiv.innerHTML = `<i class="fa fa-user" style="font-size: 14px; color: #94a3b8;"></i>`;
+            }
+
+            document.getElementById('detail-name').textContent = user.name;
+            document.getElementById('detail-wechat-name').textContent = user.name;
+            document.getElementById('detail-phone').textContent = user.phone;
+            document.getElementById('detail-email').textContent = user.email;
+            document.getElementById('detail-company').textContent = user.company;
+            document.getElementById('detail-position').textContent = user.position;
+            const detailLevelEl = document.getElementById('detail-level');
+            detailLevelEl.textContent = user.level;
+            if (user.level === 'Lv.0') {
+                detailLevelEl.className = 'badge badge-level badge-level-0';
+            } else {
+                detailLevelEl.className = 'badge badge-level';
+            }
+            document.getElementById('detail-coins').textContent = user.coins;
+
+            const industryTagsHtml = user.industryTags.length > 0 
+                ? user.industryTags.map(tag => `<span class="detail-tag">${tag}</span>`).join('') 
+                : '<span style="color: #94a3b8;">暂无</span>';
+            document.getElementById('detail-industry-tags').innerHTML = industryTagsHtml;
+
+            const skillTagsHtml = user.skillTags.length > 0 
+                ? user.skillTags.map(tag => `<span class="detail-tag">${tag}</span>`).join('') 
+                : '<span style="color: #94a3b8;">暂无</span>';
+            document.getElementById('detail-skill-tags').innerHTML = skillTagsHtml;
+
+            const authScopeEl = document.getElementById('detail-auth-scope');
+            if (authScopeEl) {
+                authScopeEl.textContent = user.authScope || '全开放';
+            }
+
+            const companyBadge = document.querySelector('#detailModal .badge-company');
+            const userTypeBadge = document.querySelector('#detailModal .badge-user-normal');
+            const companyCertifiedBadge = document.querySelector('#detailModal .badge-company-certified');
+            
+            if (companyBadge) companyBadge.style.display = 'none';
+            if (userTypeBadge) userTypeBadge.style.display = 'none';
+            if (companyCertifiedBadge) companyCertifiedBadge.style.display = 'none';
+            
+            if (userId === '10002' || userId === '10008') {
+                const badgeEl = document.querySelector('#detailModal .badge-company-certified');
+                if (badgeEl) badgeEl.style.display = 'inline-flex';
+            } else if (userId === '10001' || userId === '10003' || userId === '10006' || userId === '10010') {
+                const badgeEl = document.querySelector('#detailModal .badge-company');
+                if (badgeEl) badgeEl.style.display = 'inline-flex';
+            } else {
+                const badgeEl = document.querySelector('#detailModal .badge-user-normal');
+                if (badgeEl) badgeEl.style.display = 'inline-flex';
+            }
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetail() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDetail();
+            }
+        });
+    </script>
+</body>
+</html>
