@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家/组织管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            min-width: 150px;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .search-bar {
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .table-container {
+            flex: 1;
+            overflow: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background: #f8fafc;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        td {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+        .badge {
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .badge-training {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        .badge-parts {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-robot {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-equipment {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            color: #7c3aed;
+        }
+        .badge-certified {
+            background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
+            color: #16a34a;
+            border-radius: 4px;
+            padding: 2px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+        .badge-certified::before {
+            content: "✓";
+            font-size: 12px;
+        }
+        .action-link {
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .action-link + .action-link::before {
+            content: "|";
+            color: #e2e8f0;
+            margin: 0 8px;
+        }
+        .org-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .empty-cell {
+            color: #94a3b8;
+        }
+        .expand-btn {
+            cursor: pointer;
+            color: #3b82f6;
+            font-size: 18px;
+            margin-left: 8px;
+            transition: transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+        }
+        .expand-btn:hover {
+            color: #2563eb;
+        }
+        .expand-btn.collapsed {
+            transform: rotate(-90deg);
+        }
+        .org-name {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .sub-org-row {
+            background: #f8fafc;
+        }
+        .sub-org-row td {
+            padding-left: 48px;
+        }
+        .badge-audit-pending {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-audit-approved {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-audit-rejected {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        .badge-audit-disabled {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #64748b;
+        }
+        .badge-audit-rejected .badge-icon,
+        .badge-audit-disabled .badge-icon {
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .badge-level {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-level-0 {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #94a3b8;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 12px;
+            font-weight: normal;
+        }
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1e293b transparent transparent transparent;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-close:hover {
+            color: #64748b;
+        }
+        .modal-body {
+            padding: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .audit-modal .modal-content {
+            max-width: 600px;
+        }
+        .audit-info-section {
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .audit-info-section:last-child {
+            border-bottom: none;
+        }
+        .audit-info-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .audit-info-value {
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .audit-company-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .audit-company-card .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+        .audit-company-card .info-label {
+            color: #64748b;
+        }
+        .audit-company-card .info-value {
+            color: #1e293b;
+        }
+        .audit-actions {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .audit-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+        .btn-reject {
+            background: white;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        .btn-reject:hover {
+            background: #fef2f2;
+            border-color: #dc2626;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .audit-row {
+            display: flex;
+            gap: 24px;
+        }
+        .audit-row-item {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">商家/组织管理</h1>
+            <p class="page-subtitle">RaaS.Dao 平台商家/组织信息管理</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="search-bar">
+                <input type="text" class="form-control" placeholder="搜索商家/组织名称/ID" style="min-width: 200px;">
+                <select class="form-control">
+                    <option>全部类型</option>
+                    <option>训练基地</option>
+                    <option>配件商</option>
+                    <option>机器人商</option>
+                    <option>设备商</option>
+                </select>
+                <select class="form-control">
+                    <option>全部状态</option>
+                    <option>待审核</option>
+                    <option>审核通过</option>
+                    <option>已驳回</option>
+                    <option>已禁用</option>
+                </select>
+                <button class="btn btn-outline"><i class="fa fa-search"></i> 搜索</button>
+                <button class="btn btn-outline"><i class="fa fa-refresh"></i> 重置</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>商家/组织ID</th>
+                            <th>商家/组织名称</th>
+                            <th>负责人</th>
+                            <th>手机号</th>
+                            <th>商家/组织人数</th>
+                            <th>认证企业</th>
+                            <th>商家/组织类型</th>
+                            <th>商家/组织等级</th>
+                            <th>状态（审核状态）</th>
+                            <th>入驻时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="org-table-body">
+                        <tr>
+                            <td>ORG001</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">东莞长安训练基地</span>
+                                    <span class="expand-btn collapsed" onclick="toggleSubOrg(this)"><i class="fa fa-caret-right"></i></span>
+                                </div>
+                            </td>
+                            <td>张明</td>
+                            <td>13826469793</td>
+                            <td>25人</td>
+                            <td>
+                                <div style="font-size: 13px;">东莞市蓓佳尔工艺品有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：李蓓佳 | 信用代码：91441900MA4U4X2K8R</div>
+                            </td>
+                            <td>训练基地服务商</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td><span class="badge badge-audit-approved">审核通过</span></td>
+                            <td>2023-06-15</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG001')">查看详情</span></td>
+                        </tr>
+                        <tr class="sub-org-row">
+                            <td>ORG001-01</td>
+                            <td>
+                                <div class="org-cell" style="padding-left: 20px;">
+                                    <span class="org-name">长安训练基地-教学区</span>
+                                </div>
+                            </td>
+                            <td>王小明</td>
+                            <td>13826469794</td>
+                            <td>10人</td>
+                            <td class="empty-cell">-</td>
+                            <td>训练基地</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG001-01')">查看详情</span></td>
+                        </tr>
+                        <tr class="sub-org-row">
+                            <td>ORG001-02</td>
+                            <td>
+                                <div class="org-cell" style="padding-left: 20px;">
+                                    <span class="org-name">长安训练基地-实操区</span>
+                                </div>
+                            </td>
+                            <td>李大伟</td>
+                            <td>13826469795</td>
+                            <td>15人</td>
+                            <td class="empty-cell">-</td>
+                            <td>训练基地，机器人及设备商</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG001-02')">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG002</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">东莞嘉东轴承商贸有限公司</span>
+                                </div>
+                            </td>
+                            <td>陈嘉东</td>
+                            <td>13912345678</td>
+                            <td>18人</td>
+                            <td>
+                                <div style="font-size: 13px;">东莞嘉东轴承商贸有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：陈嘉东 | 信用代码：91441900MA4W7Q3M5N</div>
+                            </td>
+                            <td>配件与易损件供应商</td>
+                            <td><span class="badge badge-level-0">Lv.0</span></td>
+                            <td><span class="badge badge-audit-pending">待审核</span></td>
+                            <td>2023-08-20</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG002')">查看详情</span> <span class="action-link" onclick="auditOrg('ORG002')">审核</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG003</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">深圳众博工业机器人有限公司</span>
+                                    <span class="expand-btn collapsed" onclick="toggleSubOrg(this)"><i class="fa fa-caret-right"></i></span>
+                                </div>
+                            </td>
+                            <td>刘众博</td>
+                            <td>13698765432</td>
+                            <td>56人</td>
+                            <td>
+                                <div style="font-size: 13px;">深圳众博工业机器人有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：刘众博 | 信用代码：91440300MA5D8X1K2R</div>
+                            </td>
+                            <td>整机机器人厂商</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td><span class="badge badge-audit-approved">审核通过</span></td>
+                            <td>2023-05-10</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG003')">查看详情</span></td>
+                        </tr>
+                        <tr class="sub-org-row">
+                            <td>ORG003-01</td>
+                            <td>
+                                <div class="org-cell" style="padding-left: 20px;">
+                                    <span class="org-name">众博机器人-研发中心</span>
+                                </div>
+                            </td>
+                            <td>张工程师</td>
+                            <td>13698765433</td>
+                            <td>30人</td>
+                            <td class="empty-cell">-</td>
+                            <td>整机机器人厂商</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG003-01')">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG004</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">广州精工传感设备有限公司</span>
+                                </div>
+                            </td>
+                            <td>李精工</td>
+                            <td>13523456789</td>
+                            <td>32人</td>
+                            <td>
+                                <div style="font-size: 13px;">广州精工传感设备有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：李精工 | 信用代码：91440100MA5C4U2M7Q</div>
+                            </td>
+                            <td>核心零部件供应商</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td>
+                                <span class="badge badge-audit-disabled">
+                                    已禁用
+                                    <span class="tooltip">
+                                        <i class="fa fa-question-circle badge-icon"></i>
+                                        <span class="tooltip-text">商家/组织违规，资质过期，被限制入驻资格</span>
+                                    </span>
+                                </span>
+                            </td>
+                            <td>2023-09-05</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG004')">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG005</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">王智能</span>
+                                </div>
+                            </td>
+                            <td>王智能</td>
+                            <td>15834567890</td>
+                            <td>1人</td>
+                            <td>-</td>
+                            <td>个人训练</td>
+                            <td><span class="badge badge-level-0">Lv.0</span></td>
+                            <td>
+                                <span class="badge badge-audit-rejected">
+                                    已驳回
+                                    <span class="tooltip">
+                                        <i class="fa fa-question-circle badge-icon"></i>
+                                        <span class="tooltip-text">商家/组织资质不符，信息有误，拒绝入驻申请</span>
+                                    </span>
+                                </span>
+                            </td>
+                            <td>2023-07-18</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG005')">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG006</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">杭州阿里云智能科技有限公司</span>
+                                </div>
+                            </td>
+                            <td>马阿里</td>
+                            <td>18612345678</td>
+                            <td>120人</td>
+                            <td>
+                                <div style="font-size: 13px;">杭州阿里云智能科技有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：马云 | 信用代码：91330100MA2B3C4D5E</div>
+                            </td>
+                            <td>机器人及设备商，配件与易损件供应商</td>
+                            <td><span class="badge badge-level-0">Lv.0</span></td>
+                            <td><span class="badge badge-audit-pending">待审核</span></td>
+                            <td>2023-04-22</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG006')">查看详情</span> <span class="action-link" onclick="auditOrg('ORG006')">审核</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG007</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">武汉中兴智能装备有限公司</span>
+                                    <span class="expand-btn collapsed" onclick="toggleSubOrg(this)"><i class="fa fa-caret-right"></i></span>
+                                </div>
+                            </td>
+                            <td>赵中兴</td>
+                            <td>15934567890</td>
+                            <td>88人</td>
+                            <td>
+                                <div style="font-size: 13px;">武汉中兴智能装备有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：赵中兴 | 信用代码：91420100MA5K7M2N9P</div>
+                            </td>
+                            <td>机器人及设备商</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td><span class="badge badge-audit-approved">审核通过</span></td>
+                            <td>2023-10-30</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG007')">查看详情</span></td>
+                        </tr>
+                        <tr class="sub-org-row">
+                            <td>ORG007-01</td>
+                            <td>
+                                <div class="org-cell" style="padding-left: 20px;">
+                                    <span class="org-name">中兴装备-华南分部</span>
+                                </div>
+                            </td>
+                            <td>陈华南</td>
+                            <td>15934567891</td>
+                            <td>40人</td>
+                            <td class="empty-cell">-</td>
+                            <td>机器人及设备商</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG007-01')">查看详情</span></td>
+                        </tr>
+                        <tr>
+                            <td>ORG008</td>
+                            <td>
+                                <div class="org-cell">
+                                    <span class="org-name">成都天府智能科技有限公司</span>
+                                </div>
+                            </td>
+                            <td>刘天府</td>
+                            <td>18856789012</td>
+                            <td>36人</td>
+                            <td>
+                                <div style="font-size: 13px;">成都天府智能科技有限公司</div>
+                                <div style="font-size: 12px; color: #94a3b8;">法人：刘天府 | 信用代码：91510100MA6A5B2C3D</div>
+                            </td>
+                            <td>机器人及设备商，配件与易损件供应商</td>
+                            <td><span class="badge badge-level">Lv.1</span></td>
+                            <td><span class="badge badge-audit-approved">审核通过</span></td>
+                            <td>2023-11-15</td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG008')">查看详情</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <span class="text-gray-500 text-sm">共 12 条</span>
+                    <div class="pagination">
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                        <select class="form-control w-auto ml-2">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                            <option>50条/页</option>
+                        </select>
+                        <span class="text-gray-500 text-sm ml-2">跳至</span>
+                        <input type="text" class="form-control w-16 ml-2" value="1">
+                        <span class="text-gray-500 text-sm ml-2">页</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const orgData = {
+            'ORG001': {
+                id: 'ORG001',
+                name: '东莞长安训练基地',
+                logo: 'images/org-1.png',
+                leader: '张明',
+                phone: '13826469793',
+                memberCount: 25,
+                company: {
+                    name: '东莞市蓓佳尔工艺品有限公司',
+                    legalPerson: '李蓓佳',
+                    creditCode: '91441900MA4U4X2K8R'
+                },
+                type: 'training',
+                createTime: '2023-06-15'
+            },
+            'ORG002': {
+                id: 'ORG002',
+                name: '东莞嘉东轴承商贸有限公司',
+                logo: 'images/org-2.png',
+                leader: '陈嘉东',
+                phone: '13912345678',
+                memberCount: 18,
+                company: {
+                    name: '东莞嘉东轴承商贸有限公司',
+                    legalPerson: '陈嘉东',
+                    creditCode: '91441900MA4W7Q3M5N'
+                },
+                type: 'parts',
+                createTime: '2023-08-20'
+            },
+            'ORG003': {
+                id: 'ORG003',
+                name: '深圳众博工业机器人有限公司',
+                logo: 'images/org-3.png',
+                leader: '刘众博',
+                phone: '13698765432',
+                memberCount: 56,
+                company: {
+                    name: '深圳众博工业机器人有限公司',
+                    legalPerson: '刘众博',
+                    creditCode: '91440300MA5D8X1K2R'
+                },
+                type: 'robot',
+                createTime: '2023-05-10'
+            },
+            'ORG004': {
+                id: 'ORG004',
+                name: '广州精工传感设备有限公司',
+                logo: 'images/org-4.png',
+                leader: '李精工',
+                phone: '13523456789',
+                memberCount: 32,
+                company: {
+                    name: '广州精工传感设备有限公司',
+                    legalPerson: '李精工',
+                    creditCode: '91440100MA5C4U2M7Q'
+                },
+                type: 'equipment',
+                createTime: '2023-09-05'
+            },
+            'ORG005': {
+                id: 'ORG005',
+                name: '佛山智能装备科技有限公司',
+                logo: 'images/org-5.png',
+                leader: '王智能',
+                phone: '15834567890',
+                memberCount: 45,
+                company: {
+                    name: '佛山智能装备科技有限公司',
+                    legalPerson: '王智能',
+                    creditCode: '91440600MA5W1K3L8M'
+                },
+                type: 'robot',
+                createTime: '2023-07-18'
+            },
+            'ORG006': {
+                id: 'ORG006',
+                name: '杭州阿里云智能科技有限公司',
+                logo: 'images/org-6.png',
+                leader: '马阿里',
+                phone: '18612345678',
+                memberCount: 120,
+                company: {
+                    name: '杭州阿里云智能科技有限公司',
+                    legalPerson: '马云',
+                    creditCode: '91330100MA2B3C4D5E'
+                },
+                type: 'equipment',
+                createTime: '2023-04-22'
+            },
+            'ORG007': {
+                id: 'ORG007',
+                name: '武汉中兴智能装备有限公司',
+                logo: 'images/org-7.png',
+                leader: '赵中兴',
+                phone: '15934567890',
+                memberCount: 88,
+                company: {
+                    name: '武汉中兴智能装备有限公司',
+                    legalPerson: '赵中兴',
+                    creditCode: '91420100MA5K7M2N9P'
+                },
+                type: 'robot',
+                createTime: '2023-10-30'
+            },
+            'ORG008': {
+                id: 'ORG008',
+                name: '成都天府智能科技有限公司',
+                logo: 'images/org-8.png',
+                leader: '刘天府',
+                phone: '18856789012',
+                memberCount: 36,
+                company: {
+                    name: '成都天府智能科技有限公司',
+                    legalPerson: '刘天府',
+                    creditCode: '91510100MA6A5B2C3D'
+                },
+                type: 'robot',
+                createTime: '2023-11-15'
+            }
+        };
+
+        function toggleSubOrg(btn) {
+            const row = btn.closest('tr');
+            const nextRow = row.nextElementSibling;
+            
+            if (nextRow && nextRow.classList.contains('sub-org-row')) {
+                if (btn.classList.contains('collapsed')) {
+                    btn.classList.remove('collapsed');
+                    nextRow.style.display = '';
+                    let sibling = nextRow.nextElementSibling;
+                    while (sibling && sibling.classList.contains('sub-org-row')) {
+                        sibling.style.display = '';
+                        sibling = sibling.nextElementSibling;
+                    }
+                } else {
+                    btn.classList.add('collapsed');
+                    nextRow.style.display = 'none';
+                    let sibling = nextRow.nextElementSibling;
+                    while (sibling && sibling.classList.contains('sub-org-row')) {
+                        sibling.style.display = 'none';
+                        sibling = sibling.nextElementSibling;
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const subOrgRows = document.querySelectorAll('.sub-org-row');
+            subOrgRows.forEach(row => {
+                row.style.display = 'none';
+            });
+        });
+
+        function showOrgDetail(orgId) {
+            alert('查看商家/组织详情: ' + orgId);
+        }
+
+        function auditOrg(orgId) {
+            const modal = document.getElementById('audit-modal');
+            const org = orgData[orgId];
+            if (org) {
+                document.getElementById('audit-org-id').textContent = org.id;
+                document.getElementById('audit-org-name').textContent = org.name;
+                document.getElementById('audit-leader').textContent = org.leader;
+                document.getElementById('audit-phone').textContent = org.phone;
+                document.getElementById('audit-company-name').textContent = org.company.name;
+                document.getElementById('audit-legal-person').textContent = org.company.legalPerson;
+                document.getElementById('audit-credit-code').textContent = org.company.creditCode;
+                const typeMap = {
+                    'training': '训练基地',
+                    'parts': '配件商',
+                    'robot': '机器人商',
+                    'equipment': '设备商'
+                };
+                document.getElementById('audit-org-type').textContent = typeMap[org.type] || org.type;
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeAuditModal() {
+            document.getElementById('audit-modal').classList.add('hidden');
+        }
+
+        function approveOrg() {
+            alert('审核通过');
+            closeAuditModal();
+        }
+
+        function rejectOrg() {
+            alert('审核驳回');
+            closeAuditModal();
+        }
+    </script>
+
+    <div id="audit-modal" class="modal-overlay audit-modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>商家/组织审核</h3>
+                <button class="modal-close" onclick="closeAuditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="audit-info-section">
+                    <div class="audit-row">
+                        <div class="audit-row-item">
+                            <div class="audit-info-label">商家/组织ID</div>
+                            <div class="audit-info-value" id="audit-org-id">-</div>
+                        </div>
+                        <div class="audit-row-item">
+                            <div class="audit-info-label">商家/组织名称</div>
+                            <div class="audit-info-value" id="audit-org-name">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="audit-info-section">
+                    <div class="audit-row">
+                        <div class="audit-row-item">
+                            <div class="audit-info-label">负责人</div>
+                            <div class="audit-info-value" id="audit-leader">-</div>
+                        </div>
+                        <div class="audit-row-item">
+                            <div class="audit-info-label">手机号</div>
+                            <div class="audit-info-value" id="audit-phone">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="audit-info-section">
+                    <div class="audit-info-label">商家/组织类型</div>
+                    <div class="audit-info-value" id="audit-org-type">-</div>
+                </div>
+                <div class="audit-info-section">
+                    <div class="audit-info-label">认证企业信息</div>
+                    <div class="audit-company-card">
+                        <div class="info-row">
+                            <span class="info-label">企业名称</span>
+                            <span class="info-value" id="audit-company-name">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">法人</span>
+                            <span class="info-value" id="audit-legal-person">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">统一社会信用代码</span>
+                            <span class="info-value" id="audit-credit-code">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="audit-actions">
+                    <button class="btn btn-reject" onclick="rejectOrg()"><i class="fa fa-times"></i> 驳回</button>
+                    <button class="btn btn-primary" onclick="approveOrg()"><i class="fa fa-check"></i> 通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

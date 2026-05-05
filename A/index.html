@@ -57,7 +57,7 @@
         }
         .nav-item.has-submenu .fa-angle-down {
             position: absolute;
-            right: 20px;
+            right: 8px;
             transition: transform 0.3s ease;
         }
         .nav-item.has-submenu.expanded .fa-angle-down {
@@ -660,27 +660,31 @@
                 <div id="user-submenu" class="submenu">
                     <div class="submenu-item" data-module="user-list" onclick="showModule('user-list'); event.stopPropagation()">
                         <i class="fa fa-user"></i>
-                        <span>用户列表</span>
+                        <span>用户管理</span>
+                    </div>
+                    <div class="submenu-item" data-module="org-list" onclick="showModule('org-list'); event.stopPropagation()">
+                        <i class="fa fa-building"></i>
+                        <span>商家/组织管理</span>
                     </div>
                 </div>
                 
                 <div class="nav-item has-submenu" onclick="toggleSubmenu('platform-submenu')">
                     <i class="fa fa-shield"></i>
-                    <span>平台权限</span>
+                    <span>商家/组织配置</span>
                     <i class="fa fa-angle-down"></i>
                 </div>
                 <div id="platform-submenu" class="submenu">
                     <div class="submenu-item" data-module="func-menu" onclick="showModule('func-menu'); event.stopPropagation()">
                         <i class="fa fa-list"></i>
-                        <span>功能菜单</span>
+                        <span>商家/组织权限</span>
                     </div>
                     <div class="submenu-item" data-module="data-perm" onclick="showModule('data-perm'); event.stopPropagation()">
                         <i class="fa fa-database"></i>
-                        <span>数据权限</span>
+                        <span>商家/组织类型</span>
                     </div>
                     <div class="submenu-item" data-module="field-perm" onclick="showModule('field-perm'); event.stopPropagation()">
                         <i class="fa fa-columns"></i>
-                        <span>字段权限</span>
+                        <span>商家/组织角色</span>
                     </div>
                 </div>
             </div>
@@ -766,8 +770,19 @@
                 <div id="user-list-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
                     <iframe src="user-list.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
                 </div>
+                <div id="org-list-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="org-list.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
                 <div id="user-agreement-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
                     <iframe src="user-agreement.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+
+                <div id="func-menu-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="func-menu.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+
+                <div id="data-perm-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="data-perm.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
                 </div>
             </div>
         </main>
@@ -922,10 +937,11 @@
             logo: { name: '网站logo', icon: 'fa-image' },
             about: { name: '关于我们', icon: 'fa-info' },
             'user-agreement': { name: '用户协议', icon: 'fa-file-text' },
-            'func-menu': { name: '功能菜单', icon: 'fa-list' },
-            'data-perm': { name: '数据权限', icon: 'fa-database' },
-            'field-perm': { name: '字段权限', icon: 'fa-columns' },
-            'user-list': { name: '用户列表', icon: 'fa-user' }
+            'func-menu': { name: '商家/组织权限', icon: 'fa-list' },
+            'data-perm': { name: '商家/组织类型', icon: 'fa-database' },
+            'field-perm': { name: '商家/组织角色', icon: 'fa-columns' },
+            'user-list': { name: '用户管理', icon: 'fa-user' },
+            'org-list': { name: '商家/组织管理', icon: 'fa-building' }
         };
 
         function showModule(moduleName) {

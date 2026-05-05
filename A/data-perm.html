@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家/组织类型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px;
+            overflow: hidden;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+        .table thead {
+            background: #f8fafc;
+        }
+        .table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        .table td {
+            padding: 14px 20px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+            white-space: nowrap;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .badge {
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+        .badge-blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        .badge-green {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-gray {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .form-control {
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .expand-icon {
+            cursor: pointer;
+            color: #6366f1;
+            margin-left: 20px;
+            transition: transform 0.3s ease;
+            font-size: 16px;
+        }
+        .expand-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        .menu-cell {
+            position: relative;
+        }
+        .menu-name {
+            margin-right: 0;
+        }
+        .child-row.hidden {
+            display: none;
+        }
+        .indent-2 {
+            padding-left: 2em !important;
+        }
+        .indent-4 {
+            padding-left: 4em !important;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal-header {
+            padding: 8px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        .form-group label .required {
+            color: #ef4444;
+            margin-right: 4px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .form-radio-group {
+            display: flex;
+            gap: 24px;
+        }
+        .form-radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .form-radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #6366f1;
+        }
+        .form-radio-item span {
+            font-size: 14px;
+            color: #475569;
+        }
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn-xs {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+            cursor: pointer;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-switch .slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .toggle-switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .toggle-switch input:checked + .slider {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">商家/组织类型</h1>
+            <p class="page-subtitle">管理商家及组织的类型配置</p>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <main class="main-content">
+            <div class="card">
+                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-container">
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>商家/组织类型名称</th>
+                                <th>备注</th>
+                                <th>创建时间</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td class="menu-cell">
+                                    <span class="menu-name">训练基地服务商</span>
+                                    <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('training-child')"></i>
+                                </td>
+                                <td>提供训练基地服务的商家</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="training-child">
+                                <td>2</td>
+                                <td class="indent-2">独立训练基地</td>
+                                <td>自营/授权训练基地服务</td>
+                                <td>2026-03-11 10:20:00</td>
+                                <td>2026-03-11 10:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="training-child">
+                                <td>3</td>
+                                <td class="indent-2">客户自训练</td>
+                                <td>自主下单、自主训练</td>
+                                <td>2026-03-11 10:21:00</td>
+                                <td>2026-03-11 10:21:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="training-child">
+                                <td>4</td>
+                                <td class="indent-2">个人训练</td>
+                                <td>个人训练服务</td>
+                                <td>2026-03-11 10:22:00</td>
+                                <td>2026-03-11 10:22:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td class="menu-cell">
+                                    <span class="menu-name">机器人及设备商</span>
+                                    <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('robot-child')"></i>
+                                </td>
+                                <td>提供机器人及相关设备的商家</td>
+                                <td>2026-03-12 08:30:00</td>
+                                <td>2026-03-15 14:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="robot-child">
+                                <td>6</td>
+                                <td class="indent-2">整机机器人厂商</td>
+                                <td>整机机器人供应商</td>
+                                <td>2026-03-12 08:35:00</td>
+                                <td>2026-03-12 08:35:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="robot-child">
+                                <td>7</td>
+                                <td class="indent-2">专机与生产设备厂商</td>
+                                <td>专机、生产设备供应商</td>
+                                <td>2026-03-12 08:40:00</td>
+                                <td>2026-03-12 08:40:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="robot-child">
+                                <td>8</td>
+                                <td class="indent-2">核心零部件供应商</td>
+                                <td>核心零部件供应</td>
+                                <td>2026-03-12 08:45:00</td>
+                                <td>2026-03-12 08:45:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="robot-child">
+                                <td>9</td>
+                                <td class="indent-2">周边设备与工具服务商</td>
+                                <td>周边设备、工具服务</td>
+                                <td>2026-03-12 08:50:00</td>
+                                <td>2026-03-12 08:50:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="robot-child">
+                                <td>10</td>
+                                <td class="indent-2">配件与易损件供应商</td>
+                                <td>配件、易损件供应</td>
+                                <td>2026-03-12 08:55:00</td>
+                                <td>2026-03-12 08:55:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td class="menu-cell">
+                                    <span class="menu-name">终端行业客户</span>
+                                    <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('client-child')"></i>
+                                </td>
+                                <td>终端行业的客户组织</td>
+                                <td>2026-03-13 11:15:00</td>
+                                <td>2026-03-18 09:30:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="client-child">
+                                <td>12</td>
+                                <td class="indent-2">工业行业</td>
+                                <td>工业行业客户</td>
+                                <td>2026-03-13 11:20:00</td>
+                                <td>2026-03-13 11:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="client-child">
+                                <td>13</td>
+                                <td class="indent-2">农业行业</td>
+                                <td>农业行业客户</td>
+                                <td>2026-03-13 11:25:00</td>
+                                <td>2026-03-13 11:25:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="client-child">
+                                <td>14</td>
+                                <td class="indent-2">服务业行业</td>
+                                <td>服务业行业客户</td>
+                                <td>2026-03-13 11:30:00</td>
+                                <td>2026-03-13 11:30:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+                    <div></div>
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <span class="text-gray-500 text-sm">共 50 条</span>
+                        <div class="pagination">
+                            <button class="pagination-btn">
+                                <i class="fa fa-angle-left"></i>
+                            </button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">4</button>
+                            <button class="pagination-btn">5</button>
+                            <button class="pagination-btn">6</button>
+                            <button class="pagination-btn">7</button>
+                            <button class="pagination-btn">8</button>
+                            <button class="pagination-btn">9</button>
+                            <button class="pagination-btn">
+                                <i class="fa fa-angle-right"></i>
+                            </button>
+                            <select class="form-control w-auto ml-2">
+                                <option>10条/页</option>
+                                <option>20条/页</option>
+                                <option>50条/页</option>
+                            </select>
+                            <span class="text-gray-500 text-sm ml-2">跳至</span>
+                            <input type="text" class="form-control w-16 ml-2" value="1">
+                            <span class="text-gray-500 text-sm ml-2">页</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="add-modal" class="modal-overlay hidden" onclick="closeAddModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">添加商家/组织类型</span>
+                <button class="modal-close" onclick="closeAddModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>类型名称</label>
+                    <input type="text" class="form-control" placeholder="请输入类型名称">
+                </div>
+                <div class="form-group">
+                    <label>上级类型</label>
+                    <select class="form-control">
+                        <option value="">无</option>
+                        <option value="1">训练基地服务商</option>
+                        <option value="2">机器人及设备商</option>
+                        <option value="3">终端行业客户</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注信息"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeAddModal()">取消</button>
+                <button class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay hidden" onclick="closeEditModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">编辑商家/组织类型</span>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>类型名称</label>
+                    <input type="text" class="form-control" value="训练基地服务商">
+                </div>
+                <div class="form-group">
+                    <label>上级类型</label>
+                    <select class="form-control">
+                        <option value="" selected>无</option>
+                        <option value="1">训练基地服务商</option>
+                        <option value="2">机器人及设备商</option>
+                        <option value="3">终端行业客户</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea class="form-control form-textarea">提供训练基地服务的商家</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+                <button class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-dialog" class="dialog-overlay hidden">
+        <div class="dialog-content">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-trash"></i>
+                </div>
+                <h3 class="dialog-title">确认删除</h3>
+                <p class="dialog-message">确定要删除该商家/组织类型吗？此操作无法撤销。</p>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
+                <button class="btn btn-primary" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function openDeleteDialog() {
+            document.getElementById('delete-dialog').classList.remove('hidden');
+        }
+
+        function closeDeleteDialog() {
+            document.getElementById('delete-dialog').classList.add('hidden');
+        }
+
+        function toggleExpand(rowId) {
+            const rows = document.querySelectorAll(`.child-row[id="${rowId}"]`);
+            const icon = event.target;
+            rows.forEach(row => {
+                row.classList.toggle('hidden');
+            });
+            icon.classList.toggle('collapsed');
+        }
+    </script>
+</body>
+</html>
