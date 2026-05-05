@@ -161,13 +161,13 @@
             padding: 16px 24px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-y: auto;
         }
         .card {
             display: flex;
             flex-direction: column;
             flex: 1;
-            overflow: hidden;
+            overflow-y: auto;
         }
         .table-wrapper {
             flex: 1;
@@ -617,6 +617,26 @@
         .role-tag-dev {
             background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
             color: #ca8a04;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
         }
     </style>
 </head>
