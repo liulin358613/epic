@@ -70,7 +70,20 @@
         }
 
         // 页面加载时加载头部
-        document.addEventListener('DOMContentLoaded', loadHeader);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            // 检查URL参数，如果是从注册页面跳转过来的，自动打开登录弹窗
+            const urlParams = new URLSearchParams(window.location.search);
+            const showLogin = urlParams.get('showLogin');
+            if (showLogin === 'true') {
+                // 延迟一下，确保弹窗元素已经加载
+                setTimeout(function() {
+                    if (typeof openLoginModal === 'function') {
+                        openLoginModal();
+                    }
+                }, 100);
+            }
+        });
 
         // 显示退出确认对话框
         function showLogoutConfirm() {
@@ -3134,6 +3147,107 @@
             display: inline-block;
         }
 
+        /* 二维码弹窗样式 */
+        .qrcode-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100000;
+            backdrop-filter: blur(2px);
+        }
+
+        .qrcode-modal-overlay.show {
+            display: flex;
+        }
+
+        .qrcode-modal {
+            background-color: var(--white);
+            border-radius: 12px;
+            width: 400px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .qrcode-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background-color: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--classic-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .qrcode-close-btn:hover {
+            background-color: var(--light-gray);
+            color: var(--deep-gray);
+        }
+
+        .qrcode-content {
+            text-align: center;
+        }
+
+        .qrcode-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .qrcode-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url('images/wx.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .qrcode-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--deep-gray);
+        }
+
+        .qrcode-brand {
+            font-size: 24px;
+            color: var(--deep-gray);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .qrcode-image {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 20px;
+            background-color: var(--white);
+            border: 1px solid var(--border-gray);
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJ3aGl0ZSIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIyNTAiLz48ZyBmaWxsPSIjMzMzIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIvPjxyZWN0IHg9IjE1MCIgeT0iMCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiLz48cmVjdCB4PSIwIiB5PSIxNTAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIi8+PHJlY3QgeD0iMTAwIiB5PSIxMDAiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIvPjwvZz48ZyBmaWxsPSJ3aGl0ZSI+PHJlY3QgeD0iMTUiIHk9IjE1IiB3aWR0aD0iNzAiIGhlaWdodD0iNzAiLz48cmVjdCB4PSIxNjUiIHk9IjE1IiB3aWR0aD0iNzAiIGhlaWdodD0iNzAiLz48cmVjdCB4PSIxNSIgeT0iMTY1IiB3aWR0aD0iNzAiIGhlaWdodD0iNzAiLz48L2c+PGcgZmlsbD0iIzAwNTFEMSI+PHJlY3QgeD0iMjUiIHk9IjI1IiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiLz48cmVjdCB4PSIxNzUiIHk9IjI1IiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiLz48cmVjdCB4PSIyNSIgeT0iMTc1IiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiLz48cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjE5MCIgeT0iNDAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIvPjxyZWN0IHg9IjQwIiB5PSIxOTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIvPjwvZz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .qrcode-tip {
+            font-size: 14px;
+            color: var(--classic-gray);
+        }
+
         /* 响应式适配 */
         @media (max-width: 1480px) {
             .sub-nav-inner,
@@ -3205,14 +3319,30 @@
             <div class="login-links">
                 <a href="#">忘记密码</a>
                 <span>|</span>
-                <a href="#">注册账号</a>
+                <a href="register.html" id="registerLink">注册账号</a>
             </div>
             <div class="other-login-line">
                 <span>其他登录方式</span>
             </div>
             <div class="other-login-buttons">
-                <div class="other-login-btn"></div>
-                <div class="other-login-btn"></div>
+                <div class="other-login-btn" id="wechatLogin"></div>
+                <div class="other-login-btn" id="alipayLogin"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第三方登录二维码弹窗 -->
+    <div class="qrcode-modal-overlay" id="qrcodeModal">
+        <div class="qrcode-modal">
+            <button class="qrcode-close-btn" id="qrcodeClose">×</button>
+            <div class="qrcode-content">
+                <div class="qrcode-header">
+                    <div class="qrcode-icon" id="qrcodeIcon"></div>
+                    <div class="qrcode-title" id="qrcodeTitle">使用微信扫一扫登录</div>
+                </div>
+                <div class="qrcode-brand">「RaaS.Dao」</div>
+                <div class="qrcode-image" id="qrcodeImage"></div>
+                <div class="qrcode-tip">请使用手机扫码登录</div>
             </div>
         </div>
     </div>
@@ -7502,6 +7632,7 @@
         const codeInput = document.querySelector('.code-input');
         const eyeBtn = document.querySelector('.eye-btn');
         const passwordField = document.querySelector('.password-input .form-input');
+        const phoneField = document.querySelector('.login-form .form-input');
 
         // 打开弹窗
         function openLoginModal() {
@@ -7518,6 +7649,14 @@
         closeBtn.addEventListener('click', closeLoginModal);
         modalOverlay.addEventListener('click', closeLoginModal);
 
+        // 注册账号链接点击事件
+        const registerLink = document.getElementById('registerLink');
+        if (registerLink) {
+            registerLink.addEventListener('click', function(e) {
+                closeLoginModal();
+            });
+        }
+
         // 登录方式切换
         loginTabs.forEach((tab, index) => {
             tab.addEventListener('click', () => {
@@ -7528,10 +7667,12 @@
                     // 密码登录
                     passwordInput.style.display = 'block';
                     codeInput.style.display = 'none';
+                    phoneField.placeholder = '请输入手机号/用户名';
                 } else {
                     // 验证码登录
                     passwordInput.style.display = 'none';
                     codeInput.style.display = 'flex';
+                    phoneField.placeholder = '请输入手机号';
                 }
             });
         });
@@ -7553,6 +7694,71 @@
             
             // 重新加载头部，显示已登录的头部
             loadHeader();
+        });
+
+        // ========== 第三方登录二维码弹窗功能 ==========
+        const qrcodeModal = document.getElementById('qrcodeModal');
+        const qrcodeClose = document.getElementById('qrcodeClose');
+        const qrcodeIcon = document.getElementById('qrcodeIcon');
+        const qrcodeTitle = document.getElementById('qrcodeTitle');
+        const wechatLogin = document.getElementById('wechatLogin');
+        const alipayLogin = document.getElementById('alipayLogin');
+
+        // 打开二维码弹窗
+        function showQrcodeModal(type) {
+            qrcodeModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            if (type === 'wechat') {
+                // 微信登录
+                qrcodeIcon.style.backgroundImage = "url('images/wx.jpg')";
+                qrcodeTitle.textContent = '使用微信扫一扫登录';
+            } else if (type === 'alipay') {
+                // 支付宝登录
+                qrcodeIcon.style.backgroundImage = "url('images/zfb.jpg')";
+                qrcodeTitle.textContent = '使用支付宝扫一扫登录';
+            }
+        }
+
+        // 关闭二维码弹窗
+        function closeQrcodeModal() {
+            qrcodeModal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // 微信登录点击事件
+        if (wechatLogin) {
+            wechatLogin.addEventListener('click', function() {
+                showQrcodeModal('wechat');
+            });
+        }
+
+        // 支付宝登录点击事件
+        if (alipayLogin) {
+            alipayLogin.addEventListener('click', function() {
+                showQrcodeModal('alipay');
+            });
+        }
+
+        // 关闭按钮点击事件
+        if (qrcodeClose) {
+            qrcodeClose.addEventListener('click', closeQrcodeModal);
+        }
+
+        // 点击遮罩层关闭弹窗
+        if (qrcodeModal) {
+            qrcodeModal.addEventListener('click', function(e) {
+                if (e.target === qrcodeModal) {
+                    closeQrcodeModal();
+                }
+            });
+        }
+
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && qrcodeModal.classList.contains('show')) {
+                closeQrcodeModal();
+            }
         });
 
         // 可拖动分隔线功能
