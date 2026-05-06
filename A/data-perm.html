@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>组织类型</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -13,13 +16,19 @@
             box-sizing: border-box;
         }
         html, body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f7fa;
             height: 100%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .page-container {
             display: flex;
@@ -31,19 +40,22 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 12px 16px;
             background: white;
             border-bottom: 1px solid #f1f5f9;
+            line-height: 1.4;
         }
         .page-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             color: #1e293b;
+            line-height: 1.4;
         }
         .page-subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: #94a3b8;
             margin-top: 4px;
+            line-height: 1.4;
         }
         .main-content {
             flex: 1;
@@ -51,19 +63,19 @@
             overflow-x: auto;
             overflow-y: auto;
             display: flex;
-            gap: 16px;
+            gap: 4px;
         }
         .sidebar {
-            width: 280px;
+            width: 240px;
             background: #e5e7eb;
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             border: 1px solid #d1d5db;
         }
         .sidebar-header {
-            padding: 14px 16px;
+            padding: 6px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -81,15 +93,16 @@
             padding: 4px 0;
         }
         .tree-item {
-            padding: 8px 12px;
+            padding: 10px 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             color: #374151;
             font-size: 14px;
             transition: background-color 0.2s;
             user-select: none;
+            line-height: 1.4;
         }
         .tree-item:hover {
             background: #d1d5db;
@@ -113,7 +126,7 @@
             padding-left: 32px;
         }
         .tree-icon {
-            font-size: 12px;
+            font-size: 14px;
             color: #6b7280;
         }
         .expand-icon {
@@ -122,7 +135,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             color: #6b7280;
             font-weight: bold;
             cursor: pointer;
@@ -144,7 +157,7 @@
         .content-area {
             flex: 1;
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e5e7eb;
             display: flex;
             flex-direction: column;
@@ -152,30 +165,87 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         .content-header {
-            padding: 16px 20px;
+            padding: 11.5px 20px;
             border-bottom: 1px solid #e5e7eb;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #1f2937;
             background: #fafafa;
         }
         .content-body {
             flex: 1;
-            padding: 24px;
-            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .content-left {
+            flex: 1;
             display: flex;
             flex-direction: column;
+            padding-right: 16px;
+            border-right: 1px dashed #e5e7eb;
+            min-width: 0;
+        }
+        .content-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-left: 16px;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .role-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+        .role-header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        .role-list-container {
+            flex: 1;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .permission-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .perm-content {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .basic-info {
+            padding: 0;
         }
         .form-row {
             display: flex;
             gap: 40px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             align-items: center;
         }
         .form-group {
             display: flex;
             /* align-items: center; */
-            gap: 12px;
+            gap: 4px;
         }
         .form-group label {
             font-size: 14px;
@@ -186,14 +256,15 @@
             text-align: right;
         }
         .form-control {
-            width: 300px;
+            width: 350px;
             max-width: 100%;
-            padding: 10px 12px;
+            padding: 8px 12px;
             border: 1px solid #e5e7eb;
             border-radius: 6px;
             font-size: 14px;
             color: #374151;
             background: #fafafa;
+            line-height: 1.4;
             transition: all 0.2s ease;
         }
         .form-control:focus {
@@ -210,7 +281,7 @@
             background: white;
         }
         .form-textarea {
-            width: 500px;
+            width: 350px;
             max-width: 100%;
             min-height: 80px;
             resize: vertical;
@@ -234,8 +305,8 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border-radius: 6px;
             transition: background-color 0.2s;
         }
         .radio-item:hover {
@@ -300,10 +371,8 @@
             flex-shrink: 0;
         }
         .panel-content {
-            border: 1px solid #e5e7eb;
-            border-radius: 0 0 8px 8px;
-            padding: 16px;
-            background: white;
+            padding: 0;
+            background: transparent;
             flex: 1;
             overflow-y: auto;
         }
@@ -323,21 +392,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
         }
         .role-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
             width: 100%;
+            overflow-x: hidden;
         }
         .role-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             cursor: pointer;
             font-size: 14px;
             color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             padding: 4px 8px;
             border-radius: 4px;
             transition: background 0.2s;
@@ -363,7 +436,7 @@
             align-items: center;
             justify-content: center;
             color: #9ca3af;
-            font-size: 12px;
+            font-size: 14px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s;
@@ -379,9 +452,9 @@
         .perm-tabs {
             display: flex;
             gap: 32px;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 10px;
+            /* padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0; */
         }
         .perm-tab {
             padding: 8px 0;
@@ -404,7 +477,7 @@
         .permission-label {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             font-size: 14px;
             color: #475569;
             cursor: pointer;
@@ -418,17 +491,17 @@
         }
         .permission-children {
             margin-left: 32px;
-            margin-top: 4px;
+            margin-top: 2px;
             border-left: 2px solid #e2e8f0;
             padding-left: 12px;
         }
         .permission-children .permission-label {
             color: #64748b;
-            font-size: 13px;
+            font-size: 14px;
         }
         .permission-children .permission-children .permission-label {
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 14px;
         }
         .expand-icon {
             width: 16px;
@@ -438,7 +511,7 @@
             justify-content: center;
             cursor: pointer;
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 14px;
             transition: transform 0.2s ease;
             flex-shrink: 0;
         }
@@ -459,9 +532,9 @@
         .perm-label {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             color: #374151;
             padding: 4px 6px;
             border-radius: 4px;
@@ -503,7 +576,7 @@
         .data-perm-option {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             cursor: pointer;
             font-size: 14px;
             color: #374151;
@@ -522,7 +595,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
+            padding: 12px 16px;
             background: #f9fafb;
             border-radius: 6px;
         }
@@ -532,14 +605,14 @@
         }
         .field-perm {
             display: flex;
-            gap: 16px;
+            gap: 4px;
         }
         .field-perm label {
             display: flex;
             align-items: center;
             gap: 4px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             color: #6b7280;
         }
         .field-perm input[type="checkbox"] {
@@ -564,7 +637,7 @@
         }
         .modal-content {
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             width: 400px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
@@ -578,7 +651,7 @@
             background: #f9fafb;
         }
         .modal-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #1f2937;
         }
@@ -605,37 +678,37 @@
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
+            gap: 4px;
             padding: 16px 20px;
             border-top: 1px solid #e5e7eb;
             background: #f9fafb;
         }
         .content-footer {
-            padding: 16px 24px;
+            padding: 10px 14px;
             border-top: 1px solid #e5e7eb;
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 4px;
             background: #fafafa;
         }
         .btn {
-            padding: 12px 28px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             border: none;
             transition: all 0.2s ease;
-            transition: all 0.2s;
+            line-height: 1.4;
         }
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
         .btn-primary:hover {
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
             transform: translateY(-1px);
         }
         .btn-outline {
@@ -650,11 +723,11 @@
             box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
         }
         .btn-sm {
-            padding: 8px 16px;
+            padding: 6px 12px;
             font-size: 13px;
         }
         .btn-xs {
-            padding: 4px 10px;
+            padding: 4px 8px;
             font-size: 12px;
         }
         ::-webkit-scrollbar {
@@ -668,6 +741,74 @@
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* 浏览器兼容性和响应式设计 */
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        /* 确保在所有浏览器下的一致性 */
+        @-moz-document url-prefix() {
+            .sidebar-tree,
+            .content-body,
+            .panel-content {
+                scrollbar-width: thin;
+            }
+        }
+
+        /* IE/Edge 兼容性 */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .sidebar-tree,
+            .content-body,
+            .panel-content {
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+            }
+        }
+
+        /* 响应式设计适配 */
+        @media screen and (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            .modal-content {
+                width: 90%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            .page-header {
+                padding: 10px 12px;
+            }
+            .main-content {
+                padding: 10px 12px;
+            }
+            .form-control {
+                width: 200px;
+            }
+        }
+
+        /* 高分辨率屏幕适配 */
+        @media screen and (min-width: 1920px) {
+            html, body {
+                font-size: 15px;
+            }
+        }
+
+        /* 防止触摸设备的双击缩放 */
+        body {
+            touch-action: manipulation;
         }
     </style>
 </head>
@@ -683,7 +824,7 @@
             <div class="sidebar">
                 <div class="sidebar-header">
                     <span class="sidebar-title">组织类型</span>
-                    <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="addNewOrg()">
+                    <button class="btn btn-primary" style="padding: 6px 16px; font-size: 14px;" onclick="addNewOrg()">
                         添加
                     </button>
                 </div>
@@ -840,54 +981,58 @@
             <div class="content-area">
                 <div class="content-header">组织详情</div>
                 <div class="content-body">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>组织名称：</label>
-                            <input type="text" class="form-control" placeholder="请输入" id="org-name-input">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>上级组织：</label>
-                            <select class="form-control" id="org-parent-input">
-                                <option value="" selected>请选择</option>
-                                <option value="1">训练基地</option>
-                                <option value="2">机器人及设备商</option>
-                                <option value="3">终端行业客户</option>
-                                <option value="4">供应链服务商</option>
-                                <option value="5">系统集成商</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>备注说明：</label>
-                            <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>是否需要审核：</label>
-                            <div class="radio-group">
-                                <div class="radio-item">
-                                    <input type="radio" name="audit" value="no" checked id="audit-no">
-                                    <span>否</span>
+                    <div class="content-left">
+                        <div class="basic-info">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>组织名称：</label>
+                                    <input type="text" class="form-control" placeholder="请输入" id="org-name-input">
                                 </div>
-                                <div class="radio-item">
-                                    <input type="radio" name="audit" value="yes" id="audit-yes">
-                                    <span>是</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>上级组织：</label>
+                                    <select class="form-control" id="org-parent-input">
+                                        <option value="" selected>请选择</option>
+                                        <option value="1">训练基地</option>
+                                        <option value="2">机器人及设备商</option>
+                                        <option value="3">终端行业客户</option>
+                                        <option value="4">供应链服务商</option>
+                                        <option value="5">系统集成商</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>备注说明：</label>
+                                    <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>是否需要审核：</label>
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" name="audit" value="no" checked id="audit-no">
+                                            <span>否</span>
+                                        </div>
+                                        <div class="radio-item">
+                                            <input type="radio" name="audit" value="yes" id="audit-yes">
+                                            <span>是</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="dual-panel-container">
-                        <div class="panel panel-role">
-                            <div class="panel-header">组织角色</div>
-                            <div class="panel-content" id="role-content">
-                                <button class="btn btn-sm btn-outline btn-add-role" style="width: auto; margin-bottom: 16px;" onclick="showAddRoleModal()">
+                        
+                        <div class="role-section">
+                            <div class="role-header">
+                                组织角色
+                                <button class="btn btn-sm btn-outline btn-add-role" onclick="showAddRoleModal()">
                                     <i class="fa fa-plus"></i> 添加
                                 </button>
+                            </div>
+                            <div class="role-list-container">
                                 <div class="role-list">
                                     <label class="role-item">
                                         <input type="checkbox" checked>
@@ -932,16 +1077,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-divider"></div>
-                        <div class="panel panel-menu">
-                            <div class="panel-header">功能菜单</div>
-                            <div class="panel-content" id="permission-content">
-                                <div class="perm-tabs">
-                                    <div class="perm-tab active" onclick="switchPermTab('function')">功能权限</div>
-                                    <div class="perm-tab" onclick="switchPermTab('data')">数据权限</div>
-                                    <div class="perm-tab" onclick="switchPermTab('field')">字段权限</div>
-                                </div>
-                                <div class="perm-content" id="function-content">
+                    </div>
+                    
+                    <div class="content-right">
+                        <div class="permission-section">
+                            <div class="perm-tabs">
+                                <div class="perm-tab active" onclick="switchPermTab('function')">功能权限</div>
+                                <div class="perm-tab" onclick="switchPermTab('data')">数据权限</div>
+                                <div class="perm-tab" onclick="switchPermTab('field')">字段权限</div>
+                            </div>
+                            <div class="perm-content" id="function-content">
                                     <div class="permission-group">
                                         <label class="permission-label">
                                             <span class="expand-icon expanded" data-target="order-center-children">▶</span>
@@ -1153,186 +1298,245 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="perm-content hidden" id="data-content">
-                                    <div class="permission-group" style="margin-bottom: 16px;">
-                                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部数据</p>
-                                        
-                                        <div style="margin-bottom: 16px;">
-                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div class="perm-content hidden" id="data-content">
+                                <div class="permission-group">
+                                    <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px;">提示：不设置，默认全部数据</p>
+                                    
+                                    <div id="data-module-list">
+                                        <div class="data-module-item" style="margin-bottom: 16px;">
+                                            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
                                                 <label style="font-weight: 500;">
                                                     <span style="color: #dc2626;">*</span>业务模块：
                                                 </label>
-                                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
-                                                    <option>销售订单</option>
-                                                    <option>采购订单</option>
-                                                    <option>库存管理</option>
-                                                    <option>用户管理</option>
+                                                <select class="module-select" style="flex: 1; max-width: 400px; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="toggleDimensionSection(this)">
+                                                    <option value="">请选择</option>
+                                                    <option value="sales">销售订单</option>
+                                                    <option value="purchase">采购订单</option>
+                                                    <option value="inventory">库存管理</option>
+                                                    <option value="user">用户管理</option>
                                                 </select>
-                                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                                                <button class="delete-module-btn" style="color: #dc2626; background: none; border: none; cursor: pointer; display: none;">删除</button>
                                             </div>
-                                            <div style="padding: 16px; border: 1px solid #d1d5db; margin-left: 100px;">
-                                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                                                    <input type="checkbox" checked>
+                                            <div class="dimension-section" style="padding: 12px; border: 1px solid #d1d5db; margin-left: 80px; display: none;">
+                                                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
+                                                    <input type="checkbox" class="dimension-all" onclick="toggleAllDimensions(this)">
                                                     <span>全选</span>
                                                 </div>
-                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                <div style="display: flex; align-items: center; gap: 4px;">
                                                     <span>隔离维度：</span>
-                                                    <div style="display: flex; gap: 32px;">
-                                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox" checked>
+                                                    <div style="display: flex; gap: 8px;">
+                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" class="dimension-item">
                                                             <span>业务员</span>
                                                         </div>
-                                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox">
+                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" class="dimension-item">
                                                             <span>客户</span>
                                                         </div>
-                                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox">
+                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" class="dimension-item">
                                                             <span>部门</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        <div style="margin-bottom: 16px;">
-                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                                                <label style="font-weight: 500;">
-                                                    <span style="color: #dc2626;">*</span>业务模块：
-                                                </label>
-                                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
-                                                    <option>采购订单</option>
-                                                    <option>销售订单</option>
-                                                    <option>库存管理</option>
-                                                    <option>用户管理</option>
-                                                </select>
-                                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div style="margin-left: 100px;">
-                                            <button style="display: flex; align-items: center; gap: 8px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
-                                                <i class="fa fa-plus"></i>
-                                                添加
-                                            </button>
-                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-left: 100px;">
+                                        <button id="add-data-module" style="display: flex; align-items: center; gap: 4px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
+                                            <i class="fa fa-plus"></i>
+                                            添加
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="perm-content hidden" id="field-content">
-                                    <div class="permission-group" style="margin-bottom: 16px;">
-                                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部字段【可操作、可见】</p>
-                                        
-                                        <table style="width: 100%; border-collapse: collapse;">
-                                            <thead>
-                                                <tr style="border-bottom: 2px solid #e5e7eb;">
-                                                    <th style="text-align: left; padding: 12px 8px; font-weight: 600;">
-                                                        <span style="color: #dc2626;">*</span>字段名称
-                                                    </th>
-                                                    <th style="text-align: center; padding: 12px 8px; font-weight: 600;">
-                                                        <span style="color: #dc2626;">*</span>权限
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 12px 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox" checked>
-                                                            <span>全选</span>
+                            </div>
+                            <div class="perm-content hidden" id="field-content">
+                                <div class="permission-group">
+                                    <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px;">提示：不设置，默认全部字段【可操作、可见】</p>
+                                    
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                                <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                    <span style="color: #dc2626;">*</span>字段名称
+                                                </th>
+                                                <th style="text-align: center; padding: 10px 8px; font-weight: 600;">
+                                                    <span style="color: #dc2626;">*</span>权限
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" id="field-all-select" onclick="selectAllFields(this)">
+                                                        <span>全选</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" id="field-hidden-all" onclick="selectAllByPermission(this, 'hidden')">
+                                                            <span>隐藏</span>
                                                         </label>
-                                                    </td>
-                                                    <td style="padding: 12px 8px;">
-                                                        <div style="display: flex; justify-content: space-around;">
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="checkbox" checked>
-                                                                <span>全选</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="checkbox">
-                                                                <span>全选</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="checkbox">
-                                                                <span>全选</span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 12px 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox" checked>
-                                                            <span>产品成本(订单模块)</span>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" id="field-readonly-all" onclick="selectAllByPermission(this, 'readonly')">
+                                                            <span>只读</span>
                                                         </label>
-                                                    </td>
-                                                    <td style="padding: 12px 8px;">
-                                                        <div style="display: flex; justify-content: space-around;">
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field1">
-                                                                <span>隐藏</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field1" checked>
-                                                                <span>只读</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field1">
-                                                                <span>可编辑</span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 12px 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox">
-                                                            <span>供应商报价(采购模块)</span>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" id="field-editable-all" onclick="selectAllByPermission(this, 'editable')">
+                                                            <span>可编辑</span>
                                                         </label>
-                                                    </td>
-                                                    <td style="padding: 12px 8px;">
-                                                        <div style="display: flex; justify-content: space-around;">
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field2">
-                                                                <span>隐藏</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field2" checked>
-                                                                <span>只读</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field2">
-                                                                <span>可编辑</span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 12px 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 8px;">
-                                                            <input type="checkbox">
-                                                            <span>销售金额(订单模块)</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>订单编号(订单模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-order-no" value="hidden">
+                                                            <span>隐藏</span>
                                                         </label>
-                                                    </td>
-                                                    <td style="padding: 12px 8px;">
-                                                        <div style="display: flex; justify-content: space-around;">
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field3">
-                                                                <span>隐藏</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field3">
-                                                                <span>只读</span>
-                                                            </label>
-                                                            <label style="display: flex; align-items: center; gap: 8px;">
-                                                                <input type="radio" name="field3" checked>
-                                                                <span>可编辑</span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-order-no" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-order-no" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>产品成本(订单模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-product-cost" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-product-cost" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-product-cost" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>供应商报价(采购模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-supplier-price" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-supplier-price" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-supplier-price" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>销售金额(订单模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-sales-amount" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-sales-amount" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-sales-amount" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>库存数量(仓储模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-inventory-qty" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-inventory-qty" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-inventory-qty" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>客户联系方式(客户模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td style="padding: 10px 8px;">
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-customer-contact" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-customer-contact" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="radio" name="field-customer-contact" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -1597,6 +1801,127 @@
             
             hideEditRoleModal();
         }
+
+        function toggleDimensionSection(select) {
+            const item = select.closest('.data-module-item');
+            const dimensionSection = item.querySelector('.dimension-section');
+            dimensionSection.style.display = select.value ? 'block' : 'none';
+        }
+
+        function toggleAllDimensions(checkbox) {
+            const item = checkbox.closest('.data-module-item');
+            const dimensionItems = item.querySelectorAll('.dimension-item');
+            dimensionItems.forEach(dimItem => dimItem.checked = checkbox.checked);
+        }
+
+        function selectAllFields(checkbox) {
+            const fieldItems = document.querySelectorAll('.field-item');
+            fieldItems.forEach(item => item.checked = checkbox.checked);
+        }
+
+        function selectAllByPermission(checkbox, permissionType) {
+            if (checkbox.checked) {
+                const permissionTypes = ['hidden', 'readonly', 'editable'];
+                permissionTypes.forEach(type => {
+                    if (type !== permissionType) {
+                        document.getElementById(`field-${type}-all`).checked = false;
+                    }
+                });
+                const radios = document.querySelectorAll(`input[type="radio"][value="${permissionType}"]`);
+                radios.forEach(radio => radio.checked = true);
+            }
+        }
+
+        function createModuleItem(selectedValue = '') {
+            const item = document.createElement('div');
+            item.className = 'data-module-item';
+            item.style.marginBottom = '16px';
+            item.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
+                    <label style="font-weight: 500;">
+                        <span style="color: #dc2626;">*</span>业务模块：
+                    </label>
+                    <select class="module-select" style="flex: 1; max-width: 400px; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        <option value="">请选择</option>
+                        <option value="sales">销售订单</option>
+                        <option value="purchase">采购订单</option>
+                        <option value="inventory">库存管理</option>
+                        <option value="user">用户管理</option>
+                    </select>
+                    <button class="delete-module-btn" style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                </div>
+                <div class="dimension-section" style="padding: 12px; border: 1px solid #d1d5db; margin-left: 80px; display: none;">
+                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
+                        <input type="checkbox" class="dimension-all">
+                        <span>全选</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span>隔离维度：</span>
+                        <div style="display: flex; gap: 8px;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" class="dimension-item">
+                                <span>业务员</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" class="dimension-item">
+                                <span>客户</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" class="dimension-item">
+                                <span>部门</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const select = item.querySelector('.module-select');
+            if (selectedValue) {
+                select.value = selectedValue;
+                item.querySelector('.dimension-section').style.display = 'block';
+            }
+            
+            select.addEventListener('change', function() {
+                const dimensionSection = item.querySelector('.dimension-section');
+                dimensionSection.style.display = this.value ? 'block' : 'none';
+            });
+            
+            const allCheckbox = item.querySelector('.dimension-all');
+            const dimensionItems = item.querySelectorAll('.dimension-item');
+            allCheckbox.addEventListener('change', function() {
+                dimensionItems.forEach(dimItem => dimItem.checked = this.checked);
+            });
+            
+            const deleteBtn = item.querySelector('.delete-module-btn');
+            deleteBtn.addEventListener('click', function() {
+                item.remove();
+                updateDeleteButtons();
+            });
+            
+            return item;
+        }
+
+        function updateDeleteButtons() {
+            const items = document.querySelectorAll('.data-module-item');
+            items.forEach((item, index) => {
+                const deleteBtn = item.querySelector('.delete-module-btn');
+                deleteBtn.style.display = items.length > 1 ? 'block' : 'none';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const addBtn = document.getElementById('add-data-module');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    const list = document.getElementById('data-module-list');
+                    const newItem = createModuleItem();
+                    list.appendChild(newItem);
+                    updateDeleteButtons();
+                });
+            }
+            
+            updateDeleteButtons();
+        });
     </script>
 </body>
 </html>

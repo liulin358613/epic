@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>用户列表</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -13,99 +13,106 @@
             box-sizing: border-box;
         }
         html, body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
             background: #f5f7fa;
             height: 100%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
         .card {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             height: 100%;
+            border: 1px solid #e5e7eb;
         }
         .btn {
             padding: 8px 20px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             border: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: #3b82f6;
             color: white;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            background: #2563eb;
         }
         .btn-outline {
             background: white;
             color: #64748b;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e7eb;
         }
         .btn-outline:hover {
             border-color: #3b82f6;
             color: #3b82f6;
+            background: #eff6ff;
         }
         .form-control {
             padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
             font-size: 14px;
             color: #475569;
-            background: #f8fafc;
-            min-width: 150px;
+            background: white;
+            min-width: 140px;
         }
         .form-control:focus {
             outline: none;
             border-color: #3b82f6;
-            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         .page-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 12px 16px;
             background: white;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid #e5e7eb;
         }
         .page-title {
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             color: #1e293b;
         }
         .page-subtitle {
-            font-size: 14px;
+            font-size: 12px;
             color: #94a3b8;
             margin-top: 4px;
         }
         .main-content {
             flex: 1;
-            padding: 16px 24px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             overflow-x: auto;
             overflow-y: auto;
         }
         .search-bar {
-            padding: 16px;
+            padding: 12px 16px;
             display: flex;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fafafa;
         }
         .table-container {
             flex: 1;
@@ -122,16 +129,17 @@
             z-index: 1;
         }
         th {
-            padding: 12px 16px;
+            padding: 10px 14px;
             text-align: left;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: #64748b;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e5e7eb;
             white-space: nowrap;
+            background: #f9fafb;
         }
         td {
-            padding: 12px 16px;
+            padding: 10px 14px;
             font-size: 14px;
             color: #475569;
             border-bottom: 1px solid #f1f5f9;
@@ -141,18 +149,18 @@
             background: #f8fafc;
         }
         .badge {
-            padding: 2px 8px;
+            padding: 4px 10px;
             font-size: 12px;
             font-weight: 500;
             border-radius: 4px;
             display: inline-block;
         }
         .badge-level {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            background: #fef3c7;
             color: #d97706;
         }
         .badge-level-0 {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background: #f1f5f9;
             color: #94a3b8;
         }
         .badge-active {
@@ -164,10 +172,10 @@
             color: #dc2626;
         }
         .badge-company {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            background: #dbeafe;
             color: #2563eb;
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 4px 10px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -178,24 +186,24 @@
             font-size: 12px;
         }
         .badge-user-normal {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background: #f1f5f9;
             color: #64748b;
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 4px 10px;
             font-size: 12px;
         }
         .badge-user-type {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            background: #e0e7ff;
             color: #4f46e5;
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 4px 10px;
             font-size: 12px;
         }
         .badge-company-certified {
-            background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
+            background: #dcfce7;
             color: #16a34a;
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 4px 10px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -206,10 +214,10 @@
             font-size: 12px;
         }
         .auth-scope-tag {
-            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            background: #ede9fe;
             color: #7c3aed;
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 4px 10px;
             font-size: 12px;
             font-weight: 500;
         }
@@ -224,7 +232,7 @@
         .org-link {
             color: #3b82f6;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
         }
         .org-link:hover {
             text-decoration: underline;
@@ -232,31 +240,31 @@
         .user-cell {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            background: #e2e8f0;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .avatar i {
-            font-size: 16px;
+            font-size: 14px;
             color: #94a3b8;
         }
         .pagination {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
         }
         .pagination-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
             background: white;
             color: #64748b;
             cursor: pointer;
@@ -266,10 +274,11 @@
             justify-content: center;
         }
         .pagination-btn:hover:not(.active) {
-            background: #f8fafc;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
         .pagination-btn.active {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: #3b82f6;
             border-color: #3b82f6;
             color: white;
         }
@@ -287,37 +296,46 @@
         }
         .modal-content {
             background: white;
-            border-radius: 16px;
+            border-radius: 8px;
             width: 90%;
             max-width: 900px;
             max-height: 90vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
         }
         .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 20px;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
         }
         .modal-header h3 {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
         }
         .modal-close {
+            width: 28px;
+            height: 28px;
             background: none;
             border: none;
-            font-size: 20px;
-            color: #94a3b8;
+            border-radius: 4px;
+            font-size: 18px;
+            color: #64748b;
             cursor: pointer;
             padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .modal-close:hover {
-            color: #64748b;
+            color: #374151;
+            background: #f1f5f9;
         }
         .modal-body {
             padding: 0;
@@ -325,10 +343,10 @@
             flex: 1;
         }
         .detail-profile {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            padding: 24px;
+            background: #fafafa;
+            padding: 16px;
             display: flex;
-            gap: 24px;
+            gap: 16px;
         }
         .detail-left {
             flex: 1;
@@ -338,8 +356,8 @@
         }
         .detail-user-info {
             display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 4px;
+            margin-bottom: 12px;
         }
         .detail-avatar {
             width: 80px;
@@ -368,17 +386,17 @@
             color: #475569;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         .detail-user-company i {
             color: #94a3b8;
         }
         .detail-card {
             background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e5e7eb;
             display: flex;
             flex-direction: column;
         }
@@ -389,13 +407,13 @@
             font-size: 14px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .detail-info-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 6px;
+            margin-bottom: 6px;
             font-size: 14px;
             color: #475569;
         }
@@ -413,29 +431,29 @@
             gap: 6px;
         }
         .detail-tag {
-            padding: 4px 12px;
+            padding: 4px 10px;
             background: #f1f5f9;
-            border-radius: 20px;
+            border-radius: 16px;
             font-size: 13px;
             color: #64748b;
         }
         .detail-highlight {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             color: #f59e0b;
         }
         .detail-section {
-            padding: 24px;
+            padding: 12px;
         }
         .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 8px;
         }
         .detail-grid-item {
             background: #f8fafc;
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 10px;
         }
         .detail-grid-label {
             font-size: 13px;
@@ -449,13 +467,13 @@
         }
         .detail-divider {
             height: 1px;
-            background: #e2e8f0;
-            margin: 16px 0;
+            background: #e5e7eb;
+            margin: 12px 0;
         }
         .detail-divider-vertical {
             width: 1px;
-            background: #e2e8f0;
-            margin: 0 24px;
+            background: #e5e7eb;
+            margin: 0 16px;
         }
 
         ::-webkit-scrollbar {
@@ -476,6 +494,27 @@
         * {
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 12px;
+            }
+            .search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-control {
+                width: 100%;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            .detail-profile {
+                flex-direction: column;
+            }
+            .detail-divider-vertical {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -725,10 +764,10 @@
                 </table>
             </div>
 
-            <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <span class="text-gray-500 text-sm">共 50 条</span>
-                    <div class="pagination">
+            <div style="display: flex; align-items: center; justify-content: flex-end; padding: 10px 16px; border-top: 1px solid #e5e7eb; background: #fafafa;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #64748b; font-size: 14px;">共 50 条</span>
+                    <div class="pagination" style="gap: 4px;">
                         <button class="pagination-btn">
                             <i class="fa fa-angle-left"></i>
                         </button>
@@ -744,14 +783,14 @@
                         <button class="pagination-btn">
                             <i class="fa fa-angle-right"></i>
                         </button>
-                        <select class="form-control w-auto ml-2">
+                        <select class="form-control" style="width: auto; margin-left: 8px;">
                             <option>10条/页</option>
                             <option>20条/页</option>
                             <option>50条/页</option>
                         </select>
-                        <span class="text-gray-500 text-sm ml-2">跳至</span>
-                        <input type="text" class="form-control w-16 ml-2" value="1">
-                        <span class="text-gray-500 text-sm ml-2">页</span>
+                        <span style="color: #64748b; font-size: 14px; margin-left: 8px;">跳至</span>
+                        <input type="text" class="form-control" style="width: 56px; margin-left: 8px;" value="1">
+                        <span style="color: #64748b; font-size: 14px; margin-left: 8px;">页</span>
                     </div>
                 </div>
             </div>
@@ -772,13 +811,13 @@
                                 <i class="fa fa-user"></i>
                             </div>
                             <div>
-                                <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="display: flex; align-items: center; gap: 4px;">
                                     <div class="detail-user-name" id="detail-name">林工</div>
                                     <span class="badge badge-level" id="detail-level">Lv.5</span>
                                     <span class="badge badge-user-type" id="detail-user-type" style="display: none;">组织用户</span>
                                 </div>
                                 <div style="margin-top: 12px;">
-                                    <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #64748b; margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 4px; font-size: 14px; color: #64748b; margin-bottom: 8px;">
                                         <i class="fa fa-building-o"></i>
                                         <span>所属组织、角色</span>
                                     </div>
@@ -790,16 +829,16 @@
                             </div>
                         </div>
 
-                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                            <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569;">
+                        <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 10px;">
+                            <span style="display: flex; align-items: center; gap: 4px; font-size: 14px; color: #475569;">
                                 <i class="fa fa-id-badge" style="color: #94a3b8;"></i>
                                 <span>职务：<span id="detail-position">工程师</span></span>
                             </span>
-                            <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569;">
+                            <span style="display: flex; align-items: center; gap: 4px; font-size: 14px; color: #475569;">
                                 <i class="fa fa-calendar" style="color: #94a3b8;"></i>
                                 <span>生日：1990-01-15</span>
                             </span>
-                            <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569;">
+                            <span style="display: flex; align-items: center; gap: 4px; font-size: 14px; color: #475569;">
                                 <i class="fa fa-user-circle" style="color: #94a3b8;"></i>
                                 <span>性别：男</span>
                             </span>
@@ -813,16 +852,16 @@
                         </div>
 
                         <div class="detail-card">
-                            <div class="detail-card-title"><i class="fa fa-user-o"></i> 他的能力 <span style="font-weight: normal; color: #64748b; font-size: 12px;"></span><span id="detail-auth-scope" class="auth-scope-tag">全开放</span><span style="font-weight: normal; color: #64748b; font-size: 12px;"></span></div>
+                            <div class="detail-card-title"><i class="fa fa-user-o"></i> 他的能力 <span style="font-weight: normal; color: #64748b; font-size: 14px;"></span><span id="detail-auth-scope" class="auth-scope-tag">全开放</span><span style="font-weight: normal; color: #64748b; font-size: 14px;"></span></div>
                             <div style="margin-bottom: 8px;">
-                                <span style="font-size: 13px; color: #64748b;">行业：</span>
+                                <span style="font-size: 14px; color: #64748b;">行业：</span>
                                 <div class="detail-tag-list" id="detail-industry-tags">
                                     <span class="detail-tag">制造业</span>
                                     <span class="detail-tag">互联网</span>
                                 </div>
                             </div>
                             <div>
-                                <span style="font-size: 13px; color: #64748b;">技能：</span>
+                                <span style="font-size: 14px; color: #64748b;">技能：</span>
                                 <div class="detail-tag-list" id="detail-skill-tags">
                                     <span class="detail-tag">项目管理</span>
                                     <span class="detail-tag">数据分析</span>
@@ -835,12 +874,12 @@
                     <div class="detail-divider-vertical"></div>
 
                     <div class="detail-right">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: stretch;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 12px; align-items: stretch;">
                             <div class="detail-card" style="margin-bottom: 0;">
                                 <div class="detail-card-title">
                                     <i class="fa fa-mobile"></i> 手机
                                 </div>
-                                <div style="font-size: 18px; font-weight: 600; color: #1e293b;" id="detail-phone">13826469793</div>
+                                <div style="font-size: 14px; font-weight: 600; color: #1e293b;" id="detail-phone">13826469793</div>
                             </div>
                             <div class="detail-card" style="margin-bottom: 0;">
                                 <div class="detail-card-title">
@@ -850,14 +889,14 @@
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: stretch;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 12px; align-items: stretch;">
                             <div class="detail-card" style="margin-bottom: 0;">
                                 <div class="detail-card-title">
                                     <i class="fa fa-link"></i> 第三方账号
                                 </div>
                                 <div class="detail-info-row">
-                                    <i class="fa fa-weixin" style="color: #07c160; font-size: 18px;"></i>
-                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-weixin" style="color: #07c160; font-size: 14px;"></i>
+                                    <span style="display: flex; align-items: center; gap: 4px;">
                                         <span>微信：</span>
                                         <div id="detail-wechat-avatar" style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center;">
                                             <i class="fa fa-user" style="font-size: 14px; color: #94a3b8;"></i>
@@ -867,7 +906,7 @@
                                 </div>
                                 <div style="margin-top: 12px;">
                                     <div class="detail-info-row">
-                                        <i class="fa fa-credit-card" style="color: #1677ff; font-size: 18px;"></i>
+                                        <i class="fa fa-credit-card" style="color: #1677ff; font-size: 14px;"></i>
                                         <span>支付宝：未绑定</span>
                                     </div>
                                 </div>
@@ -898,12 +937,12 @@
                             <div class="detail-card-title">
                                 <i class="fa fa-shopping-cart"></i> 订单统计
                             </div>
-                            <div style="display: flex; gap: 24px;">
+                            <div style="display: flex; gap: 10px;">
                                 <div style="flex: 1;">
-                                    <div style="font-size: 13px; color: #94a3b8;">订单总数: <span style="font-size: 20px; font-weight: 600; color: #3b82f6; cursor: pointer;" onclick="showOrderList()">128</span></div>
+                                    <div style="font-size: 14px; color: #94a3b8;">订单总数: <span style="font-size: 20px; font-weight: 600; color: #3b82f6; cursor: pointer;" onclick="showOrderList()">128</span></div>
                                 </div>
                                 <div style="flex: 1;">
-                                    <div style="font-size: 13px; color: #94a3b8;">消费总额: <span style="font-size: 20px; font-weight: 600; color: #f59e0b;">¥56,780</span></div>
+                                    <div style="font-size: 14px; color: #94a3b8;">消费总额: <span style="font-size: 20px; font-weight: 600; color: #f59e0b;">¥56,780</span></div>
                                 </div>
                             </div>
                         </div>

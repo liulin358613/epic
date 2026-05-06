@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>用户协议</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -13,87 +13,90 @@
             box-sizing: border-box;
         }
         html, body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
             background: #f5f7fa;
             height: 100%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
         .card {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 100%;
+            border: 1px solid #e5e7eb;
         }
         .btn {
             padding: 8px 20px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             border: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background: #3b82f6;
             color: white;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            background: #2563eb;
         }
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            background: #ef4444;
             color: white;
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
         }
         .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+            background: #dc2626;
         }
         .form-control {
             padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
             font-size: 14px;
             color: #475569;
-            background: #f8fafc;
+            background: white;
         }
         .form-control:focus {
             outline: none;
-            border-color: #6366f1;
-            background: white;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         .page-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 12px 16px;
             background: white;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid #e5e7eb;
         }
         .page-title {
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             color: #1e293b;
         }
         .page-subtitle {
-            font-size: 14px;
+            font-size: 12px;
             color: #94a3b8;
             margin-top: 4px;
         }
         .main-content {
             flex: 1;
-            padding: 16px 24px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             overflow-x: auto;
@@ -131,32 +134,33 @@
         }
         .dialog-content {
             background: white;
-            border-radius: 12px;
+            border-radius: 8px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
         }
         .dialog-body {
-            padding: 32px 24px;
+            padding: 24px;
             text-align: center;
         }
         .dialog-icon {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: #fef2f2;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
         }
         .dialog-icon .fa {
-            font-size: 28px;
+            font-size: 24px;
             color: #ef4444;
         }
         .dialog-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 8px;
@@ -164,28 +168,30 @@
         .dialog-message {
             font-size: 14px;
             color: #64748b;
-            line-height: 1.6;
+            line-height: 1.5;
         }
         .dialog-footer {
-            padding: 16px 24px;
-            border-top: 1px solid #f1f5f9;
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
+            background: #fafafa;
         }
         .btn-outline {
             background: white;
             color: #64748b;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e7eb;
         }
         .btn-outline:hover {
-            border-color: #6366f1;
-            color: #6366f1;
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #eff6ff;
         }
         
         /* 用户协议样式 */
         .agreement-list {
-            padding: 20px;
+            padding: 16px;
             overflow-y: auto;
             flex: 1;
         }
@@ -193,26 +199,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .agreement-item {
             background: #fafafa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
         }
         .agreement-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 8px;
         }
         .agreement-meta {
             display: flex;
-            gap: 24px;
+            gap: 16px;
             margin-bottom: 12px;
-            font-size: 14px;
+            font-size: 13px;
             color: #64748b;
         }
         .agreement-meta span {
@@ -228,27 +234,28 @@
         }
         .agreement-preview {
             background: white;
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 6px;
+            padding: 12px;
             margin-top: 12px;
             max-height: 200px;
             overflow-y: auto;
             font-size: 14px;
             color: #475569;
-            line-height: 1.8;
+            line-height: 1.6;
+            border: 1px solid #e5e7eb;
         }
         .badge {
-            padding: 4px 12px;
+            padding: 4px 10px;
             font-size: 12px;
             font-weight: 500;
-            border-radius: 20px;
+            border-radius: 16px;
         }
         .badge-active {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            background: #dcfce7;
             color: #16a34a;
         }
         .badge-inactive {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            background: #fee2e2;
             color: #dc2626;
         }
 
@@ -270,6 +277,17 @@
         * {
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 12px;
+            }
+            .agreement-list {
+                padding: 12px;
+            }
+            .dialog-content {
+                max-width: 95%;
+            }
         }
     </style>
 </head>
@@ -305,8 +323,8 @@
                     </div>
                     <div class="agreement-preview">
                         <p>欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。</p>
-                        <p style="margin-top: 8px;">一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。</p>
-                        <p style="margin-top: 8px;">二、用户注册：用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。</p>
+                        <p style="margin-top: 6px;">一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。</p>
+                        <p style="margin-top: 6px;">二、用户注册：用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。</p>
                     </div>
                     <div class="agreement-actions">
                         <button class="btn btn-outline" onclick="openEditModal()">编辑</button>
@@ -328,7 +346,7 @@
                     </div>
                     <div class="agreement-preview">
                         <p>我们非常重视您的个人信息保护。本隐私政策将说明我们如何收集、使用、存储和保护您的个人信息。</p>
-                        <p style="margin-top: 8px;">一、信息收集：我们会收集您在使用服务过程中主动提供的信息，包括但不限于姓名、邮箱、手机号码等。</p>
+                        <p style="margin-top: 6px;">一、信息收集：我们会收集您在使用服务过程中主动提供的信息，包括但不限于姓名、邮箱、手机号码等。</p>
                     </div>
                     <div class="agreement-actions">
                         <button class="btn btn-outline" onclick="openEditModal()">编辑</button>
@@ -364,20 +382,20 @@
     <div id="addAgreementModal" class="dialog-overlay hidden">
         <div class="dialog-content" style="max-width: 600px;" onclick="event.stopPropagation()">
             <div class="dialog-body" style="text-align: left;">
-                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">添加协议</h3>
+                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">添加协议</h3>
                 
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
                     <input type="text" class="form-control" style="width: 100%;" placeholder="请输入协议名称">
                 </div>
                 
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
                     <textarea class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容"></textarea>
                 </div>
                 
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">状态</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;">状态</label>
                     <select class="form-control" style="width: 100%;">
                         <option>生效中</option>
                         <option>已失效</option>
@@ -394,15 +412,15 @@
     <div id="editAgreementModal" class="dialog-overlay hidden">
         <div class="dialog-content" style="max-width: 600px;" onclick="event.stopPropagation()">
             <div class="dialog-body" style="text-align: left;">
-                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">编辑协议</h3>
+                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">编辑协议</h3>
                 
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
                     <input type="text" class="form-control" style="width: 100%;" placeholder="请输入协议名称" value="用户服务协议">
                 </div>
                 
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
                     <textarea class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容">欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。
 
 一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。
@@ -410,8 +428,8 @@
 三、用户行为规范：用户在使用本平台服务时，应当遵守法律法规，不得从事任何违法活动。</textarea>
                 </div>
                 
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 4px;">状态</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;">状态</label>
                     <select class="form-control" style="width: 100%;">
                         <option>生效中</option>
                         <option>已失效</option>
@@ -428,17 +446,17 @@
     <div id="previewModal" class="dialog-overlay hidden">
         <div class="dialog-content" style="max-width: 700px;" onclick="event.stopPropagation()">
             <div class="dialog-body" style="text-align: left; max-height: 60vh; overflow-y: auto;">
-                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px;">用户服务协议</h3>
-                <div style="font-size: 14px; color: #475569; line-height: 1.8;">
+                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">用户服务协议</h3>
+                <div style="font-size: 14px; color: #475569; line-height: 1.6;">
                     <p>欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。</p>
                     <p style="margin-top: 16px;"><strong>一、服务内容</strong></p>
-                    <p style="margin-top: 8px;">本平台提供DAO组织管理、用户管理、权限管理等服务。</p>
+                    <p style="margin-top: 6px;">本平台提供DAO组织管理、用户管理、权限管理等服务。</p>
                     <p style="margin-top: 16px;"><strong>二、用户注册</strong></p>
-                    <p style="margin-top: 8px;">用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。</p>
+                    <p style="margin-top: 6px;">用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。</p>
                     <p style="margin-top: 16px;"><strong>三、用户行为规范</strong></p>
-                    <p style="margin-top: 8px;">用户在使用本平台服务时，应当遵守法律法规，不得从事任何违法活动。</p>
+                    <p style="margin-top: 6px;">用户在使用本平台服务时，应当遵守法律法规，不得从事任何违法活动。</p>
                     <p style="margin-top: 16px;"><strong>四、知识产权</strong></p>
-                    <p style="margin-top: 8px;">本平台所有内容的知识产权归平台所有。</p>
+                    <p style="margin-top: 6px;">本平台所有内容的知识产权归平台所有。</p>
                 </div>
             </div>
             <div class="dialog-footer">
@@ -458,7 +476,7 @@
             </div>
             <div class="dialog-footer">
                 <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
-                <button class="btn btn-danger" style="background: #ef4444; color: white; border: none;" onclick="closeDeleteDialog()">删除</button>
+                <button class="btn btn-danger" onclick="closeDeleteDialog()">删除</button>
             </div>
         </div>
     </div>

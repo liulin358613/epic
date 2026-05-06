@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>组织管理</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -13,26 +16,32 @@
             box-sizing: border-box;
         }
         html, body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f7fa;
             height: 100%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .card {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             height: 100%;
         }
         .btn {
-            padding: 8px 20px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -40,16 +49,17 @@
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            line-height: 1.4;
         }
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         .btn-outline {
             background: white;
@@ -63,11 +73,12 @@
         .form-control {
             padding: 8px 12px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             color: #475569;
             background: #f8fafc;
-            min-width: 150px;
+            min-width: 120px;
+            line-height: 1.4;
         }
         .form-control:focus {
             outline: none;
@@ -78,42 +89,49 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 12px 16px;
             background: white;
             border-bottom: 1px solid #f1f5f9;
+            line-height: 1.4;
         }
         .page-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             color: #1e293b;
+            line-height: 1.4;
         }
         .page-subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: #94a3b8;
             margin-top: 4px;
+            line-height: 1.4;
         }
         .main-content {
             flex: 1;
-            padding: 16px 24px;
+            padding: 10px 14px;
             display: flex;
             flex-direction: column;
             overflow-x: auto;
             overflow-y: auto;
         }
         .search-bar {
-            padding: 16px;
+            padding: 12px 16px;
             display: flex;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
             border-bottom: 1px solid #f1f5f9;
+            align-items: center;
         }
         .table-container {
             flex: 1;
-            overflow: auto;
+            overflow-x: auto;
+            overflow-y: auto;
         }
         table {
             width: 100%;
+            min-width: 800px;
             border-collapse: collapse;
+            table-layout: auto;
         }
         thead {
             background: #f8fafc;
@@ -122,26 +140,30 @@
             z-index: 1;
         }
         th {
-            padding: 12px 16px;
+            padding: 10px 12px;
             text-align: left;
             font-size: 13px;
             font-weight: 600;
             color: #64748b;
             border-bottom: 1px solid #e2e8f0;
             white-space: nowrap;
+            line-height: 1.4;
+            width: auto;
         }
         td {
-            padding: 12px 16px;
+            padding: 10px 12px;
             font-size: 14px;
             color: #475569;
             border-bottom: 1px solid #f1f5f9;
             white-space: nowrap;
+            line-height: 1.4;
+            width: auto;
         }
         tbody tr:hover {
             background: #f8fafc;
         }
         .badge {
-            padding: 2px 8px;
+            padding: 2px 6px;
             font-size: 12px;
             font-weight: 500;
             border-radius: 4px;
@@ -167,7 +189,7 @@
             background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
             color: #16a34a;
             border-radius: 4px;
-            padding: 2px 8px;
+            padding: 2px 6px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -180,7 +202,7 @@
         .action-link {
             color: #3b82f6;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
         .action-link:hover {
             text-decoration: underline;
@@ -193,7 +215,26 @@
         .org-cell {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+        .org-cert-info {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .org-cert-info-item {
+            display: block;
+            color: #94a3b8;
+        }
+        .org-type-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .org-type-item {
+            font-size: 12px;
+            color: #475569;
         }
         .empty-cell {
             color: #94a3b8;
@@ -201,7 +242,7 @@
         .expand-btn {
             cursor: pointer;
             color: #3b82f6;
-            font-size: 18px;
+            font-size: 14px;
             margin-left: 8px;
             transition: transform 0.2s ease;
             display: inline-flex;
@@ -224,7 +265,7 @@
             background: #f8fafc;
         }
         .sub-org-row td {
-            padding-left: 48px;
+            padding-left: 40px;
         }
         .badge-audit-pending {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
@@ -267,7 +308,7 @@
             color: #fff;
             text-align: left;
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 12px 16px;
             position: absolute;
             z-index: 100;
             bottom: 125%;
@@ -275,7 +316,7 @@
             transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.2s;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: normal;
         }
         .tooltip .tooltip-text::after {
@@ -295,12 +336,12 @@
         .pagination {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
         }
         .pagination-btn {
             width: 36px;
             height: 36px;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e2e8f0;
             background: white;
             color: #64748b;
@@ -332,7 +373,7 @@
         }
         .modal-content {
             background: white;
-            border-radius: 16px;
+            border-radius: 6px;
             width: 90%;
             max-width: 900px;
             max-height: 90vh;
@@ -345,11 +386,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 20px;
+            padding: 10px 18px;
             border-bottom: 1px solid #f1f5f9;
         }
         .modal-header h3 {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
         }
@@ -380,18 +421,18 @@
             border-bottom: none;
         }
         .audit-info-label {
-            font-size: 13px;
+            font-size: 14px;
             color: #94a3b8;
             margin-bottom: 8px;
         }
         .audit-info-value {
-            font-size: 15px;
+            font-size: 14px;
             color: #1e293b;
             font-weight: 500;
         }
         .audit-company-card {
             background: #f8fafc;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 12px;
         }
         .audit-company-card .info-row {
@@ -408,7 +449,7 @@
         }
         .audit-actions {
             display: flex;
-            gap: 12px;
+            gap: 4px;
             padding: 20px;
             border-top: 1px solid #f1f5f9;
         }
@@ -430,7 +471,7 @@
         }
         .audit-row {
             display: flex;
-            gap: 24px;
+            gap: 10px;
         }
         .audit-row-item {
             flex: 1;
@@ -455,6 +496,65 @@
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
         }
+
+        /* 浏览器兼容性和响应式设计 */
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        /* IE/Edge 兼容性 */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .table-container {
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+            }
+        }
+
+        /* 响应式设计适配 */
+        @media screen and (max-width: 1024px) {
+            .modal-content {
+                width: 95%;
+                max-width: 800px;
+            }
+            .audit-modal .modal-content {
+                max-width: 500px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .modal-content {
+                width: 98%;
+            }
+            .audit-modal .modal-content {
+                width: 98%;
+            }
+            .page-header {
+                padding: 10px 12px;
+            }
+            .main-content {
+                padding: 10px 12px;
+            }
+            th, td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            .search-bar {
+                padding: 10px 12px;
+            }
+        }
+
+        /* 高分辨率屏幕适配 */
+        @media screen and (min-width: 1920px) {
+            html, body {
+                font-size: 15px;
+            }
+        }
+
+        /* 防止触摸设备的双击缩放 */
+        body {
+            touch-action: manipulation;
+        }
     </style>
 </head>
 <body>
@@ -468,7 +568,7 @@
     <main class="main-content">
         <div class="card">
             <div class="search-bar">
-                <input type="text" class="form-control" placeholder="搜索组织名称/ID" style="min-width: 200px;">
+                <input type="text" class="form-control" placeholder="搜索组织名称/ID" style="min-width: 160px;">
                 <select class="form-control">
                     <option>全部类型</option>
                     <option>训练基地</option>
@@ -517,10 +617,18 @@
                             <td>13826469793</td>
                             <td>25人</td>
                             <td>
-                                <div style="font-size: 13px;">东莞市蓓佳尔工艺品有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：李蓓佳 | 信用代码：91441900MA4U4X2K8R</div>
+                                <div style="font-size: 12px; color: #1e293b;">东莞市蓓佳尔工艺品有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：李蓓佳</span>
+                                    <span class="org-cert-info-item">信用代码：91441900MA4U4X2K8R</span>
+                                </div>
                             </td>
-                            <td>训练基地服务商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">训练基地</span>
+                                    <span class="org-type-item">服务商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-06-15</td>
@@ -537,7 +645,11 @@
                             <td>13826469794</td>
                             <td>10人</td>
                             <td class="empty-cell">-</td>
-                            <td>训练基地</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">训练基地</span>
+                                </div>
+                            </td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
@@ -554,7 +666,13 @@
                             <td>13826469795</td>
                             <td>15人</td>
                             <td class="empty-cell">-</td>
-                            <td>训练基地，机器人及设备商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">训练基地</span>
+                                    <span class="org-type-item">机器人</span>
+                                    <span class="org-type-item">设备商</span>
+                                </div>
+                            </td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
@@ -571,10 +689,17 @@
                             <td>13912345678</td>
                             <td>18人</td>
                             <td>
-                                <div style="font-size: 13px;">东莞嘉东轴承商贸有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：陈嘉东 | 信用代码：91441900MA4W7Q3M5N</div>
+                                <div style="font-size: 12px; color: #1e293b;">东莞嘉东轴承商贸有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：陈嘉东</span>
+                                    <span class="org-cert-info-item">信用代码：91441900MA4W7Q3M5N</span>
+                                </div>
                             </td>
-                            <td>配件与易损件供应商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">配件与易损件供应商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level-0">Lv.0</span></td>
                             <td><span class="badge badge-audit-pending">待审核</span></td>
                             <td>2023-08-20</td>
@@ -592,10 +717,17 @@
                             <td>13698765432</td>
                             <td>56人</td>
                             <td>
-                                <div style="font-size: 13px;">深圳众博工业机器人有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：刘众博 | 信用代码：91440300MA5D8X1K2R</div>
+                                <div style="font-size: 12px; color: #1e293b;">深圳众博工业机器人有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：刘众博</span>
+                                    <span class="org-cert-info-item">信用代码：91440300MA5D8X1K2R</span>
+                                </div>
                             </td>
-                            <td>整机机器人厂商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">整机机器人厂商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-05-10</td>
@@ -612,7 +744,11 @@
                             <td>13698765433</td>
                             <td>30人</td>
                             <td class="empty-cell">-</td>
-                            <td>整机机器人厂商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">整机机器人厂商</span>
+                                </div>
+                            </td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
@@ -629,10 +765,17 @@
                             <td>13523456789</td>
                             <td>32人</td>
                             <td>
-                                <div style="font-size: 13px;">广州精工传感设备有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：李精工 | 信用代码：91440100MA5C4U2M7Q</div>
+                                <div style="font-size: 12px; color: #1e293b;">广州精工传感设备有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：李精工</span>
+                                    <span class="org-cert-info-item">信用代码：91440100MA5C4U2M7Q</span>
+                                </div>
                             </td>
-                            <td>核心零部件供应商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">核心零部件供应商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td>
                                 <span class="badge badge-audit-disabled">
@@ -657,7 +800,11 @@
                             <td>15834567890</td>
                             <td>1人</td>
                             <td>-</td>
-                            <td>个人训练</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">个人训练</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level-0">Lv.0</span></td>
                             <td>
                                 <span class="badge badge-audit-rejected">
@@ -682,10 +829,18 @@
                             <td>18612345678</td>
                             <td>120人</td>
                             <td>
-                                <div style="font-size: 13px;">杭州阿里云智能科技有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：马云 | 信用代码：91330100MA2B3C4D5E</div>
+                                <div style="font-size: 12px; color: #1e293b;">杭州阿里云智能科技有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：马云</span>
+                                    <span class="org-cert-info-item">信用代码：91330100MA2B3C4D5E</span>
+                                </div>
                             </td>
-                            <td>机器人及设备商，配件与易损件供应商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">机器人及设备商</span>
+                                    <span class="org-type-item">配件与易损件供应商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level-0">Lv.0</span></td>
                             <td><span class="badge badge-audit-pending">待审核</span></td>
                             <td>2023-04-22</td>
@@ -703,10 +858,17 @@
                             <td>15934567890</td>
                             <td>88人</td>
                             <td>
-                                <div style="font-size: 13px;">武汉中兴智能装备有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：赵中兴 | 信用代码：91420100MA5K7M2N9P</div>
+                                <div style="font-size: 12px; color: #1e293b;">武汉中兴智能装备有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：赵中兴</span>
+                                    <span class="org-cert-info-item">信用代码：91420100MA5K7M2N9P</span>
+                                </div>
                             </td>
-                            <td>机器人及设备商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">机器人及设备商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-10-30</td>
@@ -723,7 +885,11 @@
                             <td>15934567891</td>
                             <td>40人</td>
                             <td class="empty-cell">-</td>
-                            <td>机器人及设备商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">机器人及设备商</span>
+                                </div>
+                            </td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
@@ -740,10 +906,18 @@
                             <td>18856789012</td>
                             <td>36人</td>
                             <td>
-                                <div style="font-size: 13px;">成都天府智能科技有限公司</div>
-                                <div style="font-size: 12px; color: #94a3b8;">法人：刘天府 | 信用代码：91510100MA6A5B2C3D</div>
+                                <div style="font-size: 12px; color: #1e293b;">成都天府智能科技有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：刘天府</span>
+                                    <span class="org-cert-info-item">信用代码：91510100MA6A5B2C3D</span>
+                                </div>
                             </td>
-                            <td>机器人及设备商，配件与易损件供应商</td>
+                            <td>
+                                <div class="org-type-list">
+                                    <span class="org-type-item">机器人及设备商</span>
+                                    <span class="org-type-item">配件与易损件供应商</span>
+                                </div>
+                            </td>
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-11-15</td>
@@ -754,7 +928,7 @@
             </div>
 
             <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100">
-                <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="display: flex; align-items: center; gap: 4px;">
                     <span class="text-gray-500 text-sm">共 12 条</span>
                     <div class="pagination">
                         <button class="pagination-btn">

@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>组织功能权限</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -13,13 +16,19 @@
             box-sizing: border-box;
         }
         html, body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f7fa;
             height: 100%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .page-container {
             display: flex;
@@ -29,8 +38,8 @@
         }
         .card {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -64,25 +73,28 @@
             background: #f8fafc;
         }
         .table th {
-            padding: 14px 20px;
+            padding: 12px 16px;
             text-align: left;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 2px solid #e2e8f0;
             white-space: nowrap;
+            line-height: 1.4;
         }
         .table td {
-            padding: 14px 20px;
+            padding: 12px 16px;
             color: #475569;
             border-bottom: 1px solid #f1f5f9;
             white-space: nowrap;
+            font-size: 14px;
+            line-height: 1.4;
         }
         .btn {
-            padding: 8px 20px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -90,20 +102,21 @@
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            line-height: 1.4;
         }
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         .badge {
             padding: 4px 12px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
             border-radius: 20px;
         }
@@ -127,12 +140,12 @@
         .pagination {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
         }
         .pagination-btn {
             width: 36px;
             height: 36px;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e2e8f0;
             background: white;
             color: #64748b;
@@ -153,7 +166,7 @@
         .form-control {
             padding: 10px 14px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             color: #475569;
             background: #f8fafc;
@@ -167,19 +180,22 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 12px 16px;
             background: white;
             border-bottom: 1px solid #f1f5f9;
+            line-height: 1.4;
         }
         .page-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             color: #1e293b;
+            line-height: 1.4;
         }
         .page-subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: #94a3b8;
             margin-top: 4px;
+            line-height: 1.4;
         }
 
         .expand-icon {
@@ -229,23 +245,25 @@
         }
         .modal-content {
             background: white;
-            border-radius: 16px;
+            border-radius: 6px;
             width: 90%;
             max-width: 700px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         .modal-header {
-            padding: 8px 24px;
+            padding: 12px 16px;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            line-height: 1.4;
         }
         .modal-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
+            line-height: 1.4;
         }
         .modal-close {
             background: none;
@@ -256,7 +274,8 @@
             padding: 4px;
         }
         .modal-body {
-            padding: 20px;
+            padding: 16px;
+            line-height: 1.4;
         }
         .form-group {
             margin-bottom: 12px;
@@ -277,11 +296,12 @@
             width: 100%;
             padding: 8px 12px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             color: #475569;
             background: #f8fafc;
             transition: border-color 0.3s ease;
+            line-height: 1.4;
         }
         .form-control:focus {
             outline: none;
@@ -293,12 +313,12 @@
         }
         .form-radio-group {
             display: flex;
-            gap: 24px;
+            gap: 10px;
         }
         .form-radio-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             cursor: pointer;
         }
         .form-radio-item input[type="radio"] {
@@ -318,7 +338,7 @@
             width: 120px;
             height: 120px;
             border: 2px dashed #e2e8f0;
-            border-radius: 12px;
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -336,19 +356,19 @@
             margin-bottom: 8px;
         }
         .upload-area span {
-            font-size: 12px;
+            font-size: 14px;
             color: #94a3b8;
         }
         .modal-footer {
-            padding: 16px 24px;
+            padding: 10px 14px;
             border-top: 1px solid #f1f5f9;
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
+            gap: 4px;
         }
         .btn {
             padding: 10px 24px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -361,7 +381,7 @@
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         .btn-outline {
             background: white;
@@ -389,7 +409,7 @@
         }
         .dialog-content {
             background: white;
-            border-radius: 12px;
+            border-radius: 6px;
             width: 90%;
             max-width: 400px;
             overflow: hidden;
@@ -414,7 +434,7 @@
             color: #ef4444;
         }
         .dialog-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 8px;
@@ -425,11 +445,11 @@
             line-height: 1.6;
         }
         .dialog-footer {
-            padding: 16px 24px;
+            padding: 10px 14px;
             border-top: 1px solid #f1f5f9;
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 4px;
         }
         .tabs-wrapper {
             background: white;
@@ -445,12 +465,13 @@
         }
         .tabs li {
             position: relative;
-            padding: 14px 40px;
+            padding: 12px 32px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             color: #64748b;
             font-weight: 500;
             transition: color 0.3s ease;
+            line-height: 1.4;
         }
         .tabs li.active {
             color: #6366f1;
@@ -479,7 +500,7 @@
             color: #64748b;
             padding: 4px 12px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
         }
         .isolation-dimensions {
@@ -487,7 +508,7 @@
         }
         .isolation-row {
             display: flex;
-            gap: 16px;
+            gap: 4px;
             align-items: flex-end;
             margin-bottom: 12px;
         }
@@ -495,7 +516,7 @@
             flex: 1;
         }
         .btn-delete {
-            padding: 10px 16px;
+            padding: 12px 16px;
             background: transparent;
             border: none;
             color: #ef4444;
@@ -506,13 +527,13 @@
         .btn-add-isolation {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             padding: 10px 20px;
             background: transparent;
             border: 1px dashed #cbd5e1;
             color: #64748b;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
             transition: all 0.3s ease;
         }
@@ -580,6 +601,61 @@
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
         }
+
+        /* 浏览器兼容性和响应式设计 */
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        /* IE/Edge 兼容性 */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .table-wrapper {
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+            }
+        }
+
+        /* 响应式设计适配 */
+        @media screen and (max-width: 1024px) {
+            .modal-content {
+                width: 95%;
+                max-width: 600px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .modal-content {
+                width: 98%;
+            }
+            .page-header {
+                padding: 10px 12px;
+            }
+            .main-content {
+                padding: 10px 12px;
+            }
+            .tabs li {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            .table th,
+            .table td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        /* 高分辨率屏幕适配 */
+        @media screen and (min-width: 1920px) {
+            html, body {
+                font-size: 15px;
+            }
+        }
+
+        /* 防止触摸设备的双击缩放 */
+        body {
+            touch-action: manipulation;
+        }
     </style>
 </head>
 <body>
@@ -601,7 +677,7 @@
         <main class="main-content">
         <div id="function-menu" class="tab-content">
             <div class="card">
-                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                <div style="display: flex; justify-content: flex-end; padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">
                     <button class="btn btn-primary" onclick="openAddModal()">
                         <i class="fa fa-plus"></i>
                         添加
@@ -820,7 +896,7 @@
 
                 <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
                     <div></div>
-                    <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 4px;">
                         <span class="text-gray-500 text-sm">共 50 条</span>
                         <div class="pagination">
                             <button class="pagination-btn">
@@ -854,7 +930,7 @@
 
         <div id="data-perm" class="tab-content hidden">
             <div class="card">
-                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                <div style="display: flex; justify-content: flex-end; padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">
                     <button class="btn btn-primary" onclick="openDataPermModal()">
                         <i class="fa fa-plus"></i>
                         添加
@@ -1024,7 +1100,7 @@
 
                 <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
                     <div></div>
-                    <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 4px;">
                         <span class="text-gray-500 text-sm">共 50 条</span>
                         <div class="pagination">
                             <button class="pagination-btn">
@@ -1058,7 +1134,7 @@
 
         <div id="field-perm" class="tab-content hidden">
             <div class="card">
-                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                <div style="display: flex; justify-content: flex-end; padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">
                     <button class="btn btn-primary" onclick="openFieldPermModal()">
                         <i class="fa fa-plus"></i>
                         添加
@@ -1228,7 +1304,7 @@
 
                 <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
                     <div></div>
-                    <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 4px;">
                         <span class="text-gray-500 text-sm">共 50 条</span>
                         <div class="pagination">
                             <button class="pagination-btn">
