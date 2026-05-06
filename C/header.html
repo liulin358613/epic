@@ -3,17 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>工业智能生产力平台</title>
+    <style>
+        /* 响应式基础字体设置 */
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @media (max-width: 1440px) {
+            html { font-size: 15px; }
+        }
+
+        @media (max-width: 1366px) {
+            html { font-size: 14px; }
+        }
+
+        @media (max-width: 1280px) {
+            html { font-size: 13px; }
+        }
+
+        @media (max-width: 1024px) {
+            html { font-size: 12px; }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 11px; }
+        }
+
+        @media (max-width: 600px) {
+            html { font-size: 10px; }
+        }
+
+        :root {
+            --klein-blue: #0051d9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-gray: #86909C;
+            --light-bg: #F2F3F5;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+
+            --font-size-base: 0.75rem;
+            --line-height-base: 1.5;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.375rem;
+            --spacing-md: 0.5rem;
+            --spacing-lg: 0.75rem;
+            --spacing-xl: 1rem;
+            --spacing-2xl: 1.125rem;
+            --spacing-3xl: 1.5rem;
+            --spacing-4xl: 2rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .top-nav {
+            background: var(--klein-blue);
+            height: 2.25rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 99998;
+        }
+
+        .nav-container {
+            width: 90rem;
+            max-width: 100%;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--spacing-xl);
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            line-height: 2.25rem;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            display: inline-block;
+            line-height: 2.25rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--hermes-orange);
+        }
+
+        .logout-link {
+            color: var(--hermes-orange);
+            text-decoration: none;
+            display: inline-block;
+            line-height: 2.25rem;
+            transition: all 0.3s;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            color: var(--white);
+        }
+
+        .location-icon {
+            width: 0.875rem;
+            height: 0.875rem;
+            color: var(--hermes-orange);
+        }
+
+        .location-text {
+            color: var(--hermes-orange);
+        }
+
+        .switch-city {
+            color: var(--light-gray);
+        }
+
+        .message-badge {
+            color: var(--hermes-orange);
+            font-weight: bold;
+        }
+
+        .logged-nav {
+            z-index: 99997;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-container {
+                width: 100%;
+                padding: 0 var(--spacing-lg);
+            }
+
+            .nav-left, .nav-right {
+                gap: 1rem;
+                font-size: 0.6875rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                height: 2rem;
+            }
+
+            .nav-left, .nav-right {
+                gap: 0.75rem;
+                font-size: 0.625rem;
+            }
+
+            .nav-container {
+                padding: 0 var(--spacing-md);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-left span, .nav-right a {
+                display: none;
+            }
+
+            .nav-left span:first-child {
+                display: inline-block;
+            }
+
+            .nav-right a:first-child {
+                display: inline-block;
+            }
+        }
+    </style>
     <script>
-        // 检查登录状态并显示相应的导航栏
         document.addEventListener('DOMContentLoaded', function() {
-            // 检查登录状态，实际项目中应从localStorage或cookie中获取
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            
-            // 显示或隐藏相应的导航栏
+
             const unloggedNav = document.getElementById('unloggedNav');
             const loggedNav = document.getElementById('loggedNav');
-            
+
             if (unloggedNav && loggedNav) {
                 if (isLoggedIn) {
                     unloggedNav.style.display = 'none';
@@ -24,102 +203,89 @@
                 }
             }
 
-            // 为登录按钮添加点击事件
             const loginButtons = document.querySelectorAll('a[href="#"]');
             loginButtons.forEach(button => {
                 if (button.textContent.trim() === '登录') {
                     button.addEventListener('click', function(e) {
                         e.preventDefault();
-                        // 向父页面发送显示登录弹窗的消息
                         window.parent.postMessage({ type: 'SHOW_LOGIN_MODAL' }, '*');
                     });
                 }
             });
 
-            // 为退出按钮添加点击事件
             const logoutButtons = document.querySelectorAll('a[onclick="showLogoutConfirm()"]');
             logoutButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    // 向父页面发送显示退出确认弹窗的消息
                     window.parent.postMessage({ type: 'SHOW_LOGOUT_MODAL' }, '*');
                 });
             });
         });
 
-        // 处理个人中心点击事件
         function goToPersonalCenter() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             if (isLoggedIn) {
-                // 已登录，跳转个人中心页面
                 window.top.location.href = 'personal_center.html';
             } else {
-                // 未登录，显示登录弹窗
                 window.parent.postMessage({ type: 'SHOW_LOGIN_MODAL' }, '*');
             }
         }
 
-        // 显示退出确认对话框
         function showLogoutConfirm() {
-            // 向父页面发送显示退出确认弹窗的消息
             window.parent.postMessage({ type: 'SHOW_LOGOUT_MODAL' }, '*');
         }
 
-        // 处理来自父页面的消息
         window.addEventListener('message', (event) => {
             if (event.data.type === 'LOGIN_SUCCESS') {
-                // 登录成功，刷新页面
                 window.location.reload();
             }
         });
     </script>
 </head>
 <body>
-    <!-- 顶部导航栏 - 未登录状态 -->
-    <div id="unloggedNav" style="background: #0051d9;height: 36px; position: fixed; top: 0; left: 0; width: 100%; z-index: 99998;">
-        <div style="width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #FFFFFF; line-height: 36px;">
+    <div id="unloggedNav" class="top-nav">
+        <div class="nav-container">
+            <div class="nav-left">
                 <span>您好！欢迎您</span>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">登录</a>
+                <a href="#" class="nav-link">登录</a>
             </div>
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
-                <a href="#" onclick="goToPersonalCenter()" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">创建组织</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;"></a>
-                <div style="display: flex; align-items: center; gap: 6px; color: #FFFFFF;">
-                    <svg style="width: 14px; height: 14px; color: #F37021;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div class="nav-right">
+                <a href="#" class="nav-link">消息中心</a>
+                <a href="#" class="nav-link">我的订单</a>
+                <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
+                <a href="#" class="nav-link">创建组织</a>
+                <a href="#" class="nav-link"></a>
+                <div class="location-info">
+                    <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
-                    <span style="color: #F37021;">北京</span>
-                    <span style="color: #86909C;">[切换城市]</span>
+                    <span class="location-text">北京</span>
+                    <span class="switch-city">[切换城市]</span>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- 顶部导航栏 - 已登录状态 -->
-    <div id="loggedNav" style="background: #0051d9;height: 36px; position: fixed; top: 0; left: 0; width: 100%; z-index: 99997;">
-        <div style="width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #FFFFFF; line-height: 36px;">
+
+    <div id="loggedNav" class="top-nav logged-nav" style="display: none;">
+        <div class="nav-container">
+            <div class="nav-left">
                 <span>林工，您好</span>
-                <a href="#" style="color: #F37021; text-decoration: none; display: inline-block; line-height: 36px; transition: all 0.3s;" onclick="showLogoutConfirm()">退出</a>
+                <a href="#" class="logout-link" onclick="showLogoutConfirm()">退出</a>
             </div>
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心<span style="color: #F37021; font-weight: bold;">(99+)</span></a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
-                <a href="#" onclick="goToPersonalCenter()" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">创建组织</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;"></a>
-                <div style="display: flex; align-items: center; gap: 6px; color: #FFFFFF;">
-                    <svg style="width: 14px; height: 14px; color: #F37021;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div class="nav-right">
+                <a href="#" class="nav-link">消息中心<span class="message-badge">(99+)</span></a>
+                <a href="#" class="nav-link">我的订单</a>
+                <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
+                <a href="#" class="nav-link">创建组织</a>
+                <a href="#" class="nav-link"></a>
+                <div class="location-info">
+                    <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
-                    <span style="color: #F37021;">北京</span>
-                    <span style="color: #86909C;">[切换城市]</span>
+                    <span class="location-text">北京</span>
+                    <span class="switch-city">[切换城市]</span>
                 </div>
             </div>
         </div>

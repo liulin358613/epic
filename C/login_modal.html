@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>登录弹窗组件</title>
     <style>
+        /* 固定字体大小，避免被父页面iframe影响 */
+        html {
+            font-size: 16px !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         /* 全局样式重置与变量定义 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+            font-family: "Microsoft Yahei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         :root {
@@ -27,12 +35,14 @@
 
         body {
             background-color: transparent;
-            min-height: 100vh;
+            width: 420px;
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0;
             padding: 0;
+            line-height: 1.5;
         }
 
         /* 登录弹窗样式 - 默认展示 */
@@ -40,6 +50,8 @@
             position: relative;
             z-index: 99999;
             background-color: transparent;
+            width: 420px;
+            height: 500px;
         }
         
         .modal-content {
@@ -47,6 +59,7 @@
             background-color: var(--white);
             border-radius: 12px;
             width: 420px;
+            min-width: 420px;
             height: 500px;
             box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
             line-height: 1.5;
@@ -54,8 +67,6 @@
             font-family: "Microsoft Yahei", sans-serif;
         }
 
-
-        
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -94,7 +105,6 @@
         .login-tabs {
             display: flex;
             padding: 12px 10px 12px 20px;
-            /* border-bottom: 1px solid var(--border-gray); */
         }
         
         .login-tab {
@@ -372,6 +382,20 @@
             background-position: center;
             display: inline-block;
         }
+
+        /* 响应式适配 - 仅在独立打开时生效 */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+                height: auto;
+                min-height: 450px;
+                padding-bottom: 20px;
+            }
+
+            .login-button {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -427,7 +451,6 @@
 
         // 关闭弹窗
         closeBtn.addEventListener('click', () => {
-            // 可以在这里添加关闭后的处理逻辑
             console.log('登录弹窗已关闭');
         });
 
@@ -438,12 +461,10 @@
                 tab.classList.add('active');
                 
                 if (index === 0) {
-                    // 密码登录
                     passwordInput.style.display = 'block';
                     codeInput.style.display = 'none';
                     phoneField.placeholder = '请输入手机号/用户名';
                 } else {
-                    // 验证码登录
                     passwordInput.style.display = 'none';
                     codeInput.style.display = 'flex';
                     phoneField.placeholder = '请输入手机号';
@@ -460,13 +481,11 @@
 
         // 登录按钮点击事件
         document.querySelector('.login-button').addEventListener('click', function() {
-            // 直接向父页面发送登录成功消息
             window.parent.postMessage({ type: 'LOGIN_SUCCESS' }, '*');
         });
         
         // 关闭按钮点击事件
         document.querySelector('.close-btn').addEventListener('click', function() {
-            // 向父页面发送关闭弹窗消息
             window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*');
         });
 
@@ -475,7 +494,6 @@
         if (registerLink) {
             registerLink.addEventListener('click', function(e) {
                 e.preventDefault();
-                // 在父窗口跳转到注册页面
                 window.parent.location.href = 'register.html';
             });
         }
@@ -483,7 +501,6 @@
         // 处理来自父页面的消息
         window.addEventListener('message', (event) => {
             if (event.data.type === 'MODAL_LOADED') {
-                // 登录弹窗已加载
                 console.log('登录弹窗已加载');
             }
         });

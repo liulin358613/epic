@@ -3,13 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>文件管理</title>
     <style>
+        /* 基础字体设置 - 固定16px基准，避免被父页面iframe响应式字体影响 */
+        html {
+            font-size: 16px !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
+
+        :root {
+            --font-size-base: 0.875rem;
+            --line-height-base: 1.5;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.375rem;
+            --spacing-md: 0.5rem;
+            --spacing-lg: 0.75rem;
+            --spacing-xl: 1rem;
+            --spacing-2xl: 1.125rem;
+            --border-color: #E5E7EB;
+            --primary-color: #4a6cf7;
+            --text-color: #1D2129;
+            --text-secondary: #666;
+            --bg-light: #F0F2F5;
+            --bg-hover: #F5F5F5;
+            --bg-selected: #E8F3FF;
+        }
+
         html, body {
             height: 100%;
             width: 100%;
@@ -20,7 +48,7 @@
             cursor: pointer;
         }
         .file-item:hover {
-            background-color: #F5F5F5;
+            background-color: var(--bg-hover);
         }
         .file-item:hover .file-action {
             opacity: 1;
@@ -30,68 +58,68 @@
             transition: opacity 0.2s ease;
         }
         .file-item.selected {
-            background-color: #E8F3FF;
+            background-color: var(--bg-selected);
         }
         .btn {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 16px;
-            border: 1px solid #E5E7EB;
-            border-radius: 6px;
+            gap: 0.375rem;
+            padding: 0.375rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
             background-color: #FFFFFF;
-            font-size: 14px;
-            color: #1D2129;
+            font-size: 0.875rem;
+            color: var(--text-color);
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .btn:hover {
-            background-color: #F0F2F5;
-            border-color: #4a6cf7;
-            color: #4a6cf7;
+            background-color: var(--bg-light);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
         .btn:active {
             transform: scale(0.98);
         }
         .btn-small {
-            padding: 4px 12px;
-            font-size: 14px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
         }
         .sidebar-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border: 1px solid #E5E7EB;
-            border-radius: 6px;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
             cursor: pointer;
-            font-size: 14px;
-            color: #1D2129;
+            font-size: 0.875rem;
+            color: var(--text-color);
             transition: all 0.2s ease;
         }
         .sidebar-item:hover {
-            background-color: #F0F2F5;
-            border-color: #4a6cf7;
+            background-color: var(--bg-light);
+            border-color: var(--primary-color);
         }
         .sidebar-item.active {
-            background-color: #E8F3FF;
-            border-color: #4a6cf7;
-            color: #4a6cf7;
+            background-color: var(--bg-selected);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
         .file-action button:hover {
-            background-color: #E5E7EB;
+            background-color: var(--border-color);
         }
         .context-menu {
             position: absolute;
-            right: 50px;
-            top: 30px;
+            right: 3.125rem;
+            top: 1.875rem;
             background: #FFFFFF;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 4px 0;
+            padding: 0.25rem 0;
             z-index: 1000;
-            min-width: 120px;
+            min-width: 7.5rem;
             display: none;
         }
         .context-menu.show {
@@ -102,37 +130,120 @@
             bottom: 0;
         }
         .context-menu-item {
-            padding: 8px 16px;
-            font-size: 14px;
-            color: #1D2129;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: var(--text-color);
             cursor: pointer;
             transition: background-color 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
         .context-menu-item:hover {
-            background-color: #F0F2F5;
-            color: #4a6cf7;
+            background-color: var(--bg-light);
+            color: var(--primary-color);
         }
         .context-menu-item svg {
-            width: 14px;
-            height: 14px;
+            width: 0.875rem;
+            height: 0.875rem;
             stroke: currentColor;
         }
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 0.375rem;
         }
         ::-webkit-scrollbar-track {
             background: #F0F0F0;
-            border-radius: 3px;
+            border-radius: 0.1875rem;
         }
         ::-webkit-scrollbar-thumb {
             background: #e5e7eb;
-            border-radius: 3px;
+            border-radius: 0.1875rem;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #d0d3d8;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #e5e7eb #F0F0F0;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 160px !important;
+            }
+
+            .file-table-header, .file-item {
+                font-size: 0.8125rem !important;
+            }
+
+            .file-name-col {
+                min-width: 100px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 140px !important;
+                padding: 1rem !important;
+            }
+
+            .sidebar h3 {
+                font-size: 0.875rem !important;
+            }
+
+            .action-bar {
+                padding: 1rem 0 0.625rem 1rem !important;
+            }
+
+            .btn {
+                padding: 0.25rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-small {
+                padding: 0.1875rem 0.625rem;
+                font-size: 0.6875rem;
+            }
+
+            .breadcrumb {
+                font-size: 0.75rem !important;
+            }
+
+            .file-table-header > div,
+            .file-item > div {
+                padding: 0.75rem !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100px !important;
+                padding: 0.75rem !important;
+            }
+
+            .sidebar h3 {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+
+            .sidebar-item {
+                padding: 0.375rem 0.5rem !important;
+                font-size: 0.6875rem !important;
+            }
+
+            .action-bar {
+                padding: 0.75rem 0 0.5rem 0.75rem !important;
+                gap: 0.5rem !important;
+            }
+
+            .operation-buttons {
+                gap: 0.5rem !important;
+            }
+
+            .file-table-header, .file-item {
+                font-size: 0.6875rem !important;
+            }
         }
     </style>
 </head>
