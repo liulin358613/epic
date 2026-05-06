@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商家/组织类型</title>
+    <title>组织类型</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
@@ -27,131 +27,6 @@
             flex: 1;
             overflow: hidden;
         }
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .table-wrapper {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-        .main-content {
-            flex: 1;
-            padding: 16px;
-            overflow: hidden;
-        }
-        .table-container {
-            overflow-x: auto;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
-        }
-        .table thead {
-            background: #f8fafc;
-        }
-        .table th {
-            padding: 14px 20px;
-            text-align: left;
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #e2e8f0;
-            white-space: nowrap;
-        }
-        .table td {
-            padding: 14px 20px;
-            color: #475569;
-            border-bottom: 1px solid #f1f5f9;
-            white-space: nowrap;
-        }
-        .btn {
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
-        }
-        .badge {
-            padding: 4px 12px;
-            font-size: 12px;
-            font-weight: 500;
-            border-radius: 20px;
-        }
-        .badge-blue {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            color: #2563eb;
-        }
-        .badge-green {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            color: #16a34a;
-        }
-        .badge-gray {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-        .pagination {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .pagination-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            background: white;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .pagination-btn:hover:not(.active) {
-            background: #f8fafc;
-        }
-        .pagination-btn.active {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            border-color: #3b82f6;
-            color: white;
-        }
-        .form-control {
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #475569;
-            background: #f8fafc;
-        }
-        .form-control:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: white;
-        }
         .page-header {
             display: flex;
             align-items: center;
@@ -170,30 +45,507 @@
             color: #94a3b8;
             margin-top: 4px;
         }
-        .expand-icon {
+        .main-content {
+            flex: 1;
+            padding: 16px;
+            overflow-x: auto;
+            overflow-y: auto;
+            display: flex;
+            gap: 16px;
+        }
+        .sidebar {
+            width: 280px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #d1d5db;
+        }
+        .sidebar-header {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #d1d5db;
+            background: #d1d5db;
+        }
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        .sidebar-tree {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .tree-item {
+            padding: 8px 12px;
             cursor: pointer;
-            color: #6366f1;
-            margin-left: 20px;
-            transition: transform 0.3s ease;
-            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #374151;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            user-select: none;
         }
-        .expand-icon.collapsed {
-            transform: rotate(-90deg);
+        .tree-item:hover {
+            background: #d1d5db;
         }
-        .menu-cell {
-            position: relative;
+        .tree-item.active {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+            border-left: 3px solid #1d4ed8;
         }
-        .menu-name {
-            margin-right: 0;
+        .tree-item.active .expand-icon {
+            color: white;
         }
-        .child-row.hidden {
+        .tree-item.active .tree-icon {
+            color: white;
+        }
+        .tree-item.parent {
+            font-weight: 500;
+        }
+        .tree-item.child {
+            padding-left: 32px;
+        }
+        .tree-icon {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .expand-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: bold;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .expand-icon:hover {
+            color: #374151;
+        }
+        .tree-item.active .expand-icon {
+            color: #3b82f6;
+        }
+        .tree-children {
+            overflow: hidden;
+            transition: height 0.2s ease;
+        }
+        .tree-children.hidden {
             display: none;
         }
-        .indent-2 {
-            padding-left: 2em !important;
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
-        .indent-4 {
-            padding-left: 4em !important;
+        .content-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            background: #fafafa;
+        }
+        .content-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-row {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .form-group {
+            display: flex;
+            /* align-items: center; */
+            gap: 12px;
+        }
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4b5563;
+            white-space: nowrap;
+            min-width: 100px;
+            text-align: right;
+        }
+        .form-control {
+            width: 300px;
+            max-width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151;
+            background: #fafafa;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+        .form-control:hover {
+            border-color: #d1d5db;
+            background: white;
+        }
+        .form-textarea {
+            width: 500px;
+            max-width: 100%;
+            min-height: 80px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .form-control select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            /* margin-top: 10px; */
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .radio-item:hover {
+            background: #f3f4f6;
+        }
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #3b82f6;
+        }
+        .radio-item span {
+            font-size: 14px;
+            color: #374151;
+        }
+        .tabs-container {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            margin-top: 24px;
+            padding-bottom: 0;
+        }
+        .tab {
+            padding: 12px 28px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            margin-right: 4px;
+            transition: all 0.2s;
+            position: relative;
+            bottom: -2px;
+        }
+        .tab:hover {
+            color: #3b82f6;
+            background: #f9fafb;
+        }
+        .dual-panel-container {
+            display: flex;
+            gap: 0;
+            /* margin-top: 20px; */
+            flex: 1;
+            min-height: 0;
+        }
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .panel-header {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            flex-shrink: 0;
+        }
+        .panel-content {
+            border: 1px solid #e5e7eb;
+            border-radius: 0 0 8px 8px;
+            padding: 16px;
+            background: white;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .panel-divider {
+            /* width: 1px; */
+            background: #e5e7eb;
+            margin: 0 8px;
+            flex-shrink: 0;
+        }
+        .panel-role {
+            flex: 0 0 30%;
+        }
+        .panel-menu {
+            flex: 1;
+        }
+        .btn-add-role {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .role-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+        .role-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .role-item:hover {
+            background: #f9fafb;
+        }
+        .role-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #3b82f6;
+        }
+        .edit-role-btn {
+            margin-left: auto;
+            width: 22px;
+            height: 22px;
+            border: none;
+            background: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+        .role-item:hover .edit-role-btn {
+            opacity: 1;
+            visibility: visible;
+        }
+        .edit-role-btn:hover {
+            background: #e5e7eb;
+            color: #3b82f6;
+        }
+        .perm-tabs {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .perm-tab {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .perm-tab:hover {
+            color: #3b82f6;
+        }
+        .perm-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .permission-group {
+            margin-bottom: 8px;
+        }
+        .permission-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+            padding: 6px 0;
+        }
+        .permission-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+        .permission-children {
+            margin-left: 32px;
+            margin-top: 4px;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 12px;
+        }
+        .permission-children .permission-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+        .permission-children .permission-children .permission-label {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        .expand-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .perm-content {
+            padding: 8px;
+        }
+        .perm-content.hidden {
+            display: none;
+        }
+        .perm-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .perm-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .perm-label:hover {
+            background: #f3f4f6;
+        }
+        .perm-label input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #3b82f6;
+        }
+        .perm-label.child {
+            padding-left: 32px;
+        }
+        .perm-expand {
+            font-size: 10px;
+            color: #9ca3af;
+            width: 14px;
+            text-align: center;
+        }
+        .perm-children {
+            padding-left: 16px;
+        }
+        .data-perm-section h4, .field-perm-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .data-perm-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .data-perm-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+        }
+        .data-perm-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #3b82f6;
+        }
+        .field-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .field-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+        .field-name {
+            font-size: 14px;
+            color: #374151;
+        }
+        .field-perm {
+            display: flex;
+            gap: 16px;
+        }
+        .field-perm label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .field-perm input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #3b82f6;
         }
         .modal-overlay {
             position: fixed;
@@ -212,211 +564,99 @@
         }
         .modal-content {
             background: white;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         .modal-header {
-            padding: 8px 24px;
-            border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
         }
         .modal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            color: #1e293b;
+            color: #1f2937;
         }
         .modal-close {
-            background: none;
+            width: 28px;
+            height: 28px;
             border: none;
-            font-size: 20px;
-            color: #94a3b8;
+            background: none;
+            border-radius: 6px;
             cursor: pointer;
-            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
         }
         .modal-body {
             padding: 20px;
         }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #475569;
-            margin-bottom: 4px;
-            line-height: 1.2;
-        }
-        .form-group label .required {
-            color: #ef4444;
-            margin-right: 4px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #475569;
-            background: #f8fafc;
-            transition: border-color 0.3s ease;
-        }
-        .form-control:focus {
-            outline: none;
-            border-color: #6366f1;
-            background: white;
-        }
-        .form-control::placeholder {
-            color: #94a3b8;
-        }
-        .form-radio-group {
-            display: flex;
-            gap: 24px;
-        }
-        .form-radio-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .form-radio-item input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #6366f1;
-        }
-        .form-radio-item span {
-            font-size: 14px;
-            color: #475569;
-        }
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
         .modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid #f1f5f9;
             display: flex;
             justify-content: flex-end;
             gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
         }
-        .btn-xs {
-            padding: 4px 12px;
-            font-size: 12px;
-        }
-        .btn-outline {
-            background: white;
-            color: #64748b;
-            border: 1px solid #e2e8f0;
-        }
-        .btn-outline:hover {
-            border-color: #6366f1;
-            color: #6366f1;
-        }
-        .dialog-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .dialog-overlay.hidden {
-            display: none;
-        }
-        .dialog-content {
-            background: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        .dialog-body {
-            padding: 32px 24px;
-            text-align: center;
-        }
-        .dialog-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #fef2f2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-        }
-        .dialog-icon .fa {
-            font-size: 28px;
-            color: #ef4444;
-        }
-        .dialog-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-        .dialog-message {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.6;
-        }
-        .dialog-footer {
+        .content-footer {
             padding: 16px 24px;
-            border-top: 1px solid #f1f5f9;
+            border-top: 1px solid #e5e7eb;
             display: flex;
             justify-content: center;
             gap: 12px;
+            background: #fafafa;
         }
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 26px;
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
-        .toggle-switch .slider {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #cbd5e1;
-            transition: 0.3s;
-            border-radius: 26px;
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+            transform: translateY(-1px);
         }
-        .toggle-switch .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        .btn-outline {
+            background: white;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
         }
-        .toggle-switch input:checked + .slider {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #f0f9ff;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
         }
-        .toggle-switch input:checked + .slider:before {
-            transform: translateX(22px);
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
         }
-
+        .btn-xs {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -429,365 +669,933 @@
             background: #cbd5e1;
             border-radius: 3px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
     </style>
 </head>
 <body>
     <header class="page-header">
         <div>
-            <h1 class="page-title">商家/组织类型</h1>
-            <p class="page-subtitle">管理商家及组织的类型配置</p>
+            <h1 class="page-title">组织类型</h1>
+            <p class="page-subtitle">管理组织的类型配置</p>
         </div>
     </header>
-
     <div class="page-container">
         <main class="main-content">
-            <div class="card">
-                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
-                    <button class="btn btn-primary" onclick="openAddModal()">
-                        <i class="fa fa-plus"></i>
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-title">组织类型</span>
+                    <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="addNewOrg()">
                         添加
                     </button>
                 </div>
-                <div class="table-wrapper">
-                    <div class="table-container">
-                        <table class="table">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>商家/组织类型名称</th>
-                                <th>备注</th>
-                                <th>创建时间</th>
-                                <th>更新时间</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td class="menu-cell">
-                                    <span class="menu-name">训练基地服务商</span>
-                                    <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('training-child')"></i>
-                                </td>
-                                <td>提供训练基地服务的商家</td>
-                                <td>2026-03-11 10:19:23</td>
-                                <td>2026-03-11 10:19:23</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="training-child">
-                                <td>2</td>
-                                <td class="indent-2">独立训练基地</td>
-                                <td>自营/授权训练基地服务</td>
-                                <td>2026-03-11 10:20:00</td>
-                                <td>2026-03-11 10:20:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="training-child">
-                                <td>3</td>
-                                <td class="indent-2">客户自训练</td>
-                                <td>自主下单、自主训练</td>
-                                <td>2026-03-11 10:21:00</td>
-                                <td>2026-03-11 10:21:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="training-child">
-                                <td>4</td>
-                                <td class="indent-2">个人训练</td>
-                                <td>个人训练服务</td>
-                                <td>2026-03-11 10:22:00</td>
-                                <td>2026-03-11 10:22:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td class="menu-cell">
-                                    <span class="menu-name">机器人及设备商</span>
-                                    <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('robot-child')"></i>
-                                </td>
-                                <td>提供机器人及相关设备的商家</td>
-                                <td>2026-03-12 08:30:00</td>
-                                <td>2026-03-15 14:20:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="robot-child">
-                                <td>6</td>
-                                <td class="indent-2">整机机器人厂商</td>
-                                <td>整机机器人供应商</td>
-                                <td>2026-03-12 08:35:00</td>
-                                <td>2026-03-12 08:35:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="robot-child">
-                                <td>7</td>
-                                <td class="indent-2">专机与生产设备厂商</td>
-                                <td>专机、生产设备供应商</td>
-                                <td>2026-03-12 08:40:00</td>
-                                <td>2026-03-12 08:40:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="robot-child">
-                                <td>8</td>
-                                <td class="indent-2">核心零部件供应商</td>
-                                <td>核心零部件供应</td>
-                                <td>2026-03-12 08:45:00</td>
-                                <td>2026-03-12 08:45:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="robot-child">
-                                <td>9</td>
-                                <td class="indent-2">周边设备与工具服务商</td>
-                                <td>周边设备、工具服务</td>
-                                <td>2026-03-12 08:50:00</td>
-                                <td>2026-03-12 08:50:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="robot-child">
-                                <td>10</td>
-                                <td class="indent-2">配件与易损件供应商</td>
-                                <td>配件、易损件供应</td>
-                                <td>2026-03-12 08:55:00</td>
-                                <td>2026-03-12 08:55:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>11</td>
-                                <td class="menu-cell">
-                                    <span class="menu-name">终端行业客户</span>
-                                    <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('client-child')"></i>
-                                </td>
-                                <td>终端行业的客户组织</td>
-                                <td>2026-03-13 11:15:00</td>
-                                <td>2026-03-18 09:30:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="client-child">
-                                <td>12</td>
-                                <td class="indent-2">工业行业</td>
-                                <td>工业行业客户</td>
-                                <td>2026-03-13 11:20:00</td>
-                                <td>2026-03-13 11:20:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="client-child">
-                                <td>13</td>
-                                <td class="indent-2">农业行业</td>
-                                <td>农业行业客户</td>
-                                <td>2026-03-13 11:25:00</td>
-                                <td>2026-03-13 11:25:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                            <tr class="child-row" id="client-child">
-                                <td>14</td>
-                                <td class="indent-2">服务业行业</td>
-                                <td>服务业行业客户</td>
-                                <td>2026-03-13 11:30:00</td>
-                                <td>2026-03-13 11:30:00</td>
-                                <td>
-                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
-                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        </table>
+                <div class="sidebar-tree">
+                    <div class="tree-item parent active" onclick="handleParentClick('training');loadOrgData('训练基地')">
+                        <span class="expand-icon">-</span>
+                        <span>训练基地</span>
                     </div>
-                </div>
-
-                <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
-                    <div></div>
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <span class="text-gray-500 text-sm">共 50 条</span>
-                        <div class="pagination">
-                            <button class="pagination-btn">
-                                <i class="fa fa-angle-left"></i>
-                            </button>
-                            <button class="pagination-btn active">1</button>
-                            <button class="pagination-btn">2</button>
-                            <button class="pagination-btn">3</button>
-                            <button class="pagination-btn">4</button>
-                            <button class="pagination-btn">5</button>
-                            <button class="pagination-btn">6</button>
-                            <button class="pagination-btn">7</button>
-                            <button class="pagination-btn">8</button>
-                            <button class="pagination-btn">9</button>
-                            <button class="pagination-btn">
-                                <i class="fa fa-angle-right"></i>
-                            </button>
-                            <select class="form-control w-auto ml-2">
-                                <option>10条/页</option>
-                                <option>20条/页</option>
-                                <option>50条/页</option>
-                            </select>
-                            <span class="text-gray-500 text-sm ml-2">跳至</span>
-                            <input type="text" class="form-control w-16 ml-2" value="1">
-                            <span class="text-gray-500 text-sm ml-2">页</span>
+                    <div class="tree-children" id="training-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('独立训练基地')">
+                            <span class="expand-icon"></span>
+                            <span>独立训练基地</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('客户自训练')">
+                            <span class="expand-icon"></span>
+                            <span>客户自训练</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('个人训练')">
+                            <span class="expand-icon"></span>
+                            <span>个人训练</span>
                         </div>
                     </div>
+                    <div class="tree-item parent" onclick="handleParentClick('robot');loadOrgData('机器人及设备商')">
+                        <span class="expand-icon">+</span>
+                        <span>机器人及设备商</span>
+                    </div>
+                    <div class="tree-children hidden" id="robot-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('整机机器人厂商')">
+                            <span class="expand-icon"></span>
+                            <span>整机机器人厂商</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('专机与生产设备厂商')">
+                            <span class="expand-icon"></span>
+                            <span>专机与生产设备厂商</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('零部件供应商')">
+                            <span class="expand-icon"></span>
+                            <span>零部件供应商</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('client');loadOrgData('终端行业客户')">
+                        <span class="expand-icon">+</span>
+                        <span>终端行业客户</span>
+                    </div>
+                    <div class="tree-children hidden" id="client-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('汽车制造企业')">
+                            <span class="expand-icon"></span>
+                            <span>汽车制造企业</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('电子电器厂商')">
+                            <span class="expand-icon"></span>
+                            <span>电子电器厂商</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('医疗器械公司')">
+                            <span class="expand-icon"></span>
+                            <span>医疗器械公司</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('supply');loadOrgData('供应链服务商')">
+                        <span class="expand-icon">+</span>
+                        <span>供应链服务商</span>
+                    </div>
+                    <div class="tree-children hidden" id="supply-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('物流运输企业')">
+                            <span class="expand-icon"></span>
+                            <span>物流运输企业</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('仓储服务公司')">
+                            <span class="expand-icon"></span>
+                            <span>仓储服务公司</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('system');loadOrgData('系统集成商')">
+                        <span class="expand-icon">+</span>
+                        <span>系统集成商</span>
+                    </div>
+                    <div class="tree-children hidden" id="system-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('自动化解决方案商')">
+                            <span class="expand-icon"></span>
+                            <span>自动化解决方案商</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('软件服务提供商')">
+                            <span class="expand-icon"></span>
+                            <span>软件服务提供商</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('education');loadOrgData('教育培训机构')">
+                        <span class="expand-icon">+</span>
+                        <span>教育培训机构</span>
+                    </div>
+                    <div class="tree-children hidden" id="education-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('职业技术学院')">
+                            <span class="expand-icon"></span>
+                            <span>职业技术学院</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('企业内训机构')">
+                            <span class="expand-icon"></span>
+                            <span>企业内训机构</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('在线教育平台')">
+                            <span class="expand-icon"></span>
+                            <span>在线教育平台</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('finance');loadOrgData('金融服务机构')">
+                        <span class="expand-icon">+</span>
+                        <span>金融服务机构</span>
+                    </div>
+                    <div class="tree-children hidden" id="finance-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('投资公司')">
+                            <span class="expand-icon"></span>
+                            <span>投资公司</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('融资租赁公司')">
+                            <span class="expand-icon"></span>
+                            <span>融资租赁公司</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('research');loadOrgData('科研院所')">
+                        <span class="expand-icon">+</span>
+                        <span>科研院所</span>
+                    </div>
+                    <div class="tree-children hidden" id="research-children">
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('机器人研究院')">
+                            <span class="expand-icon"></span>
+                            <span>机器人研究院</span>
+                        </div>
+                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('智能制造实验室')">
+                            <span class="expand-icon"></span>
+                            <span>智能制造实验室</span>
+                        </div>
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('factory')">
+                        <span class="expand-icon">+</span>
+                        <span>共享工厂</span>
+                    </div>
+                    <div class="tree-children hidden" id="factory-children">
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('equipment')">
+                        <span class="expand-icon">+</span>
+                        <span>设备共享</span>
+                    </div>
+                    <div class="tree-children hidden" id="equipment-children">
+                    </div>
+                    <div class="tree-item parent" onclick="handleParentClick('media')">
+                        <span class="expand-icon">+</span>
+                        <span>影视/文学</span>
+                    </div>
+                    <div class="tree-children hidden" id="media-children">
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="content-header">组织详情</div>
+                <div class="content-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>组织名称：</label>
+                            <input type="text" class="form-control" placeholder="请输入" id="org-name-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>上级组织：</label>
+                            <select class="form-control" id="org-parent-input">
+                                <option value="" selected>请选择</option>
+                                <option value="1">训练基地</option>
+                                <option value="2">机器人及设备商</option>
+                                <option value="3">终端行业客户</option>
+                                <option value="4">供应链服务商</option>
+                                <option value="5">系统集成商</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>备注说明：</label>
+                            <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>是否需要审核：</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" name="audit" value="no" checked id="audit-no">
+                                    <span>否</span>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="audit" value="yes" id="audit-yes">
+                                    <span>是</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dual-panel-container">
+                        <div class="panel panel-role">
+                            <div class="panel-header">组织角色</div>
+                            <div class="panel-content" id="role-content">
+                                <button class="btn btn-sm btn-outline btn-add-role" style="width: auto; margin-bottom: 16px;" onclick="showAddRoleModal()">
+                                    <i class="fa fa-plus"></i> 添加
+                                </button>
+                                <div class="role-list">
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>总经理</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '总经理')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>生产主管</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '生产主管')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>技术总监</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '技术总监')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>开发经理</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '开发经理')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>测试工程师</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '测试工程师')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>产品经理</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '产品经理')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>运维工程师</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '运维工程师')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                    <label class="role-item">
+                                        <input type="checkbox" checked>
+                                        <span>财务主管</span>
+                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '财务主管')"><i class="fa fa-pencil"></i></button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-divider"></div>
+                        <div class="panel panel-menu">
+                            <div class="panel-header">功能菜单</div>
+                            <div class="panel-content" id="permission-content">
+                                <div class="perm-tabs">
+                                    <div class="perm-tab active" onclick="switchPermTab('function')">功能权限</div>
+                                    <div class="perm-tab" onclick="switchPermTab('data')">数据权限</div>
+                                    <div class="perm-tab" onclick="switchPermTab('field')">字段权限</div>
+                                </div>
+                                <div class="perm-content" id="function-content">
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                                            <input type="checkbox" checked class="parent-checkbox" data-group="order-center">
+                                            <span>订单中心</span>
+                                        </label>
+                                        <div class="permission-children" id="order-center-children">
+                                            <label class="permission-label">
+                                                <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                                <input type="checkbox" checked class="child-checkbox" data-parent="order-center" data-group="order">
+                                                <span>订单管理</span>
+                                            </label>
+                                            <div class="permission-children" id="order-children">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                                    <input type="checkbox" checked class="child-checkbox" data-parent="order" data-group="purchase">
+                                                    <span>采购订单</span>
+                                                </label>
+                                                <div class="permission-children" id="purchase-children">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="purchase">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="purchase">
+                                                        <span>新增</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                                        <span>编辑</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                                        <span>删除</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                                        <span>审核</span>
+                                                    </label>
+                                                </div>
+                                                <label class="permission-label">
+                                                    <span class="expand-icon expanded" data-target="sales-children">▶</span>
+                                                    <input type="checkbox" checked class="child-checkbox" data-parent="order" data-group="sales">
+                                                    <span>销售订单</span>
+                                                </label>
+                                                <div class="permission-children" id="sales-children">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="sales">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="sales">
+                                                        <span>新增</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                                        <span>编辑</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                                        <span>删除</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                                        <span>审核</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon" data-target="warehouse-center-children">▶</span>
+                                            <input type="checkbox" class="parent-checkbox" data-group="warehouse-center">
+                                            <span>仓储中心</span>
+                                        </label>
+                                        <div class="permission-children" id="warehouse-center-children" style="display: none;">
+                                            <label class="permission-label">
+                                                <span class="expand-icon" data-target="warehouse-children">▶</span>
+                                                <input type="checkbox" class="child-checkbox" data-parent="warehouse-center" data-group="warehouse">
+                                                <span>仓库管理</span>
+                                            </label>
+                                            <div class="permission-children" id="warehouse-children" style="display: none;">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="inventory-children">▶</span>
+                                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="inventory">
+                                                    <span>库存管理</span>
+                                                </label>
+                                                <div class="permission-children" id="inventory-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <span>入库</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <span>出库</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <span>盘点</span>
+                                                    </label>
+                                                </div>
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="location-children">▶</span>
+                                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="location">
+                                                    <span>货位管理</span>
+                                                </label>
+                                                <div class="permission-children" id="location-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                                        <span>分配</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                                        <span>编辑</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon" data-target="user-center-children">▶</span>
+                                            <input type="checkbox" class="parent-checkbox" data-group="user-center">
+                                            <span>人员中心</span>
+                                        </label>
+                                        <div class="permission-children" id="user-center-children" style="display: none;">
+                                            <label class="permission-label">
+                                                <span class="expand-icon" data-target="user-children">▶</span>
+                                                <input type="checkbox" class="child-checkbox" data-parent="user-center" data-group="user">
+                                                <span>用户管理</span>
+                                            </label>
+                                            <div class="permission-children" id="user-children" style="display: none;">
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <span>查看</span>
+                                                </label>
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <span>新增</span>
+                                                </label>
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <span>编辑</span>
+                                                </label>
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <span>删除</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon" data-target="system-center-children">▶</span>
+                                            <input type="checkbox" class="parent-checkbox" data-group="system-center">
+                                            <span>系统中心</span>
+                                        </label>
+                                        <div class="permission-children" id="system-center-children" style="display: none;">
+                                            <label class="permission-label">
+                                                <span class="expand-icon" data-target="system-children">▶</span>
+                                                <input type="checkbox" class="child-checkbox" data-parent="system-center" data-group="system">
+                                                <span>系统设置</span>
+                                            </label>
+                                            <div class="permission-children" id="system-children" style="display: none;">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="config-children">▶</span>
+                                                    <input type="checkbox" class="child-checkbox" data-parent="system" data-group="config">
+                                                    <span>基础配置</span>
+                                                </label>
+                                                <div class="permission-children" id="config-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="config">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="config">
+                                                        <span>修改</span>
+                                                    </label>
+                                                </div>
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="log-children">▶</span>
+                                                    <input type="checkbox" class="child-checkbox" data-parent="system" data-group="log">
+                                                    <span>日志管理</span>
+                                                </label>
+                                                <div class="permission-children" id="log-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                                        <span>导出</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                                        <span>清空</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="perm-content hidden" id="data-content">
+                                    <div class="permission-group" style="margin-bottom: 16px;">
+                                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部数据</p>
+                                        
+                                        <div style="margin-bottom: 16px;">
+                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                                <label style="font-weight: 500;">
+                                                    <span style="color: #dc2626;">*</span>业务模块：
+                                                </label>
+                                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
+                                                    <option>销售订单</option>
+                                                    <option>采购订单</option>
+                                                    <option>库存管理</option>
+                                                    <option>用户管理</option>
+                                                </select>
+                                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                                            </div>
+                                            <div style="padding: 16px; border: 1px solid #d1d5db; margin-left: 100px;">
+                                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                                    <input type="checkbox" checked>
+                                                    <span>全选</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <span>隔离维度：</span>
+                                                    <div style="display: flex; gap: 32px;">
+                                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox" checked>
+                                                            <span>业务员</span>
+                                                        </div>
+                                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox">
+                                                            <span>客户</span>
+                                                        </div>
+                                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox">
+                                                            <span>部门</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="margin-bottom: 16px;">
+                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                                <label style="font-weight: 500;">
+                                                    <span style="color: #dc2626;">*</span>业务模块：
+                                                </label>
+                                                <select style="flex: 1; max-width: 400px; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 4px;">
+                                                    <option>采购订单</option>
+                                                    <option>销售订单</option>
+                                                    <option>库存管理</option>
+                                                    <option>用户管理</option>
+                                                </select>
+                                                <button style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="margin-left: 100px;">
+                                            <button style="display: flex; align-items: center; gap: 8px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
+                                                <i class="fa fa-plus"></i>
+                                                添加
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="perm-content hidden" id="field-content">
+                                    <div class="permission-group" style="margin-bottom: 16px;">
+                                        <p style="color: #f59e0b; font-size: 14px; margin-bottom: 20px;">提示：不设置，默认全部字段【可操作、可见】</p>
+                                        
+                                        <table style="width: 100%; border-collapse: collapse;">
+                                            <thead>
+                                                <tr style="border-bottom: 2px solid #e5e7eb;">
+                                                    <th style="text-align: left; padding: 12px 8px; font-weight: 600;">
+                                                        <span style="color: #dc2626;">*</span>字段名称
+                                                    </th>
+                                                    <th style="text-align: center; padding: 12px 8px; font-weight: 600;">
+                                                        <span style="color: #dc2626;">*</span>权限
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                    <td style="padding: 12px 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox" checked>
+                                                            <span>全选</span>
+                                                        </label>
+                                                    </td>
+                                                    <td style="padding: 12px 8px;">
+                                                        <div style="display: flex; justify-content: space-around;">
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="checkbox" checked>
+                                                                <span>全选</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="checkbox">
+                                                                <span>全选</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="checkbox">
+                                                                <span>全选</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                    <td style="padding: 12px 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox" checked>
+                                                            <span>产品成本(订单模块)</span>
+                                                        </label>
+                                                    </td>
+                                                    <td style="padding: 12px 8px;">
+                                                        <div style="display: flex; justify-content: space-around;">
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field1">
+                                                                <span>隐藏</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field1" checked>
+                                                                <span>只读</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field1">
+                                                                <span>可编辑</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                    <td style="padding: 12px 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox">
+                                                            <span>供应商报价(采购模块)</span>
+                                                        </label>
+                                                    </td>
+                                                    <td style="padding: 12px 8px;">
+                                                        <div style="display: flex; justify-content: space-around;">
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field2">
+                                                                <span>隐藏</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field2" checked>
+                                                                <span>只读</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field2">
+                                                                <span>可编辑</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                    <td style="padding: 12px 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                                            <input type="checkbox">
+                                                            <span>销售金额(订单模块)</span>
+                                                        </label>
+                                                    </td>
+                                                    <td style="padding: 12px 8px;">
+                                                        <div style="display: flex; justify-content: space-around;">
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field3">
+                                                                <span>隐藏</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field3">
+                                                                <span>只读</span>
+                                                            </label>
+                                                            <label style="display: flex; align-items: center; gap: 8px;">
+                                                                <input type="radio" name="field3" checked>
+                                                                <span>可编辑</span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-footer">
+                    <button class="btn btn-outline">取消</button>
+                    <button class="btn btn-primary">确定</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="add-modal" class="modal-overlay hidden" onclick="closeAddModal()">
+    <div class="modal-overlay hidden" id="add-role-modal" onclick="hideAddRoleModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <span class="modal-title">添加商家/组织类型</span>
-                <button class="modal-close" onclick="closeAddModal()">
-                    <i class="fa fa-times"></i>
-                </button>
+                <span class="modal-title">添加组织角色</span>
+                <button class="modal-close" onclick="hideAddRoleModal()"><i class="fa fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label><span class="required">*</span>类型名称</label>
-                    <input type="text" class="form-control" placeholder="请输入类型名称">
-                </div>
-                <div class="form-group">
-                    <label>上级类型</label>
-                    <select class="form-control">
-                        <option value="">无</option>
-                        <option value="1">训练基地服务商</option>
-                        <option value="2">机器人及设备商</option>
-                        <option value="3">终端行业客户</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>备注</label>
-                    <textarea class="form-control form-textarea" placeholder="请输入备注信息"></textarea>
+                    <label>角色名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入角色名称" id="role-name-input">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeAddModal()">取消</button>
-                <button class="btn btn-primary">保存</button>
+                <button class="btn btn-outline" onclick="hideAddRoleModal()">取消</button>
+                <button class="btn btn-primary" onclick="addRole()">确定</button>
             </div>
         </div>
     </div>
 
-    <div id="edit-modal" class="modal-overlay hidden" onclick="closeEditModal()">
+    <div class="modal-overlay hidden" id="edit-role-modal" onclick="hideEditRoleModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <span class="modal-title">编辑商家/组织类型</span>
-                <button class="modal-close" onclick="closeEditModal()">
-                    <i class="fa fa-times"></i>
-                </button>
+                <span class="modal-title">编辑角色</span>
+                <button class="modal-close" onclick="hideEditRoleModal()"><i class="fa fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label><span class="required">*</span>类型名称</label>
-                    <input type="text" class="form-control" value="训练基地服务商">
-                </div>
-                <div class="form-group">
-                    <label>上级类型</label>
-                    <select class="form-control">
-                        <option value="" selected>无</option>
-                        <option value="1">训练基地服务商</option>
-                        <option value="2">机器人及设备商</option>
-                        <option value="3">终端行业客户</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>备注</label>
-                    <textarea class="form-control form-textarea">提供训练基地服务的商家</textarea>
+                    <label>角色名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入角色名称" id="edit-role-name-input">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
-                <button class="btn btn-primary">保存</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="delete-dialog" class="dialog-overlay hidden">
-        <div class="dialog-content">
-            <div class="dialog-body">
-                <div class="dialog-icon">
-                    <i class="fa fa-trash"></i>
-                </div>
-                <h3 class="dialog-title">确认删除</h3>
-                <p class="dialog-message">确定要删除该商家/组织类型吗？此操作无法撤销。</p>
-            </div>
-            <div class="dialog-footer">
-                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
-                <button class="btn btn-primary" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">删除</button>
+                <button class="btn btn-outline" onclick="hideEditRoleModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveEditRole()">确定</button>
             </div>
         </div>
     </div>
 
     <script>
-        function openAddModal() {
-            document.getElementById('add-modal').classList.remove('hidden');
+        window.onload = function() {
+            loadOrgData('训练基地');
+        };
+
+        function addNewOrg() {
+            const items = document.querySelectorAll('.tree-item');
+            items.forEach(item => item.classList.remove('active'));
+            
+            document.getElementById('org-name-input').value = '';
+            document.getElementById('org-parent-input').value = '';
+            document.getElementById('org-remark-input').value = '';
+            document.getElementById('audit-no').checked = true;
+            document.getElementById('audit-yes').checked = false;
+            
+            document.querySelector('.content-header').textContent = '添加组织';
         }
 
-        function closeAddModal() {
-            document.getElementById('add-modal').classList.add('hidden');
-        }
-
-        function openEditModal() {
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-        }
-
-        function openDeleteDialog() {
-            document.getElementById('delete-dialog').classList.remove('hidden');
-        }
-
-        function closeDeleteDialog() {
-            document.getElementById('delete-dialog').classList.add('hidden');
-        }
-
-        function toggleExpand(rowId) {
-            const rows = document.querySelectorAll(`.child-row[id="${rowId}"]`);
-            const icon = event.target;
-            rows.forEach(row => {
-                row.classList.toggle('hidden');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.expand-icon').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const targetId = icon.dataset.target;
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        const isExpanded = icon.classList.toggle('expanded');
+                        target.style.display = isExpanded ? 'block' : 'none';
+                    }
+                });
             });
-            icon.classList.toggle('collapsed');
+
+            function checkAllChildren(checkbox, checked) {
+                const group = checkbox.dataset.group;
+                if (group) {
+                    document.querySelectorAll(`[data-parent="${group}"]`).forEach(child => {
+                        child.checked = checked;
+                        checkAllChildren(child, checked);
+                    });
+                }
+            }
+
+            function checkAllParents(checkbox) {
+                const parentGroup = checkbox.dataset.parent;
+                if (parentGroup) {
+                    const parentCheckbox = document.querySelector(`[data-group="${parentGroup}"]`);
+                    if (parentCheckbox) {
+                        parentCheckbox.checked = true;
+                        checkAllParents(parentCheckbox);
+                    }
+                }
+            }
+
+            document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const isChecked = e.target.checked;
+                    
+                    checkAllChildren(e.target, isChecked);
+                    
+                    if (isChecked) {
+                        checkAllParents(e.target);
+                    }
+                });
+            });
+        });
+
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+        }
+
+        function switchPermTab(tabName) {
+            const tabs = document.querySelectorAll('.perm-tab');
+            const contents = document.querySelectorAll('.perm-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+        }
+
+        function toggleExpand(parentId) {
+            const children = document.getElementById(parentId + '-children');
+            const parent = event.currentTarget;
+            const expandIcon = parent.querySelector('.expand-icon');
+            
+            if (children.classList.contains('hidden')) {
+                children.classList.remove('hidden');
+                expandIcon.textContent = '-';
+            } else {
+                children.classList.add('hidden');
+                expandIcon.textContent = '+';
+            }
+        }
+
+        function selectItem(event) {
+            event.stopPropagation();
+            const items = document.querySelectorAll('.tree-item');
+            items.forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function handleParentClick(parentId) {
+            toggleExpand(parentId);
+            selectItem(event);
+        }
+
+        const orgData = {
+            '训练基地': { name: '训练基地', parent: '', remark: '提供机器人培训服务的机构', audit: 'yes' },
+            '独立训练基地': { name: '独立训练基地', parent: '1', remark: '提供独立的机器人培训服务', audit: 'yes' },
+            '客户自训练': { name: '客户自训练', parent: '1', remark: '客户自行开展的培训项目', audit: 'no' },
+            '个人训练': { name: '个人训练', parent: '1', remark: '面向个人的机器人技能培训', audit: 'no' },
+            '机器人及设备商': { name: '机器人及设备商', parent: '', remark: '从事机器人及相关设备生产销售的企业', audit: 'yes' },
+            '整机机器人厂商': { name: '整机机器人厂商', parent: '2', remark: '生产和销售完整机器人设备的企业', audit: 'yes' },
+            '专机与生产设备厂商': { name: '专机与生产设备厂商', parent: '2', remark: '专业生产特定设备的制造商', audit: 'yes' },
+            '零部件供应商': { name: '零部件供应商', parent: '2', remark: '提供机器人零部件供应服务', audit: 'no' },
+            '终端行业客户': { name: '终端行业客户', parent: '', remark: '使用机器人设备的终端企业客户', audit: 'yes' },
+            '汽车制造企业': { name: '汽车制造企业', parent: '3', remark: '从事汽车生产制造的企业', audit: 'yes' },
+            '电子电器厂商': { name: '电子电器厂商', parent: '3', remark: '生产电子电器产品的企业', audit: 'yes' },
+            '医疗器械公司': { name: '医疗器械公司', parent: '3', remark: '生产医疗设备和器械的公司', audit: 'yes' },
+            '供应链服务商': { name: '供应链服务商', parent: '', remark: '提供供应链相关服务的企业', audit: 'no' },
+            '物流运输企业': { name: '物流运输企业', parent: '4', remark: '提供货物运输服务的企业', audit: 'no' },
+            '仓储服务公司': { name: '仓储服务公司', parent: '4', remark: '提供仓储管理服务的公司', audit: 'no' },
+            '系统集成商': { name: '系统集成商', parent: '', remark: '提供系统集成解决方案的企业', audit: 'yes' },
+            '自动化解决方案商': { name: '自动化解决方案商', parent: '5', remark: '提供自动化系统解决方案的服务商', audit: 'yes' },
+            '软件服务提供商': { name: '软件服务提供商', parent: '5', remark: '提供软件开发和技术服务的企业', audit: 'no' },
+            '教育培训机构': { name: '教育培训机构', parent: '', remark: '提供职业技能培训的机构', audit: 'no' },
+            '职业技术学院': { name: '职业技术学院', parent: '6', remark: '提供职业技术教育的院校', audit: 'no' },
+            '企业内训机构': { name: '企业内训机构', parent: '6', remark: '为企业提供内部培训服务的机构', audit: 'no' },
+            '在线教育平台': { name: '在线教育平台', parent: '6', remark: '提供在线教育服务的平台', audit: 'no' },
+            '金融服务机构': { name: '金融服务机构', parent: '', remark: '提供金融服务的机构', audit: 'no' },
+            '投资公司': { name: '投资公司', parent: '7', remark: '从事投资业务的公司', audit: 'no' },
+            '融资租赁公司': { name: '融资租赁公司', parent: '7', remark: '提供融资租赁服务的公司', audit: 'no' },
+            '科研院所': { name: '科研院所', parent: '', remark: '从事科学研究的机构', audit: 'no' },
+            '机器人研究院': { name: '机器人研究院', parent: '8', remark: '专门研究机器人技术的研究院', audit: 'no' },
+            '智能制造实验室': { name: '智能制造实验室', parent: '8', remark: '开展智能制造研究的实验室', audit: 'no' }
+        };
+
+        function loadOrgData(orgName) {
+            document.querySelector('.content-header').textContent = '组织详情';
+            
+            const data = orgData[orgName];
+            if (data) {
+                document.getElementById('org-name-input').value = data.name;
+                document.getElementById('org-parent-input').value = data.parent;
+                document.getElementById('org-remark-input').value = data.remark;
+                document.getElementById('audit-no').checked = (data.audit === 'no');
+                document.getElementById('audit-yes').checked = (data.audit === 'yes');
+            }
+        }
+
+        function showAddRoleModal() {
+            document.getElementById('add-role-modal').classList.remove('hidden');
+            document.getElementById('role-name-input').value = '';
+            document.getElementById('role-name-input').focus();
+        }
+
+        function hideAddRoleModal() {
+            document.getElementById('add-role-modal').classList.add('hidden');
+        }
+
+        function addRole() {
+            const roleName = document.getElementById('role-name-input').value.trim();
+            if (!roleName) {
+                alert('请输入角色名称');
+                return;
+            }
+            
+            const roleList = document.querySelector('.role-list');
+            const newRole = document.createElement('label');
+            newRole.className = 'role-item';
+            newRole.innerHTML = `
+                <input type="checkbox">
+                <span>${roleName}</span>
+                <button class="edit-role-btn" onclick="showEditRoleModal(this, '${roleName}')"><i class="fa fa-pencil"></i></button>
+            `;
+            roleList.appendChild(newRole);
+            
+            hideAddRoleModal();
+        }
+
+        let currentEditBtn = null;
+
+        function showEditRoleModal(btn, roleName) {
+            currentEditBtn = btn;
+            document.getElementById('edit-role-name-input').value = roleName;
+            document.getElementById('edit-role-modal').classList.remove('hidden');
+            document.getElementById('edit-role-name-input').focus();
+        }
+
+        function hideEditRoleModal() {
+            document.getElementById('edit-role-modal').classList.add('hidden');
+            currentEditBtn = null;
+        }
+
+        function saveEditRole() {
+            const roleName = document.getElementById('edit-role-name-input').value.trim();
+            if (!roleName) {
+                alert('请输入角色名称');
+                return;
+            }
+            
+            const roleItem = currentEditBtn.closest('.role-item');
+            roleItem.querySelector('span').textContent = roleName;
+            
+            hideEditRoleModal();
         }
     </script>
 </body>

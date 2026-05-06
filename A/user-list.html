@@ -97,7 +97,8 @@
             padding: 16px 24px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: auto;
         }
         .search-bar {
             padding: 16px;
@@ -179,6 +180,13 @@
         .badge-user-normal {
             background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             color: #64748b;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        .badge-user-type {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #4f46e5;
             border-radius: 4px;
             padding: 2px 8px;
             font-size: 12px;
@@ -330,7 +338,6 @@
         }
         .detail-user-info {
             display: flex;
-            align-items: center;
             gap: 16px;
             margin-bottom: 20px;
         }
@@ -344,6 +351,7 @@
             justify-content: center;
             border: 4px solid white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
         }
         .detail-avatar i {
             font-size: 32px;
@@ -484,8 +492,9 @@
             <div class="search-bar">
                 <input type="text" class="form-control" placeholder="搜索用户名称/手机号" style="min-width: 200px;">
                 <select class="form-control">
-                    <option>全部企业</option>
-                    <option>东莞市蓓佳尔工艺品有限公司</option>
+                    <option>全部组织</option>
+                    <option>东莞长安训练基地</option>
+                    <option>东莞嘉东轴承商贸有限公司</option>
                 </select>
                 <select class="form-control">
                     <option>全部等级</option>
@@ -498,9 +507,8 @@
                 </select>
                 <select class="form-control">
                     <option>全部类型</option>
-                    <option>普通用户</option>
-                    <option>普通企业</option>
-                    <option>认证企业</option>
+                    <option>个人用户</option>
+                    <option>组织用户</option>
                 </select>
                 <button class="btn btn-outline"><i class="fa fa-search"></i> 搜索</button>
                 <button class="btn btn-outline"><i class="fa fa-refresh"></i> 重置</button>
@@ -513,10 +521,10 @@
                             <th>用户ID</th>
                             <th>用户信息</th>
                             <th>手机号码</th>
-                            <th>用户类型</th>
                             <th>职务</th>
                             <th>等级</th>
-                            <th>关联"商家/组织“</th>
+                            <th>用户类型</th>
+                            <th>所属组织、角色</th>
                             <th>注册时间</th>
                             <th>最后登录时间</th>
                             <th>操作</th>
@@ -534,9 +542,9 @@
                                 </div>
                             </td>
                             <td>13826469793</td>
-                            <td>东莞市蓓佳尔工艺品有限公司<br><span class="badge badge-company">普通企业</span></td>
                             <td>工程师</td>
                             <td><span class="badge badge-level">Lv.5</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org001')">东莞长安训练基地</span>（总经理）<br><span class="org-link" onclick="showOrg('org002')">东莞嘉东轴承商贸有限公司</span>（业务员）</td>
                             <td>2024-01-15</td>
                             <td>2025-05-04 14:32</td>
@@ -553,9 +561,9 @@
                                 </div>
                             </td>
                             <td>13912345678</td>
-                            <td>深圳市科技有限公司<br><span class="badge badge-company-certified">认证企业</span></td>
                             <td>产品经理</td>
                             <td><span class="badge badge-level">Lv.3</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org003')">深圳众博工业机器人有限公司</span>（技术总监）</td>
                             <td>2024-02-20</td>
                             <td>2025-05-03 09:15</td>
@@ -572,9 +580,9 @@
                                 </div>
                             </td>
                             <td>13698765432</td>
-                            <td>广州市贸易有限公司<br><span class="badge badge-company">普通企业</span></td>
                             <td>设计师</td>
                             <td><span class="badge badge-level">Lv.4</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org004')">广州精工传感设备有限公司</span>（生产主管）</td>
                             <td>2024-03-10</td>
                             <td>2025-05-02 18:45</td>
@@ -591,9 +599,9 @@
                                 </div>
                             </td>
                             <td>13523456789</td>
-                            <td><span class="badge badge-user-normal">普通用户</span></td>
                             <td>行政主管</td>
                             <td><span class="badge badge-level">Lv.2</span></td>
+                            <td><span class="badge badge-user-type">个人用户</span></td>
                             <td>-</td>
                             <td>2024-04-05</td>
                             <td>2025-04-28 10:20</td>
@@ -610,9 +618,9 @@
                                 </div>
                             </td>
                             <td>15834567890</td>
-                            <td>佛山市制造有限公司<br><span class="badge badge-company-certified">认证企业</span></td>
                             <td>技术总监</td>
                             <td><span class="badge badge-level">Lv.5</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org005')">佛山智能装备科技有限公司</span>（采购主管）<br><span class="org-link" onclick="showOrg('org006')">佛山华联机械设备厂</span>（质量主管）</td>
                             <td>2024-05-18</td>
                             <td>2025-05-04 16:08</td>
@@ -629,9 +637,9 @@
                                 </div>
                             </td>
                             <td>18612345678</td>
-                            <td>杭州市科技有限公司<br><span class="badge badge-company">普通企业</span></td>
                             <td>运营经理</td>
                             <td><span class="badge badge-level">Lv.1</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org007')">杭州阿里云智能科技有限公司</span>（销售经理）</td>
                             <td>2024-06-01</td>
                             <td>2025-05-01 11:30</td>
@@ -648,9 +656,9 @@
                                 </div>
                             </td>
                             <td>17723456789</td>
-                            <td><span class="badge badge-user-normal">普通用户</span></td>
                             <td>-</td>
                             <td><span class="badge badge-level badge-level-0">Lv.0</span></td>
+                            <td><span class="badge badge-user-type">个人用户</span></td>
                             <td>-</td>
                             <td>2024-06-15</td>
                             <td>2025-03-20 08:00</td>
@@ -667,9 +675,9 @@
                                 </div>
                             </td>
                             <td>15934567890</td>
-                            <td>武汉市食品有限公司<br><span class="badge badge-company-certified">认证企业</span></td>
                             <td>营销总监</td>
                             <td><span class="badge badge-level">Lv.5</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org008')">武汉中兴智能装备有限公司</span>（区域经理）<br><span class="org-link" onclick="showOrg('org009')">武汉恒力机械设备有限公司</span>（业务员）</td>
                             <td>2024-07-01</td>
                             <td>2025-05-04 09:45</td>
@@ -686,9 +694,9 @@
                                 </div>
                             </td>
                             <td>13745678901</td>
-                            <td><span class="badge badge-user-normal">普通用户</span></td>
                             <td>客服</td>
                             <td><span class="badge badge-level">Lv.1</span></td>
+                            <td><span class="badge badge-user-type">个人用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org010')">广州售后服务中心</span>（售后工程师）</td>
                             <td>2024-07-15</td>
                             <td>2025-05-02 14:18</td>
@@ -705,9 +713,9 @@
                                 </div>
                             </td>
                             <td>18856789012</td>
-                            <td>成都市贸易有限公司<br><span class="badge badge-company">普通企业</span></td>
                             <td>会计</td>
                             <td><span class="badge badge-level">Lv.2</span></td>
+                            <td><span class="badge badge-user-type">组织用户</span></td>
                             <td>-</td>
                             <td>2024-08-01</td>
                             <td>2025-04-30 17:55</td>
@@ -767,13 +775,17 @@
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div class="detail-user-name" id="detail-name">林工</div>
                                     <span class="badge badge-level" id="detail-level">Lv.5</span>
+                                    <span class="badge badge-user-type" id="detail-user-type" style="display: none;">组织用户</span>
                                 </div>
-                                <div class="detail-user-company" style="margin-top: 12px; display: flex; align-items: center; gap: 12px;">
-                                    <i class="fa fa-building"></i>
-                                    <span id="detail-company">东莞市蓓佳尔工艺品有限公司</span>
-                                    <span class="badge badge-company" style="display: inline-flex;">普通企业</span>
-                                    <span class="badge badge-company-certified" style="display: none;">认证企业</span>
-                                    <span class="badge badge-user-normal" style="display: none;">普通用户</span>
+                                <div style="margin-top: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #64748b; margin-bottom: 8px;">
+                                        <i class="fa fa-building-o"></i>
+                                        <span>所属组织、角色</span>
+                                    </div>
+                                    <div class="detail-tag-list" id="detail-organizations">
+                                        <span class="detail-tag">东莞长安训练基地（总经理）</span>
+                                        <span class="detail-tag">东莞嘉东轴承商贸有限公司（业务员）</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -879,16 +891,6 @@
                             <div class="detail-info-row">
                                 <span style="width: 80px;">密码：</span>
                                 <span>**********</span>
-                            </div>
-                        </div>
-
-                        <div class="detail-card">
-                            <div class="detail-card-title">
-                                <i class="fa fa-building-o"></i> 关联"商家/组织“
-                            </div>
-                            <div id="detail-organizations" class="detail-tag-list">
-                                <span class="detail-tag">东莞长安训练基地（总经理）</span>
-                                <span class="detail-tag">东莞嘉东轴承商贸有限公司（业务员）</span>
                             </div>
                         </div>
 
@@ -1136,7 +1138,6 @@
             document.getElementById('detail-wechat-name').textContent = user.name;
             document.getElementById('detail-phone').textContent = user.phone;
             document.getElementById('detail-email').textContent = user.email;
-            document.getElementById('detail-company').textContent = user.company;
             document.getElementById('detail-position').textContent = user.position;
             const detailLevelEl = document.getElementById('detail-level');
             detailLevelEl.textContent = user.level;
@@ -1162,23 +1163,14 @@
                 authScopeEl.textContent = user.authScope || '全开放';
             }
 
-            const companyBadge = document.querySelector('#detailModal .badge-company');
-            const userTypeBadge = document.querySelector('#detailModal .badge-user-normal');
-            const companyCertifiedBadge = document.querySelector('#detailModal .badge-company-certified');
-            
-            if (companyBadge) companyBadge.style.display = 'none';
-            if (userTypeBadge) userTypeBadge.style.display = 'none';
-            if (companyCertifiedBadge) companyCertifiedBadge.style.display = 'none';
-            
-            if (userId === '10002' || userId === '10008') {
-                const badgeEl = document.querySelector('#detailModal .badge-company-certified');
-                if (badgeEl) badgeEl.style.display = 'inline-flex';
-            } else if (userId === '10001' || userId === '10003' || userId === '10006' || userId === '10010') {
-                const badgeEl = document.querySelector('#detailModal .badge-company');
-                if (badgeEl) badgeEl.style.display = 'inline-flex';
-            } else {
-                const badgeEl = document.querySelector('#detailModal .badge-user-normal');
-                if (badgeEl) badgeEl.style.display = 'inline-flex';
+            const userTypeBadge = document.getElementById('detail-user-type');
+            if (userTypeBadge) {
+                userTypeBadge.style.display = 'inline-block';
+                if (user.organizations && user.organizations.length > 0) {
+                    userTypeBadge.textContent = '组织用户';
+                } else {
+                    userTypeBadge.textContent = '个人用户';
+                }
             }
 
             const orgTagsHtml = user.organizations && user.organizations.length > 0

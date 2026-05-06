@@ -855,7 +855,7 @@
         }
 
         .ad-area {
-            flex: 3;
+            /* flex: auto; */
             height: 400px;
             overflow: hidden;
         }
@@ -916,9 +916,9 @@
         }
 
         .personal-area {
-            flex: 1;
+            flex: auto;
             height: 400px;
-            padding: 28px;
+            padding: 16px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -1016,7 +1016,7 @@
             height: 0;
             border-top: 1px dashed #e0e0e0;
             margin-top: 16px;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             align-self: stretch;
         }
 
@@ -1666,7 +1666,7 @@
                                 </button>
                                 <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">📄</span>
-                                    <span class="btn-text">企业认证</span>
+                                    <span class="btn-text">创建组织</span>
                                 </button>
                                 <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">👤</span>
@@ -2780,31 +2780,34 @@
         function updatePersonalContent() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             const personalContent = document.querySelector('.personal-content');
+
             if (personalContent) {
                 if (isLoggedIn) {
+                    personalContent.style.gap = '0';
                     // 已登录状态
                     personalContent.innerHTML = `
-                        <div class="personal-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div class="avatar" style="width: 60px; height: 60px; font-size: 24px;"></div>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="personal-header" style="flex-direction: column; align-items: flex-start; gap: 12px; padding: 12px 0;">
+                            <div style="display: flex; align-items: flex-start; gap: 12px; width: 100%;">
+                                <div class="avatar" style="width: 60px; height: 60px; font-size: 24px; flex-shrink: 0;"></div>
+                                <div style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;">
+                                    <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                                         <span style="font-size: 16px; font-weight: bold; color: #333;">林工</span>
-                                        <span style="background: #E6F7FF; color: #1890FF; border-radius: 4px; padding: 2px 8px; font-size: 12px; display: flex; align-items: center; gap: 4px;">
+                                        <span style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #F37021; font-size: 12px; padding: 3px 8px; border-radius: 10px; font-weight: 500;">Lv.5</span>
+                                        <span style="background: #E6F7FF; color: #1890FF; border-radius: 4px; padding: 2px 6px; font-size: 12px; display: flex; align-items: center; gap: 3px;">
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                             </svg>
-                                            普通企业
+                                            组织用户
                                         </span>
-                                        <span style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #F37021; font-size: 12px; padding: 4px 10px; border-radius: 12px; font-weight: 500;">Lv.5</span>
                                     </div>
-                                    <div style="font-size: 14px; color: #666;margin-top: 6px;">东莞市嘉东网络科技有限公司</div>
-                                    <div style="font-size: 14px; color: #F37021;margin-top: 6px;">我的元宝：375</div>
+                                    <div style="font-size: 13px; color: #666; line-height: 1.5; word-break: break-all;">东莞市嘉东网络科技有限公司（工程师）</div>
+                                    <div style="font-size: 13px; color: #666; line-height: 1.5; word-break: break-all;">东莞市长安训练基地（总经理）</div>
+                                    <div style="font-size: 13px; color: #F37021; line-height: 1.5;">我的元宝：375</div>
                                 </div>
                             </div>
                         </div>
-                        <hr class="divider">
+                        <hr class="divider" style="margin-top: 0px;">
                         <div class="function-buttons">
                             <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">💰</span>
@@ -2824,8 +2827,8 @@
                                 <span class="btn-text">BI中心</span>
                             </button>
                             <button class="function-btn" onclick="goToPersonalCenter()">
-                                <span class="btn-icon">📄</span>
-                                <span class="btn-text">企业认证</span>
+                                <span class="btn-icon">👥</span>
+                                <span class="btn-text">创建组织</span>
                             </button>
                             <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">👤</span>
@@ -2843,7 +2846,7 @@
                         <div class="auth-buttons">
                             <button class="login-btn">登录</button>
                         </div>
-                        <hr class="divider">
+                        <hr class="divider"">
                         <div class="function-buttons">
                             <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">💰</span>
@@ -2863,8 +2866,8 @@
                                 <span class="btn-text">BI中心</span>
                             </button>
                             <button class="function-btn" onclick="goToPersonalCenter()">
-                                <span class="btn-icon">📄</span>
-                                <span class="btn-text">企业认证</span>
+                                <span class="btn-icon">👥</span>
+                                <span class="btn-text">创建组织</span>
                             </button>
                             <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">👤</span>

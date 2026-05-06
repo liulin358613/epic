@@ -121,6 +121,18 @@
             font-size: 14px;
             opacity: 0.6;
         }
+        .tab-bar-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tab-bar-wrapper::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
         .tabs-container {
             display: flex;
             align-items: center;
@@ -128,7 +140,7 @@
             padding: 0 20px;
             height: 48px;
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-            overflow-x: auto;
+            min-width: max-content;
         }
         .tab {
             display: flex;
@@ -166,6 +178,7 @@
             display: flex;
             flex-direction: column;
             height: calc(100vh - 70px);
+            min-width: 0;
         }
         #content-wrapper {
             flex: 1;
@@ -667,28 +680,28 @@
                     </div>
                     <div class="submenu-item" data-module="org-list" onclick="showModule('org-list'); event.stopPropagation()">
                         <i class="fa fa-building"></i>
-                        <span>商家/组织管理</span>
+                        <span>组织管理</span>
                     </div>
                 </div>
                 
                 <div class="nav-item has-submenu" onclick="toggleSubmenu('platform-submenu')">
                     <i class="fa fa-shield"></i>
-                    <span>商家/组织配置</span>
+                    <span>组织设置</span>
                     <i class="fa fa-angle-down"></i>
                 </div>
                 <div id="platform-submenu" class="submenu">
                     <div class="submenu-item" data-module="func-menu" onclick="showModule('func-menu'); event.stopPropagation()">
                         <i class="fa fa-list"></i>
-                        <span>商家/组织权限</span>
+                        <span>组织权限</span>
                     </div>
                     <div class="submenu-item" data-module="data-perm" onclick="showModule('data-perm'); event.stopPropagation()">
                         <i class="fa fa-database"></i>
-                        <span>商家/组织类型</span>
+                        <span>组织类型</span>
                     </div>
-                    <div class="submenu-item" data-module="field-perm" onclick="showModule('field-perm'); event.stopPropagation()">
+                    <!-- <div class="submenu-item" data-module="field-perm" onclick="showModule('field-perm'); event.stopPropagation()">
                         <i class="fa fa-columns"></i>
-                        <span>商家/组织角色</span>
-                    </div>
+                        <span>组织角色</span>
+                    </div> -->
                 </div>
             </div>
             
@@ -735,11 +748,13 @@
         </aside>
 
         <main class="main-content">
-            <div id="tabs-container" class="tabs-container">
-                <div class="tab active" data-module="workbench" onclick="selectTabFromTab('workbench')">
-                    <i class="fa fa-desktop"></i>
-                    <span>工作台</span>
-                    <i class="fa fa-times tab-close" onclick="closeTab('workbench'); event.stopPropagation()"></i>
+            <div class="tab-bar-wrapper">
+                <div id="tabs-container" class="tabs-container">
+                    <div class="tab active" data-module="workbench" onclick="selectTabFromTab('workbench')">
+                        <i class="fa fa-desktop"></i>
+                        <span>工作台</span>
+                        <i class="fa fa-times tab-close" onclick="closeTab('workbench'); event.stopPropagation()"></i>
+                    </div>
                 </div>
             </div>
             <div id="content-wrapper">
@@ -940,11 +955,11 @@
             logo: { name: '网站logo', icon: 'fa-image' },
             about: { name: '关于我们', icon: 'fa-info' },
             'user-agreement': { name: '用户协议', icon: 'fa-file-text' },
-            'func-menu': { name: '商家/组织权限', icon: 'fa-list' },
-            'data-perm': { name: '商家/组织类型', icon: 'fa-database' },
-            'field-perm': { name: '商家/组织角色', icon: 'fa-columns' },
+            'func-menu': { name: '组织权限', icon: 'fa-list' },
+            'data-perm': { name: '组织类型', icon: 'fa-database' },
+            'field-perm': { name: '组织角色', icon: 'fa-columns' },
             'user-list': { name: '用户管理', icon: 'fa-user' },
-            'org-list': { name: '商家/组织管理', icon: 'fa-building' }
+            'org-list': { name: '组织管理', icon: 'fa-building' }
         };
 
         function showModule(moduleName) {
@@ -966,6 +981,10 @@
                 };
                 tabsContainer.appendChild(targetTab);
             }
+            
+            setTimeout(() => {
+                targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }, 0);
             
             selectTabFromNav(moduleName, event.target);
         }
@@ -1145,6 +1164,36 @@
                 dropdown.classList.add('hidden');
             }
         });
+
+        (function() {
+            const tabBarWrapper = document.querySelector('.tab-bar-wrapper');
+            if (tabBarWrapper) {
+                let isDragging = false;
+                let startX, startScrollLeft;
+
+                tabBarWrapper.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    startX = e.clientX;
+                    startScrollLeft = tabBarWrapper.scrollLeft;
+                    e.preventDefault();
+                });
+
+                tabBarWrapper.addEventListener('mousemove', function(e) {
+                    if (!isDragging) return;
+                    const x = e.clientX;
+                    const walk = (x - startX) * 2;
+                    tabBarWrapper.scrollLeft = startScrollLeft - walk;
+                });
+
+                tabBarWrapper.addEventListener('mouseleave', function() {
+                    isDragging = false;
+                });
+
+                document.addEventListener('mouseup', function() {
+                    isDragging = false;
+                });
+            }
+        })();
     </script>
 </body>
 </html>
