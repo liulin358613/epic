@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>组织后台管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .sidebar {
+            width: 15rem;
+            flex-shrink: 0;
+            height: calc(100vh - 60px);
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+            border-left-color: rgba(0, 81, 217, 0.5);
+        }
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(0, 81, 217, 0.2) 0%, transparent 100%);
+            color: #fff;
+            border-left-color: #0051D9;
+        }
+        .nav-item .fa {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+        .nav-item.has-submenu .fa-angle-down {
+            position: absolute;
+            right: 8px;
+            transition: transform 0.3s ease;
+        }
+        .nav-item.has-submenu.expanded .fa-angle-down {
+            transform: rotate(180deg);
+        }
+        .submenu {
+            background: rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .submenu.expanded {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .nav-section {
+            padding: 0 16px;
+        }
+        .nav-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 16px 0 10px 0;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            line-height: 1.3;
+        }
+        .nav-divider {
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 81, 217, 0.5) 0%, rgba(0, 102, 255, 0.3) 50%, rgba(0, 81, 217, 0.5) 100%);
+            margin: 16px;
+            border-radius: 1px;
+        }
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px 10px 40px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .submenu-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+            padding-left: 42px;
+        }
+        .submenu-item.active {
+            color: #fff;
+            background: rgba(0, 81, 217, 0.15);
+            border-left: 2px solid #0051D9;
+        }
+        .submenu-item .fa {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+        .tab-bar-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tab-bar-wrapper::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+        .tabs-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 20px;
+            height: 48px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            min-width: max-content;
+        }
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #64748b;
+            white-space: nowrap;
+            line-height: 1.4;
+        }
+        .tab:hover {
+            background: rgba(0, 81, 217, 0.1);
+            color: #0051D9;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.4);
+        }
+        .tab .fa {
+            font-size: 14px;
+        }
+        .tab .tab-close {
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+        .tab:hover .tab-close {
+            opacity: 1;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px);
+            min-width: 0;
+        }
+        #content-wrapper {
+            flex: 1;
+            background-color: #fff;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+        .header {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-title {
+            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            min-width: 140px;
+            z-index: 1000;
+        }
+        .user-dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .user-dropdown li {
+            padding: 0;
+        }
+        .user-dropdown li a {
+            display: block;
+            padding: 10px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+            margin: 4px;
+            border-radius: 6px;
+            position: relative;
+        }
+        .user-dropdown li a:hover {
+            color: #0051D9;
+        }
+        .user-dropdown li a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background: linear-gradient(90deg, #0051D9, #0066FF);
+            border-radius: 1px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 360px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .modal-body {
+            padding: 24px 20px;
+        }
+        .modal-body p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #eee;
+        }
+        .btn-cancel {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-cancel:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+        .btn-confirm {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #0051D9;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-confirm:hover {
+            background: #0047c9;
+        }
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 81, 217, 0.5);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 6px;
+            border: none;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 6px;
+            padding: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            line-height: 1.4;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 22px;
+            color: white;
+        }
+        .stat-icon-blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .stat-icon-green {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+        }
+        .stat-icon-yellow {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4);
+        }
+        .stat-icon-purple {
+            background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .nav-section-title {
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color:#fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        @-moz-document url-prefix() {
+            .sidebar {
+                scrollbar-width: thin;
+            }
+        }
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .sidebar {
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+            }
+        }
+        @media screen and (max-width: 1024px) {
+            .sidebar {
+                width: 13rem;
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 12rem;
+            }
+            .nav-item {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+        @media screen and (min-width: 1920px) {
+            html, body {
+                font-size: 15px;
+            }
+        }
+        body {
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <header class="header flex justify-between items-center w-full" style="padding: 0 20px;">
+        <div class="flex items-center">
+            <img src="images/logo.png" alt="Logo" class="w-12 h-12 mr-3 object-contain" style="width: 180px;">
+            <h1 class="header-title text-xl font-bold">东莞嘉东轴承商贸有限公司</h1>
+        </div>
+        <div class="flex items-center space-x-4 relative" id="userMenu" onclick="toggleUserMenu()">
+            <span class="text-gray-300 text-sm font-medium cursor-pointer hover:text-white transition-colors">管理员</span>
+            <i class="fa fa-angle-down text-gray-300 text-xs cursor-pointer hover:text-white transition-colors"></i>
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-medium cursor-pointer">A</div>
+            <!-- 下拉菜单 -->
+            <div class="user-dropdown" id="userDropdown" style="display: none;">
+                <ul>
+                    <li><a href="#" onclick="event.stopPropagation(); showLogoutModal()">退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- 退出确认对话框 -->
+    <div class="modal-overlay" id="logoutModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>退出登录</h3>
+            </div>
+            <div class="modal-body">
+                <p>确定要退出登录吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="hideLogoutModal()">取消</button>
+                <button class="btn-confirm" onclick="logout()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex">
+        <aside class="sidebar w-60">
+            <div class="nav-section">
+                <div class="nav-item active" data-module="workbench" onclick="showModule('workbench')">
+                    <i class="fa fa-desktop"></i>
+                    <span>工作台</span>
+                </div>
+                
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('operation-submenu')">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>运营数据</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="operation-submenu" class="submenu expanded">
+                    <div class="submenu-item" data-module="bi-center" onclick="showModule('bi-center'); event.stopPropagation()">
+                        <i class="fa fa-pie-chart"></i>
+                        <span>BI中心</span>
+                    </div>
+                    <div class="submenu-item" data-module="data-board" onclick="showModule('data-board'); event.stopPropagation()">
+                        <i class="fa fa-line-chart"></i>
+                        <span>数据看板</span>
+                    </div>
+                    <div class="submenu-item" data-module="my-todo" onclick="showModule('my-todo'); event.stopPropagation()">
+                        <i class="fa fa-list-alt"></i>
+                        <span>我的待办</span>
+                    </div>
+                </div>
+
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('org-submenu')">
+                    <i class="fa fa-building"></i>
+                    <span>组织管理</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="org-submenu" class="submenu">
+                    <div class="submenu-item" data-module="org-manage" onclick="showModule('org-manage'); event.stopPropagation()">
+                        <i class="fa fa-sitemap"></i>
+                        <span>组织管理</span>
+                    </div>
+                    <div class="submenu-item" data-module="org-role" onclick="showModule('org-role'); event.stopPropagation()">
+                        <i class="fa fa-shield"></i>
+                        <span>组织角色</span>
+                    </div>
+                    <div class="submenu-item" data-module="member-manage" onclick="showModule('member-manage'); event.stopPropagation()">
+                        <i class="fa fa-users"></i>
+                        <span>成员管理</span>
+                    </div>
+                </div>
+
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('order-submenu')">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>订单管理</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="order-submenu" class="submenu">
+                    <div class="submenu-item" data-module="order-manage" onclick="showModule('order-manage'); event.stopPropagation()">
+                        <i class="fa fa-file-text-o"></i>
+                        <span>订单管理</span>
+                    </div>
+                </div>
+
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('solution-submenu')">
+                    <i class="fa fa-cube"></i>
+                    <span>方案管理</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="solution-submenu" class="submenu">
+                    <div class="submenu-item" data-module="solution-manage" onclick="showModule('solution-manage'); event.stopPropagation()">
+                        <i class="fa fa-cubes"></i>
+                        <span>方案管理</span>
+                    </div>
+                </div>
+
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('equipment-submenu')">
+                    <i class="fa fa-gears"></i>
+                    <span>设备管理</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="equipment-submenu" class="submenu">
+                    <div class="submenu-item" data-module="equipment-manage" onclick="showModule('equipment-manage'); event.stopPropagation()">
+                        <i class="fa fa-wrench"></i>
+                        <span>设备管理</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="tab-bar-wrapper">
+                <div id="tabs-container" class="tabs-container">
+                    <div class="tab active" data-module="workbench" onclick="selectTabFromTab('workbench')">
+                        <i class="fa fa-desktop"></i>
+                        <span>工作台</span>
+                        <i class="fa fa-times tab-close" onclick="closeTab('workbench'); event.stopPropagation()"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="content-wrapper">
+                <div id="workbench-module" class="module p-6">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">工作台</h2>
+                        <p class="text-gray-500 text-sm mt-1">欢迎来到组织后台管理系统</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        <div class="stat-card flex items-center">
+                            <div class="stat-icon stat-icon-blue">
+                                <i class="fa fa-building"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">组织数量</div>
+                                <div class="stat-value">128</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center">
+                            <div class="stat-icon stat-icon-green">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">成员总数</div>
+                                <div class="stat-value">3,456</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center">
+                            <div class="stat-icon stat-icon-yellow">
+                                <i class="fa fa-shopping-cart"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">订单总数</div>
+                                <div class="stat-value">892</div>
+                            </div>
+                        </div>
+                        <div class="stat-card flex items-center">
+                            <div class="stat-icon stat-icon-purple">
+                                <i class="fa fa-gears"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">设备总数</div>
+                                <div class="stat-value">1,234</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">快捷操作</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-plus text-blue-500 text-xl mb-2"></i>
+                                <p class="text-sm text-gray-600">新增组织</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-user-plus text-green-500 text-xl mb-2"></i>
+                                <p class="text-sm text-gray-600">新增成员</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-file-text text-yellow-500 text-xl mb-2"></i>
+                                <p class="text-sm text-gray-600">处理订单</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                <i class="fa fa-wrench text-purple-500 text-xl mb-2"></i>
+                                <p class="text-sm text-gray-600">设备维护</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bi-center-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">BI中心</h2>
+                    <p class="text-gray-500 text-sm mt-1">商业智能数据分析中心</p>
+                </div>
+
+                <div id="data-board-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">数据看板</h2>
+                    <p class="text-gray-500 text-sm mt-1">数据可视化展示</p>
+                </div>
+
+                <div id="my-todo-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">我的待办</h2>
+                    <p class="text-gray-500 text-sm mt-1">待处理任务列表</p>
+                </div>
+
+                <div id="org-manage-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">组织管理</h2>
+                    <p class="text-gray-500 text-sm mt-1">组织架构管理</p>
+                </div>
+
+                <div id="org-role-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">组织角色</h2>
+                    <p class="text-gray-500 text-sm mt-1">角色权限配置</p>
+                </div>
+
+                <div id="member-manage-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">成员管理</h2>
+                    <p class="text-gray-500 text-sm mt-1">成员信息管理</p>
+                </div>
+
+                <div id="order-manage-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">订单管理</h2>
+                    <p class="text-gray-500 text-sm mt-1">订单信息管理</p>
+                </div>
+
+                <div id="solution-manage-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">方案管理</h2>
+                    <p class="text-gray-500 text-sm mt-1">方案配置管理</p>
+                </div>
+
+                <div id="equipment-manage-module" class="module hidden p-6">
+                    <h2 class="text-xl font-bold text-gray-800">设备管理</h2>
+                    <p class="text-gray-500 text-sm mt-1">设备信息管理</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSubmenu(submenuId) {
+            const submenu = document.getElementById(submenuId);
+            const navItem = submenu.previousElementSibling;
+            
+            submenu.classList.toggle('expanded');
+            navItem.classList.toggle('expanded');
+        }
+
+        function showModule(moduleName) {
+            document.querySelectorAll('.module').forEach(m => m.classList.add('hidden'));
+            document.querySelectorAll('.nav-item, .submenu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            
+            const module = document.getElementById(moduleName + '-module');
+            if (module) {
+                module.classList.remove('hidden');
+            }
+            
+            const navItem = document.querySelector(`[data-module="${moduleName}"]`);
+            if (navItem) {
+                navItem.classList.add('active');
+            }
+            
+            let tabExists = false;
+            let existingTab = null;
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.dataset.module === moduleName) {
+                    tabExists = true;
+                    existingTab = tab;
+                }
+            });
+            
+            if (!tabExists && moduleName !== 'workbench') {
+                const tabContainer = document.getElementById('tabs-container');
+                const moduleTitle = navItem ? navItem.textContent.trim() : moduleName;
+                const iconClass = navItem ? navItem.querySelector('.fa')?.className || 'fa fa-file' : 'fa fa-file';
+                
+                const newTab = document.createElement('div');
+                newTab.className = 'tab';
+                newTab.dataset.module = moduleName;
+                newTab.onclick = function() { selectTabFromTab(moduleName); };
+                newTab.innerHTML = `<i class="${iconClass}"></i><span>${moduleTitle}</span><i class="fa fa-times tab-close" onclick="closeTab('${moduleName}'); event.stopPropagation()"></i>`;
+                tabContainer.appendChild(newTab);
+                existingTab = newTab;
+            }
+            
+            if (existingTab) {
+                existingTab.classList.add('active');
+                existingTab.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+            }
+        }
+
+        function selectTabFromTab(moduleName) {
+            showModule(moduleName);
+        }
+
+        function closeTab(moduleName) {
+            const tab = document.querySelector(`.tab[data-module="${moduleName}"]`);
+            if (tab) {
+                tab.remove();
+            }
+            
+            const module = document.getElementById(moduleName + '-module');
+            if (module) {
+                module.classList.add('hidden');
+            }
+            
+            if (document.querySelector('.tab.active') === null) {
+                const firstTab = document.querySelector('.tab');
+                if (firstTab) {
+                    firstTab.click();
+                }
+            }
+        }
+
+        document.querySelectorAll('.submenu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // 用户菜单功能
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = 'none';
+            modal.style.display = 'flex';
+        }
+
+        function hideLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            modal.style.display = 'none';
+        }
+
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        // 点击页面其他地方关闭下拉菜单
+        document.addEventListener('click', function(e) {
+            const userMenu = document.getElementById('userMenu');
+            const dropdown = document.getElementById('userDropdown');
+            if (userMenu && dropdown && !userMenu.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
