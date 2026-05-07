@@ -305,7 +305,7 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            padding: 12px 16px;
+            /* padding: 12px 16px; */
             border-radius: 6px;
             transition: background-color 0.2s;
         }
@@ -810,6 +810,95 @@
         body {
             touch-action: manipulation;
         }
+
+        /* Toast 样式 */
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1034,43 +1123,47 @@
                             </div>
                             <div class="role-list-container">
                                 <div class="role-list">
+                                    <label class="role-item" style="border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; margin-bottom: 4px;">
+                                        <input type="checkbox" id="select-all-roles" onclick="toggleAllRoles(this)">
+                                        <span style="font-weight: 600;">全选</span>
+                                    </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>总经理</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '总经理')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>生产主管</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '生产主管')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>技术总监</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '技术总监')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>开发经理</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '开发经理')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>测试工程师</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '测试工程师')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>产品经理</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '产品经理')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>运维工程师</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '运维工程师')"><i class="fa fa-pencil"></i></button>
                                     </label>
                                     <label class="role-item">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" class="role-checkbox">
                                         <span>财务主管</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '财务主管')"><i class="fa fa-pencil"></i></button>
                                     </label>
@@ -1087,70 +1180,74 @@
                                 <div class="perm-tab" onclick="switchPermTab('field')">字段权限</div>
                             </div>
                             <div class="perm-content" id="function-content">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e5e7eb;">
+                                        <input type="checkbox" id="select-all-perms" onclick="toggleAllPerms(this)">
+                                        <span style="font-weight: 600; color: #374151;">全选</span>
+                                    </div>
                                     <div class="permission-group">
                                         <label class="permission-label">
                                             <span class="expand-icon expanded" data-target="order-center-children">▶</span>
-                                            <input type="checkbox" checked class="parent-checkbox" data-group="order-center">
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
                                             <span>订单中心</span>
                                         </label>
                                         <div class="permission-children" id="order-center-children">
                                             <label class="permission-label">
                                                 <span class="expand-icon expanded" data-target="order-children">▶</span>
-                                                <input type="checkbox" checked class="child-checkbox" data-parent="order-center" data-group="order">
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
                                                 <span>订单管理</span>
                                             </label>
                                             <div class="permission-children" id="order-children">
                                                 <label class="permission-label">
                                                     <span class="expand-icon expanded" data-target="purchase-children">▶</span>
-                                                    <input type="checkbox" checked class="child-checkbox" data-parent="order" data-group="purchase">
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
                                                     <span>采购订单</span>
                                                 </label>
                                                 <div class="permission-children" id="purchase-children">
                                                     <label class="permission-label">
-                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="purchase">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                         <span>查看</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="purchase">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                         <span>新增</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                         <span>编辑</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                         <span>删除</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="purchase">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                         <span>审核</span>
                                                     </label>
                                                 </div>
                                                 <label class="permission-label">
                                                     <span class="expand-icon expanded" data-target="sales-children">▶</span>
-                                                    <input type="checkbox" checked class="child-checkbox" data-parent="order" data-group="sales">
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="sales">
                                                     <span>销售订单</span>
                                                 </label>
                                                 <div class="permission-children" id="sales-children">
                                                     <label class="permission-label">
-                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="sales">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                         <span>查看</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" checked class="leaf-checkbox" data-parent="sales">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                         <span>新增</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                         <span>编辑</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                         <span>删除</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="sales">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                         <span>审核</span>
                                                     </label>
                                                 </div>
@@ -1160,55 +1257,55 @@
                                     <div class="permission-group">
                                         <label class="permission-label">
                                             <span class="expand-icon" data-target="warehouse-center-children">▶</span>
-                                            <input type="checkbox" class="parent-checkbox" data-group="warehouse-center">
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="warehouse-center">
                                             <span>仓储中心</span>
                                         </label>
                                         <div class="permission-children" id="warehouse-center-children" style="display: none;">
                                             <label class="permission-label">
                                                 <span class="expand-icon" data-target="warehouse-children">▶</span>
-                                                <input type="checkbox" class="child-checkbox" data-parent="warehouse-center" data-group="warehouse">
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse-center" data-group="warehouse">
                                                 <span>仓库管理</span>
                                             </label>
                                             <div class="permission-children" id="warehouse-children" style="display: none;">
                                                 <label class="permission-label">
                                                     <span class="expand-icon" data-target="inventory-children">▶</span>
-                                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="inventory">
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="inventory">
                                                     <span>库存管理</span>
                                                 </label>
                                                 <div class="permission-children" id="inventory-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
                                                         <span>查看</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
                                                         <span>入库</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
                                                         <span>出库</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="inventory">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
                                                         <span>盘点</span>
                                                     </label>
                                                 </div>
                                                 <label class="permission-label">
                                                     <span class="expand-icon" data-target="location-children">▶</span>
-                                                    <input type="checkbox" class="child-checkbox" data-parent="warehouse" data-group="location">
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="location">
                                                     <span>货位管理</span>
                                                 </label>
                                                 <div class="permission-children" id="location-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
                                                         <span>查看</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
                                                         <span>分配</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="location">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
                                                         <span>编辑</span>
                                                     </label>
                                                 </div>
@@ -1218,30 +1315,30 @@
                                     <div class="permission-group">
                                         <label class="permission-label">
                                             <span class="expand-icon" data-target="user-center-children">▶</span>
-                                            <input type="checkbox" class="parent-checkbox" data-group="user-center">
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="user-center">
                                             <span>人员中心</span>
                                         </label>
                                         <div class="permission-children" id="user-center-children" style="display: none;">
                                             <label class="permission-label">
                                                 <span class="expand-icon" data-target="user-children">▶</span>
-                                                <input type="checkbox" class="child-checkbox" data-parent="user-center" data-group="user">
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="user-center" data-group="user">
                                                 <span>用户管理</span>
                                             </label>
                                             <div class="permission-children" id="user-children" style="display: none;">
                                                 <label class="permission-label">
-                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                     <span>查看</span>
                                                 </label>
                                                 <label class="permission-label">
-                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                     <span>新增</span>
                                                 </label>
                                                 <label class="permission-label">
-                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                     <span>编辑</span>
                                                 </label>
                                                 <label class="permission-label">
-                                                    <input type="checkbox" class="leaf-checkbox" data-parent="user">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                     <span>删除</span>
                                                 </label>
                                             </div>
@@ -1250,47 +1347,47 @@
                                     <div class="permission-group">
                                         <label class="permission-label">
                                             <span class="expand-icon" data-target="system-center-children">▶</span>
-                                            <input type="checkbox" class="parent-checkbox" data-group="system-center">
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="system-center">
                                             <span>系统中心</span>
                                         </label>
                                         <div class="permission-children" id="system-center-children" style="display: none;">
                                             <label class="permission-label">
                                                 <span class="expand-icon" data-target="system-children">▶</span>
-                                                <input type="checkbox" class="child-checkbox" data-parent="system-center" data-group="system">
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system-center" data-group="system">
                                                 <span>系统设置</span>
                                             </label>
                                             <div class="permission-children" id="system-children" style="display: none;">
                                                 <label class="permission-label">
                                                     <span class="expand-icon" data-target="config-children">▶</span>
-                                                    <input type="checkbox" class="child-checkbox" data-parent="system" data-group="config">
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="config">
                                                     <span>基础配置</span>
                                                 </label>
                                                 <div class="permission-children" id="config-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="config">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
                                                         <span>查看</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="config">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
                                                         <span>修改</span>
                                                     </label>
                                                 </div>
                                                 <label class="permission-label">
                                                     <span class="expand-icon" data-target="log-children">▶</span>
-                                                    <input type="checkbox" class="child-checkbox" data-parent="system" data-group="log">
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="log">
                                                     <span>日志管理</span>
                                                 </label>
                                                 <div class="permission-children" id="log-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
                                                         <span>查看</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
                                                         <span>导出</span>
                                                     </label>
                                                     <label class="permission-label">
-                                                        <input type="checkbox" class="leaf-checkbox" data-parent="log">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
                                                         <span>清空</span>
                                                     </label>
                                                 </div>
@@ -1640,7 +1737,7 @@
                 }
             }
 
-            document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox').forEach(checkbox => {
+            document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox, .perm-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', (e) => {
                     const isChecked = e.target.checked;
                     
@@ -1745,6 +1842,35 @@
             }
         }
 
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
         function showAddRoleModal() {
             document.getElementById('add-role-modal').classList.remove('hidden');
             document.getElementById('role-name-input').value = '';
@@ -1758,7 +1884,7 @@
         function addRole() {
             const roleName = document.getElementById('role-name-input').value.trim();
             if (!roleName) {
-                alert('请输入角色名称');
+                showToast('请输入角色名称', 'error');
                 return;
             }
             
@@ -1766,7 +1892,7 @@
             const newRole = document.createElement('label');
             newRole.className = 'role-item';
             newRole.innerHTML = `
-                <input type="checkbox">
+                <input type="checkbox" class="role-checkbox">
                 <span>${roleName}</span>
                 <button class="edit-role-btn" onclick="showEditRoleModal(this, '${roleName}')"><i class="fa fa-pencil"></i></button>
             `;
@@ -1792,7 +1918,7 @@
         function saveEditRole() {
             const roleName = document.getElementById('edit-role-name-input').value.trim();
             if (!roleName) {
-                alert('请输入角色名称');
+                showToast('请输入角色名称', 'error');
                 return;
             }
             
@@ -1812,6 +1938,16 @@
             const item = checkbox.closest('.data-module-item');
             const dimensionItems = item.querySelectorAll('.dimension-item');
             dimensionItems.forEach(dimItem => dimItem.checked = checkbox.checked);
+        }
+
+        function toggleAllPerms(checkbox) {
+            const permCheckboxes = document.querySelectorAll('.perm-checkbox');
+            permCheckboxes.forEach(item => item.checked = checkbox.checked);
+        }
+
+        function toggleAllRoles(checkbox) {
+            const roleCheckboxes = document.querySelectorAll('.role-checkbox');
+            roleCheckboxes.forEach(item => item.checked = checkbox.checked);
         }
 
         function selectAllFields(checkbox) {
@@ -1923,5 +2059,7 @@
             updateDeleteButtons();
         });
     </script>
+
+    <div id="toast-container" class="toast-container"></div>
 </body>
 </html>

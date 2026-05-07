@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>组织详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            line-height: 1.4;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            line-height: 1.4;
+        }
+        .page-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+        .page-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        .main-content {
+            flex: 1;
+            padding: 0 12px 12px 12px;
+            overflow-x: auto;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .org-header {
+            display: flex;
+            align-items: stretch;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .org-logo {
+            width: 180px;
+            min-height: 80px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .org-logo i {
+            font-size: 32px;
+            color: #94a3b8;
+        }
+        .org-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .org-info-main {
+            flex: 1;
+            min-width: 0;
+        }
+        .org-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .org-info-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .org-info-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .org-info-item i {
+            color: #94a3b8;
+        }
+        .org-info-item .value {
+            color: #475569;
+        }
+        .org-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .badge {
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge-certified {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-certified::before {
+            content: "✓";
+            font-size: 12px;
+        }
+        .badge-audit-approved {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-audit-pending {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-audit-rejected {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        .badge-audit-disabled {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #6b7280;
+        }
+        .badge-with-tooltip {
+            cursor: pointer;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge-with-tooltip .tooltip-icon {
+            font-size: 12px;
+            margin-left: 2px;
+        }
+        .badge-with-tooltip .tooltip-text {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 400;
+            white-space: nowrap;
+            z-index: 100;
+            margin-bottom: 6px;
+            max-width: none;
+        }
+        .badge-with-tooltip .tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1f2937;
+        }
+        .badge-with-tooltip:hover .tooltip-text {
+            display: block;
+        }
+        .badge-type-training {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        .badge-type-parts {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-type-robot {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-type-equipment {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            color: #7c3aed;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i {
+            color: #3b82f6;
+        }
+        .section-count {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-left: 4px;
+            font-weight: normal;
+        }
+        .section-content {
+            padding: 12px;
+        }
+        .org-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+        .detail-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .detail-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .sub-org-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .sub-org-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s;
+        }
+        .sub-org-item:hover {
+            background: #f8fafc;
+        }
+        .sub-org-item:last-child {
+            border-bottom: none;
+        }
+        .sub-org-expander {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        .sub-org-expander:hover {
+            color: #3b82f6;
+        }
+        .sub-org-expander.expanded {
+            transform: rotate(90deg);
+        }
+        .sub-org-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .sub-org-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        .sub-org-desc {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .sub-org-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-link {
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+        }
+        thead {
+            background: #f8fafc;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+            line-height: 1.4;
+        }
+        td {
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+            white-space: nowrap;
+            line-height: 1.4;
+        }
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .avatar i {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .badge-user-type {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #4f46e5;
+        }
+        .badge-user-type-personal {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-level {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-level-0 {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #94a3b8;
+        }
+        .badge-active {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-inactive {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .pagination-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .pagination-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #64748b;
+            margin: 12px 0;
+            padding: 0 12px;
+        }
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb-separator {
+            color: #cbd5e1;
+        }
+        @media screen and (max-width: 1200px) {
+            .org-detail-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .org-header {
+                flex-direction: column;
+            }
+            .org-info-row {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .org-detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-header {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+            .breadcrumb {
+                flex-wrap: wrap;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .main-content {
+                padding: 8px;
+            }
+            .org-header {
+                padding: 12px;
+            }
+            .org-name {
+                font-size: 18px;
+            }
+        }
+
+        /* Toast 样式 */
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10002;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">组织详情</h1>
+            <p class="page-subtitle">查看组织信息和人员列表</p>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="org-list.html">组织管理</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>东莞长安训练基地</span>
+    </div>
+
+    <main class="main-content">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
+                </div>
+                <div class="section-content" style="padding: 16px;">
+                    <div style="display: flex; gap: 16px;">
+                        <div style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;"><span id="org-name">东莞长安训练基地</span> <span id="org-id" style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span id="org-level-badge" class="badge badge-level">Lv.3</span> <span id="org-status-badge" class="badge badge-audit-approved badge-with-tooltip">审核通过<span class="tooltip-icon">ⓘ</span><span id="org-status-tooltip" class="tooltip-text"></span></span>
+                                <button id="btn-audit" class="btn btn-sm" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; margin-left: 12px; padding: 4px 12px; font-size: 13px; display: none;" onclick="auditOrg()">
+                                    <i class="fa fa-check-circle"></i> 审核
+                                </button>
+                                <button id="btn-disable" class="btn btn-sm" style="background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; margin-left: 12px; padding: 4px 12px; font-size: 13px; display: none;" onclick="showDisableModal()">
+                                    <i class="fa fa-ban"></i> 禁用
+                                </button>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                                <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
+                                <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 0769-88888888</span>
+                                <span><i class="fa fa-envelope" style="color: #94a3b8;"></i> contact@training.com</span>
+                            </div>
+                            <div style="display: flex; gap: 12px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                                <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 成立于 <span id="org-create-time">2018-06-15</span></span>
+                                <span><i class="fa fa-users" style="color: #94a3b8;"></i> <span id="org-member-count">58</span> 名成员</span>
+                                <span id="org-phone"><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
+                                <a href="#" onclick="showLicense()" style="color: #3b82f6; text-decoration: none;"><i class="fa fa-file-image-o" style="color: #3b82f6;"></i> 查看营业执照</a>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
+                        </div>
+                        <div class="org-detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">组织类型</div>
+                                <div id="org-type" class="detail-value">训练基地</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">行业领域</div>
+                                <div class="detail-value">职业培训</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">经营范围</div>
+                                <div class="detail-value">技能培训、企业内训</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">统一社会信用代码</div>
+                                <div id="org-credit-code" class="detail-value">91441900MA510XXX</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">法定代表人</div>
+                                <div id="org-legal-person" class="detail-value">张建国</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">注册资本</div>
+                                <div class="detail-value">500万元</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">注册地址</div>
+                                <div id="org-address" class="detail-value">东莞市长安镇振安中路88号</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">企业名称</div>
+                                <div id="org-company" class="detail-value">东莞市蓓佳尔工艺品有限公司</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">联系人</div>
+                                <div id="org-leader" class="detail-value">李经理 13800138000</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa fa-sitemap" style="color: #64748b;"></i> 下级组织 <span style="font-size: 12px; font-weight: 400; color: #94a3b8;">(2个)</span>
+                        </div>
+                        <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; min-width: 700px;">
+                            <thead>
+                                <tr style="background: #f8fafc;">
+                                    <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">名称(编号)</th>
+                                    <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
+                                    <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
+                                    <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
+                                    <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
+                                    <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">
+                                        <div style="font-size: 14px; color: #475569; font-weight: 500;">智能制造培训中心</div>
+                                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB001</div>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                        <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none;">东莞市蓓佳尔工艺品有限公司</a></div>
+                                        <div style="margin-top: 4px; color: #64748b;">法人：李蓓佳</div>
+                                        <div style="color: #64748b;">信用代码：91441900MA4U4X2K8R</div>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">培训中心</td>
+                                    <td style="padding: 10px 12px;">
+                                        <div style="font-size: 14px; color: #475569;">李明</div>
+                                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13812345678</div>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
+                                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">
+                                        <div style="font-size: 14px; color: #475569; font-weight: 500;">机器人实训基地</div>
+                                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                        <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none;">东莞市智联科技有限公司</a></div>
+                                        <div style="margin-top: 4px; color: #64748b;">法人：王建国</div>
+                                        <div style="color: #64748b;">信用代码：91441900MA4U5Y3L9S</div>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
+                                    <td style="padding: 10px 12px;">
+                                        <div style="font-size: 14px; color: #475569;">王强</div>
+                                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13987654321</div>
+                                    </td>
+                                    <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
+                                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-bar-chart"></i> 组织运营数据</div>
+                </div>
+                <div class="section-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 8px; padding: 16px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 24px; font-weight: 700; color: #1e40af;">36</div>
+                                    <div style="font-size: 12px; color: #475569; margin-top: 2px;">培训课程</div>
+                                </div>
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-book" style="font-size: 20px; color: #3b82f6;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-radius: 8px; padding: 16px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 24px; font-weight: 700; color: #166534;">5,280</div>
+                                    <div style="font-size: 12px; color: #475569; margin-top: 2px;">培训人次</div>
+                                </div>
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-users" style="font-size: 20px; color: #16a34a;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 8px; padding: 16px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 24px; font-weight: 700; color: #92400e;">96%</div>
+                                    <div style="font-size: 12px; color: #475569; margin-top: 2px;">技能认证率</div>
+                                </div>
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-award" style="font-size: 20px; color: #f59e0b;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%); border-radius: 8px; padding: 16px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <div style="font-size: 24px; font-weight: 700; color: #5b21b6;">128</div>
+                                    <div style="font-size: 12px; color: #475569; margin-top: 2px;">合作企业</div>
+                                </div>
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-building" style="font-size: 20px; color: #7c3aed;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">本月培训趋势</div>
+                        <div style="height: 120px; background: #f8fafc; border-radius: 8px; position: relative;">
+                            <svg width="100%" height="100%" viewBox="0 0 400 120" style="padding: 10px;">
+                                <defs>
+                                    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 20 100 Q 60 60 100 70 T 180 40 T 260 50 T 340 30 T 380 60" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M 20 100 Q 60 60 100 70 T 180 40 T 260 50 T 340 30 T 380 60 L 380 100 L 20 100 Z" fill="url(#lineGradient)"/>
+                                <circle cx="20" cy="100" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="60" cy="60" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="100" cy="70" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="140" cy="50" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="180" cy="40" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="220" cy="55" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="260" cy="50" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="300" cy="35" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="340" cy="30" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                <circle cx="380" cy="60" r="5" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                            </svg>
+                            <div style="display: flex; justify-content: space-between; padding: 0 15px; margin-top: -8px; font-size: 11px; color: #94a3b8;">
+                                <span>第1周</span><span>第2周</span><span>第3周</span><span>第4周</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                        <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">培训类型分布</div>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#3b82f6 0deg 120deg, #16a34a 120deg 220deg, #f59e0b 220deg 310deg, #ef4444 310deg 360deg); position: relative;">
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 18px; font-weight: 700; color: #1e293b;">100%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <div style="width: 12px; height: 12px; border-radius: 3px; background: #3b82f6;"></div>
+                                    <span style="font-size: 13px; color: #475569;">工业机器人 33%</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <div style="width: 12px; height: 12px; border-radius: 3px; background: #16a34a;"></div>
+                                    <span style="font-size: 13px; color: #475569;">PLC编程 28%</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <div style="width: 12px; height: 12px; border-radius: 3px; background: #f59e0b;"></div>
+                                    <span style="font-size: 13px; color: #475569;">数控加工 25%</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; border-radius: 3px; background: #ef4444;"></div>
+                                    <span style="font-size: 13px; color: #475569;">焊接技术 14%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 12px;">
+            <div class="section-header">
+                <div class="section-title"><i class="fa fa-users"></i> 组织成员 <span class="section-count">(58人)</span></div>
+                <div style="display: flex; gap: 8px; margin-left: 20px;">
+                    <input type="text" placeholder="搜索姓名/手机号" style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px; width: 180px;">
+                    <select style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px;">
+                        <option>全部角色</option>
+                        <option>管理员</option>
+                        <option>培训师</option>
+                        <option>学员</option>
+                    </select>
+                    <select style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px;">
+                        <option>全部组织</option>
+                        <option>东莞长安训练基地</option>
+                        <option>智能制造培训中心</option>
+                        <option>机器人实训基地</option>
+                        <option>技能考核中心</option>
+                    </select>
+                    <button class="btn btn-primary" style="padding: 6px 14px; font-size: 13px;" onclick="searchMembers()">
+                        <i class="fa fa-search"></i> 搜索
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px 14px; font-size: 13px;" onclick="resetMembersSearch()">
+                        <i class="fa fa-refresh"></i> 重置
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>用户信息</th>
+                            <th>手机号</th>
+                            <th>所属组织（角色/职务）</th>
+                            <th>加入时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-1.png" alt="avatar">
+                                    </div>
+                                    <span>工元0001</span>
+                                </div>
+                            </td>
+                            <td>13826469793</td>
+                            <td>东莞长安训练基地(总经理)</td>
+                            <td>2024-01-15</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>张伟</span>
+                                </div>
+                            </td>
+                            <td>13912345678</td>
+                            <td>东莞长安训练基地(培训总监)</td>
+                            <td>2024-02-20</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <img src="images/tx-2.png" alt="avatar">
+                                    </div>
+                                    <span>李娜</span>
+                                </div>
+                            </td>
+                            <td>13698765432</td>
+                            <td>智能制造培训中心(高级培训师)<br>东莞长安训练基地(讲师)</td>
+                            <td>2024-03-10</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>王芳</span>
+                                </div>
+                            </td>
+                            <td>13523456789</td>
+                            <td>机器人实训基地(行政主管)</td>
+                            <td>2024-04-05</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <span>陈强</span>
+                                </div>
+                            </td>
+                            <td>15834567890</td>
+                            <td>技能考核中心(技术主管)</td>
+                            <td>2024-05-18</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: flex-end; padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #fafafa;">
+                <div class="pagination">
+                    <span style="color: #64748b; font-size: 14px; margin-right: 8px;">共 58 条</span>
+                    <button class="pagination-btn">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">4</button>
+                    <button class="pagination-btn">5</button>
+                    <button class="pagination-btn">
+                        <i class="fa fa-angle-right"></i>
+                    </button>
+                    <select style="width: auto; margin-left: 8px; padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px;">
+                        <option>10条/页</option>
+                        <option>20条/页</option>
+                        <option>50条/页</option>
+                    </select>
+                    <span style="color: #64748b; font-size: 14px; margin-left: 8px;">跳至</span>
+                    <input type="text" style="width: 56px; margin-left: 8px; padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px;" value="1">
+                    <span style="color: #64748b; font-size: 14px; margin-left: 8px;">页</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name) || '';
+        }
+
+        function updateOrgStatusBadge(status, reason) {
+            const badge = document.getElementById('org-status-badge');
+            if (!badge) return;
+
+            const statusMap = {
+                'pending': { text: '待审核', class: 'badge-audit-pending', showTooltip: false },
+                'approved': { text: '审核通过', class: 'badge-audit-approved', showTooltip: false },
+                'rejected': { text: '已驳回', class: 'badge-audit-rejected', showTooltip: true },
+                'disabled': { text: '已禁用', class: 'badge-audit-disabled', showTooltip: true }
+            };
+            const info = statusMap[status] || statusMap['pending'];
+            badge.className = 'badge ' + info.class + ' badge-with-tooltip';
+            badge.innerHTML = info.text + (info.showTooltip && reason ? '<span class="tooltip-icon">ⓘ</span><span class="tooltip-text">' + decodeURIComponent(reason) + '</span>' : '');
+        }
+
+        function updateOrgDetail() {
+            const orgData = {
+                id: getUrlParameter('id'),
+                name: decodeURIComponent(getUrlParameter('name')),
+                leader: decodeURIComponent(getUrlParameter('leader')),
+                phone: getUrlParameter('phone'),
+                address: decodeURIComponent(getUrlParameter('address')),
+                memberCount: getUrlParameter('memberCount'),
+                companyName: decodeURIComponent(getUrlParameter('companyName')),
+                legalPerson: decodeURIComponent(getUrlParameter('legalPerson')),
+                creditCode: getUrlParameter('creditCode'),
+                type: getUrlParameter('type'),
+                createTime: getUrlParameter('createTime'),
+                status: getUrlParameter('status'),
+                statusReason: getUrlParameter('statusReason'),
+                level: getUrlParameter('level')
+            };
+
+            if (orgData.id) {
+                document.getElementById('org-name').textContent = orgData.name || '未知组织';
+                document.getElementById('org-id').textContent = '(' + (orgData.id || '') + ')';
+                
+                const levelBadge = document.getElementById('org-level-badge');
+                if (levelBadge) {
+                    levelBadge.textContent = orgData.level || 'Lv.0';
+                    levelBadge.className = 'badge ' + (orgData.level && orgData.level !== 'Lv.0' ? 'badge-level' : 'badge-level-0');
+                }
+
+                document.getElementById('org-leader').textContent = orgData.leader || '-';
+                document.getElementById('org-phone').textContent = orgData.phone || '-';
+                document.getElementById('org-member-count').textContent = orgData.memberCount || '-';
+                document.getElementById('org-company').textContent = orgData.companyName || '-';
+                document.getElementById('org-legal-person').textContent = orgData.legalPerson || '-';
+                document.getElementById('org-credit-code').textContent = orgData.creditCode || '-';
+                document.getElementById('org-address').textContent = orgData.address || '-';
+                document.getElementById('org-create-time').textContent = orgData.createTime || '-';
+
+                const typeMap = {
+                    'training': '训练基地',
+                    'parts': '零部件供应商',
+                    'robot': '机器人企业',
+                    'equipment': '设备商',
+                    'service': '服务商'
+                };
+                document.getElementById('org-type').textContent = typeMap[orgData.type] || orgData.type || '-';
+
+                updateOrgStatusBadge(orgData.status, orgData.statusReason);
+
+                updateActionButtons(orgData.status);
+            }
+        }
+
+        function updateActionButtons(status) {
+            const btnAudit = document.getElementById('btn-audit');
+            const btnDisable = document.getElementById('btn-disable');
+
+            if (btnAudit) btnAudit.style.display = 'none';
+            if (btnDisable) btnDisable.style.display = 'none';
+
+            switch (status) {
+                case 'pending':
+                    if (btnAudit) btnAudit.style.display = 'inline-flex';
+                    break;
+                case 'approved':
+                    if (btnDisable) btnDisable.style.display = 'inline-flex';
+                    break;
+            }
+        }
+
+        window.onload = function() {
+            updateOrgDetail();
+        };
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function auditOrg() {
+            showToast('进入审核流程', 'info');
+        }
+
+        function searchMembers() {
+            showToast('搜索成员', 'info');
+        }
+
+        function resetMembersSearch() {
+            showToast('重置搜索条件', 'info');
+        }
+
+        function toggleSubOrg(el) {
+            el.classList.toggle('expanded');
+        }
+
+        function showOrgDetail(orgId) {
+            showToast('查看组织详情: ' + orgId, 'info');
+        }
+
+        function editOrg(orgId) {
+            showToast('编辑组织: ' + orgId, 'info');
+        }
+
+        function showUserDetail(userId) {
+            showToast('查看用户详情: ' + userId, 'info');
+        }
+
+        function showLicense() {
+            document.getElementById('licenseModal').style.display = 'flex';
+        }
+
+        function hideLicense() {
+            document.getElementById('licenseModal').style.display = 'none';
+        }
+
+        function showDisableModal() {
+            document.getElementById('disable-modal').style.display = 'flex';
+            document.getElementById('disable-reason-input').value = '';
+            document.getElementById('disable-reason-input').focus();
+        }
+
+        function hideDisableModal() {
+            document.getElementById('disable-modal').style.display = 'none';
+        }
+
+        function confirmDisable() {
+            const reason = document.getElementById('disable-reason-input').value.trim();
+            if (!reason) {
+                showToast('请输入禁用原因', 'error');
+                return;
+            }
+            showToast('组织已禁用', 'success');
+            hideDisableModal();
+        }
+    </script>
+
+    <div id="disable-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10001; justify-content: center; align-items: center;" onclick="hideDisableModal()">
+        <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 480px; overflow: hidden;" onclick="event.stopPropagation()">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-size: 16px; font-weight: 600; color: #1e293b;">禁用组织</div>
+                <button onclick="hideDisableModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="margin-bottom: 12px;">
+                    <span style="color: #f59e0b; font-size: 14px;">提示：禁用后该组织将无法登录和使用系统</span>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 8px;">禁用原因：</label>
+                    <textarea id="disable-reason-input" style="width: 100%; min-height: 100px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; resize: vertical; font-family: inherit;" placeholder="请输入禁用原因..."></textarea>
+                </div>
+            </div>
+            <div style="padding: 12px 20px; border-top: 1px solid #f1f5f9; background: #fafafa; display: flex; justify-content: flex-end; gap: 8px;">
+                <button class="btn btn-outline" onclick="hideDisableModal()" style="padding: 6px 16px;">取消</button>
+                <button class="btn" style="padding: 6px 16px; background: #dc2626; color: white;" onclick="confirmDisable()">确认禁用</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="licenseModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;" onclick="hideLicense()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicense()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
+                <img src="../A/images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+</body>
+</html>

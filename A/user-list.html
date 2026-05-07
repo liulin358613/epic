@@ -89,7 +89,7 @@
             border-bottom: 1px solid #e5e7eb;
         }
         .page-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
         }
@@ -195,6 +195,13 @@
         .badge-user-type {
             background: #e0e7ff;
             color: #4f46e5;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+        .badge-user-type-personal {
+            background: #dcfce7;
+            color: #16a34a;
             border-radius: 4px;
             padding: 4px 10px;
             font-size: 12px;
@@ -587,7 +594,7 @@
                             <td><span class="org-link" onclick="showOrg('org001')">东莞长安训练基地</span>（总经理）<br><span class="org-link" onclick="showOrg('org002')">东莞嘉东轴承商贸有限公司</span>（业务员）</td>
                             <td>2024-01-15</td>
                             <td>2025-05-04 14:32</td>
-                            <td><span class="action-link" onclick="showDetail(10001)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10001)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10002</td>
@@ -606,7 +613,7 @@
                             <td><span class="org-link" onclick="showOrg('org003')">深圳众博工业机器人有限公司</span>（技术总监）</td>
                             <td>2024-02-20</td>
                             <td>2025-05-03 09:15</td>
-                            <td><span class="action-link" onclick="showDetail(10002)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10002)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10003</td>
@@ -625,7 +632,7 @@
                             <td><span class="org-link" onclick="showOrg('org004')">广州精工传感设备有限公司</span>（生产主管）</td>
                             <td>2024-03-10</td>
                             <td>2025-05-02 18:45</td>
-                            <td><span class="action-link" onclick="showDetail(10003)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10003)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10004</td>
@@ -640,11 +647,11 @@
                             <td>13523456789</td>
                             <td>行政主管</td>
                             <td><span class="badge badge-level">Lv.2</span></td>
-                            <td><span class="badge badge-user-type">个人用户</span></td>
+                            <td><span class="badge badge-user-type-personal">个人用户</span></td>
                             <td>-</td>
                             <td>2024-04-05</td>
                             <td>2025-04-28 10:20</td>
-                            <td><span class="action-link" onclick="showDetail(10004)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10004)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10005</td>
@@ -663,7 +670,7 @@
                             <td><span class="org-link" onclick="showOrg('org005')">佛山智能装备科技有限公司</span>（采购主管）<br><span class="org-link" onclick="showOrg('org006')">佛山华联机械设备厂</span>（质量主管）</td>
                             <td>2024-05-18</td>
                             <td>2025-05-04 16:08</td>
-                            <td><span class="action-link" onclick="showDetail(10005)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10005)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10006</td>
@@ -682,7 +689,7 @@
                             <td><span class="org-link" onclick="showOrg('org007')">杭州阿里云智能科技有限公司</span>（销售经理）</td>
                             <td>2024-06-01</td>
                             <td>2025-05-01 11:30</td>
-                            <td><span class="action-link" onclick="showDetail(10006)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10006)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10007</td>
@@ -697,11 +704,11 @@
                             <td>17723456789</td>
                             <td>-</td>
                             <td><span class="badge badge-level badge-level-0">Lv.0</span></td>
-                            <td><span class="badge badge-user-type">个人用户</span></td>
+                            <td><span class="badge badge-user-type-personal">个人用户</span></td>
                             <td>-</td>
                             <td>2024-06-15</td>
                             <td>2025-03-20 08:00</td>
-                            <td><span class="action-link" onclick="showDetail(10007)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10007)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10008</td>
@@ -720,7 +727,7 @@
                             <td><span class="org-link" onclick="showOrg('org008')">武汉中兴智能装备有限公司</span>（区域经理）<br><span class="org-link" onclick="showOrg('org009')">武汉恒力机械设备有限公司</span>（业务员）</td>
                             <td>2024-07-01</td>
                             <td>2025-05-04 09:45</td>
-                            <td><span class="action-link" onclick="showDetail(10008)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10008)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10009</td>
@@ -735,11 +742,11 @@
                             <td>13745678901</td>
                             <td>客服</td>
                             <td><span class="badge badge-level">Lv.1</span></td>
-                            <td><span class="badge badge-user-type">个人用户</span></td>
+                            <td><span class="badge badge-user-type-personal">个人用户</span></td>
                             <td><span class="org-link" onclick="showOrg('org010')">广州售后服务中心</span>（售后工程师）</td>
                             <td>2024-07-15</td>
                             <td>2025-05-02 14:18</td>
-                            <td><span class="action-link" onclick="showDetail(10009)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10009)">详情</span></td>
                         </tr>
                         <tr>
                             <td>10010</td>
@@ -758,7 +765,7 @@
                             <td>-</td>
                             <td>2024-08-01</td>
                             <td>2025-04-30 17:55</td>
-                            <td><span class="action-link" onclick="showDetail(10010)">查看详情</span></td>
+                            <td><span class="action-link" onclick="showDetail(10010)">详情</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1207,8 +1214,10 @@
                 userTypeBadge.style.display = 'inline-block';
                 if (user.organizations && user.organizations.length > 0) {
                     userTypeBadge.textContent = '组织用户';
+                    userTypeBadge.className = 'badge badge-user-type';
                 } else {
                     userTypeBadge.textContent = '个人用户';
+                    userTypeBadge.className = 'badge badge-user-type-personal';
                 }
             }
 

@@ -303,7 +303,8 @@
         }
         .tooltip .tooltip-text {
             visibility: hidden;
-            width: 200px;
+            width: max-content;
+            max-width: 400px;
             background-color: #1e293b;
             color: #fff;
             text-align: left;
@@ -318,6 +319,7 @@
             transition: opacity 0.2s;
             font-size: 14px;
             font-weight: normal;
+            white-space: nowrap;
         }
         .tooltip .tooltip-text::after {
             content: "";
@@ -414,16 +416,16 @@
             max-width: 600px;
         }
         .audit-info-section {
-            padding: 20px;
+            padding: 12px 16px;
             border-bottom: 1px solid #f1f5f9;
         }
         .audit-info-section:last-child {
             border-bottom: none;
         }
         .audit-info-label {
-            font-size: 14px;
+            font-size: 12px;
             color: #94a3b8;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .audit-info-value {
             font-size: 14px;
@@ -438,19 +440,24 @@
         .audit-company-card .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
-            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .audit-company-card .info-row:last-child {
+            margin-bottom: 0;
         }
         .audit-company-card .info-label {
             color: #64748b;
+            font-size: 12px;
         }
         .audit-company-card .info-value {
             color: #1e293b;
+            font-size: 13px;
         }
         .audit-actions {
             display: flex;
-            gap: 4px;
-            padding: 20px;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 16px;
             border-top: 1px solid #f1f5f9;
         }
         .audit-actions .btn {
@@ -495,6 +502,95 @@
         * {
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+
+        /* Toast 样式 */
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
         }
 
         /* 浏览器兼容性和响应式设计 */
@@ -568,7 +664,7 @@
     <main class="main-content">
         <div class="card">
             <div class="search-bar">
-                <input type="text" class="form-control" placeholder="搜索组织名称/ID" style="min-width: 160px;">
+                <input type="text" class="form-control" placeholder="搜索组织名称/ID/地址" style="min-width: 200px;">
                 <select class="form-control">
                     <option>全部类型</option>
                     <option>训练基地</option>
@@ -593,10 +689,11 @@
                         <tr>
                             <th>组织ID</th>
                             <th>组织名称</th>
-                            <th>负责人</th>
+                            <th>联系人</th>
                             <th>手机号</th>
                             <th>组织人数</th>
-                            <th>认证企业</th>
+                            <th>企业信息</th>
+                            <th>地址</th>
                             <th>组织类型</th>
                             <th>组织等级</th>
                             <th>状态（审核状态）</th>
@@ -623,6 +720,7 @@
                                     <span class="org-cert-info-item">信用代码：91441900MA4U4X2K8R</span>
                                 </div>
                             </td>
+                            <td>东莞市长安镇振安中路88号</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">训练基地</span>
@@ -632,7 +730,7 @@
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-06-15</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG001')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG001')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
                             <td>ORG001-01</td>
@@ -644,7 +742,14 @@
                             <td>王小明</td>
                             <td>13826469794</td>
                             <td>10人</td>
-                            <td class="empty-cell">-</td>
+                            <td>
+                                <div style="font-size: 12px; color: #1e293b;">东莞市智联教育有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：王小明</span>
+                                    <span class="org-cert-info-item">信用代码：91441900MA4U5Y3L9S</span>
+                                </div>
+                            </td>
+                            <td>东莞市长安镇乌沙社区兴发路</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">训练基地</span>
@@ -653,7 +758,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG001-01')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG001-01')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
                             <td>ORG001-02</td>
@@ -666,6 +771,7 @@
                             <td>13826469795</td>
                             <td>15人</td>
                             <td class="empty-cell">-</td>
+                            <td>-</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">训练基地</span>
@@ -676,7 +782,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG001-02')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG001-02')">详情</span></td>
                         </tr>
                         <tr>
                             <td>ORG002</td>
@@ -695,6 +801,7 @@
                                     <span class="org-cert-info-item">信用代码：91441900MA4W7Q3M5N</span>
                                 </div>
                             </td>
+                            <td>东莞市大朗镇富民中路303号</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">配件与易损件供应商</span>
@@ -703,7 +810,7 @@
                             <td><span class="badge badge-level-0">Lv.0</span></td>
                             <td><span class="badge badge-audit-pending">待审核</span></td>
                             <td>2023-08-20</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG002')">查看详情</span> <span class="action-link" onclick="auditOrg('ORG002')">审核</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG002')">详情</span> <span class="action-link" onclick="auditOrg('ORG002')">审核</span></td>
                         </tr>
                         <tr>
                             <td>ORG003</td>
@@ -723,6 +830,7 @@
                                     <span class="org-cert-info-item">信用代码：91440300MA5D8X1K2R</span>
                                 </div>
                             </td>
+                            <td>深圳市宝安区福永街道科技园区</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">整机机器人厂商</span>
@@ -731,7 +839,7 @@
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-05-10</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG003')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG003')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
                             <td>ORG003-01</td>
@@ -744,6 +852,7 @@
                             <td>13698765433</td>
                             <td>30人</td>
                             <td class="empty-cell">-</td>
+                            <td>-</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">整机机器人厂商</span>
@@ -752,7 +861,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG003-01')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG003-01')">详情</span></td>
                         </tr>
                         <tr>
                             <td>ORG004</td>
@@ -771,6 +880,7 @@
                                     <span class="org-cert-info-item">信用代码：91440100MA5C4U2M7Q</span>
                                 </div>
                             </td>
+                            <td>广州市天河区科技园A座1201</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">核心零部件供应商</span>
@@ -787,7 +897,7 @@
                                 </span>
                             </td>
                             <td>2023-09-05</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG004')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG004')">详情</span></td>
                         </tr>
                         <tr>
                             <td>ORG005</td>
@@ -799,6 +909,7 @@
                             <td>王智能</td>
                             <td>15834567890</td>
                             <td>1人</td>
+                            <td>-</td>
                             <td>-</td>
                             <td>
                                 <div class="org-type-list">
@@ -816,7 +927,7 @@
                                 </span>
                             </td>
                             <td>2023-07-18</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG005')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG005')">详情</span></td>
                         </tr>
                         <tr>
                             <td>ORG006</td>
@@ -835,6 +946,7 @@
                                     <span class="org-cert-info-item">信用代码：91330100MA2B3C4D5E</span>
                                 </div>
                             </td>
+                            <td>杭州市余杭区文一西路969号</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">机器人及设备商</span>
@@ -844,7 +956,7 @@
                             <td><span class="badge badge-level-0">Lv.0</span></td>
                             <td><span class="badge badge-audit-pending">待审核</span></td>
                             <td>2023-04-22</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG006')">查看详情</span> <span class="action-link" onclick="auditOrg('ORG006')">审核</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG006')">详情</span> <span class="action-link" onclick="auditOrg('ORG006')">审核</span></td>
                         </tr>
                         <tr>
                             <td>ORG007</td>
@@ -864,6 +976,7 @@
                                     <span class="org-cert-info-item">信用代码：91420100MA5K7M2N9P</span>
                                 </div>
                             </td>
+                            <td>武汉市东湖新技术开发区高新大道</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">机器人及设备商</span>
@@ -872,7 +985,7 @@
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-10-30</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG007')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG007')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
                             <td>ORG007-01</td>
@@ -884,7 +997,14 @@
                             <td>陈华南</td>
                             <td>15934567891</td>
                             <td>40人</td>
-                            <td class="empty-cell">-</td>
+                            <td>
+                                <div style="font-size: 12px; color: #1e293b;">广州中兴智能科技有限公司</div>
+                                <div class="org-cert-info">
+                                    <span class="org-cert-info-item">法人：陈华南</span>
+                                    <span class="org-cert-info-item">信用代码：91440100MA5L8N3O0Q</span>
+                                </div>
+                            </td>
+                            <td>广州市黄埔区科学城</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">机器人及设备商</span>
@@ -893,7 +1013,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG007-01')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG007-01')">详情</span></td>
                         </tr>
                         <tr>
                             <td>ORG008</td>
@@ -912,6 +1032,7 @@
                                     <span class="org-cert-info-item">信用代码：91510100MA6A5B2C3D</span>
                                 </div>
                             </td>
+                            <td>成都市高新区天府软件园</td>
                             <td>
                                 <div class="org-type-list">
                                     <span class="org-type-item">机器人及设备商</span>
@@ -921,7 +1042,7 @@
                             <td><span class="badge badge-level">Lv.1</span></td>
                             <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-11-15</td>
-                            <td><span class="action-link" onclick="showOrgDetail('ORG008')">查看详情</span></td>
+                            <td><span class="action-link" onclick="showOrgDetail('ORG008')">详情</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -961,6 +1082,7 @@
                 logo: 'images/org-1.png',
                 leader: '张明',
                 phone: '13826469793',
+                address: '东莞市长安镇振安中路88号',
                 memberCount: 25,
                 company: {
                     name: '东莞市蓓佳尔工艺品有限公司',
@@ -968,7 +1090,10 @@
                     creditCode: '91441900MA4U4X2K8R'
                 },
                 type: 'training',
-                createTime: '2023-06-15'
+                createTime: '2023-06-15',
+                status: 'approved',
+                statusReason: '',
+                level: 'Lv.1'
             },
             'ORG002': {
                 id: 'ORG002',
@@ -976,6 +1101,7 @@
                 logo: 'images/org-2.png',
                 leader: '陈嘉东',
                 phone: '13912345678',
+                address: '东莞市大朗镇富民中路303号',
                 memberCount: 18,
                 company: {
                     name: '东莞嘉东轴承商贸有限公司',
@@ -983,7 +1109,10 @@
                     creditCode: '91441900MA4W7Q3M5N'
                 },
                 type: 'parts',
-                createTime: '2023-08-20'
+                createTime: '2023-08-20',
+                status: 'pending',
+                statusReason: '',
+                level: 'Lv.0'
             },
             'ORG003': {
                 id: 'ORG003',
@@ -991,6 +1120,7 @@
                 logo: 'images/org-3.png',
                 leader: '刘众博',
                 phone: '13698765432',
+                address: '深圳市宝安区福永街道科技园区',
                 memberCount: 56,
                 company: {
                     name: '深圳众博工业机器人有限公司',
@@ -998,7 +1128,10 @@
                     creditCode: '91440300MA5D8X1K2R'
                 },
                 type: 'robot',
-                createTime: '2023-05-10'
+                createTime: '2023-05-10',
+                status: 'approved',
+                statusReason: '',
+                level: 'Lv.1'
             },
             'ORG004': {
                 id: 'ORG004',
@@ -1006,6 +1139,7 @@
                 logo: 'images/org-4.png',
                 leader: '李精工',
                 phone: '13523456789',
+                address: '广州市天河区科技园A座1201',
                 memberCount: 32,
                 company: {
                     name: '广州精工传感设备有限公司',
@@ -1013,7 +1147,10 @@
                     creditCode: '91440100MA5C4U2M7Q'
                 },
                 type: 'equipment',
-                createTime: '2023-09-05'
+                createTime: '2023-09-05',
+                status: 'disabled',
+                statusReason: '组织违规，资质过期，被限制入驻资格',
+                level: 'Lv.0'
             },
             'ORG005': {
                 id: 'ORG005',
@@ -1021,6 +1158,7 @@
                 logo: 'images/org-5.png',
                 leader: '王智能',
                 phone: '15834567890',
+                address: '佛山市顺德区北滘镇科技园区',
                 memberCount: 45,
                 company: {
                     name: '佛山智能装备科技有限公司',
@@ -1028,7 +1166,10 @@
                     creditCode: '91440600MA5W1K3L8M'
                 },
                 type: 'robot',
-                createTime: '2023-07-18'
+                createTime: '2023-07-18',
+                status: 'rejected',
+                statusReason: '组织资质不符，信息有误，拒绝入驻申请',
+                level: 'Lv.0'
             },
             'ORG006': {
                 id: 'ORG006',
@@ -1036,6 +1177,7 @@
                 logo: 'images/org-6.png',
                 leader: '马阿里',
                 phone: '18612345678',
+                address: '杭州市余杭区文一西路969号',
                 memberCount: 120,
                 company: {
                     name: '杭州阿里云智能科技有限公司',
@@ -1043,7 +1185,10 @@
                     creditCode: '91330100MA2B3C4D5E'
                 },
                 type: 'equipment',
-                createTime: '2023-04-22'
+                createTime: '2023-04-22',
+                status: 'pending',
+                statusReason: '',
+                level: 'Lv.0'
             },
             'ORG007': {
                 id: 'ORG007',
@@ -1051,6 +1196,7 @@
                 logo: 'images/org-7.png',
                 leader: '赵中兴',
                 phone: '15934567890',
+                address: '武汉市东湖新技术开发区高新大道',
                 memberCount: 88,
                 company: {
                     name: '武汉中兴智能装备有限公司',
@@ -1058,7 +1204,10 @@
                     creditCode: '91420100MA5K7M2N9P'
                 },
                 type: 'robot',
-                createTime: '2023-10-30'
+                createTime: '2023-10-30',
+                status: 'approved',
+                statusReason: '',
+                level: 'Lv.2'
             },
             'ORG008': {
                 id: 'ORG008',
@@ -1066,6 +1215,7 @@
                 logo: 'images/org-8.png',
                 leader: '刘天府',
                 phone: '18856789012',
+                address: '成都市高新区天府软件园',
                 memberCount: 36,
                 company: {
                     name: '成都天府智能科技有限公司',
@@ -1110,20 +1260,41 @@
         });
 
         function showOrgDetail(orgId) {
-            alert('查看组织详情: ' + orgId);
+            const org = orgData[orgId];
+            if (org) {
+                const params = new URLSearchParams({
+                    id: org.id,
+                    name: org.name,
+                    leader: org.leader,
+                    phone: org.phone,
+                    address: org.address,
+                    memberCount: org.memberCount,
+                    companyName: org.company.name,
+                    legalPerson: org.company.legalPerson,
+                    creditCode: org.company.creditCode,
+                    type: org.type,
+                    createTime: org.createTime,
+                    status: org.status,
+                    statusReason: org.statusReason,
+                    level: org.level
+                });
+                window.location.href = 'org-detail.html?' + params.toString();
+            }
         }
 
         function auditOrg(orgId) {
             const modal = document.getElementById('audit-modal');
+            resetAuditModal();
             const org = orgData[orgId];
             if (org) {
                 document.getElementById('audit-org-id').textContent = org.id;
                 document.getElementById('audit-org-name').textContent = org.name;
                 document.getElementById('audit-leader').textContent = org.leader;
                 document.getElementById('audit-phone').textContent = org.phone;
-                document.getElementById('audit-company-name').textContent = org.company.name;
-                document.getElementById('audit-legal-person').textContent = org.company.legalPerson;
-                document.getElementById('audit-credit-code').textContent = org.company.creditCode;
+                document.getElementById('audit-address').textContent = org.address || '-';
+                document.getElementById('audit-company-name').textContent = org.company ? org.company.name : '-';
+                document.getElementById('audit-legal-person').textContent = org.company ? org.company.legalPerson : '-';
+                document.getElementById('audit-credit-code').textContent = org.company ? org.company.creditCode : '-';
                 const typeMap = {
                     'training': '训练基地',
                     'parts': '配件商',
@@ -1137,42 +1308,114 @@
 
         function closeAuditModal() {
             document.getElementById('audit-modal').classList.add('hidden');
+            resetAuditModal();
+        }
+
+        function resetAuditModal() {
+            document.getElementById('reject-reason-section').style.display = 'none';
+            document.getElementById('reject-reason').value = '';
+            document.getElementById('btn-reject').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-reject').style.display = 'none';
+            document.getElementById('btn-cancel-reject').style.display = 'none';
+            document.getElementById('btn-approve').style.display = 'inline-flex';
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
         }
 
         function approveOrg() {
-            alert('审核通过');
+            showToast('审核通过', 'success');
             closeAuditModal();
         }
 
-        function rejectOrg() {
-            alert('审核驳回');
+        function showRejectReason() {
+            document.getElementById('reject-reason-section').style.display = 'block';
+            document.getElementById('btn-reject').style.display = 'none';
+            document.getElementById('btn-confirm-reject').style.display = 'inline-flex';
+            document.getElementById('btn-cancel-reject').style.display = 'inline-flex';
+            document.getElementById('btn-approve').style.display = 'none';
+            document.getElementById('reject-reason').focus();
+        }
+
+        function cancelReject() {
+            resetAuditModal();
+        }
+
+        function confirmReject() {
+            const reason = document.getElementById('reject-reason').value.trim();
+            if (!reason) {
+                showToast('请输入驳回原因', 'warning');
+                return;
+            }
+            showToast('审核驳回', 'success');
             closeAuditModal();
+        }
+
+        function showLicense() {
+            document.getElementById('licenseModal').style.display = 'flex';
+        }
+
+        function hideLicense() {
+            document.getElementById('licenseModal').style.display = 'none';
         }
     </script>
 
     <div id="audit-modal" class="modal-overlay audit-modal hidden">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
                 <h3>组织审核</h3>
                 <button class="modal-close" onclick="closeAuditModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="audit-info-section">
-                    <div class="audit-row">
-                        <div class="audit-row-item">
-                            <div class="audit-info-label">组织ID</div>
-                            <div class="audit-info-value" id="audit-org-id">-</div>
+                <div class="audit-org-header" style="display: flex; gap: 16px; padding: 16px; border-bottom: 1px solid #f1f5f9;">
+                    <div id="audit-org-logo" style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa fa-building" style="font-size: 32px; color: #94a3b8;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+                            <span id="audit-org-name">-</span>
+                            <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 8px;">(#<span id="audit-org-id">-</span>)</span>
                         </div>
-                        <div class="audit-row-item">
-                            <div class="audit-info-label">组织名称</div>
-                            <div class="audit-info-value" id="audit-org-name">-</div>
+                        <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            <div class="audit-info-label" style="margin-bottom: 0;">组织类型</div>
+                            <span id="audit-org-type" class="badge" style="padding: 4px 10px; font-size: 12px; font-weight: 500; border-radius: 4px; display: inline-block; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); color: #475569;">-</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="audit-info-label" style="margin-bottom: 0;">地址</div>
+                            <div class="audit-info-value" id="audit-address" style="font-size: 13px; color: #64748b;">-</div>
                         </div>
                     </div>
                 </div>
                 <div class="audit-info-section">
                     <div class="audit-row">
                         <div class="audit-row-item">
-                            <div class="audit-info-label">负责人</div>
+                            <div class="audit-info-label">联系人</div>
                             <div class="audit-info-value" id="audit-leader">-</div>
                         </div>
                         <div class="audit-row-item">
@@ -1182,32 +1425,63 @@
                     </div>
                 </div>
                 <div class="audit-info-section">
-                    <div class="audit-info-label">组织类型</div>
-                    <div class="audit-info-value" id="audit-org-type">-</div>
-                </div>
-                <div class="audit-info-section">
-                    <div class="audit-info-label">认证企业信息</div>
-                    <div class="audit-company-card">
-                        <div class="info-row">
-                            <span class="info-label">企业名称</span>
-                            <span class="info-value" id="audit-company-name">-</span>
+                    <div class="audit-info-label">企业信息</div>
+                    <div class="audit-company-card" style="background: #f8fafc; border-radius: 8px; padding: 12px;">
+                        <div class="info-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;">
+                            <span class="info-label" style="color: #64748b; font-size: 13px;">企业名称</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="info-value" id="audit-company-name" style="color: #1e293b; font-size: 13px;">-</span>
+                                <button onclick="showLicense()" style="background: none; border: none; color: #3b82f6; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 2px;">
+                                    <i class="fa fa-file-image-o"></i> 查看营业执照
+                                </button>
+                            </div>
                         </div>
-                        <div class="info-row">
-                            <span class="info-label">法人</span>
-                            <span class="info-value" id="audit-legal-person">-</span>
+                        <div class="info-row" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span class="info-label" style="color: #64748b; font-size: 13px;">法人</span>
+                            <span class="info-value" id="audit-legal-person" style="color: #1e293b; font-size: 13px;">-</span>
                         </div>
-                        <div class="info-row">
-                            <span class="info-label">统一社会信用代码</span>
-                            <span class="info-value" id="audit-credit-code">-</span>
+                        <div class="info-row" style="display: flex; justify-content: space-between;">
+                            <span class="info-label" style="color: #64748b; font-size: 13px;">统一社会信用代码</span>
+                            <span class="info-value" id="audit-credit-code" style="color: #1e293b; font-size: 13px;">-</span>
                         </div>
                     </div>
                 </div>
-                <div class="audit-actions">
-                    <button class="btn btn-reject" onclick="rejectOrg()"><i class="fa fa-times"></i> 驳回</button>
-                    <button class="btn btn-primary" onclick="approveOrg()"><i class="fa fa-check"></i> 通过</button>
+                <div class="audit-footer" style="border-top: 1px solid #f1f5f9;">
+                    <div id="reject-reason-section" style="padding: 16px; border-bottom: 1px solid #f1f5f9; display: none; background: #fef2f2;">
+                        <div style="font-size: 14px; font-weight: 500; color: #dc2626; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa fa-exclamation-circle"></i> 驳回原因
+                        </div>
+                        <textarea id="reject-reason" class="form-control" placeholder="请输入驳回原因..." style="width: 100%; min-height: 80px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #fecaca; border-radius: 6px; background: white;"></textarea>
+                    </div>
+                    <div class="audit-actions" style="display: flex; gap: 12px; justify-content: flex-end; padding: 16px;">
+                        <button id="btn-cancel-reject" class="btn btn-outline" style="display: none;" onclick="cancelReject()">取消</button>
+                        <button id="btn-reject" class="btn btn-reject" onclick="showRejectReason()">
+                            <i class="fa fa-times"></i> 驳回
+                        </button>
+                        <button id="btn-confirm-reject" class="btn btn-reject" style="display: none;" onclick="confirmReject()">
+                            <i class="fa fa-check"></i> 确认驳回
+                        </button>
+                        <button id="btn-approve" class="btn btn-primary" onclick="approveOrg()">
+                            <i class="fa fa-check"></i> 通过
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="licenseModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;" onclick="hideLicense()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicense()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
+                <img src="images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
 </body>
 </html>
