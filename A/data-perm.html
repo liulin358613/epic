@@ -98,6 +98,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            justify-content: space-between;
             color: #374151;
             font-size: 14px;
             transition: background-color 0.2s;
@@ -146,6 +147,33 @@
         }
         .tree-item.active .expand-icon {
             color: #3b82f6;
+        }
+        .tree-item .delete-icon {
+            display: none;
+            color: #ef4444;
+            font-size: 14px;
+            padding: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: auto;
+        }
+        .tree-item:hover .delete-icon {
+            display: inline-block;
+        }
+        .tree-item .delete-icon:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+        .tree-item.active .delete-icon {
+            color: #fca5a5;
+        }
+        .tree-item.active .delete-icon:hover {
+            color: #f87171;
+        }
+        .tree-content {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .tree-children {
             overflow: hidden;
@@ -918,149 +946,242 @@
                     </button>
                 </div>
                 <div class="sidebar-tree">
-                    <div class="tree-item parent active" onclick="handleParentClick('training');loadOrgData('训练基地')">
-                        <span class="expand-icon">-</span>
-                        <span>训练基地</span>
+                    <div class="tree-item parent active" data-org="training" onclick="handleParentClick('training');loadOrgData('训练基地')">
+                        <span class="tree-content">
+                            <span class="expand-icon">-</span>
+                            <span>训练基地</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'training', '训练基地')"></i>
                     </div>
                     <div class="tree-children" id="training-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('独立训练基地')">
-                            <span class="expand-icon"></span>
-                            <span>独立训练基地</span>
+                        <div class="tree-item child" data-org="training-1" onclick="selectItem(event);loadOrgData('独立训练基地')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>独立训练基地</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'training-1', '独立训练基地')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('客户自训练')">
-                            <span class="expand-icon"></span>
-                            <span>客户自训练</span>
+                        <div class="tree-item child" data-org="training-2" onclick="selectItem(event);loadOrgData('客户自训练')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>客户自训练</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'training-2', '客户自训练')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('个人训练')">
-                            <span class="expand-icon"></span>
-                            <span>个人训练</span>
+                        <div class="tree-item child" data-org="training-3" onclick="selectItem(event);loadOrgData('个人训练')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>个人训练</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'training-3', '个人训练')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('robot');loadOrgData('机器人及设备商')">
-                        <span class="expand-icon">+</span>
-                        <span>机器人及设备商</span>
+                    <div class="tree-item parent" data-org="robot" onclick="handleParentClick('robot');loadOrgData('机器人及设备商')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>机器人及设备商</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'robot', '机器人及设备商')"></i>
                     </div>
                     <div class="tree-children hidden" id="robot-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('整机机器人厂商')">
-                            <span class="expand-icon"></span>
-                            <span>整机机器人厂商</span>
+                        <div class="tree-item child" data-org="robot-1" onclick="selectItem(event);loadOrgData('整机机器人厂商')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>整机机器人厂商</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'robot-1', '整机机器人厂商')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('专机与生产设备厂商')">
-                            <span class="expand-icon"></span>
-                            <span>专机与生产设备厂商</span>
+                        <div class="tree-item child" data-org="robot-2" onclick="selectItem(event);loadOrgData('专机与生产设备厂商')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>专机与生产设备厂商</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'robot-2', '专机与生产设备厂商')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('零部件供应商')">
-                            <span class="expand-icon"></span>
-                            <span>零部件供应商</span>
+                        <div class="tree-item child" data-org="robot-3" onclick="selectItem(event);loadOrgData('零部件供应商')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>零部件供应商</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'robot-3', '零部件供应商')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('client');loadOrgData('终端行业客户')">
-                        <span class="expand-icon">+</span>
-                        <span>终端行业客户</span>
+                    <div class="tree-item parent" data-org="client" onclick="handleParentClick('client');loadOrgData('终端行业客户')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>终端行业客户</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'client', '终端行业客户')"></i>
                     </div>
                     <div class="tree-children hidden" id="client-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('汽车制造企业')">
-                            <span class="expand-icon"></span>
-                            <span>汽车制造企业</span>
+                        <div class="tree-item child" data-org="client-1" onclick="selectItem(event);loadOrgData('汽车制造企业')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>汽车制造企业</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'client-1', '汽车制造企业')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('电子电器厂商')">
-                            <span class="expand-icon"></span>
-                            <span>电子电器厂商</span>
+                        <div class="tree-item child" data-org="client-2" onclick="selectItem(event);loadOrgData('电子电器厂商')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>电子电器厂商</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'client-2', '电子电器厂商')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('医疗器械公司')">
-                            <span class="expand-icon"></span>
-                            <span>医疗器械公司</span>
+                        <div class="tree-item child" data-org="client-3" onclick="selectItem(event);loadOrgData('医疗器械公司')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>医疗器械公司</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'client-3', '医疗器械公司')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('supply');loadOrgData('供应链服务商')">
-                        <span class="expand-icon">+</span>
-                        <span>供应链服务商</span>
+                    <div class="tree-item parent" data-org="supply" onclick="handleParentClick('supply');loadOrgData('供应链服务商')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>供应链服务商</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'supply', '供应链服务商')"></i>
                     </div>
                     <div class="tree-children hidden" id="supply-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('物流运输企业')">
-                            <span class="expand-icon"></span>
-                            <span>物流运输企业</span>
+                        <div class="tree-item child" data-org="supply-1" onclick="selectItem(event);loadOrgData('物流运输企业')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>物流运输企业</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'supply-1', '物流运输企业')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('仓储服务公司')">
-                            <span class="expand-icon"></span>
-                            <span>仓储服务公司</span>
+                        <div class="tree-item child" data-org="supply-2" onclick="selectItem(event);loadOrgData('仓储服务公司')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>仓储服务公司</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'supply-2', '仓储服务公司')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('system');loadOrgData('系统集成商')">
-                        <span class="expand-icon">+</span>
-                        <span>系统集成商</span>
+                    <div class="tree-item parent" data-org="system" onclick="handleParentClick('system');loadOrgData('系统集成商')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>系统集成商</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'system', '系统集成商')"></i>
                     </div>
                     <div class="tree-children hidden" id="system-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('自动化解决方案商')">
-                            <span class="expand-icon"></span>
-                            <span>自动化解决方案商</span>
+                        <div class="tree-item child" data-org="system-1" onclick="selectItem(event);loadOrgData('自动化解决方案商')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>自动化解决方案商</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'system-1', '自动化解决方案商')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('软件服务提供商')">
-                            <span class="expand-icon"></span>
-                            <span>软件服务提供商</span>
+                        <div class="tree-item child" data-org="system-2" onclick="selectItem(event);loadOrgData('软件服务提供商')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>软件服务提供商</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'system-2', '软件服务提供商')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('education');loadOrgData('教育培训机构')">
-                        <span class="expand-icon">+</span>
-                        <span>教育培训机构</span>
+                    <div class="tree-item parent" data-org="education" onclick="handleParentClick('education');loadOrgData('教育培训机构')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>教育培训机构</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'education', '教育培训机构')"></i>
                     </div>
                     <div class="tree-children hidden" id="education-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('职业技术学院')">
-                            <span class="expand-icon"></span>
-                            <span>职业技术学院</span>
+                        <div class="tree-item child" data-org="education-1" onclick="selectItem(event);loadOrgData('职业技术学院')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>职业技术学院</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'education-1', '职业技术学院')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('企业内训机构')">
-                            <span class="expand-icon"></span>
-                            <span>企业内训机构</span>
+                        <div class="tree-item child" data-org="education-2" onclick="selectItem(event);loadOrgData('企业内训机构')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>企业内训机构</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'education-2', '企业内训机构')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('在线教育平台')">
-                            <span class="expand-icon"></span>
-                            <span>在线教育平台</span>
+                        <div class="tree-item child" data-org="education-3" onclick="selectItem(event);loadOrgData('在线教育平台')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>在线教育平台</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'education-3', '在线教育平台')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('finance');loadOrgData('金融服务机构')">
-                        <span class="expand-icon">+</span>
-                        <span>金融服务机构</span>
+                    <div class="tree-item parent" data-org="finance" onclick="handleParentClick('finance');loadOrgData('金融服务机构')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>金融服务机构</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'finance', '金融服务机构')"></i>
                     </div>
                     <div class="tree-children hidden" id="finance-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('投资公司')">
-                            <span class="expand-icon"></span>
-                            <span>投资公司</span>
+                        <div class="tree-item child" data-org="finance-1" onclick="selectItem(event);loadOrgData('投资公司')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>投资公司</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'finance-1', '投资公司')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('融资租赁公司')">
-                            <span class="expand-icon"></span>
-                            <span>融资租赁公司</span>
+                        <div class="tree-item child" data-org="finance-2" onclick="selectItem(event);loadOrgData('融资租赁公司')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>融资租赁公司</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'finance-2', '融资租赁公司')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('research');loadOrgData('科研院所')">
-                        <span class="expand-icon">+</span>
-                        <span>科研院所</span>
+                    <div class="tree-item parent" data-org="research" onclick="handleParentClick('research');loadOrgData('科研院所')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>科研院所</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'research', '科研院所')"></i>
                     </div>
                     <div class="tree-children hidden" id="research-children">
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('机器人研究院')">
-                            <span class="expand-icon"></span>
-                            <span>机器人研究院</span>
+                        <div class="tree-item child" data-org="research-1" onclick="selectItem(event);loadOrgData('机器人研究院')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>机器人研究院</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'research-1', '机器人研究院')"></i>
                         </div>
-                        <div class="tree-item child" onclick="selectItem(event);loadOrgData('智能制造实验室')">
-                            <span class="expand-icon"></span>
-                            <span>智能制造实验室</span>
+                        <div class="tree-item child" data-org="research-2" onclick="selectItem(event);loadOrgData('智能制造实验室')">
+                            <span class="tree-content">
+                                <span class="expand-icon"></span>
+                                <span>智能制造实验室</span>
+                            </span>
+                            <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'research-2', '智能制造实验室')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('factory')">
-                        <span class="expand-icon">+</span>
-                        <span>共享工厂</span>
+                    <div class="tree-item parent" data-org="factory" onclick="handleParentClick('factory')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>共享工厂</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'factory', '共享工厂')"></i>
                     </div>
                     <div class="tree-children hidden" id="factory-children">
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('equipment')">
-                        <span class="expand-icon">+</span>
-                        <span>设备共享</span>
+                    <div class="tree-item parent" data-org="equipment" onclick="handleParentClick('equipment')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>设备共享</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'equipment', '设备共享')"></i>
                     </div>
                     <div class="tree-children hidden" id="equipment-children">
                     </div>
-                    <div class="tree-item parent" onclick="handleParentClick('media')">
-                        <span class="expand-icon">+</span>
-                        <span>影视/文学</span>
+                    <div class="tree-item parent" data-org="media" onclick="handleParentClick('media')">
+                        <span class="tree-content">
+                            <span class="expand-icon">+</span>
+                            <span>影视/文学</span>
+                        </span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'media', '影视/文学')"></i>
                     </div>
                     <div class="tree-children hidden" id="media-children">
                     </div>
@@ -2058,7 +2179,116 @@
             
             updateDeleteButtons();
         });
+
+        let currentDeleteOrgId = null;
+
+        function deleteOrg(event, orgId, orgName) {
+            event.stopPropagation();
+            currentDeleteOrgId = orgId;
+            document.getElementById('delete-org-name').textContent = orgName;
+            document.getElementById('delete-org-modal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-org-modal').style.display = 'none';
+            currentDeleteOrgId = null;
+        }
+
+        function confirmDeleteOrg() {
+            if (currentDeleteOrgId) {
+                const orgItem = document.querySelector(`.tree-item[data-org="${currentDeleteOrgId}"]`);
+                if (orgItem) {
+                    orgItem.remove();
+                }
+                closeDeleteModal();
+                showToast('组织类型删除成功！', 'success');
+            }
+        }
     </script>
+
+    <div id="delete-org-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3>删除组织类型</h3>
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除组织类型「<span id="delete-org-name"></span>」吗？</p>
+                <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该组织类型将无法恢复，请谨慎操作！</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDeleteOrg()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: modalFadeIn 0.2s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        .modal-header .close {
+            font-size: 24px;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-header .close:hover {
+            color: #4b5563;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-body p {
+            margin: 0;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .modal-footer .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+    </style>
 
     <div id="toast-container" class="toast-container"></div>
 </body>

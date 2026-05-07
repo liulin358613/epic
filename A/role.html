@@ -96,6 +96,27 @@
             transition: all 0.2s ease;
             user-select: none;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .role-item .role-name {
+            flex: 1;
+        }
+        .role-item .delete-icon {
+            display: none;
+            color: #ef4444;
+            font-size: 12px;
+            padding: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .role-item .delete-icon:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+        .role-item:hover .delete-icon {
+            display: inline-block;
         }
         .role-item:hover:not(.active) {
             background: #f1f5f9;
@@ -140,7 +161,7 @@
         }
         .form-group {
             display: flex;
-            align-items: center;
+            /* align-items: center; */
             gap: 8px;
         }
         .form-group label {
@@ -152,7 +173,7 @@
             text-align: right;
         }
         .form-control {
-            width: 320px;
+            width: 350px;
             max-width: 100%;
             padding: 8px 12px;
             border: 1px solid #e5e7eb;
@@ -174,7 +195,7 @@
             border-color: #cbd5e1;
         }
         .form-textarea {
-            width: 400px;
+            width: 350px;
             max-width: 100%;
             min-height: 60px;
             resize: vertical;
@@ -611,16 +632,46 @@
                     </button>
                 </div>
                 <div class="sidebar-tree">
-                    <div class="role-item" data-role="admin">管理员</div>
-                    <div class="role-item" data-role="super">超级管理员</div>
-                    <div class="role-item" data-role="user">普通用户</div>
-                    <div class="role-item" data-role="ops">运维人员</div>
-                    <div class="role-item" data-role="audit">审核人员</div>
-                    <div class="role-item" data-role="finance">财务人员</div>
-                    <div class="role-item" data-role="warehouse">仓库管理员</div>
-                    <div class="role-item" data-role="service">客户服务</div>
-                    <div class="role-item" data-role="data">数据分析</div>
-                    <div class="role-item" data-role="guest">访客</div>
+                    <div class="role-item" data-role="admin">
+                        <span class="role-name">管理员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'admin', '管理员')"></i>
+                    </div>
+                    <div class="role-item" data-role="super">
+                        <span class="role-name">超级管理员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'super', '超级管理员')"></i>
+                    </div>
+                    <div class="role-item" data-role="user">
+                        <span class="role-name">普通用户</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'user', '普通用户')"></i>
+                    </div>
+                    <div class="role-item" data-role="ops">
+                        <span class="role-name">运维人员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'ops', '运维人员')"></i>
+                    </div>
+                    <div class="role-item" data-role="audit">
+                        <span class="role-name">审核人员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'audit', '审核人员')"></i>
+                    </div>
+                    <div class="role-item" data-role="finance">
+                        <span class="role-name">财务人员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'finance', '财务人员')"></i>
+                    </div>
+                    <div class="role-item" data-role="warehouse">
+                        <span class="role-name">仓库管理员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'warehouse', '仓库管理员')"></i>
+                    </div>
+                    <div class="role-item" data-role="service">
+                        <span class="role-name">客户服务</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'service', '客户服务')"></i>
+                    </div>
+                    <div class="role-item" data-role="data">
+                        <span class="role-name">数据分析</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'data', '数据分析')"></i>
+                    </div>
+                    <div class="role-item" data-role="guest">
+                        <span class="role-name">访客</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'guest', '访客')"></i>
+                    </div>
                 </div>
             </div>
 
@@ -1144,6 +1195,60 @@
             document.querySelector('.content-header').textContent = '添加角色';
         }
 
+        let currentDeleteRoleId = null;
+
+        function deleteRole(event, roleId, roleName) {
+            event.stopPropagation();
+            currentDeleteRoleId = roleId;
+            document.getElementById('delete-role-name').textContent = roleName;
+            document.getElementById('delete-role-modal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-role-modal').style.display = 'none';
+            currentDeleteRoleId = null;
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function confirmDeleteRole() {
+            if (currentDeleteRoleId) {
+                const roleItem = document.querySelector(`.role-item[data-role="${currentDeleteRoleId}"]`);
+                if (roleItem) {
+                    roleItem.remove();
+                }
+                closeDeleteModal();
+                showToast('角色删除成功！', 'success');
+            }
+        }
+
         function toggleAllPerms(checkbox) {
             const permCheckboxes = document.querySelectorAll('.perm-checkbox');
             permCheckboxes.forEach(item => item.checked = checkbox.checked);
@@ -1396,11 +1501,16 @@
 
             document.querySelectorAll('.role-item').forEach(item => {
                 item.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('delete-icon')) {
+                        return;
+                    }
                     document.querySelectorAll('.role-item').forEach(el => el.classList.remove('active'));
                     e.currentTarget.classList.add('active');
                     
-                    const roleName = e.currentTarget.textContent;
+                    const roleName = e.currentTarget.querySelector('.role-name').textContent;
                     loadRoleData(roleName);
+                    
+                    document.querySelector('.content-header').textContent = '角色详情';
                 });
             });
 
@@ -1533,5 +1643,178 @@
         }
 
     </script>
+
+    <div id="delete-role-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3>删除角色</h3>
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除角色「<span id="delete-role-name"></span>」吗？</p>
+                <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该角色将无法恢复，请谨慎操作！</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDeleteRole()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: modalFadeIn 0.2s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        .modal-header .close {
+            font-size: 24px;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-header .close:hover {
+            color: #4b5563;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-body p {
+            margin: 0;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .modal-footer .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+    </style>
+    
+    <div id="toast-container" class="toast-container"></div>
 </body>
 </html>
