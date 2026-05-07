@@ -67,20 +67,21 @@
         }
         .sidebar {
             width: 240px;
-            background: #e5e7eb;
-            border-radius: 6px;
+            background: white;
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border: 1px solid #d1d5db;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         .sidebar-header {
             padding: 6px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #d1d5db;
-            background: #d1d5db;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
         }
         .sidebar-title {
             font-size: 14px;
@@ -93,38 +94,41 @@
             padding: 4px 0;
         }
         .tree-item {
-            padding: 10px 16px;
+            padding: 8px 12px;
+            margin: 2px 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 4px;
             justify-content: space-between;
-            color: #374151;
+            color: #475569;
             font-size: 14px;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
             user-select: none;
             line-height: 1.4;
+            border-radius: 4px;
         }
-        .tree-item:hover {
-            background: #d1d5db;
+        .tree-item:hover:not(.active) {
+            background: #f1f5f9;
+            color: #1f2937;
         }
         .tree-item.active {
-            background: #3b82f6;
-            color: white;
-            font-weight: 600;
-            border-left: 3px solid #1d4ed8;
+            background: #eff6ff;
+            color: #3b82f6;
+            font-weight: 500;
+            border-left: 2px solid #3b82f6;
         }
         .tree-item.active .expand-icon {
-            color: white;
+            color: #3b82f6;
         }
         .tree-item.active .tree-icon {
-            color: white;
+            color: #3b82f6;
         }
         .tree-item.parent {
             font-weight: 500;
         }
         .tree-item.child {
-            padding-left: 32px;
+            padding-left: 36px;
         }
         .tree-icon {
             font-size: 14px;
@@ -151,11 +155,10 @@
         .tree-item .delete-icon {
             display: none;
             color: #ef4444;
-            font-size: 14px;
+            font-size: 12px;
             padding: 4px;
             cursor: pointer;
             transition: all 0.2s ease;
-            margin-left: auto;
         }
         .tree-item:hover .delete-icon {
             display: inline-block;
@@ -165,10 +168,10 @@
             transform: scale(1.1);
         }
         .tree-item.active .delete-icon {
-            color: #fca5a5;
+            color: #ef4444;
         }
         .tree-item.active .delete-icon:hover {
-            color: #f87171;
+            color: #dc2626;
         }
         .tree-content {
             display: flex;
@@ -452,8 +455,7 @@
             height: 16px;
             accent-color: #3b82f6;
         }
-        .edit-role-btn {
-            margin-left: auto;
+        .edit-role-btn, .delete-role-btn {
             width: 22px;
             height: 22px;
             border: none;
@@ -463,19 +465,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #9ca3af;
             font-size: 14px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s;
         }
-        .role-item:hover .edit-role-btn {
+        .edit-role-btn {
+            color: #9ca3af;
+            margin-left: auto;
+        }
+        .delete-role-btn {
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .role-item:hover .edit-role-btn,
+        .role-item:hover .delete-role-btn {
             opacity: 1;
             visibility: visible;
         }
         .edit-role-btn:hover {
             background: #e5e7eb;
             color: #3b82f6;
+        }
+        .delete-role-btn:hover {
+            background: #fee2e2;
+            color: #dc2626;
         }
         .perm-tabs {
             display: flex;
@@ -1252,41 +1266,49 @@
                                         <input type="checkbox" class="role-checkbox">
                                         <span>总经理</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '总经理')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '总经理')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>生产主管</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '生产主管')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '生产主管')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>技术总监</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '技术总监')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '技术总监')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>开发经理</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '开发经理')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '开发经理')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>测试工程师</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '测试工程师')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '测试工程师')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>产品经理</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '产品经理')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '产品经理')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>运维工程师</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '运维工程师')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '运维工程师')"><i class="fa fa-trash"></i></button>
                                     </label>
                                     <label class="role-item">
                                         <input type="checkbox" class="role-checkbox">
                                         <span>财务主管</span>
                                         <button class="edit-role-btn" onclick="showEditRoleModal(this, '财务主管')"><i class="fa fa-pencil"></i></button>
+                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '财务主管')"><i class="fa fa-trash"></i></button>
                                     </label>
                                 </div>
                             </div>
@@ -1806,6 +1828,23 @@
         </div>
     </div>
 
+    <div class="modal-overlay hidden" id="delete-role-modal" onclick="hideDeleteRoleModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">删除角色</span>
+                <button class="modal-close" onclick="hideDeleteRoleModal()"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #374151; font-size: 14px; line-height: 1.6;">确定要删除角色 "<span id="delete-role-name" style="color: #ef4444; font-weight: 600;"></span>" 吗？</p>
+                <p style="color: #9ca3af; font-size: 13px; margin-top: 8px;">删除后将无法恢复，请谨慎操作。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideDeleteRoleModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDeleteRole()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">确定删除</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         window.onload = function() {
             loadOrgData('训练基地');
@@ -2016,10 +2055,32 @@
                 <input type="checkbox" class="role-checkbox">
                 <span>${roleName}</span>
                 <button class="edit-role-btn" onclick="showEditRoleModal(this, '${roleName}')"><i class="fa fa-pencil"></i></button>
+                <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '${roleName}')"><i class="fa fa-trash"></i></button>
             `;
             roleList.appendChild(newRole);
             
             hideAddRoleModal();
+        }
+
+        let currentDeleteBtn = null;
+
+        function showDeleteRoleModal(btn, roleName) {
+            currentDeleteBtn = btn;
+            document.getElementById('delete-role-name').textContent = roleName;
+            document.getElementById('delete-role-modal').classList.remove('hidden');
+        }
+
+        function hideDeleteRoleModal() {
+            document.getElementById('delete-role-modal').classList.add('hidden');
+            currentDeleteBtn = null;
+        }
+
+        function confirmDeleteRole() {
+            const roleItem = currentDeleteBtn.closest('.role-item');
+            roleItem.remove();
+            
+            hideDeleteRoleModal();
+            showToast('角色删除成功', 'success');
         }
 
         let currentEditBtn = null;

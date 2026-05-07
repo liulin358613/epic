@@ -1175,7 +1175,35 @@
         }
 
         function auditOrg() {
-            showToast('进入审核流程', 'info');
+            document.getElementById('audit-modal').style.display = 'flex';
+            document.getElementById('audit-comment-input').value = '';
+            document.getElementById('audit-comment-input').focus();
+        }
+
+        function hideAuditModal() {
+            document.getElementById('audit-modal').style.display = 'none';
+        }
+
+        function confirmAudit() {
+            const result = document.querySelector('input[name="audit-result"]:checked').value;
+            const comment = document.getElementById('audit-comment-input').value.trim();
+            
+            if (result === 'reject' && !comment) {
+                showToast('驳回申请需要填写审核意见', 'error');
+                return;
+            }
+            
+            if (result === 'approve') {
+                showToast('审核通过', 'success');
+                updateOrgStatusBadge('approved', '');
+                updateActionButtons('approved');
+            } else {
+                showToast('已驳回申请', 'warning');
+                updateOrgStatusBadge('rejected', encodeURIComponent(comment));
+                updateActionButtons('rejected');
+            }
+            
+            hideAuditModal();
         }
 
         function searchMembers() {
@@ -1230,6 +1258,40 @@
             hideDisableModal();
         }
     </script>
+
+    <div id="audit-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10002; justify-content: center; align-items: center;" onclick="hideAuditModal()">
+        <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 480px; overflow: hidden;" onclick="event.stopPropagation()">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-size: 16px; font-weight: 600; color: #1e293b;">组织审核</div>
+                <button onclick="hideAuditModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 8px;">审核结果：</label>
+                    <div style="display: flex; gap: 16px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="audit-result" value="approve" checked style="width: 18px; height: 18px; accent-color: #3b82f6;">
+                            <span style="font-size: 14px; color: #374151;">审核通过</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="audit-result" value="reject" style="width: 18px; height: 18px; accent-color: #3b82f6;">
+                            <span style="font-size: 14px; color: #374151;">驳回申请</span>
+                        </label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 8px;">审核意见：</label>
+                    <textarea id="audit-comment-input" style="width: 100%; min-height: 100px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; resize: vertical; font-family: inherit;" placeholder="请输入审核意见..."></textarea>
+                </div>
+            </div>
+            <div style="padding: 12px 20px; border-top: 1px solid #f1f5f9; background: #fafafa; display: flex; justify-content: flex-end; gap: 8px;">
+                <button class="btn btn-outline" onclick="hideAuditModal()" style="padding: 6px 16px;">取消</button>
+                <button class="btn btn-primary" onclick="confirmAudit()" style="padding: 6px 16px;">确认审核</button>
+            </div>
+        </div>
+    </div>
 
     <div id="disable-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10001; justify-content: center; align-items: center;" onclick="hideDisableModal()">
         <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 480px; overflow: hidden;" onclick="event.stopPropagation()">

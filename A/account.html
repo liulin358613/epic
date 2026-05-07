@@ -722,6 +722,122 @@
         body {
             touch-action: manipulation;
         }
+
+        /* 多选下拉框样式 */
+        .multi-select-container {
+            position: relative;
+            width: 500px;
+        }
+        .multi-select-trigger {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+        }
+        .multi-select-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .multi-select-trigger:hover {
+            border-color: #cbd5e1;
+        }
+        .multi-select-trigger:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .multi-select-trigger.open {
+            border-color: #3b82f6;
+            background: white;
+        }
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            justify-content: flex-start;
+        }
+        .selected-tag {
+            padding: 2px 8px;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 4px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .selected-tag .remove-tag {
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+        }
+        .selected-tag .remove-tag:hover {
+            color: #1d4ed8;
+        }
+        .multi-select-placeholder {
+            color: #94a3b8;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+        }
+        .multi-select-arrow {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        .multi-select-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            display: none;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        .multi-select-dropdown.open {
+            display: block;
+        }
+        .multi-select-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+            user-select: none;
+        }
+        .multi-select-option:hover {
+            background: #f8fafc;
+        }
+        .multi-select-option.selected {
+            background: #dbeafe;
+        }
+        .multi-select-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -1130,18 +1246,53 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label required">角色</label>
-                    <select class="form-control" style="width: 500px;">
-                        <option>请选择</option>
-                        <option>超级管理员</option>
-                        <option>管理员</option>
-                        <option>业务员</option>
-                        <option>财务人员</option>
-                        <option>仓库管理员</option>
-                        <option>审核人员</option>
-                        <option>运维人员</option>
-                        <option>客户服务</option>
-                        <option>数据分析</option>
-                    </select>
+                    <div class="multi-select-container" id="add-role-select">
+                        <div class="multi-select-trigger" onclick="toggleMultiSelect('add-role-select')">
+                            <div class="multi-select-content">
+                                <div class="selected-tags" id="add-selected-roles"></div>
+                                <span class="multi-select-placeholder" id="add-role-placeholder">请选择角色</span>
+                            </div>
+                            <span class="multi-select-arrow"><i class="fa fa-chevron-down"></i></span>
+                        </div>
+                        <div class="multi-select-dropdown" id="add-role-dropdown">
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="超级管理员">
+                                <span>超级管理员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="管理员">
+                                <span>管理员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="业务员">
+                                <span>业务员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="财务人员">
+                                <span>财务人员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="仓库管理员">
+                                <span>仓库管理员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="审核人员">
+                                <span>审核人员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="运维人员">
+                                <span>运维人员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="客户服务">
+                                <span>客户服务</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="数据分析">
+                                <span>数据分析</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">联系电话</label>
@@ -1196,18 +1347,53 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label required">角色</label>
-                    <select class="form-control" style="width: 500px;">
-                        <option>超级管理员、业务员</option>
-                        <option>超级管理员</option>
-                        <option>管理员</option>
-                        <option>业务员</option>
-                        <option>财务人员</option>
-                        <option>仓库管理员</option>
-                        <option>审核人员</option>
-                        <option>运维人员</option>
-                        <option>客户服务</option>
-                        <option>数据分析</option>
-                    </select>
+                    <div class="multi-select-container" id="edit-role-select">
+                        <div class="multi-select-trigger" onclick="toggleMultiSelect('edit-role-select')">
+                            <div class="multi-select-content">
+                                <div class="selected-tags" id="edit-selected-roles"></div>
+                                <span class="multi-select-placeholder" id="edit-role-placeholder">请选择角色</span>
+                            </div>
+                            <span class="multi-select-arrow"><i class="fa fa-chevron-down"></i></span>
+                        </div>
+                        <div class="multi-select-dropdown" id="edit-role-dropdown">
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="超级管理员">
+                                <span>超级管理员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="管理员">
+                                <span>管理员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="业务员">
+                                <span>业务员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="财务人员">
+                                <span>财务人员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="仓库管理员">
+                                <span>仓库管理员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="审核人员">
+                                <span>审核人员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="运维人员">
+                                <span>运维人员</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="客户服务">
+                                <span>客户服务</span>
+                            </div>
+                            <div class="multi-select-option">
+                                <input type="checkbox" value="数据分析">
+                                <span>数据分析</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">联系电话</label>
@@ -1408,6 +1594,126 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        // 多选下拉框功能
+        function toggleMultiSelect(containerId) {
+            const container = document.getElementById(containerId);
+            const dropdown = container.querySelector('.multi-select-dropdown');
+            const trigger = container.querySelector('.multi-select-trigger');
+            
+            dropdown.classList.toggle('open');
+            trigger.classList.toggle('open');
+            
+            if (dropdown.classList.contains('open')) {
+                // 点击外部关闭
+                document.addEventListener('click', function closeHandler(e) {
+                    if (!container.contains(e.target)) {
+                        dropdown.classList.remove('open');
+                        trigger.classList.remove('open');
+                        document.removeEventListener('click', closeHandler);
+                    }
+                });
+            }
+        }
+
+        function updateSelectedRoles(containerId) {
+            const container = document.getElementById(containerId);
+            const checkboxes = container.querySelectorAll('.multi-select-option input[type="checkbox"]');
+            const selectedTags = container.querySelector('.selected-tags');
+            const placeholder = container.querySelector('.multi-select-placeholder');
+            
+            const selectedRoles = [];
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedRoles.push(checkbox.value);
+                }
+            });
+            
+            // 更新标签显示
+            selectedTags.innerHTML = '';
+            if (selectedRoles.length > 0) {
+                selectedRoles.forEach(role => {
+                    const tag = document.createElement('span');
+                    tag.className = 'selected-tag';
+                    tag.innerHTML = `${role} <span class="remove-tag" onclick="removeRole('${containerId}', '${role}')">×</span>`;
+                    selectedTags.appendChild(tag);
+                });
+                selectedTags.style.display = 'flex';
+                placeholder.style.display = 'none';
+            } else {
+                selectedTags.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+        }
+
+        function removeRole(containerId, role) {
+            const container = document.getElementById(containerId);
+            const checkbox = container.querySelector(`.multi-select-option input[value="${role}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+                updateSelectedRoles(containerId);
+            }
+        }
+
+        // 初始化多选下拉框事件
+        document.querySelectorAll('.multi-select-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                const container = this.closest('.multi-select-container');
+                
+                if (checkbox) {
+                    // 切换复选框状态
+                    checkbox.checked = !checkbox.checked;
+                    
+                    // 更新选中状态样式
+                    this.classList.toggle('selected', checkbox.checked);
+                    
+                    // 更新已选标签
+                    updateSelectedRoles(container.id);
+                }
+            });
+            
+            // 复选框单独处理change事件（防止双击问题）
+            const checkbox = option.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.addEventListener('change', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        // 编辑弹窗初始化时设置默认选中角色
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                editModal.classList.add('show');
+                
+                // 模拟设置已有角色（实际场景中从后端获取）
+                const defaultRoles = ['超级管理员', '业务员'];
+                const editContainer = document.getElementById('edit-role-select');
+                
+                // 清除所有选中状态（包括复选框和样式）
+                editContainer.querySelectorAll('.multi-select-option').forEach(option => {
+                    const checkbox = option.querySelector('input[type="checkbox"]');
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+                    option.classList.remove('selected');
+                });
+                
+                // 设置默认选中
+                defaultRoles.forEach(role => {
+                    const checkbox = editContainer.querySelector(`.multi-select-option input[value="${role}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        checkbox.closest('.multi-select-option').classList.add('selected');
+                    }
+                });
+                
+                // 更新已选标签显示
+                updateSelectedRoles('edit-role-select');
+            });
+        });
     </script>
 </body>
 </html>
