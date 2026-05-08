@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>工作台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i {
+            color: #64748b;
+        }
+        .section-content {
+            padding: 16px;
+        }
+        .section-count {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px;
+            overflow-x: auto;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 60% 38%;
+            gap: 16px;
+            align-items: stretch;
+            height: 100%;
+            min-height: calc(100vh - 32px);
+        }
+        .left-section, .right-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: 8px;
+        }
+        .left-section {
+            overflow-y: auto;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+        .right-section {
+            overflow-y: auto;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+        .data-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .data-card.green {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        }
+        .data-card.orange {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        .data-card.purple {
+            background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+        }
+        .data-card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .data-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        .data-card.green .data-value {
+            color: #166534;
+        }
+        .data-card.orange .data-value {
+            color: #92400e;
+        }
+        .data-card.purple .data-value {
+            color: #6b21a8;
+        }
+        .data-label {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 4px;
+        }
+        .data-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .data-icon i {
+            font-size: 24px;
+            color: #3b82f6;
+        }
+        .data-card.green .data-icon i {
+            color: #22c55e;
+        }
+        .data-card.orange .data-icon i {
+            color: #f59e0b;
+        }
+        .data-card.purple .data-icon i {
+            color: #a855f7;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        .badge-level {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .badge-level-0 {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #94a3b8;
+        }
+        .badge-audit-approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .org-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .detail-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .detail-value {
+            font-size: 13px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #475569;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+        .btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .chart-container {
+            height: 300px;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <main class="main-content">
+        <div class="workspace-layout">
+            <div class="left-section">
+                <div class="card">
+                    <div class="section-header">
+                        <div class="section-title"><i class="fa fa-line-chart"></i> 数据概览</div>
+                    </div>
+                    <div class="section-content">
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                            <div class="data-card">
+                                <div class="data-card-content">
+                                    <div>
+                                        <div class="data-value">58</div>
+                                        <div class="data-label">总成员数</div>
+                                    </div>
+                                    <div class="data-icon">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-card green">
+                                <div class="data-card-content">
+                                    <div>
+                                        <div class="data-value">45</div>
+                                        <div class="data-label">本月新增</div>
+                                    </div>
+                                    <div class="data-icon">
+                                        <i class="fa fa-user-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-card orange">
+                                <div class="data-card-content">
+                                    <div>
+                                        <div class="data-value">2</div>
+                                        <div class="data-label">下级组织</div>
+                                    </div>
+                                    <div class="data-icon">
+                                        <i class="fa fa-sitemap"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-card purple">
+                                <div class="data-card-content">
+                                    <div>
+                                        <div class="data-value">36</div>
+                                        <div class="data-label">培训课程</div>
+                                    </div>
+                                    <div class="data-icon">
+                                        <i class="fa fa-book"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-header">
+                        <div class="section-title"><i class="fa fa-bar-chart"></i> 成员增长趋势</div>
+                    </div>
+                    <div class="section-content">
+                        <div style="height: 280px;">
+                            <canvas id="growthChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-header">
+                        <div class="section-title"><i class="fa fa-pie-chart"></i> 培训类型分布</div>
+                    </div>
+                    <div class="section-content">
+                        <div style="height: 280px;">
+                            <canvas id="typeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="card">
+                    <div class="section-header">
+                        <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
+                    </div>
+                    <div class="section-content" style="padding: 16px;">
+                        <div style="display: flex; gap: 16px;">
+                            <div style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
+                                    <span>东莞长安训练基地</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                                    <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
+                                    <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 0769-88888888</span>
+                                    <span><i class="fa fa-envelope" style="color: #94a3b8;"></i> contact@training.com</span>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                                    <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 成立于 2018-06-15</span>
+                                    <span><i class="fa fa-users" style="color: #94a3b8;"></i> 58 名成员</span>
+                                    <span><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
+                                    <span onclick="showLicense()" class="btn btn-outline" style="padding: 4px 10px; font-size: 12px; margin-left: 0; display: inline-flex; align-items: center; cursor: pointer;">
+                                        <i class="fa fa-file-image-o" style="color: #3b82f6;"></i> 查看营业执照
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                            <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
+                            </div>
+                            <div class="org-detail-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">组织类型</div>
+                                    <div class="detail-value">训练基地</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">行业领域</div>
+                                    <div class="detail-value">职业培训</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">经营范围</div>
+                                    <div class="detail-value">技能培训、企业内训</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">统一社会信用代码</div>
+                                    <div class="detail-value">91441900MA510XXX</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">法定代表人</div>
+                                    <div class="detail-value">张建国</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">注册资本</div>
+                                    <div class="detail-value">500万元</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">注册地址</div>
+                                    <div class="detail-value">东莞市长安镇振安中路88号</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">企业名称</div>
+                                    <div class="detail-value">东莞市蓓佳尔工艺品有限公司</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-header">
+                        <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
+                    </div>
+                    <div class="section-content" style="padding: 0;">
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">名称(编号)</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                                        <td style="padding: 10px 12px;">
+                                            <div style="font-size: 14px; color: #475569; font-weight: 500;">智能制造培训中心</div>
+                                            <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB001</div>
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                            <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市蓓佳尔工艺品有限公司</a></div>
+                                            <div style="margin-top: 4px; color: #64748b;">法人：李蓓佳</div>
+                                            <div style="color: #64748b;">信用代码：91441900MA4U4X2K8R</div>
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">培训中心</td>
+                                        <td style="padding: 10px 12px;">
+                                            <div style="font-size: 14px; color: #475569;">李明</div>
+                                            <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13812345678</div>
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                                        <td style="padding: 10px 12px;">
+                                            <div style="font-size: 14px; color: #475569; font-weight: 500;">机器人实训基地</div>
+                                            <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                            <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市智联科技有限公司</a></div>
+                                            <div style="margin-top: 4px; color: #64748b;">法人：王建国</div>
+                                            <div style="color: #64748b;">信用代码：91441900MA4U5Y3L9S</div>
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
+                                        <td style="padding: 10px 12px;">
+                                            <div style="font-size: 14px; color: #475569;">王强</div>
+                                            <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13987654321</div>
+                                        </td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 营业执照弹窗 -->
+    <div id="licenseModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;" onclick="hideLicense()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicense()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
+                <img src="images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 150px;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+        .user-dropdown ul {
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+        }
+        .user-dropdown li {
+            padding: 0;
+        }
+        .user-dropdown a {
+            display: block;
+            padding: 10px 16px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .user-dropdown a:hover {
+            background: #f1f5f9;
+            color: #3b82f6;
+        }
+    </style>
+
+    <script>
+        // 成员增长趋势图表
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                datasets: [{
+                    label: '成员数量',
+                    data: [42, 45, 48, 52, 50, 55, 58, 62, 65, 68, 58, 72],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: { size: 13 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#64748b', font: { size: 12 } }
+                    },
+                    y: {
+                        grid: { color: '#e2e8f0' },
+                        ticks: { color: '#64748b', font: { size: 12 } },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 培训类型分布图表
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        const typeChart = new Chart(typeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['技能培训', '企业内训', '职业认证', '管理培训', '其他'],
+                datasets: [{
+                    data: [35, 25, 20, 15, 5],
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#10b981',
+                        '#f59e0b',
+                        '#8b5cf6',
+                        '#94a3b8'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            padding: 16,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: { size: 12 },
+                            color: '#475569'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: { size: 13 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8
+                    }
+                }
+            }
+        });
+
+        // 营业执照弹窗功能
+        function showLicense() {
+            document.getElementById('licenseModal').style.display = 'flex';
+        }
+
+        function hideLicense() {
+            document.getElementById('licenseModal').style.display = 'none';
+        }
+
+        // 成员活跃度图表
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        const activityChart = new Chart(activityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                datasets: [{
+                    label: '活跃人数',
+                    data: [45, 52, 48, 55, 58, 32, 28],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(148, 163, 184, 0.6)',
+                        'rgba(148, 163, 184, 0.6)'
+                    ],
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: { size: 13 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#64748b', font: { size: 12 } }
+                    },
+                    y: {
+                        grid: { color: '#e2e8f0' },
+                        ticks: { color: '#64748b', font: { size: 12 } },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
