@@ -156,8 +156,80 @@
             font-size: 13px;
             color: #94a3b8;
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             line-height: 1.4;
+        }
+        .login-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .login-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .login-tab:hover {
+            color: #0051D9;
+        }
+        .login-tab.active {
+            color: #0051D9;
+            font-weight: 600;
+        }
+        .login-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            background: #0051D9;
+            border-radius: 2px;
+        }
+        .sms-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 16px;
+            background: rgba(0, 81, 217, 0.1);
+            color: #0051D9;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sms-btn:hover:not(:disabled) {
+            background: rgba(0, 81, 217, 0.2);
+        }
+        .sms-btn:disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .password-input {
+            padding-right: 44px !important;
+        }
+        .input-wrapper .password-toggle {
+            position: absolute;
+            left: auto !important;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+        .input-wrapper .password-toggle:hover {
+            color: #0051D9;
         }
 
         .form-group {
@@ -394,26 +466,59 @@
                 <h2 class="card-title">欢迎登录</h2>
                 <p class="card-subtitle">请输入账号信息登录组织后台管理系统</p>
                 
+                <div class="login-tabs">
+                    <div class="login-tab active" id="pwdTab">账号密码登录</div>
+                    <div class="login-tab" id="smsTab">验证码登录</div>
+                </div>
+                
                 <form id="loginForm">
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <i class="fa fa-user"></i>
-                            <input type="text" class="form-input" placeholder="账号/手机号" id="username">
+                    <!-- 账号密码登录表单 -->
+                    <div id="pwdForm">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <i class="fa fa-user"></i>
+                                <input type="text" class="form-input" placeholder="账号/手机号" id="username">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <i class="fa fa-lock"></i>
-                            <input type="password" class="form-input" placeholder="密码" id="password">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <i class="fa fa-lock"></i>
+                                <input type="password" class="form-input password-input" placeholder="密码" id="password">
+                                <i class="fa fa-eye password-toggle" id="passwordToggle"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="remember-forgot">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="rememberMe">
+                                <span class="checkbox-label">记住我</span>
+                            </label>
+                            <a href="#" class="forgot-link">忘记密码？</a>
                         </div>
                     </div>
                     
-                    <div class="remember-forgot">
-                        <label class="checkbox-wrapper">
-                            <input type="checkbox" id="rememberMe">
-                            <span class="checkbox-label">记住我</span>
-                        </label>
-                        <a href="#" class="forgot-link">忘记密码？</a>
+                    <!-- 验证码登录表单 -->
+                    <div id="smsForm" style="display: none;">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <i class="fa fa-phone"></i>
+                                <input type="text" class="form-input" placeholder="手机号" id="phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <i class="fa fa-key"></i>
+                                <input type="text" class="form-input" placeholder="验证码" id="smsCode">
+                                <button type="button" class="sms-btn" id="smsBtn">获取验证码</button>
+                            </div>
+                        </div>
+                        
+                        <div class="remember-forgot" style="margin-bottom: 28px;">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="rememberSms">
+                                <span class="checkbox-label">记住我</span>
+                            </label>
+                        </div>
                     </div>
                     
                     <button type="submit" class="login-btn">登 录</button>
@@ -444,6 +549,68 @@
     </div>
 
     <script>
+        // 登录方式切换
+        const pwdTab = document.getElementById('pwdTab');
+        const smsTab = document.getElementById('smsTab');
+        const pwdForm = document.getElementById('pwdForm');
+        const smsForm = document.getElementById('smsForm');
+        
+        pwdTab.addEventListener('click', function() {
+            pwdTab.classList.add('active');
+            smsTab.classList.remove('active');
+            pwdForm.style.display = 'block';
+            smsForm.style.display = 'none';
+        });
+        
+        smsTab.addEventListener('click', function() {
+            smsTab.classList.add('active');
+            pwdTab.classList.remove('active');
+            smsForm.style.display = 'block';
+            pwdForm.style.display = 'none';
+        });
+        
+        // 验证码倒计时
+        const smsBtn = document.getElementById('smsBtn');
+        let countdown = 0;
+        
+        smsBtn.addEventListener('click', function() {
+            const phone = document.getElementById('phone').value;
+            if (!phone) {
+                alert('请输入手机号');
+                return;
+            }
+            if (!/^1[3-9]\d{9}$/.test(phone)) {
+                alert('请输入正确的手机号');
+                return;
+            }
+            
+            countdown = 60;
+            smsBtn.disabled = true;
+            smsBtn.textContent = `${countdown}秒后重新获取`;
+            
+            const timer = setInterval(() => {
+                countdown--;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    smsBtn.disabled = false;
+                    smsBtn.textContent = '获取验证码';
+                } else {
+                    smsBtn.textContent = `${countdown}秒后重新获取`;
+                }
+            }, 1000);
+        });
+        
+        // 密码可见性切换
+        const passwordToggle = document.getElementById('passwordToggle');
+        const password = document.getElementById('password');
+        
+        passwordToggle.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            passwordToggle.classList.toggle('fa-eye');
+            passwordToggle.classList.toggle('fa-eye-slash');
+        });
+        
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             window.location.href = 'index.html';

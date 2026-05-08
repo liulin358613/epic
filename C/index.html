@@ -981,6 +981,7 @@
             gap: 16px;
             width: 100%;
             justify-content: center;
+            margin-top: 8px;
         }
 
         .avatar {
@@ -1808,7 +1809,7 @@
                                     <span class="btn-icon">📊</span>
                                     <span class="btn-text">BI中心</span>
                                 </button>
-                                <button class="function-btn" onclick="goToPersonalCenter()">
+                                <button class="function-btn" onclick="goToCreateOrg()">
                                     <span class="btn-icon">📄</span>
                                     <span class="btn-text">创建组织</span>
                                 </button>
@@ -3009,7 +3010,7 @@
                                 <span class="btn-icon">📊</span>
                                 <span class="btn-text">BI中心</span>
                             </button>
-                            <button class="function-btn" onclick="goToPersonalCenter()">
+                            <button class="function-btn" onclick="goToCreateOrg()">
                                 <span class="btn-icon">👥</span>
                                 <span class="btn-text">创建组织</span>
                             </button>
@@ -3053,6 +3054,12 @@
                     document.body.style.overflow = 'hidden';
                 }
             }
+        }
+
+        // 处理创建组织点击事件
+        function goToCreateOrg() {
+            // 无论登录状态，直接跳转到创建组织页面
+            window.location.href = 'create-org.html';
         }
 
         // 处理消息中心点击事件

@@ -174,14 +174,28 @@
         .form-item {
             margin-bottom: 1rem;
             position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
         }
 
         .form-label {
-            display: block;
             font-size: var(--font-size-base);
             color: var(--deep-gray);
             font-weight: 500;
-            margin-bottom: var(--spacing-sm);
+            text-align: right;
+            white-space: nowrap;
+            flex-shrink: 0;
+            padding-top: 0.625rem;
+            width: 80px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .form-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .required-mark {
@@ -260,6 +274,7 @@
             display: flex;
             align-items: flex-start;
             margin-bottom: var(--spacing-xl);
+            padding-left: calc(100px + 0.75rem);
         }
 
         .checkbox-label {
@@ -629,13 +644,12 @@
         .cascade-option .option-text {
             font-size: var(--font-size-base);
             color: var(--deep-gray);
-            flex: 1;
         }
 
         .cascade-option .option-arrow {
             color: var(--classic-gray);
             font-size: 1rem;
-            margin-left: 0.5rem;
+            margin-left: auto;
         }
 
         .cascade-option[data-has-children="false"] .option-arrow {
@@ -648,6 +662,66 @@
 
         .leaf-option {
             padding-left: 1.75rem;
+        }
+
+        .option-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #666;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+        }
+
+        .option-info-icon:hover {
+            background: var(--klein-blue);
+            color: white;
+        }
+
+        .option-tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            font-size: 13px;
+            color: var(--deep-gray);
+            line-height: 1.6;
+            max-width: 300px;
+            z-index: 10000;
+            display: none;
+        }
+
+        .option-tooltip.show {
+            display: block;
+        }
+
+        .option-tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: var(--arrow-left, 20px);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-right: 1px solid var(--border-gray);
+            border-bottom: 1px solid var(--border-gray);
+            transform: rotate(45deg);
+        }
+
+        .option-tooltip.arrow-top::before {
+            bottom: auto;
+            top: -6px;
+            transform: rotate(-135deg);
         }
 
         .password-input-wrapper {
@@ -1106,59 +1180,66 @@
                         <label class="form-label">
                             <span class="required-mark">*</span>组织类型
                         </label>
-                        <div class="dropdown-multi-select" id="orgTypeDropdown">
-                            <div class="dropdown-trigger" id="orgTypeTrigger">
-                                <span class="dropdown-placeholder">请选择组织类型</span>
-                                <span class="dropdown-selected" id="orgTypeSelected" style="display: none;"></span>
-                                <span class="dropdown-arrow">▼</span>
-                            </div>
-                            <div class="dropdown-panel" id="orgTypePanel">
-                                <div class="dropdown-cascade">
-                                    <div class="cascade-level" id="level1">
-                                        <div class="cascade-title">一级分类</div>
-                                        <div class="cascade-options">
-                                            <label class="cascade-option parent-option" data-value="training" data-has-children="true">
-                                                <span class="option-text">训练基地</span>
-                                                <span class="option-arrow">›</span>
-                                            </label>
-                                            <label class="cascade-option parent-option" data-value="robot" data-has-children="true">
-                                                <span class="option-text">机器人及设备商</span>
-                                                <span class="option-arrow">›</span>
-                                            </label>
-                                            <label class="cascade-option parent-option" data-value="terminal" data-has-children="true">
-                                                <span class="option-text">终端行业客户</span>
-                                                <span class="option-arrow">›</span>
-                                            </label>
-                                            <label class="cascade-option parent-option" data-value="supply" data-has-children="true">
-                                                <span class="option-text">供应链服务商</span>
-                                                <span class="option-arrow">›</span>
-                                            </label>
-                                            <label class="cascade-option leaf-option" data-value="other" data-has-children="false">
-                                                <span class="option-checkbox"></span>
-                                                <span class="option-text">培训机构</span>
-                                            </label>
+                        <div class="form-content">
+                            <div class="dropdown-multi-select" id="orgTypeDropdown">
+                                <div class="dropdown-trigger" id="orgTypeTrigger">
+                                    <span class="dropdown-placeholder">请选择组织类型</span>
+                                    <span class="dropdown-selected" id="orgTypeSelected" style="display: none;"></span>
+                                    <span class="dropdown-arrow">▼</span>
+                                </div>
+                                <div class="dropdown-panel" id="orgTypePanel">
+                                    <div class="dropdown-cascade">
+                                        <div class="cascade-level" id="level1">
+                                            <div class="cascade-title">一级分类</div>
+                                            <div class="cascade-options">
+                                                <label class="cascade-option parent-option" data-value="training" data-has-children="true">
+                                                    <span class="option-text">训练基地</span>
+                                                    <span class="option-info-icon" data-tooltip="训练基地说明：提供机器人训练服务的专业场所，包括独立训练基地、客户自训练和个人训练等类型。">?</span>
+                                                    <span class="option-arrow">›</span>
+                                                </label>
+                                                <label class="cascade-option parent-option" data-value="robot" data-has-children="true">
+                                                    <span class="option-text">机器人及设备商</span>
+                                                    <span class="option-arrow">›</span>
+                                                </label>
+                                                <label class="cascade-option parent-option" data-value="terminal" data-has-children="true">
+                                                    <span class="option-text">终端行业客户</span>
+                                                    <span class="option-info-icon" data-tooltip="终端行业客户说明：使用机器人产品的终端用户企业，涵盖制造业、服务业等多个行业。">?</span>
+                                                    <span class="option-arrow">›</span>
+                                                </label>
+                                                <label class="cascade-option parent-option" data-value="supply" data-has-children="true">
+                                                    <span class="option-text">供应链服务商</span>
+                                                    <span class="option-arrow">›</span>
+                                                </label>
+                                                <label class="cascade-option leaf-option" data-value="other" data-has-children="false">
+                                                    <span class="option-checkbox"></span>
+                                                    <span class="option-text">培训机构</span>
+                                                    <span class="option-info-icon" data-tooltip="培训机构说明：提供机器人相关技能培训服务的机构。">?</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="cascade-level" id="level2" style="display: none;">
+                                            <div class="cascade-title" id="level2Title">二级分类</div>
+                                            <div class="cascade-options" id="level2Options"></div>
                                         </div>
                                     </div>
-                                    <div class="cascade-level" id="level2" style="display: none;">
-                                        <div class="cascade-title" id="level2Title">二级分类</div>
-                                        <div class="cascade-options" id="level2Options"></div>
+                                    <div class="dropdown-footer">
+                                        <button type="button" class="dropdown-btn dropdown-cancel">取消</button>
+                                        <button type="button" class="dropdown-btn dropdown-confirm">确定</button>
                                     </div>
                                 </div>
-                                <div class="dropdown-footer">
-                                    <button type="button" class="dropdown-btn dropdown-cancel">取消</button>
-                                    <button type="button" class="dropdown-btn dropdown-confirm">确定</button>
-                                </div>
                             </div>
+                            <span class="error-tip" id="orgTypeError"></span>
                         </div>
-                        <span class="error-tip" id="orgTypeError"></span>
                     </div>
 
                     <div class="form-item">
                         <label class="form-label">
                             <span class="required-mark">*</span>组织名称
                         </label>
-                        <input type="text" class="form-input" id="orgName" placeholder="请输入组织名称" maxlength="50">
-                        <span class="error-tip" id="orgNameError"></span>
+                        <div class="form-content">
+                            <input type="text" class="form-input" id="orgName" placeholder="请输入组织名称" maxlength="50">
+                            <span class="error-tip" id="orgNameError"></span>
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -1166,16 +1247,20 @@
                             <label class="form-label">
                                 <span class="required-mark">*</span>联系人
                             </label>
-                            <input type="text" class="form-input" id="contactName" placeholder="请输入联系人姓名" maxlength="20" value="张三">
-                            <span class="error-tip" id="contactNameError"></span>
+                            <div class="form-content">
+                                <input type="text" class="form-input" id="contactName" placeholder="请输入联系人姓名" maxlength="20" value="张三">
+                                <span class="error-tip" id="contactNameError"></span>
+                            </div>
                         </div>
 
                         <div class="form-item">
                             <label class="form-label">
                                 <span class="required-mark">*</span>联系电话
                             </label>
-                            <input type="text" class="form-input" id="contactPhone" placeholder="请输入联系电话" maxlength="11" value="13800138000">
-                            <span class="error-tip" id="contactPhoneError"></span>
+                            <div class="form-content">
+                                <input type="text" class="form-input" id="contactPhone" placeholder="请输入联系电话" maxlength="11" value="13800138000">
+                                <span class="error-tip" id="contactPhoneError"></span>
+                            </div>
                         </div>
                     </div>
 
@@ -1183,70 +1268,75 @@
                         <label class="form-label">
                             联系地址
                         </label>
-                        <input type="text" class="form-input" id="address" placeholder="请输入地址" maxlength="200">
-                        <span class="error-tip" id="addressError"></span>
+                        <div class="form-content">
+                            <input type="text" class="form-input" id="address" placeholder="请输入地址" maxlength="200">
+                            <span class="error-tip" id="addressError"></span>
+                        </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-item">
                             <label class="form-label">
                                 登录账号
-                                <span style="color: var(--classic-gray); font-weight: normal; margin-left: 0.5rem;"></span>
                             </label>
-                            <input type="text" class="form-input" id="account" placeholder="请输入账号" maxlength="50">
-                            <span class="error-tip" id="accountError"></span>
+                            <div class="form-content">
+                                <input type="text" class="form-input" id="account" placeholder="请输入账号" maxlength="50">
+                                <span class="error-tip" id="accountError"></span>
+                            </div>
                         </div>
 
                         <div class="form-item">
                             <label class="form-label">
                                 登录密码
-                                <span style="color: var(--classic-gray); font-weight: normal; margin-left: 0.5rem;"></span>
                             </label>
-                            <div class="password-input-wrapper">
-                                <input type="password" class="form-input" id="password" placeholder="请输入密码" maxlength="50">
-                                <span class="password-toggle" id="passwordToggle">
-                                    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                    <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                                    </svg>
-                                </span>
+                            <div class="form-content">
+                                <div class="password-input-wrapper">
+                                    <input type="password" class="form-input" id="password" placeholder="请输入密码" maxlength="50">
+                                    <span class="password-toggle" id="passwordToggle">
+                                        <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <span class="error-tip" id="passwordError"></span>
                             </div>
-                            <span class="error-tip" id="passwordError"></span>
                         </div>
                     </div>
 
                     <div class="form-item">
-                        <label class="form-label">
+                        <label class="form-label" id="licenseLabel">
                             营业执照
-                            <span style="color: var(--classic-gray); font-weight: normal; margin-left: 0.5rem;"></span>
                         </label>
-                        <div class="upload-area" id="uploadArea">
-                            <input type="file" id="licenseFile" accept="image/*" style="display: none;">
-                            <div class="upload-icon">📄</div>
-                            <div class="upload-text">点击或拖拽上传营业执照图片</div>
-                            <div class="upload-hint">支持 JPG、PNG 格式，文件大小不超过 10MB</div>
-                        </div>
-                        <div class="upload-preview" id="uploadPreview" style="display: none;">
-                            <div class="preview-image-wrapper" id="previewImageWrapper">
-                                <img id="previewImage" src="" alt="营业执照预览">
-                                <div class="preview-mask">
-                                    <span class="preview-hint">点击查看大图</span>
+                        <div class="form-content">
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="licenseFile" accept="image/*" style="display: none;">
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">点击或拖拽上传营业执照图片</div>
+                                <div class="upload-hint">支持 JPG、PNG 格式，文件大小不超过 10MB</div>
+                            </div>
+                            <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                <div class="preview-image-wrapper" id="previewImageWrapper">
+                                    <img id="previewImage" src="" alt="营业执照预览">
+                                    <div class="preview-mask">
+                                        <span class="preview-hint">点击查看大图</span>
+                                    </div>
+                                </div>
+                                <div class="preview-actions">
+                                    <span class="preview-file-name" id="previewFileName"></span>
+                                    <button type="button" class="reupload-btn" id="reuploadBtn">重新上传</button>
+                                    <button type="button" class="remove-btn" id="removePreview">移除</button>
                                 </div>
                             </div>
-                            <div class="preview-actions">
-                                <span class="preview-file-name" id="previewFileName"></span>
-                                <button type="button" class="reupload-btn" id="reuploadBtn">重新上传</button>
-                                <button type="button" class="remove-btn" id="removePreview">移除</button>
+                            <div class="upload-progress" id="uploadProgress" style="display: none;">
+                                <div class="upload-progress-bar" id="progressBar"></div>
                             </div>
+                            <span class="error-tip" id="licenseError"></span>
                         </div>
-                        <div class="upload-progress" id="uploadProgress" style="display: none;">
-                            <div class="upload-progress-bar" id="progressBar"></div>
-                        </div>
-                        <span class="error-tip" id="licenseError"></span>
                     </div>
 
                     <div class="ocr-section" id="ocrSection" style="display: none; margin-bottom:14px;">
@@ -1449,22 +1539,41 @@
         const orgTypeData = {
             'training': {
                 label: '训练基地',
-                children: ['独立训练基地', '客户自训练', '个人训练']
+                requireLicense: false,
+                children: [
+                    { name: '独立训练基地', tooltip: '独立运营的专业机器人训练场所，提供标准化训练服务' },
+                    { name: '客户自训练' },
+                    { name: '个人训练', tooltip: '面向个人用户的机器人技能训练服务' }
+                ]
             },
             'robot': {
                 label: '机器人及设备商',
-                children: ['整机机器人厂商', '专机与生产设备厂商', '零部件供应商']
+                requireLicense: true,
+                children: [
+                    { name: '整机机器人厂商' },
+                    { name: '专机与生产设备厂商', tooltip: '提供专用机器设备和生产线的企业' },
+                    { name: '零部件供应商' }
+                ]
             },
             'terminal': {
                 label: '终端行业客户',
-                children: ['汽车制造企业', '电子电器厂商', '医疗器械公司']
+                requireLicense: true,
+                children: [
+                    { name: '汽车制造企业', tooltip: '使用机器人进行汽车生产制造的企业' },
+                    { name: '电子电器厂商' },
+                    { name: '医疗器械公司', tooltip: '使用机器人进行医疗器械生产的企业' }
+                ]
             },
             'supply': {
                 label: '供应链服务商',
-                children: ['物流运输企业', '仓储服务公司']
+                requireLicense: false,
+                children: [
+                    { name: '物流运输企业' },
+                    { name: '仓储服务公司', tooltip: '提供机器人相关仓储管理服务的公司' }
+                ]
             },
             'other': {
-                label: '其他',
+                label: '培训机构',
                 children: []
             }
         };
@@ -1512,23 +1621,35 @@
             
             const children = orgTypeData[level1Value].children;
             children.forEach(child => {
+                const childName = typeof child === 'object' ? child.name : child;
+                const childTooltip = typeof child === 'object' ? child.tooltip : '';
+                
                 const option = document.createElement('label');
                 option.className = 'cascade-option';
                 const isSelected = tempSelectedOrgTypes.some(item => 
-                    item.level1 === level1Value && item.level2 === child
+                    item.level1 === level1Value && item.level2 === childName
                 );
                 if (isSelected) {
                     option.classList.add('selected');
                 }
                 
+                let tooltipHtml = '';
+                if (childTooltip) {
+                    tooltipHtml = `<span class="option-info-icon" data-tooltip="${childTooltip}">?</span>`;
+                }
+                
                 option.innerHTML = `
                     <span class="option-checkbox"></span>
-                    <span class="option-text">${child}</span>
+                    <span class="option-text">${childName}</span>
+                    ${tooltipHtml}
                 `;
                 
                 option.onclick = function(e) {
+                    if (e.target.classList.contains('option-info-icon')) {
+                        return;
+                    }
                     e.stopPropagation();
-                    toggleLevel2Selection(level1Value, child);
+                    toggleLevel2Selection(level1Value, childName);
                     this.classList.toggle('selected');
                 };
                 
@@ -1572,7 +1693,7 @@
             orgTypePanel.classList.remove('show');
             orgTypeTrigger.classList.remove('active');
             updateSelectedDisplay();
-            checkForm();
+            checkFormWithLicense();
         });
 
         document.querySelector('.dropdown-cancel').addEventListener('click', function() {
@@ -1606,19 +1727,19 @@
         orgName.addEventListener('blur', validateOrgName);
         orgName.addEventListener('input', () => {
             clearError('orgName', 'orgNameError');
-            checkForm();
+            checkFormWithLicense();
         });
 
         contactName.addEventListener('blur', validateContactName);
         contactName.addEventListener('input', () => {
             clearError('contactName', 'contactNameError');
-            checkForm();
+            checkFormWithLicense();
         });
 
         contactPhone.addEventListener('blur', validateContactPhone);
         contactPhone.addEventListener('input', () => {
             clearError('contactPhone', 'contactPhoneError');
-            checkForm();
+            checkFormWithLicense();
         });
 
         const address = document.getElementById('address');
@@ -1676,16 +1797,101 @@
             return true;
         }
 
+        function needLicense() {
+            if (selectedOrgTypes.length === 0) return false;
+            return selectedOrgTypes.some(item => {
+                const typeData = orgTypeData[item.level1];
+                return typeData && typeData.requireLicense;
+            });
+        }
+
+        function validateLicense() {
+            const uploadArea = document.getElementById('uploadArea');
+            const previewArea = document.getElementById('uploadPreview');
+            const error = document.getElementById('licenseError');
+
+            if (needLicense()) {
+                const hasFile = previewArea.style.display !== 'none';
+                if (!hasFile) {
+                    showError('uploadArea', 'licenseError', '请上传营业执照');
+                    return false;
+                }
+                clearError('uploadArea', 'licenseError');
+            }
+            return true;
+        }
+
+        function checkFormWithLicense() {
+            const isValid = validateOrgType() && validateOrgName() &&
+                           validateContactName() && validateContactPhone() && agreeOrgProtocol.checked;
+            if (needLicense()) {
+                const previewArea = document.getElementById('uploadPreview');
+                const hasFile = previewArea.style.display !== 'none';
+                createOrgBtn.disabled = !isValid || !hasFile;
+            } else {
+                createOrgBtn.disabled = !isValid;
+            }
+            updateLicenseLabel();
+        }
+
+        function updateLicenseLabel() {
+            const label = document.getElementById('licenseLabel');
+            if (needLicense()) {
+                label.innerHTML = '<span class="required-mark">*</span>营业执照';
+            } else {
+                label.innerHTML = '营业执照';
+            }
+        }
+
+        function showAuditModal() {
+            let modal = document.getElementById('auditModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'auditModal';
+                modal.className = 'protocol-modal-overlay';
+                modal.innerHTML = `
+                    <div class="protocol-modal" style="max-width: 400px;">
+                        <div class="protocol-modal-header">
+                            <div class="protocol-modal-title">提示</div>
+                            <button class="protocol-modal-close" onclick="closeAuditModal()">×</button>
+                        </div>
+                        <div class="protocol-modal-content" style="text-align: center; padding: 30px 20px;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                            <div style="font-size: 16px; color: #333; margin-bottom: 8px;">正在审核中</div>
+                            <div style="font-size: 14px; color: #666;">预计 <span style="color: #0051D9; font-weight: 500;">3-7</span> 个工作日完成审核</div>
+                            <div style="margin-top: 24px;">
+                                <button onclick="goToIndex()" style="background: #0051D9; color: white; border: none; padding: 10px 32px; border-radius: 6px; cursor: pointer; font-size: 14px;">知道了</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeAuditModal() {
+            const modal = document.getElementById('auditModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function goToIndex() {
+            closeAuditModal();
+            window.location.href = 'index.html';
+        }
+
         account.addEventListener('blur', validateAccount);
         account.addEventListener('input', () => {
             clearError('account', 'accountError');
-            checkForm();
+            checkFormWithLicense();
         });
 
         password.addEventListener('blur', validatePassword);
         password.addEventListener('input', () => {
             clearError('password', 'passwordError');
-            checkForm();
+            checkFormWithLicense();
         });
 
         agreeOrgProtocol.addEventListener('change', () => {
@@ -1694,7 +1900,7 @@
                 error.textContent = '';
                 error.classList.remove('show');
             }
-            checkForm();
+            checkFormWithLicense();
         });
 
         uploadArea.addEventListener('click', function() {
@@ -1834,8 +2040,13 @@
                 !validateContactName() || !validateContactPhone() || !validateOrgProtocol()) {
                 return;
             }
-            alert('组织创建成功！');
-            window.location.href = 'index.html';
+            
+            if (needLicense()) {
+                showAuditModal();
+            } else {
+                alert('组织创建成功！');
+                window.location.href = 'index.html';
+            }
         });
 
         const orgProtocolModal = document.getElementById('orgProtocolModal');
@@ -1938,6 +2149,49 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && orgProtocolModal.classList.contains('show')) {
                 hideOrgProtocolModal();
+            }
+        });
+
+        // 说明图标tooltip功能
+        const tooltip = document.createElement('div');
+        tooltip.className = 'option-tooltip';
+        tooltip.id = 'optionTooltip';
+        document.body.appendChild(tooltip);
+
+        document.addEventListener('mouseover', function(e) {
+            if (e.target.classList.contains('option-info-icon')) {
+                const tooltipText = e.target.getAttribute('data-tooltip');
+                if (tooltipText) {
+                    tooltip.textContent = tooltipText;
+                    tooltip.classList.add('show');
+                    tooltip.classList.remove('arrow-top');
+                    
+                    const rect = e.target.getBoundingClientRect();
+                    const tooltipRect = tooltip.getBoundingClientRect();
+                    
+                    let left = rect.left + rect.width / 2 - 150;
+                    let top = rect.top - tooltipRect.height - 10;
+                    
+                    if (left < 10) left = 10;
+                    if (left + 300 > window.innerWidth) left = window.innerWidth - 310;
+                    if (top < 10) {
+                        top = rect.bottom + 10;
+                        tooltip.classList.add('arrow-top');
+                    }
+                    
+                    // 计算箭头位置，让箭头指向icon中心
+                    const arrowLeft = Math.max(20, Math.min(280, rect.left + rect.width / 2 - left));
+                    tooltip.style.setProperty('--arrow-left', arrowLeft + 'px');
+                    
+                    tooltip.style.left = left + 'px';
+                    tooltip.style.top = top + 'px';
+                }
+            }
+        });
+
+        document.addEventListener('mouseout', function(e) {
+            if (e.target.classList.contains('option-info-icon')) {
+                tooltip.classList.remove('show');
             }
         });
     </script>

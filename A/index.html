@@ -15,10 +15,16 @@
             padding: 0;
             box-sizing: border-box;
         }
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
         html, body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             height: 100%;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -26,6 +32,10 @@
             text-size-adjust: 100%;
             font-size: 14px;
             line-height: 1.5;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
         }
         .sidebar {
             width: 15rem;
@@ -200,10 +210,13 @@
             /* padding: 16px; */
             overflow-y: auto;
             overflow-x: auto;
+            min-height: 0;
         }
         .header {
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 70px;
+            flex-shrink: 0;
         }
         .header-title {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
@@ -941,7 +954,7 @@
         </div>
     </header>
 
-    <div class="flex">
+    <div class="flex" style="height: calc(100vh - 70px);">
         <aside class="sidebar w-60">
             <div class="nav-section">
                 <div class="nav-section-title">运营数据</div>

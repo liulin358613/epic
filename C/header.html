@@ -231,6 +231,10 @@
             }
         }
 
+        function goToCreateOrg() {
+            window.top.location.href = 'create-org.html';
+        }
+
         function showLogoutConfirm() {
             window.parent.postMessage({ type: 'SHOW_LOGOUT_MODAL' }, '*');
         }
@@ -253,7 +257,7 @@
                 <a href="#" class="nav-link">消息中心</a>
                 <a href="#" class="nav-link">我的订单</a>
                 <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
-                <a href="#" class="nav-link">创建组织</a>
+                <a href="#" onclick="goToCreateOrg()" class="nav-link">创建组织</a>
                 <a href="#" class="nav-link"></a>
                 <div class="location-info">
                     <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -277,7 +281,7 @@
                 <a href="#" class="nav-link">消息中心<span class="message-badge">(99+)</span></a>
                 <a href="#" class="nav-link">我的订单</a>
                 <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
-                <a href="#" class="nav-link">创建组织</a>
+                <a href="#" onclick="goToCreateOrg()" class="nav-link">创建组织</a>
                 <a href="#" class="nav-link"></a>
                 <div class="location-info">
                     <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
