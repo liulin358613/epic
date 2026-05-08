@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>组织管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i {
+            color: #64748b;
+        }
+        .section-content {
+            padding: 16px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-level {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        .section-count {
+            font-size: 12px;
+            font-weight: 400;
+            color: #64748b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #475569;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #1e293b;
+            background: white;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .btn-cancel:hover {
+            background: #e2e8f0;
+        }
+        .btn-confirm {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-confirm:hover {
+            background: #2563eb;
+        }
+        .btn-edit {
+            padding: 6px 14px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+        .btn-add {
+            padding: 6px 14px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn-add:hover {
+            background: #16a34a;
+        }
+        .action-btn {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-right: 6px;
+            transition: all 0.2s;
+        }
+        .action-btn.edit {
+            background: #f1f5f9;
+            color: #3b82f6;
+        }
+        .action-btn.edit:hover {
+            background: #dbeafe;
+        }
+        .action-btn.delete {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+        .action-btn.delete:hover {
+            background: #fee2e2;
+        }
+        .toast-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+        }
+        .toast {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .confirm-modal .modal-content {
+            width: 400px;
+        }
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #f1f5f9;
+        }
+        .upload-area img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 4px;
+            display: none;
+        }
+        .upload-area.has-image img {
+            display: block;
+            margin: 0 auto;
+        }
+        .upload-area.has-image .upload-placeholder {
+            display: none;
+        }
+        .upload-placeholder {
+            color: #64748b;
+        }
+        .upload-placeholder i {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .auto-recognized {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: #166534;
+            display: none;
+        }
+        .auto-recognized.show {
+            display: block;
+        }
+        .form-group.readonly input {
+            background: #f8fafc;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 16px;">
+        <div class="card">
+            <div class="section-header">
+                <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
+                <button class="btn-edit" onclick="showEditModal()">
+                    <i class="fa fa-pencil"></i> 编辑
+                </button>
+            </div>
+            <div class="section-content">
+                <div style="display: flex; gap: 16px;">
+                    <div style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
+                            <span>东莞长安训练基地</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                            <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
+                            <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 0769-88888888</span>
+                            <span><i class="fa fa-envelope" style="color: #94a3b8;"></i> contact@training.com</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                            <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 成立于 2018-06-15</span>
+                            <span><i class="fa fa-users" style="color: #94a3b8;"></i> 58 名成员</span>
+                            <span><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
+                            <span onclick="showLicense()" style="padding: 4px 10px; font-size: 12px; margin-left: 0; display: inline-flex; align-items: center; cursor: pointer; color: #3b82f6; border: 1px solid #3b82f6; border-radius: 4px;">
+                                <i class="fa fa-file-image-o"></i> 查看营业执照
+                            </span>
+                        </div>
+                    </div>
+                </div>
+               
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                    <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">组织类型</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">训练基地</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">行业领域</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">职业培训</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">经营范围</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">技能培训、企业内训</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">统一社会信用代码</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">91441900MA510XXX</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">法定代表人</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">张建国</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">注册资本</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">500万元</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">注册地址</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">东莞市长安镇振安中路88号</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: #64748b;">企业名称</div>
+                            <div style="font-size: 13px; color: #1e293b; font-weight: 500;">东莞市蓓佳尔工艺品有限公司</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-header">
+                <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
+                <button class="btn-add" onclick="showAddModal()">
+                    <i class="fa fa-plus"></i> 添加
+                </button>
+            </div>
+            <div class="section-content" style="padding: 0;">
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 700px;">
+                        <thead>
+                            <tr style="background: #f8fafc;">
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">名称(编号)</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
+                                <th style="padding: 10px 12px; text-align: center; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">智能制造培训中心</div>
+                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB001</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市蓓佳尔工艺品有限公司</a></div>
+                                    <div style="margin-top: 4px; color: #64748b;">法人：李蓓佳</div>
+                                    <div style="color: #64748b;">信用代码：91441900MA4U4X2K8R</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">培训中心</td>
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569;">李明</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13812345678</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
+                                <td style="padding: 10px 12px;">
+                                    <button class="action-btn edit" onclick="showEditSubModal('SUB001')">
+                                        <i class="fa fa-pencil"></i> 编辑
+                                    </button>
+                                    <button class="action-btn delete" onclick="showDeleteConfirm('SUB001', '智能制造培训中心')">
+                                        <i class="fa fa-trash"></i> 删除
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">机器人实训基地</div>
+                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市智联科技有限公司</a></div>
+                                    <div style="margin-top: 4px; color: #64748b;">法人：王建国</div>
+                                    <div style="color: #64748b;">信用代码：91441900MA4U5Y3L9S</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569;">王强</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13987654321</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
+                                <td style="padding: 10px 12px;">
+                                    <button class="action-btn edit" onclick="showEditSubModal('SUB002')">
+                                        <i class="fa fa-pencil"></i> 编辑
+                                    </button>
+                                    <button class="action-btn delete" onclick="showDeleteConfirm('SUB002', '机器人实训基地')">
+                                        <i class="fa fa-trash"></i> 删除
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 营业执照弹窗 -->
+    <div id="licenseModal" style="display: none;" class="modal-overlay" onclick="hideLicense()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicense()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
+                <img src="images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑组织信息弹窗 -->
+    <div id="editModal" style="display: none;" class="modal-overlay" onclick="hideEditModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>编辑组织信息</h3>
+                <button class="close-btn" onclick="hideEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>组织图片</label>
+                        <div class="upload-area has-image" id="org-image-upload" onclick="document.getElementById('org-image-input').click()">
+                            <img src="images/logo.png" alt="组织图片" id="org-image-preview">
+                            <div class="upload-placeholder">
+                                <i class="fa fa-cloud-upload"></i>
+                                <div>点击上传组织图片</div>
+                            </div>
+                        </div>
+                        <input type="file" id="org-image-input" accept="image/*" style="display: none;" onchange="previewOrgImage(this)">
+                    </div>
+                    <div class="form-group">
+                        <label>组织名称</label>
+                        <input type="text" id="edit-org-name" value="东莞长安训练基地" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>组织编号</label>
+                        <input type="text" id="edit-org-code" value="ORG001" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>地址</label>
+                        <input type="text" id="edit-org-address" value="广东省东莞市长安镇">
+                    </div>
+                    <div class="form-group">
+                        <label>联系电话</label>
+                        <input type="text" id="edit-org-phone" value="0769-88888888">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="text" id="edit-org-email" value="contact@training.com">
+                    </div>
+                    <div class="form-group">
+                        <label>联系人</label>
+                        <input type="text" id="edit-org-contact" value="张经理">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>联系人电话</label>
+                        <input type="text" id="edit-contact-phone" value="13800138000">
+                    </div>
+                    <div class="form-group">
+                        <label>组织类型</label>
+                        <select id="edit-org-type" multiple style="height: 80px;">
+                            <option value="训练基地" selected>训练基地</option>
+                            <option value="培训中心">培训中心</option>
+                            <option value="实训基地">实训基地</option>
+                            <option value="企业">企业</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>行业领域</label>
+                        <input type="text" id="edit-industry" value="职业培训">
+                    </div>
+                    <div class="form-group">
+                        <label>经营范围</label>
+                        <input type="text" id="edit-business-scope" value="技能培训、企业内训">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>营业执照</label>
+                        <div class="upload-area has-image" id="license-upload" onclick="document.getElementById('license-input').click()">
+                            <img src="images/1.png" alt="营业执照" id="license-preview">
+                            <div class="upload-placeholder">
+                                <i class="fa fa-cloud-upload"></i>
+                                <div>点击上传营业执照</div>
+                            </div>
+                        </div>
+                        <input type="file" id="license-input" accept="image/*" style="display: none;" onchange="previewLicense(this)">
+                    </div>
+                    <div class="form-group">
+                        <label>企业名称 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
+                        <input type="text" id="edit-company-name" value="东莞市蓓佳尔工艺品有限公司" readonly>
+                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>统一社会信用代码 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
+                        <input type="text" id="edit-credit-code" value="91441900MA510XXX" readonly>
+                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
+                    </div>
+                    <div class="form-group">
+                        <label>法定代表人 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
+                        <input type="text" id="edit-legal-representative" value="张建国" readonly>
+                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>注册资本 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
+                        <input type="text" id="edit-registered-capital" value="500万元" readonly>
+                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
+                    </div>
+                    <div class="form-group">
+                        <label>注册地址 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
+                        <input type="text" id="edit-registered-address" value="东莞市长安镇振安中路88号" readonly>
+                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideEditModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveOrgEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加下级组织弹窗 -->
+    <div id="addModal" style="display: none;" class="modal-overlay" onclick="hideAddModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>添加下级组织</h3>
+                <button class="close-btn" onclick="hideAddModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>组织名称</label>
+                        <input type="text" id="add-org-name" placeholder="请输入组织名称">
+                    </div>
+                    <div class="form-group">
+                        <label>组织类型</label>
+                        <select id="add-org-type">
+                            <option value="">请选择类型</option>
+                            <option value="培训中心">培训中心</option>
+                            <option value="实训基地">实训基地</option>
+                            <option value="分公司">分公司</option>
+                            <option value="办事处">办事处</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>企业名称</label>
+                        <input type="text" id="add-company-name" placeholder="请输入企业名称">
+                    </div>
+                    <div class="form-group">
+                        <label>法人</label>
+                        <input type="text" id="add-legal-person" placeholder="请输入法人姓名">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>信用代码</label>
+                        <input type="text" id="add-credit-code" placeholder="请输入统一社会信用代码">
+                    </div>
+                    <div class="form-group">
+                        <label>联系人</label>
+                        <input type="text" id="add-contact" placeholder="请输入联系人">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>联系电话</label>
+                        <input type="text" id="add-phone" placeholder="请输入联系电话">
+                    </div>
+                    <div class="form-group">
+                        <label>人数</label>
+                        <input type="number" id="add-count" placeholder="请输入人数" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>地址</label>
+                    <textarea id="add-address" placeholder="请输入地址"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideAddModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveAddOrg()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑下级组织弹窗 -->
+    <div id="editSubModal" style="display: none;" class="modal-overlay" onclick="hideEditSubModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>编辑下级组织</h3>
+                <button class="close-btn" onclick="hideEditSubModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-sub-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>组织名称</label>
+                        <input type="text" id="edit-sub-name">
+                    </div>
+                    <div class="form-group">
+                        <label>组织类型</label>
+                        <select id="edit-sub-type">
+                            <option value="培训中心">培训中心</option>
+                            <option value="实训基地">实训基地</option>
+                            <option value="分公司">分公司</option>
+                            <option value="办事处">办事处</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>企业名称</label>
+                        <input type="text" id="edit-sub-company-name">
+                    </div>
+                    <div class="form-group">
+                        <label>法人</label>
+                        <input type="text" id="edit-sub-legal-person">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>信用代码</label>
+                        <input type="text" id="edit-sub-credit-code">
+                    </div>
+                    <div class="form-group">
+                        <label>联系人</label>
+                        <input type="text" id="edit-sub-contact">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>联系电话</label>
+                        <input type="text" id="edit-sub-phone">
+                    </div>
+                    <div class="form-group">
+                        <label>人数</label>
+                        <input type="number" id="edit-sub-count" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>地址</label>
+                    <textarea id="edit-sub-address"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideEditSubModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveEditSub()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认弹窗 -->
+    <div id="deleteConfirmModal" style="display: none;" class="modal-overlay confirm-modal" onclick="hideDeleteConfirm()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>确认删除</h3>
+                <button class="close-btn" onclick="hideDeleteConfirm()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #666; font-size: 14px; line-height: 1.5;">确定要删除组织 <span id="delete-org-name" style="color: #ef4444; font-weight: 500;"></span> 吗？此操作不可撤销。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideDeleteConfirm()">取消</button>
+                <button class="btn btn-confirm" style="background: #ef4444;" onclick="confirmDelete()">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast提示 -->
+    <div id="toast" class="toast-container" style="display: none;">
+        <div class="toast">
+            <i class="fa fa-check-circle"></i>
+            <span id="toast-message">操作成功</span>
+        </div>
+    </div>
+
+    <script>
+        // 营业执照弹窗
+        function showLicense() {
+            document.getElementById('licenseModal').style.display = 'flex';
+        }
+        function hideLicense() {
+            document.getElementById('licenseModal').style.display = 'none';
+        }
+
+        // 编辑组织信息弹窗
+        function showEditModal() {
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        function hideEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        function saveOrgEdit() {
+            hideEditModal();
+            showToast('组织信息编辑成功');
+        }
+
+        // 组织图片预览
+        function previewOrgImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('org-image-preview');
+                    const uploadArea = document.getElementById('org-image-upload');
+                    preview.src = e.target.result;
+                    uploadArea.classList.add('has-image');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // 营业执照预览
+        function previewLicense(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('license-preview');
+                    const uploadArea = document.getElementById('license-upload');
+                    preview.src = e.target.result;
+                    uploadArea.classList.add('has-image');
+                    
+                    // 模拟自动识别营业执照信息
+                    setTimeout(function() {
+                        showToast('营业执照识别成功');
+                    }, 1000);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // 添加下级组织弹窗
+        function showAddModal() {
+            document.getElementById('addModal').style.display = 'flex';
+        }
+        function hideAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+            // 清空表单
+            document.getElementById('add-org-name').value = '';
+            document.getElementById('add-org-type').value = '';
+            document.getElementById('add-company-name').value = '';
+            document.getElementById('add-legal-person').value = '';
+            document.getElementById('add-credit-code').value = '';
+            document.getElementById('add-contact').value = '';
+            document.getElementById('add-phone').value = '';
+            document.getElementById('add-count').value = '';
+            document.getElementById('add-address').value = '';
+        }
+        function saveAddOrg() {
+            hideAddModal();
+            showToast('下级组织添加成功');
+        }
+
+        // 编辑下级组织弹窗
+        var currentEditId = '';
+        function showEditSubModal(id) {
+            currentEditId = id;
+            // 模拟加载数据
+            if (id === 'SUB001') {
+                document.getElementById('edit-sub-id').value = 'SUB001';
+                document.getElementById('edit-sub-name').value = '智能制造培训中心';
+                document.getElementById('edit-sub-type').value = '培训中心';
+                document.getElementById('edit-sub-company-name').value = '东莞市蓓佳尔工艺品有限公司';
+                document.getElementById('edit-sub-legal-person').value = '李蓓佳';
+                document.getElementById('edit-sub-credit-code').value = '91441900MA4U4X2K8R';
+                document.getElementById('edit-sub-contact').value = '李明';
+                document.getElementById('edit-sub-phone').value = '13812345678';
+                document.getElementById('edit-sub-count').value = '25';
+                document.getElementById('edit-sub-address').value = '长安镇振安中路88号A栋';
+            } else {
+                document.getElementById('edit-sub-id').value = 'SUB002';
+                document.getElementById('edit-sub-name').value = '机器人实训基地';
+                document.getElementById('edit-sub-type').value = '实训基地';
+                document.getElementById('edit-sub-company-name').value = '东莞市智联科技有限公司';
+                document.getElementById('edit-sub-legal-person').value = '王建国';
+                document.getElementById('edit-sub-credit-code').value = '91441900MA4U5Y3L9S';
+                document.getElementById('edit-sub-contact').value = '王强';
+                document.getElementById('edit-sub-phone').value = '13987654321';
+                document.getElementById('edit-sub-count').value = '18';
+                document.getElementById('edit-sub-address').value = '长安镇乌沙社区兴发路';
+            }
+            document.getElementById('editSubModal').style.display = 'flex';
+        }
+        function hideEditSubModal() {
+            document.getElementById('editSubModal').style.display = 'none';
+        }
+        function saveEditSub() {
+            hideEditSubModal();
+            showToast('下级组织编辑成功');
+        }
+
+        // 删除确认弹窗
+        var currentDeleteId = '';
+        var currentDeleteName = '';
+        function showDeleteConfirm(id, name) {
+            currentDeleteId = id;
+            currentDeleteName = name;
+            document.getElementById('delete-org-name').textContent = name;
+            document.getElementById('deleteConfirmModal').style.display = 'flex';
+        }
+        function hideDeleteConfirm() {
+            document.getElementById('deleteConfirmModal').style.display = 'none';
+        }
+        function confirmDelete() {
+            hideDeleteConfirm();
+            showToast('组织删除成功');
+        }
+
+        // Toast提示
+        function showToast(message) {
+            document.getElementById('toast-message').textContent = message;
+            document.getElementById('toast').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('toast').style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

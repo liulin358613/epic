@@ -1083,8 +1083,11 @@
                     levelBadge.className = 'badge ' + (orgData.level && orgData.level !== 'Lv.0' ? 'badge-level' : 'badge-level-0');
                 }
 
-                document.getElementById('org-leader').textContent = orgData.leader || '-';
-                document.getElementById('org-phone').textContent = orgData.phone || '-';
+                document.getElementById('org-leader').textContent = (orgData.leader || '-') + ' ' + (orgData.phone || '');
+                const orgPhoneElement = document.getElementById('org-phone');
+                if (orgPhoneElement) {
+                    orgPhoneElement.innerHTML = '<i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：' + (orgData.leader || '-') + ' / ' + (orgData.phone || '-');
+                }
                 document.getElementById('org-member-count').textContent = orgData.memberCount || '-';
                 document.getElementById('org-company').textContent = orgData.companyName || '-';
                 document.getElementById('org-legal-person').textContent = orgData.legalPerson || '-';

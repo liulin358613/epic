@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>角色管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .page-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 12px;
+            overflow-x: auto;
+            overflow-y: auto;
+            display: flex;
+            gap: 8px;
+        }
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .sidebar-header {
+            padding: 6px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        .sidebar-tree {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .role-item {
+            padding: 8px 12px;
+            margin: 2px 6px;
+            cursor: pointer;
+            color: #475569;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            user-select: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .role-item .role-name {
+            flex: 1;
+        }
+        .role-item .delete-icon {
+            display: none;
+            color: #ef4444;
+            font-size: 12px;
+            padding: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .role-item .delete-icon:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+        .role-item:hover .delete-icon {
+            display: inline-block;
+        }
+        .role-item:hover:not(.active) {
+            background: #f1f5f9;
+            color: #1f2937;
+        }
+        .role-item.active {
+            background: #eff6ff;
+            color: #3b82f6;
+            font-weight: 500;
+            border-left: 2px solid #3b82f6;
+        }
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .content-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .content-body {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .form-group {
+            display: flex;
+            /* align-items: center; */
+            gap: 8px;
+        }
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            white-space: nowrap;
+            min-width: 90px;
+            text-align: right;
+        }
+        .form-control {
+            width: 350px;
+            max-width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .form-control:hover {
+            border-color: #cbd5e1;
+        }
+        .form-textarea {
+            width: 350px;
+            max-width: 100%;
+            min-height: 60px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .form-control select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 36px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 16px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .radio-item:hover {
+            background: #f1f5f9;
+        }
+        .radio-item input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #3b82f6;
+        }
+        .radio-item span {
+            font-size: 14px;
+            color: #475569;
+        }
+        .tabs-container {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-top: 16px;
+            padding-bottom: 0;
+        }
+        .tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            margin-right: 4px;
+            transition: all 0.2s;
+            position: relative;
+            bottom: -2px;
+        }
+        .tab:hover {
+            color: #3b82f6;
+            background: #f8fafc;
+        }
+        .triple-panel-container {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            min-height: 0;
+        }
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .panel-header {
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            border-radius: 8px 8px 0 0;
+            flex-shrink: 0;
+        }
+        .panel-content {
+            padding: 12px;
+            background: white;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .panel-menu {
+            flex: 1;
+        }
+        .perm-tabs {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .perm-tab {
+            padding: 6px 0;
+            font-size: 14px;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .perm-tab:hover {
+            color: #3b82f6;
+        }
+        .perm-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .permission-group {
+            margin-bottom: 4px;
+        }
+        .permission-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .permission-label:hover {
+            background: #f8fafc;
+        }
+        .permission-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+        .permission-children {
+            margin-left: 24px;
+            margin-top: 2px;
+            border-left: 1px solid #e2e8f0;
+            padding-left: 12px;
+        }
+        .permission-children .permission-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+        .permission-children .permission-children .permission-label {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .expand-icon {
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .perm-content {
+            padding: 6px;
+        }
+        .perm-content.hidden {
+            display: none;
+        }
+        .perm-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .perm-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #475569;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .perm-label:hover {
+            background: #f8fafc;
+        }
+        .perm-label input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #3b82f6;
+        }
+        .perm-label.child {
+            padding-left: 28px;
+        }
+        .perm-expand {
+            font-size: 11px;
+            color: #94a3b8;
+            width: 14px;
+            text-align: center;
+        }
+        .perm-children {
+            padding-left: 14px;
+        }
+        .data-perm-section h4, .field-perm-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .data-perm-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .data-perm-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #475569;
+        }
+        .data-perm-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #3b82f6;
+        }
+        .field-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .field-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border-radius: 4px;
+        }
+        .field-name {
+            font-size: 14px;
+            color: #475569;
+        }
+        .field-perm {
+            display: flex;
+            gap: 8px;
+        }
+        .field-perm label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .field-perm input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #3b82f6;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 420px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .modal-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .modal-close {
+            width: 26px;
+            height: 26px;
+            border: none;
+            background: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: #374151;
+        }
+        .modal-body {
+            padding: 16px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .content-footer {
+            padding: 10px 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: #f9fafb;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e5e7eb;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #eff6ff;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+        .btn-xs {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media screen and (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                max-height: 200px;
+            }
+            .triple-panel-container {
+                flex-direction: column;
+            }
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .form-group label {
+                text-align: left;
+                min-width: auto;
+            }
+            .form-control {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">角色管理</h1>
+            <p class="page-subtitle">管理角色的权限配置</p>
+        </div>
+    </header>
+    <div class="page-container">
+        <main class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-title">角色列表</span>
+                    <button class="btn btn-primary" style="padding: 6px 16px; font-size: 14px;" onclick="addNewRole()">
+                        添加
+                    </button>
+                </div>
+                <div class="sidebar-tree">
+                    <div class="role-item" data-role="admin">
+                        <span class="role-name">管理员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'admin', '管理员')"></i>
+                    </div>
+                    <div class="role-item" data-role="super">
+                        <span class="role-name">超级管理员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'super', '超级管理员')"></i>
+                    </div>
+                    <div class="role-item" data-role="user">
+                        <span class="role-name">普通用户</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'user', '普通用户')"></i>
+                    </div>
+                    <div class="role-item" data-role="ops">
+                        <span class="role-name">运维人员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'ops', '运维人员')"></i>
+                    </div>
+                    <div class="role-item" data-role="audit">
+                        <span class="role-name">审核人员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'audit', '审核人员')"></i>
+                    </div>
+                    <div class="role-item" data-role="finance">
+                        <span class="role-name">财务人员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'finance', '财务人员')"></i>
+                    </div>
+                    <div class="role-item" data-role="warehouse">
+                        <span class="role-name">仓库管理员</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'warehouse', '仓库管理员')"></i>
+                    </div>
+                    <div class="role-item" data-role="service">
+                        <span class="role-name">客户服务</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'service', '客户服务')"></i>
+                    </div>
+                    <div class="role-item" data-role="data">
+                        <span class="role-name">数据分析</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'data', '数据分析')"></i>
+                    </div>
+                    <div class="role-item" data-role="guest">
+                        <span class="role-name">访客</span>
+                        <i class="fa fa-trash delete-icon" onclick="deleteRole(event, 'guest', '访客')"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="content-header">角色详情</div>
+                <div class="content-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>角色名称：</label>
+                            <input type="text" class="form-control" placeholder="请输入" id="role-name-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>备注说明：</label>
+                            <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="triple-panel-container">
+                        <div class="panel panel-function">
+                            <div class="panel-header">功能权限</div>
+                            <div class="panel-content">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e5e7eb;">
+                                        <input type="checkbox" id="select-all-perms" onclick="toggleAllPerms(this)">
+                                        <span style="font-weight: 600; color: #374151;">全选</span>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
+                                            <span>订单中心</span>
+                                        </label>
+                                        <div class="permission-children" id="order-center-children">
+                                            <label class="permission-label">
+                                                <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
+                                                <span>订单管理</span>
+                                            </label>
+                                            <div class="permission-children" id="order-children">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
+                                                    <span>采购订单</span>
+                                                </label>
+                                                <div class="permission-children" id="purchase-children">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                        <span>新增</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                        <span>编辑</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                        <span>删除</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                        <span>审核</span>
+                                                    </label>
+                                                </div>
+                                                <label class="permission-label">
+                                                    <span class="expand-icon expanded" data-target="sales-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="sales">
+                                                    <span>销售订单</span>
+                                                </label>
+                                                <div class="permission-children" id="sales-children">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                        <span>新增</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                        <span>编辑</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                        <span>删除</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                        <span>审核</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon" data-target="warehouse-center-children">▶</span>
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="warehouse-center">
+                                            <span>仓储中心</span>
+                                        </label>
+                                        <div class="permission-children" id="warehouse-center-children" style="display: none;">
+                                            <label class="permission-label">
+                                                <span class="expand-icon" data-target="warehouse-children">▶</span>
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse-center" data-group="warehouse">
+                                                <span>仓库管理</span>
+                                            </label>
+                                            <div class="permission-children" id="warehouse-children" style="display: none;">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="inventory-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="inventory">
+                                                    <span>库存管理</span>
+                                                </label>
+                                                <div class="permission-children" id="inventory-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                        <span>入库</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                        <span>出库</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                        <span>盘点</span>
+                                                    </label>
+                                                </div>
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="location-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="location">
+                                                    <span>货位管理</span>
+                                                </label>
+                                                <div class="permission-children" id="location-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
+                                                        <span>分配</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
+                                                        <span>编辑</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon" data-target="user-center-children">▶</span>
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="user-center">
+                                            <span>人员中心</span>
+                                        </label>
+                                        <div class="permission-children" id="user-center-children" style="display: none;">
+                                            <label class="permission-label">
+                                                <span class="expand-icon" data-target="user-children">▶</span>
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="user-center" data-group="user">
+                                                <span>用户管理</span>
+                                            </label>
+                                            <div class="permission-children" id="user-children" style="display: none;">
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
+                                                    <span>查看</span>
+                                                </label>
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
+                                                    <span>新增</span>
+                                                </label>
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
+                                                    <span>编辑</span>
+                                                </label>
+                                                <label class="permission-label">
+                                                    <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
+                                                    <span>删除</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="permission-group">
+                                        <label class="permission-label">
+                                            <span class="expand-icon" data-target="system-center-children">▶</span>
+                                            <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="system-center">
+                                            <span>系统中心</span>
+                                        </label>
+                                        <div class="permission-children" id="system-center-children" style="display: none;">
+                                            <label class="permission-label">
+                                                <span class="expand-icon" data-target="system-children">▶</span>
+                                                <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system-center" data-group="system">
+                                                <span>系统设置</span>
+                                            </label>
+                                            <div class="permission-children" id="system-children" style="display: none;">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="config-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="config">
+                                                    <span>基础配置</span>
+                                                </label>
+                                                <div class="permission-children" id="config-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
+                                                        <span>修改</span>
+                                                    </label>
+                                                </div>
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="log-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="log">
+                                                    <span>日志管理</span>
+                                                </label>
+                                                <div class="permission-children" id="log-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
+                                                        <span>查看</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
+                                                        <span>导出</span>
+                                                    </label>
+                                                    <label class="permission-label">
+                                                        <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
+                                                        <span>清空</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-data">
+                            <div class="panel-header">数据权限</div>
+                            <div class="panel-content">
+                                <div class="permission-group" style="margin-bottom: 10px;">
+                                    <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px;">提示：不设置，默认全部数据</p>
+                                    
+                                    <div id="data-module-list">
+                                        <div class="data-module-item" style="margin-bottom: 10px;">
+                                            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
+                                                <label style="font-weight: 500;">
+                                                    <span style="color: #dc2626;">*</span>业务模块：
+                                                </label>
+                                                <select class="module-select" style="flex: 1; max-width: 400px; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 4px;">
+                                                    <option value="">请选择</option>
+                                                    <option value="sales">销售订单</option>
+                                                    <option value="purchase">采购订单</option>
+                                                    <option value="inventory">库存管理</option>
+                                                    <option value="user">用户管理</option>
+                                                </select>
+                                                <button class="delete-module-btn" style="color: #dc2626; background: none; border: none; cursor: pointer; display: none;">删除</button>
+                                            </div>
+                                            <div class="dimension-section" style="padding: 12px; border: 1px solid #d1d5db; margin-left: 80px; display: none;">
+                                                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
+                                                    <input type="checkbox" class="dimension-all">
+                                                    <span>全选</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 4px;">
+                                                    <span>隔离维度：</span>
+                                                    <div style="display: flex; gap: 8px;">
+                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" class="dimension-item">
+                                                            <span>业务员</span>
+                                                        </div>
+                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" class="dimension-item">
+                                                            <span>客户</span>
+                                                        </div>
+                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                            <input type="checkbox" class="dimension-item">
+                                                            <span>部门</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-left: 100px;">
+                                        <button id="add-data-module" style="display: flex; align-items: center; gap: 4px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
+                                            <i class="fa fa-plus"></i>
+                                            添加
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-field">
+                            <div class="panel-header">字段权限</div>
+                            <div class="panel-content">
+                                <div class="permission-group">
+                                    <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px;">提示：不设置，默认全部字段【可操作、可见】</p>
+                                    
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                                <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                    <span style="color: #dc2626;">*</span>字段名称
+                                                </th>
+                                                <th style="text-align: center; padding: 10px 8px; font-weight: 600;">
+                                                    <span style="color: #dc2626;">*</span>权限
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" id="role-field-all-select" onclick="selectAllFields(this)">
+                                                        <span>全选</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="checkbox" id="role-field-hidden-all" onclick="selectAllByPermission(this, 'hidden')">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="checkbox" id="role-field-readonly-all" onclick="selectAllByPermission(this, 'readonly')">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="checkbox" id="role-field-editable-all" onclick="selectAllByPermission(this, 'editable')">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>订单编号(订单模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-order-no" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-order-no" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-order-no" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>产品成本(订单模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-product-cost" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-product-cost" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-product-cost" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>供应商报价(采购模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-supplier-price" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-supplier-price" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-supplier-price" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>销售金额(订单模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-sales-amount" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-sales-amount" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-sales-amount" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>库存数量(仓储模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-inventory-qty" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-inventory-qty" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-inventory-qty" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                <td style="padding: 10px 8px;">
+                                                    <label style="display: flex; align-items: center; gap: 4px;">
+                                                        <input type="checkbox" class="field-item">
+                                                        <span>客户联系方式(客户模块)</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-customer-contact" value="hidden">
+                                                            <span>隐藏</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-customer-contact" value="readonly">
+                                                            <span>只读</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; gap: 2px;">
+                                                            <input type="radio" name="field-customer-contact" value="editable">
+                                                            <span>可编辑</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-footer">
+                    <button class="btn btn-outline">取消</button>
+                    <button class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+
+    <script>
+        function addNewOrg() {
+            document.getElementById('org-name-input').value = '';
+            document.getElementById('org-remark-input').value = '';
+            
+            document.querySelector('.content-header').textContent = '添加组织';
+        }
+
+        function addNewRole() {
+            document.getElementById('role-name-input').value = '';
+            document.getElementById('org-remark-input').value = '';
+
+            document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox, .perm-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            document.querySelectorAll('.role-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            document.querySelector('.content-header').textContent = '添加角色';
+        }
+
+        let currentDeleteRoleId = null;
+
+        function deleteRole(event, roleId, roleName) {
+            event.stopPropagation();
+            currentDeleteRoleId = roleId;
+            document.getElementById('delete-role-name').textContent = roleName;
+            document.getElementById('delete-role-modal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-role-modal').style.display = 'none';
+            currentDeleteRoleId = null;
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function confirmDeleteRole() {
+            if (currentDeleteRoleId) {
+                const roleItem = document.querySelector(`.role-item[data-role="${currentDeleteRoleId}"]`);
+                if (roleItem) {
+                    roleItem.remove();
+                }
+                closeDeleteModal();
+                showToast('角色删除成功！', 'success');
+            }
+        }
+
+        function toggleAllPerms(checkbox) {
+            const permCheckboxes = document.querySelectorAll('.perm-checkbox');
+            permCheckboxes.forEach(item => item.checked = checkbox.checked);
+        }
+
+        function selectAllFields(checkbox) {
+            const fieldItems = document.querySelectorAll('.field-item');
+            fieldItems.forEach(item => item.checked = checkbox.checked);
+        }
+
+        function selectAllByPermission(checkbox, permissionType) {
+            if (checkbox.checked) {
+                const permissionTypes = ['hidden', 'readonly', 'editable'];
+                permissionTypes.forEach(type => {
+                    if (type !== permissionType) {
+                        document.getElementById(`role-field-${type}-all`).checked = false;
+                    }
+                });
+                const radios = document.querySelectorAll(`input[type="radio"][value="${permissionType}"]`);
+                radios.forEach(radio => radio.checked = true);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.expand-icon').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const targetId = icon.dataset.target;
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        const isExpanded = icon.classList.toggle('expanded');
+                        target.style.display = isExpanded ? 'block' : 'none';
+                    }
+                });
+            });
+
+            function checkAllChildren(checkbox, checked) {
+                const group = checkbox.dataset.group;
+                if (group) {
+                    document.querySelectorAll(`[data-parent="${group}"]`).forEach(child => {
+                        child.checked = checked;
+                        checkAllChildren(child, checked);
+                    });
+                }
+            }
+
+            function checkAllParents(checkbox) {
+                const parentGroup = checkbox.dataset.parent;
+                if (parentGroup) {
+                    const parentCheckbox = document.querySelector(`[data-group="${parentGroup}"]`);
+                    if (parentCheckbox) {
+                        parentCheckbox.checked = true;
+                        checkAllParents(parentCheckbox);
+                    }
+                }
+            }
+
+            document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox, .perm-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const isChecked = e.target.checked;
+                    
+                    checkAllChildren(e.target, isChecked);
+                    
+                    if (isChecked) {
+                        checkAllParents(e.target);
+                    }
+                });
+            });
+
+            const roleData = {
+                '管理员': {
+                    orgName: '系统管理员',
+                    remark: '系统最高权限管理员',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: true,
+                        userCenter: true,
+                        systemCenter: true
+                    },
+                    dataScope: '全部数据',
+                    fieldPermissions: {
+                        field1: '可编辑',
+                        field2: '可编辑',
+                        field3: '可编辑'
+                    }
+                },
+                '超级管理员': {
+                    orgName: '超级管理员',
+                    remark: '拥有绝大部分系统权限',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: true,
+                        userCenter: true,
+                        systemCenter: true
+                    },
+                    dataScope: '全部数据',
+                    fieldPermissions: {
+                        field1: '可编辑',
+                        field2: '可编辑',
+                        field3: '可编辑'
+                    }
+                },
+                '普通用户': {
+                    orgName: '普通用户',
+                    remark: '基础操作权限',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: false,
+                        userCenter: false,
+                        systemCenter: false
+                    },
+                    dataScope: '本人数据',
+                    fieldPermissions: {
+                        field1: '只读',
+                        field2: '只读',
+                        field3: '只读'
+                    }
+                },
+                '运维人员': {
+                    orgName: '运维人员',
+                    remark: '系统运维管理',
+                    permissions: {
+                        orderCenter: false,
+                        warehouseCenter: false,
+                        userCenter: false,
+                        systemCenter: true
+                    },
+                    dataScope: '全部数据',
+                    fieldPermissions: {
+                        field1: '只读',
+                        field2: '只读',
+                        field3: '只读'
+                    }
+                },
+                '审核人员': {
+                    orgName: '审核人员',
+                    remark: '负责审核工作',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: false,
+                        userCenter: false,
+                        systemCenter: false
+                    },
+                    dataScope: '本部门数据',
+                    fieldPermissions: {
+                        field1: '只读',
+                        field2: '只读',
+                        field3: '只读'
+                    }
+                },
+                '财务人员': {
+                    orgName: '财务人员',
+                    remark: '财务管理权限',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: true,
+                        userCenter: false,
+                        systemCenter: false
+                    },
+                    dataScope: '本部门数据',
+                    fieldPermissions: {
+                        field1: '可编辑',
+                        field2: '可编辑',
+                        field3: '只读'
+                    }
+                },
+                '仓库管理员': {
+                    orgName: '仓库管理员',
+                    remark: '仓库管理权限',
+                    permissions: {
+                        orderCenter: false,
+                        warehouseCenter: true,
+                        userCenter: false,
+                        systemCenter: false
+                    },
+                    dataScope: '本部门数据',
+                    fieldPermissions: {
+                        field1: '只读',
+                        field2: '只读',
+                        field3: '可编辑'
+                    }
+                },
+                '客户服务': {
+                    orgName: '客户服务',
+                    remark: '客户服务权限',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: false,
+                        userCenter: true,
+                        systemCenter: false
+                    },
+                    dataScope: '本人数据',
+                    fieldPermissions: {
+                        field1: '只读',
+                        field2: '只读',
+                        field3: '只读'
+                    }
+                },
+                '数据分析': {
+                    orgName: '数据分析',
+                    remark: '数据分析权限',
+                    permissions: {
+                        orderCenter: true,
+                        warehouseCenter: true,
+                        userCenter: false,
+                        systemCenter: false
+                    },
+                    dataScope: '全部数据',
+                    fieldPermissions: {
+                        field1: '只读',
+                        field2: '只读',
+                        field3: '只读'
+                    }
+                },
+                '访客': {
+                    orgName: '访客',
+                    remark: '访客权限',
+                    permissions: {
+                        orderCenter: false,
+                        warehouseCenter: false,
+                        userCenter: false,
+                        systemCenter: false
+                    },
+                    dataScope: '本人数据',
+                    fieldPermissions: {
+                        field1: '隐藏',
+                        field2: '隐藏',
+                        field3: '隐藏'
+                    }
+                }
+            };
+
+            function loadRoleData(roleName) {
+                const data = roleData[roleName];
+                if (data) {
+                    document.getElementById('role-name-input').value = data.orgName;
+                    document.getElementById('org-remark-input').value = data.remark;
+                    
+                    const orderCenter = document.querySelector('[data-group="order-center"]');
+                    const warehouseCenter = document.querySelector('[data-group="warehouse-center"]');
+                    const userCenter = document.querySelector('[data-group="user-center"]');
+                    const systemCenter = document.querySelector('[data-group="system-center"]');
+                    
+                    if (orderCenter) orderCenter.checked = data.permissions.orderCenter;
+                    if (warehouseCenter) warehouseCenter.checked = data.permissions.warehouseCenter;
+                    if (userCenter) userCenter.checked = data.permissions.userCenter;
+                    if (systemCenter) systemCenter.checked = data.permissions.systemCenter;
+                }
+            }
+
+            document.querySelectorAll('.role-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('delete-icon')) {
+                        return;
+                    }
+                    document.querySelectorAll('.role-item').forEach(el => el.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    
+                    const roleName = e.currentTarget.querySelector('.role-name').textContent;
+                    loadRoleData(roleName);
+                    
+                    document.querySelector('.content-header').textContent = '角色详情';
+                });
+            });
+
+            document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox, .perm-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            document.querySelector('.content-header').textContent = '添加角色';
+
+            function updateDeleteButtons() {
+                const items = document.querySelectorAll('.data-module-item');
+                items.forEach((item, index) => {
+                    const deleteBtn = item.querySelector('.delete-module-btn');
+                    deleteBtn.style.display = items.length > 1 ? 'block' : 'none';
+                });
+            }
+
+            function createModuleItem(selectedValue = '') {
+                const item = document.createElement('div');
+                item.className = 'data-module-item';
+                item.style.marginBottom = '16px';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
+                        <label style="font-weight: 500;">
+                            <span style="color: #dc2626;">*</span>业务模块：
+                        </label>
+                        <select class="module-select" style="flex: 1; max-width: 400px; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 4px;">
+                            <option value="">请选择</option>
+                            <option value="sales">销售订单</option>
+                            <option value="purchase">采购订单</option>
+                            <option value="inventory">库存管理</option>
+                            <option value="user">用户管理</option>
+                        </select>
+                        <button class="delete-module-btn" style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
+                    </div>
+                    <div class="dimension-section" style="padding: 12px; border: 1px solid #d1d5db; margin-left: 80px; display: none;">
+                        <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
+                            <input type="checkbox" class="dimension-all">
+                            <span>全选</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <span>隔离维度：</span>
+                            <div style="display: flex; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" class="dimension-item">
+                                    <span>业务员</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" class="dimension-item">
+                                    <span>客户</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" class="dimension-item">
+                                    <span>部门</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const select = item.querySelector('.module-select');
+                select.value = selectedValue;
+                
+                select.addEventListener('change', function() {
+                    const dimensionSection = item.querySelector('.dimension-section');
+                    dimensionSection.style.display = this.value ? 'block' : 'none';
+                });
+                
+                const allCheckbox = item.querySelector('.dimension-all');
+                const dimensionItems = item.querySelectorAll('.dimension-item');
+                allCheckbox.addEventListener('change', function() {
+                    dimensionItems.forEach(item => item.checked = this.checked);
+                });
+                
+                const deleteBtn = item.querySelector('.delete-module-btn');
+                deleteBtn.addEventListener('click', function() {
+                    item.remove();
+                    updateDeleteButtons();
+                });
+                
+                return item;
+            }
+
+            document.getElementById('add-data-module').addEventListener('click', function() {
+                const list = document.getElementById('data-module-list');
+                const newItem = createModuleItem();
+                list.appendChild(newItem);
+                updateDeleteButtons();
+            });
+
+            const initialSelects = document.querySelectorAll('.module-select');
+            initialSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const item = this.closest('.data-module-item');
+                    const dimensionSection = item.querySelector('.dimension-section');
+                    dimensionSection.style.display = this.value ? 'block' : 'none';
+                });
+            });
+
+            const initialAllCheckboxes = document.querySelectorAll('.dimension-all');
+            initialAllCheckboxes.forEach(allCheckbox => {
+                const item = allCheckbox.closest('.data-module-item');
+                const dimensionItems = item.querySelectorAll('.dimension-item');
+                allCheckbox.addEventListener('change', function() {
+                    dimensionItems.forEach(item => item.checked = this.checked);
+                });
+            });
+
+            const initialDeleteBtns = document.querySelectorAll('.delete-module-btn');
+            initialDeleteBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const item = this.closest('.data-module-item');
+                    item.remove();
+                    updateDeleteButtons();
+                });
+            });
+
+            updateDeleteButtons();
+        });
+
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+        }
+
+    </script>
+
+    <div id="delete-role-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3>删除角色</h3>
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除角色「<span id="delete-role-name"></span>」吗？</p>
+                <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该角色将无法恢复，请谨慎操作！</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDeleteRole()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: modalFadeIn 0.2s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        .modal-header .close {
+            font-size: 24px;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-header .close:hover {
+            color: #4b5563;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-body p {
+            margin: 0;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .modal-footer .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+    </style>
+    
+    <div id="toast-container" class="toast-container"></div>
+</body>
+</html>

@@ -26,11 +26,12 @@
             text-size-adjust: 100%;
             font-size: 14px;
             line-height: 1.5;
+            display: flex;
+            flex-direction: column;
         }
         .sidebar {
             width: 15rem;
             flex-shrink: 0;
-            height: calc(100vh - 60px);
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
             overflow-y: auto;
@@ -191,8 +192,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 60px);
             min-width: 0;
+            min-height: 0;
         }
         #content-wrapper {
             flex: 1;
@@ -203,10 +204,10 @@
         .header {
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            /* height: 60px; */
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-shrink: 0;
         }
         .header-title {
             background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
@@ -494,8 +495,8 @@
         </div>
     </div>
 
-    <div class="flex">
-        <aside class="sidebar w-60">
+    <div class="flex" style="flex: 1; min-height: 0;">
+        <aside class="sidebar w-60" style="height: 100%;">
             <div class="nav-section">
                 <div class="nav-item active" data-module="workbench" onclick="showModule('workbench')">
                     <i class="fa fa-desktop"></i>
@@ -610,9 +611,8 @@
                     <p class="text-gray-500 text-sm mt-1">待处理任务列表</p>
                 </div>
 
-                <div id="org-manage-module" class="module hidden p-6">
-                    <h2 class="text-xl font-bold text-gray-800">组织管理</h2>
-                    <p class="text-gray-500 text-sm mt-1">组织架构管理</p>
+                <div id="org-manage-module" class="module hidden p-0" style="height: 100%;">
+                    <iframe src="org-manage.html" style="width: 100%; height: 100%; border: none;"></iframe>
                 </div>
 
                 <div id="org-role-module" class="module hidden p-6">
