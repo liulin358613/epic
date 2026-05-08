@@ -47,9 +47,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             padding: 80px;
-            color: white;
         }
         .right-section {
             flex: 1.5;
@@ -60,37 +59,52 @@
         }
         .logo-area {
             margin-bottom: 40px;
-        }
-        .logo-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            border-radius: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
-            margin-bottom: 10px;
+            text-align: center;
         }
-        .logo-icon .fa {
-            font-size: 36px;
-            color: white;
+        .logo-title {
+            font-size: 100px !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            -moz-background-clip: text !important;
+            -moz-text-fill-color: transparent !important;
+            background-clip: text !important;
+            color: transparent !important;
+            line-height: 1.2 !important;
+            margin-bottom: 16px !important;
         }
-        .platform-title {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
+        .logo-subtitle {
+            font-size: 36px !important;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            -moz-background-clip: text !important;
+            -moz-text-fill-color: transparent !important;
+            background-clip: text !important;
+            color: transparent !important;
+            line-height: 1.4 !important;
+            margin-bottom: 20px !important;
         }
-        .platform-subtitle {
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 60px;
-            line-height: 1.3;
+        .logo-title-bottom {
+            font-size: 28px !important;
+            font-weight: 500 !important;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            -moz-background-clip: text !important;
+            -moz-text-fill-color: transparent !important;
+            background-clip: text !important;
+            color: transparent !important;
+            line-height: 1.4 !important;
+        }
+        .logo-tagline {
+            font-size: 16px;
+            color: #f97316;
+            line-height: 1.4;
         }
         .feature-list {
             list-style: none;
@@ -150,6 +164,7 @@
         }
         .input-wrapper {
             position: relative;
+            overflow: hidden;
         }
         .input-wrapper .fa {
             position: absolute;
@@ -158,6 +173,31 @@
             transform: translateY(-50%);
             color: #94a3b8;
             font-size: 14px;
+            z-index: 1;
+        }
+        .password-wrapper .form-input {
+            padding-right: 44px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.3s ease;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-toggle:hover {
+            color: #6366f1;
         }
         .form-input {
             width: 100%;
@@ -227,6 +267,72 @@
         .btn-login:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .third-party-login {
+            margin-top: 24px;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .divider::before {
+            margin-right: 12px;
+        }
+        .divider::after {
+            margin-left: 12px;
+        }
+        .divider span {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 24px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .social-btn:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .wechat-btn {
+            color: #07c160;
+            border-color: #07c160;
+        }
+        .wechat-btn:hover {
+            background: rgba(7, 193, 96, 0.05);
+            border-color: #07c160;
+        }
+        .alipay-btn {
+            color: #1677ff;
+            border-color: #1677ff;
+        }
+        .alipay-btn:hover {
+            background: rgba(22, 119, 255, 0.05);
+            border-color: #1677ff;
+        }
+        .social-btn .fa {
+            font-size: 18px;
         }
 
         .footer-text {
@@ -345,11 +451,31 @@
 
         <div class="middle-section">
             <div class="logo-area">
-                <div class="logo-icon">
-                    <i class="fa fa-cubes"></i>
+                <svg width="600" height="150" viewBox="0 0 600 150">
+                    <defs>
+                        <linearGradient id="logoGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#7c3aed;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="300" y="110" font-family="Arial, sans-serif" font-size="120" font-weight="700" fill="url(#logoGradient1)" text-anchor="middle">RaaS.Dao</text>
+                </svg>
+                <svg width="260" height="70" viewBox="0 0 260 70">
+                    <defs>
+                        <linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#7c3aed;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="130" y="50" font-family="Arial, sans-serif" font-size="44" font-weight="600" fill="url(#logoGradient2)" text-anchor="middle">共创 · 共享</text>
+                </svg>
+                <div style="margin-top: 30px;">
+                    <svg width="400" height="55" viewBox="0 0 400 55">
+                        <text x="200" y="40" font-family="Arial, sans-serif" font-size="32" font-weight="600" fill="#94a3b8" text-anchor="middle">RaaS.Dao 平台运营中心</text>
+                    </svg>
                 </div>
-                <h1 class="platform-title">RaaS.Dao</h1>
-                <p class="platform-subtitle">平台运营中心</p>
             </div>
         </div>
 
@@ -367,9 +493,12 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="input-wrapper">
+                        <div class="input-wrapper password-wrapper">
                             <i class="fa fa-lock"></i>
-                            <input type="password" class="form-input" placeholder="密码">
+                            <input type="password" class="form-input" id="login-password" placeholder="密码">
+                            <button type="button" class="password-toggle" onclick="toggleLoginPassword()">
+                                <i class="fa fa-eye"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -384,6 +513,22 @@
                     <button type="button" class="btn-login" onclick="handleLogin()">
                         登 录
                     </button>
+
+                    <div class="third-party-login">
+                        <div class="divider">
+                            <span>其他登录方式</span>
+                        </div>
+                        <div class="social-buttons">
+                            <button type="button" class="social-btn wechat-btn">
+                                <i class="fa fa-weixin"></i>
+                                <span>微信</span>
+                            </button>
+                            <button type="button" class="social-btn alipay-btn">
+                                <i class="fa fa-credit-card"></i>
+                                <span>支付宝</span>
+                            </button>
+                        </div>
+                    </div>
                 </form>
 
                 <!-- <div class="footer-text">
@@ -394,6 +539,22 @@
     </div>
 
     <script>
+        function toggleLoginPassword() {
+            const passwordInput = document.getElementById('login-password');
+            const toggleBtn = event.target.closest('.password-toggle');
+            const icon = toggleBtn.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
         function handleLogin() {
             window.location.href = 'index.html';
         }
