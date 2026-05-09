@@ -169,21 +169,26 @@
             right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
-            border: none;
             cursor: pointer;
-            font-size: 16px;
             color: var(--classic-gray);
-            transition: all 0.3s;
-            width: 24px;
-            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            padding: 0;
         }
-        
+
         .eye-btn:hover {
             color: var(--klein-blue);
+        }
+
+        .eye-btn svg {
+            width: 20px;
+            height: 20px;
         }
         
         .code-input {
@@ -218,8 +223,21 @@
             color: var(--klein-blue);
             background-color: var(--white);
         }
-        
+
         .code-btn:active {
+            background-color: var(--light-gray);
+        }
+
+        .code-btn.disabled {
+            background-color: var(--light-gray);
+            color: var(--classic-gray);
+            cursor: not-allowed;
+            border-color: var(--border-gray);
+        }
+
+        .code-btn.disabled:hover {
+            border-color: var(--border-gray);
+            color: var(--classic-gray);
             background-color: var(--light-gray);
         }
         
@@ -414,7 +432,16 @@
                 <input type="text" class="form-input" placeholder="请输入手机号/用户名">
                 <div class="password-input">
                     <input type="password" class="form-input" placeholder="请输入密码">
-                    <button class="eye-btn">👁️</button>
+                    <span class="eye-btn">
+                        <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </span>
                 </div>
                 <div class="code-input" style="display: none;">
                     <input type="text" class="form-input" placeholder="请输入验证码">
@@ -473,10 +500,43 @@
         });
 
         // 密码显示/隐藏
-        eyeBtn.addEventListener('click', () => {
-            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
+        eyeBtn.addEventListener('click', function() {
+            const eyeIcon = this.querySelector('.eye-icon');
+            const eyeOffIcon = this.querySelector('.eye-off-icon');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
+        });
+
+        // 获取验证码按钮
+        const codeBtn = document.querySelector('.code-btn');
+        let countdownInterval = null;
+
+        codeBtn.addEventListener('click', function() {
+            if (this.classList.contains('disabled')) return;
+
+            let countdown = 60;
+            this.classList.add('disabled');
+            this.textContent = countdown + '秒后重试';
+
+            countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    this.classList.remove('disabled');
+                    this.textContent = '获取验证码';
+                    countdownInterval = null;
+                } else {
+                    this.textContent = countdown + '秒后重试';
+                }
+            }, 1000);
         });
 
         // 登录按钮点击事件

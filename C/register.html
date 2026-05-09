@@ -294,26 +294,28 @@
             padding-right: 2.5rem;
         }
 
-        .eye-btn {
+        .password-toggle {
             position: absolute;
             right: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
-            border: none;
             cursor: pointer;
-            font-size: 1rem;
             color: var(--classic-gray);
-            transition: all 0.3s;
-            width: 1.5rem;
-            height: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: color 0.3s;
         }
 
-        .eye-btn:hover {
+        .password-toggle:hover {
             color: var(--klein-blue);
+        }
+
+        .password-toggle svg {
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
         .code-input {
@@ -656,9 +658,18 @@
                             <span class="required-mark">*</span>登录密码
                         </label>
                         <div class="password-input">
-                            <input type="password" class="form-input" id="regPassword" placeholder="请设置登录密码" maxlength="20">
-                            <button type="button" class="eye-btn" id="passwordEye">👁️</button>
-                        </div>
+                                <input type="password" class="form-input" id="regPassword" placeholder="请设置登录密码" maxlength="20">
+                                <span class="password-toggle" id="passwordEye">
+                                    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </span>
+                            </div>
                         <span class="error-tip" id="passwordError"></span>
                     </div>
 
@@ -667,9 +678,18 @@
                             <span class="required-mark">*</span>确认密码
                         </label>
                         <div class="password-input">
-                            <input type="password" class="form-input" id="regConfirmPassword" placeholder="请再次输入登录密码" maxlength="20">
-                            <button type="button" class="eye-btn" id="confirmEye">👁️</button>
-                        </div>
+                                <input type="password" class="form-input" id="regConfirmPassword" placeholder="请再次输入登录密码" maxlength="20">
+                                <span class="password-toggle" id="confirmEye">
+                                    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </span>
+                            </div>
                         <span class="error-tip" id="confirmPasswordError"></span>
                     </div>
 
@@ -924,16 +944,34 @@
             window.location.href = 'ai.html?showLogin=true';
         });
 
-        passwordEye.addEventListener('click', () => {
-            const type = regPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            regPassword.setAttribute('type', type);
-            passwordEye.textContent = type === 'password' ? '👁️' : '🙈';
+        passwordEye.addEventListener('click', function() {
+            const eyeIcon = this.querySelector('.eye-icon');
+            const eyeOffIcon = this.querySelector('.eye-off-icon');
+
+            if (regPassword.type === 'password') {
+                regPassword.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                regPassword.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
         });
 
-        confirmEye.addEventListener('click', () => {
-            const type = regConfirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            regConfirmPassword.setAttribute('type', type);
-            confirmEye.textContent = type === 'password' ? '👁️' : '🙈';
+        confirmEye.addEventListener('click', function() {
+            const eyeIcon = this.querySelector('.eye-icon');
+            const eyeOffIcon = this.querySelector('.eye-off-icon');
+
+            if (regConfirmPassword.type === 'password') {
+                regConfirmPassword.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                regConfirmPassword.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
         });
 
         // 协议弹窗功能
