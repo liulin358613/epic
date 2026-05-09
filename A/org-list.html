@@ -262,10 +262,10 @@
             color: #1e293b;
         }
         .sub-org-row {
-            background: #f8fafc;
+            background: #ededee;
         }
         .sub-org-row td {
-            padding-left: 40px;
+            /* padding-left: 40px; */
         }
         .badge-audit-pending {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
@@ -731,9 +731,9 @@
                             <td><span class="action-link" onclick="showOrgDetail('ORG001')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
-                            <td>ORG001-01</td>
+                            <td style="padding-left: 30px;">ORG001-01</td>
                             <td>
-                                <div class="org-cell" style="padding-left: 20px;">
+                                <div class="org-cell" style="padding-left: 30px;">
                                     <span class="org-name">长安训练基地-教学区</span>
                                 </div>
                             </td>
@@ -758,9 +758,9 @@
                             <td><span class="action-link" onclick="showOrgDetail('ORG001')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
-                            <td>ORG001-02</td>
+                            <td style="padding-left: 30px;">ORG001-02</td>
                             <td>
-                                <div class="org-cell" style="padding-left: 20px;">
+                                <div class="org-cell" style="padding-left: 30px;">
                                     <span class="org-name">长安训练基地-实操区</span>
                                 </div>
                             </td>
@@ -836,9 +836,9 @@
                             <td><span class="action-link" onclick="showOrgDetail('ORG003')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
-                            <td>ORG003-01</td>
+                            <td style="padding-left: 30px;">ORG003-01</td>
                             <td>
-                                <div class="org-cell" style="padding-left: 20px;">
+                                <div class="org-cell" style="padding-left: 30px;">
                                     <span class="org-name">众博机器人-研发中心</span>
                                 </div>
                             </td>
@@ -977,9 +977,9 @@
                             <td><span class="action-link" onclick="showOrgDetail('ORG007')">详情</span></td>
                         </tr>
                         <tr class="sub-org-row">
-                            <td>ORG007-01</td>
+                            <td style="padding-left: 30px;">ORG007-01</td>
                             <td>
-                                <div class="org-cell" style="padding-left: 20px;">
+                                <div class="org-cell" style="padding-left: 30px;">
                                     <span class="org-name">中兴装备-华南分部</span>
                                 </div>
                             </td>
@@ -1077,6 +1077,7 @@
                     creditCode: '91441900MA4U4X2K8R'
                 },
                 type: 'training',
+                industry: '职业培训',
                 createTime: '2023-06-15',
                 status: 'approved',
                 statusReason: '',
@@ -1096,6 +1097,7 @@
                     creditCode: '91441900MA4W7Q3M5N'
                 },
                 type: 'parts',
+                industry: '机械零部件',
                 createTime: '2023-08-20',
                 status: 'pending',
                 statusReason: '',
@@ -1115,6 +1117,7 @@
                     creditCode: '91440300MA5D8X1K2R'
                 },
                 type: 'robot',
+                industry: '工业机器人',
                 createTime: '2023-05-10',
                 status: 'approved',
                 statusReason: '',
@@ -1134,6 +1137,7 @@
                     creditCode: '91440100MA5C4U2M7Q'
                 },
                 type: 'equipment',
+                industry: '传感器',
                 createTime: '2023-09-05',
                 status: 'disabled',
                 statusReason: '组织违规，资质过期，被限制入驻资格',
@@ -1153,6 +1157,7 @@
                     creditCode: '91440600MA5W1K3L8M'
                 },
                 type: 'robot',
+                industry: '智能装备',
                 createTime: '2023-07-18',
                 status: 'rejected',
                 statusReason: '组织资质不符，信息有误，拒绝入驻申请',
@@ -1172,6 +1177,7 @@
                     creditCode: '91330100MA2B3C4D5E'
                 },
                 type: 'equipment',
+                industry: '云计算',
                 createTime: '2023-04-22',
                 status: 'pending',
                 statusReason: '',
@@ -1191,6 +1197,7 @@
                     creditCode: '91420100MA5K7M2N9P'
                 },
                 type: 'robot',
+                industry: '智能装备',
                 createTime: '2023-10-30',
                 status: 'approved',
                 statusReason: '',
@@ -1210,7 +1217,11 @@
                     creditCode: '91510100MA6A5B2C3D'
                 },
                 type: 'robot',
-                createTime: '2023-11-15'
+                industry: '人工智能',
+                createTime: '2023-11-15',
+                status: 'pending',
+                statusReason: '',
+                level: 'Lv.0'
             }
         };
 
@@ -1256,14 +1267,15 @@
                     phone: org.phone,
                     address: org.address,
                     memberCount: org.memberCount,
-                    companyName: org.company.name,
-                    legalPerson: org.company.legalPerson,
-                    creditCode: org.company.creditCode,
+                    companyName: org.company ? org.company.name : '',
+                    legalPerson: org.company ? org.company.legalPerson : '',
+                    creditCode: org.company ? org.company.creditCode : '',
                     type: org.type,
+                    industry: org.industry || '',
                     createTime: org.createTime,
                     status: org.status,
-                    statusReason: org.statusReason,
-                    level: org.level
+                    statusReason: org.statusReason || '',
+                    level: org.level || 'Lv.0'
                 });
                 window.location.href = 'org-detail.html?' + params.toString();
             }

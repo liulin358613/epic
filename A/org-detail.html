@@ -96,6 +96,100 @@
             overflow-y: auto;
             min-height: 0;
         }
+        .page-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .page-loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .license-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+        }
+        .license-modal-overlay.show {
+            display: flex;
+        }
+        .license-modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            cursor: default;
+        }
+        .license-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #64748b;
+        }
+        .license-modal-close:hover {
+            background: #e2e8f0;
+        }
+        .license-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .license-image-container {
+            max-width: 100%;
+            max-height: calc(90vh - 80px);
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .license-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
         .org-header {
             display: flex;
             align-items: stretch;
@@ -616,6 +710,9 @@
     </style>
 </head>
 <body>
+    <div id="page-loading" class="page-loading">
+        <div class="loading-spinner"></div>
+    </div>
     <header class="page-header">
         <div>
             <h1 class="page-title">组织详情</h1>
@@ -631,7 +728,7 @@
 
     <main class="main-content">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: stretch;">
-            <div class="card">
+            <div id="org-info-card" class="card">
                 <div class="section-header">
                     <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
                 </div>
@@ -642,23 +739,21 @@
                         </div>
                         <div style="flex: 1; min-width: 0;">
                             <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;"><span id="org-name">东莞长安训练基地</span> <span id="org-id" style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span id="org-level-badge" class="badge badge-level">Lv.3</span> <span id="org-status-badge" class="badge badge-audit-approved badge-with-tooltip">审核通过<span class="tooltip-icon">ⓘ</span><span id="org-status-tooltip" class="tooltip-text"></span></span>
-                                <button id="btn-audit" class="btn btn-sm" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; margin-left: 12px; padding: 4px 12px; font-size: 13px; display: none;" onclick="auditOrg()">
+                                <button id="btn-audit" class="btn btn-sm" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; margin-left: 12px; padding: 4px 12px; font-size: 13px; display: none;" onclick="showAuditModal()">
                                     <i class="fa fa-check-circle"></i> 审核
                                 </button>
                                 <button id="btn-disable" class="btn btn-sm" style="background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; margin-left: 12px; padding: 4px 12px; font-size: 13px; display: none;" onclick="showDisableModal()">
                                     <i class="fa fa-ban"></i> 禁用
                                 </button>
                             </div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
                                 <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
                                 <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 0769-88888888</span>
                                 <span><i class="fa fa-envelope" style="color: #94a3b8;"></i> contact@training.com</span>
                             </div>
-                            <div style="display: flex; gap: 12px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
-                                <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 成立于 <span id="org-create-time">2018-06-15</span></span>
-                                <span><i class="fa fa-users" style="color: #94a3b8;"></i> <span id="org-member-count">58</span> 名成员</span>
+                            <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
                                 <span id="org-phone"><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
-                                <a href="#" onclick="showLicense()" style="color: #3b82f6; text-decoration: none;"><i class="fa fa-file-image-o" style="color: #3b82f6;"></i> 查看营业执照</a>
+                                <span><i class="fa fa-users" style="color: #94a3b8;"></i> <span id="org-member-count">58</span> 名成员</span>
                             </div>
                         </div>
                     </div>
@@ -666,43 +761,50 @@
                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
                         <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
                             <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
-                        </div>
-                        <div class="org-detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">组织类型</div>
-                                <div id="org-type" class="detail-value">训练基地</div>
+                            <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicenseModal()">
+                                <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
+                            </button>
+                        </div> 
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-left: 12px;">
+                             <div style="font-size: 13px;">
+                                <span style="color: #64748b;">组织类型：</span>
+                                <span id="org-type" style="color: #1e293b;">训练基地、专机设备、机器人</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">行业领域</div>
-                                <div class="detail-value">职业培训</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">行业领域：</span>
+                                <span id="org-industry" style="color: #1e293b;">机器人与自动化</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">经营范围</div>
-                                <div class="detail-value">技能培训、企业内训</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">企业名称：</span>
+                                <span id="org-company" style="color: #1e293b;">深圳智控机器人科技有限公司</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">统一社会信用代码</div>
-                                <div id="org-credit-code" class="detail-value">91441900MA510XXX</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">统一社会信用代码：</span>
+                                <span id="org-credit-code" style="color: #1e293b;">91440300MA5F8K7Y6Q</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">法定代表人</div>
-                                <div id="org-legal-person" class="detail-value">张建国</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">法定代表人：</span>
+                                <span id="org-legal-person" style="color: #1e293b;">王浩宇</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">注册资本</div>
-                                <div class="detail-value">500万元</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">注册资本：</span>
+                                <span style="color: #1e293b;">500万元人民币</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">注册地址</div>
-                                <div id="org-address" class="detail-value">东莞市长安镇振安中路88号</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">成立日期：</span>
+                                <span style="color: #1e293b;">2018-06-15</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">企业名称</div>
-                                <div id="org-company" class="detail-value">东莞市蓓佳尔工艺品有限公司</div>
+                            <div style="font-size: 13px;">
+                                <span style="color: #64748b;">营业期限：</span>
+                                <span style="color: #1e293b;">2018-06-15 至 无固定期限</span>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">联系人</div>
-                                <div id="org-leader" class="detail-value">李经理 13800138000</div>
+                            <div style="font-size: 13px; grid-column: 1 / -1;">
+                                <span style="color: #64748b;">注册地址：</span>
+                                <span id="org-address" style="color: #1e293b;">深圳市南山区科技园南区粤兴三道8号中科纳能大厦B座12楼</span>
+                            </div>
+                            <div style="font-size: 13px; grid-column: 1 / -1;">
+                                <span style="color: #64748b;">经营范围：</span>
+                                <span style="color: #1e293b;">工业机器人及自动化设备的研发、生产、销售；自动化控制系统集成；智能装备技术开发；计算机软硬件技术开发及销售；国内贸易；经营进出口业务。</span>
                             </div>
                         </div>
                     </div>
@@ -710,7 +812,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div id="org-data-card" class="card" style="height: 0; overflow: hidden;">
                 <div class="section-header">
                     <div class="section-title"><i class="fa fa-bar-chart"></i> 组织运营数据</div>
                 </div>
@@ -1020,7 +1122,71 @@
         </div>
     </main>
 
+    <div id="license-modal" class="license-modal-overlay" onclick="closeLicenseModal()">
+        <div class="license-modal-content" onclick="event.stopPropagation()">
+            <button class="license-modal-close" onclick="closeLicenseModal()">
+                <i class="fa fa-times"></i>
+            </button>
+            <div class="license-modal-title">营业执照</div>
+            <div class="license-image-container">
+                <img src="images/1.png" alt="营业执照">
+            </div>
+        </div>
+    </div>
+
     <script>
+        function showLicenseModal() {
+            const modal = document.getElementById('license-modal');
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLicenseModal() {
+            const modal = document.getElementById('license-modal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function alignCardHeights() {
+            const leftCard = document.getElementById('org-info-card');
+            const rightCard = document.getElementById('org-data-card');
+            const rightContent = document.getElementById('data-content');
+            const loading = document.getElementById('page-loading');
+            
+            if (!leftCard || !rightCard || !rightContent) {
+                setTimeout(alignCardHeights, 50);
+                return;
+            }
+            
+            const leftHeight = leftCard.getBoundingClientRect().height;
+            
+            if (leftHeight <= 0) {
+                setTimeout(alignCardHeights, 50);
+                return;
+            }
+            
+            rightCard.style.height = leftHeight + 'px';
+            rightCard.style.overflow = 'hidden';
+            
+            const header = rightCard.querySelector('.section-header');
+            const headerHeight = header ? header.getBoundingClientRect().height : 48;
+            
+            rightContent.style.height = (leftHeight - headerHeight) + 'px';
+            rightContent.style.overflowY = 'auto';
+            rightContent.style.boxSizing = 'border-box';
+            
+            if (loading) {
+                loading.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', alignCardHeights);
+        window.addEventListener('resize', alignCardHeights);
+
         function getUrlParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name) || '';
@@ -1058,56 +1224,74 @@
         function updateOrgDetail() {
             const orgData = {
                 id: getUrlParameter('id'),
-                name: decodeURIComponent(getUrlParameter('name')),
-                leader: decodeURIComponent(getUrlParameter('leader')),
-                phone: getUrlParameter('phone'),
-                address: decodeURIComponent(getUrlParameter('address')),
-                memberCount: getUrlParameter('memberCount'),
-                companyName: decodeURIComponent(getUrlParameter('companyName')),
-                legalPerson: decodeURIComponent(getUrlParameter('legalPerson')),
-                creditCode: getUrlParameter('creditCode'),
-                type: getUrlParameter('type'),
-                createTime: getUrlParameter('createTime'),
-                status: getUrlParameter('status'),
+                name: decodeURIComponent(getUrlParameter('name')) || '东莞长安训练基地',
+                leader: decodeURIComponent(getUrlParameter('leader')) || '张经理',
+                phone: getUrlParameter('phone') || '13800138000',
+                address: decodeURIComponent(getUrlParameter('address')) || '广东省东莞市长安镇',
+                memberCount: getUrlParameter('memberCount') || '58',
+                companyName: decodeURIComponent(getUrlParameter('companyName')) || '深圳智控机器人科技有限公司',
+                legalPerson: decodeURIComponent(getUrlParameter('legalPerson')) || '王浩宇',
+                creditCode: getUrlParameter('creditCode') || '91440300MA5F8K7Y6Q',
+                type: getUrlParameter('type') || 'training',
+                industry: decodeURIComponent(getUrlParameter('industry')) || '机器人与自动化',
+                createTime: getUrlParameter('createTime') || '2018-06-15',
+                status: getUrlParameter('status') || 'approved',
                 statusReason: getUrlParameter('statusReason'),
-                level: getUrlParameter('level')
+                level: getUrlParameter('level') || 'Lv.3'
             };
 
-            if (orgData.id) {
-                document.getElementById('org-name').textContent = orgData.name || '未知组织';
-                document.getElementById('org-id').textContent = '(' + (orgData.id || '') + ')';
-                
-                const levelBadge = document.getElementById('org-level-badge');
-                if (levelBadge) {
-                    levelBadge.textContent = orgData.level || 'Lv.0';
-                    levelBadge.className = 'badge ' + (orgData.level && orgData.level !== 'Lv.0' ? 'badge-level' : 'badge-level-0');
-                }
-
-                document.getElementById('org-leader').textContent = (orgData.leader || '-') + ' ' + (orgData.phone || '');
-                const orgPhoneElement = document.getElementById('org-phone');
-                if (orgPhoneElement) {
-                    orgPhoneElement.innerHTML = '<i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：' + (orgData.leader || '-') + ' / ' + (orgData.phone || '-');
-                }
-                document.getElementById('org-member-count').textContent = orgData.memberCount || '-';
-                document.getElementById('org-company').textContent = orgData.companyName || '-';
-                document.getElementById('org-legal-person').textContent = orgData.legalPerson || '-';
-                document.getElementById('org-credit-code').textContent = orgData.creditCode || '-';
-                document.getElementById('org-address').textContent = orgData.address || '-';
-                document.getElementById('org-create-time').textContent = orgData.createTime || '-';
-
-                const typeMap = {
-                    'training': '训练基地',
-                    'parts': '零部件供应商',
-                    'robot': '机器人企业',
-                    'equipment': '设备商',
-                    'service': '服务商'
-                };
-                document.getElementById('org-type').textContent = typeMap[orgData.type] || orgData.type || '-';
-
-                updateOrgStatusBadge(orgData.status, orgData.statusReason);
-
-                updateActionButtons(orgData.status);
+            const orgName = document.getElementById('org-name');
+            if (orgName) orgName.textContent = orgData.name || '未知组织';
+            
+            const orgId = document.getElementById('org-id');
+            if (orgId) orgId.textContent = '(' + (orgData.id || 'ORG001') + ')';
+            
+            const levelBadge = document.getElementById('org-level-badge');
+            if (levelBadge) {
+                levelBadge.textContent = orgData.level || 'Lv.0';
+                levelBadge.className = 'badge ' + (orgData.level && orgData.level !== 'Lv.0' ? 'badge-level' : 'badge-level-0');
             }
+
+            const orgPhoneElement = document.getElementById('org-phone');
+            if (orgPhoneElement) {
+                orgPhoneElement.innerHTML = '<i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：' + (orgData.leader || '-') + ' / ' + (orgData.phone || '-');
+            }
+            
+            const orgMemberCount = document.getElementById('org-member-count');
+            if (orgMemberCount) orgMemberCount.textContent = orgData.memberCount || '-';
+            
+            const orgCompany = document.getElementById('org-company');
+            if (orgCompany) orgCompany.textContent = orgData.companyName || '-';
+            
+            const orgLegalPerson = document.getElementById('org-legal-person');
+            if (orgLegalPerson) orgLegalPerson.textContent = orgData.legalPerson || '-';
+            
+            const orgCreditCode = document.getElementById('org-credit-code');
+            if (orgCreditCode) orgCreditCode.textContent = orgData.creditCode || '-';
+            
+            const orgAddress = document.getElementById('org-address');
+            if (orgAddress) orgAddress.textContent = orgData.address || '-';
+            
+            const orgCreateTime = document.getElementById('org-create-time');
+            if (orgCreateTime) orgCreateTime.textContent = orgData.createTime || '-';
+
+            const typeMap = {
+                'training': '训练基地',
+                'parts': '零部件供应商',
+                'robot': '机器人企业',
+                'equipment': '设备商',
+                'service': '服务商'
+            };
+            
+            const orgType = document.getElementById('org-type');
+            if (orgType) orgType.textContent = typeMap[orgData.type] || orgData.type || '-';
+            
+            const orgIndustry = document.getElementById('org-industry');
+            if (orgIndustry) orgIndustry.textContent = orgData.industry || '-';
+
+            updateOrgStatusBadge(orgData.status, orgData.statusReason);
+
+            updateActionButtons(orgData.status);
         }
 
         function updateActionButtons(status) {
@@ -1181,6 +1365,26 @@
             document.getElementById('audit-modal').style.display = 'flex';
             document.getElementById('audit-comment-input').value = '';
             document.getElementById('audit-comment-input').focus();
+        }
+
+        function showAuditModal() {
+            document.getElementById('audit-modal').style.display = 'flex';
+            document.getElementById('audit-comment-input').value = '';
+            document.getElementById('audit-comment-input').focus();
+            document.querySelector('input[name="audit-result"][value="approve"]').checked = true;
+        }
+
+        function showRejectModal() {
+            document.getElementById('audit-modal').style.display = 'flex';
+            document.getElementById('audit-comment-input').value = '';
+            document.getElementById('audit-comment-input').focus();
+            document.querySelector('input[name="audit-result"][value="reject"]').checked = true;
+        }
+
+        function enableOrg() {
+            showToast('组织已启用', 'success');
+            updateOrgStatusBadge('approved', '');
+            updateActionButtons('approved');
         }
 
         function hideAuditModal() {
