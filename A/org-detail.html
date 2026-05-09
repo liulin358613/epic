@@ -761,7 +761,7 @@
                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
                         <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
                             <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
-                            <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicenseModal()">
+                            <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
                                 <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
                             </button>
                         </div> 
@@ -1135,14 +1135,7 @@
     </div>
 
     <script>
-        function showLicenseModal() {
-            const modal = document.getElementById('license-modal');
-            if (modal) {
-                modal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
+        
         function closeLicenseModal() {
             const modal = document.getElementById('license-modal');
             if (modal) {
