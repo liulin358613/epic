@@ -237,7 +237,7 @@
         .role-header {
             flex-shrink: 0;
             display: flex;
-            justify-content: space-between;
+            /* justify-content: space-between; */
             align-items: center;
             margin-bottom: 12px;
             font-size: 14px;
@@ -767,6 +767,7 @@
         .btn-sm {
             padding: 6px 12px;
             font-size: 13px;
+            margin-left: 16px;
         }
         .btn-xs {
             padding: 4px 8px;
@@ -947,7 +948,7 @@
     <header class="page-header">
         <div>
             <h1 class="page-title">组织类型</h1>
-            <p class="page-subtitle">管理组织的类型配置</p>
+            <p class="page-subtitle">管理组织的类型，预设组织类型功能权限，用户创建组织成功后自动分配功能菜单</p>
         </div>
     </header>
     <div class="page-container">
@@ -960,7 +961,7 @@
                     </button>
                 </div>
                 <div class="sidebar-tree">
-                    <div class="tree-item parent active" data-org="training" onclick="handleParentClick('training');loadOrgData('训练基地')">
+                    <div class="tree-item parent" data-org="training" onclick="handleParentClick('training');loadOrgData('训练基地')">
                         <span class="tree-content">
                             <span class="expand-icon">-</span>
                             <span>训练基地</span>
@@ -1847,7 +1848,10 @@
 
     <script>
         window.onload = function() {
-            loadOrgData('训练基地');
+            // 默认进入添加模式，不选中任何组织
+            document.querySelector('.content-header').textContent = '添加组织';
+            document.getElementById('audit-no').checked = true;
+            document.getElementById('audit-yes').checked = false;
         };
 
         function addNewOrg() {

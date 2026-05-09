@@ -734,7 +734,7 @@
                 </div>
                 <div class="section-content" style="padding: 16px;">
                     <div style="display: flex; gap: 16px;">
-                        <div style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <div style="width: 100px; height: 100px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
                         </div>
                         <div style="flex: 1; min-width: 0;">
@@ -745,6 +745,10 @@
                                 <button id="btn-disable" class="btn btn-sm" style="background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; margin-left: 12px; padding: 4px 12px; font-size: 13px; display: none;" onclick="showDisableModal()">
                                     <i class="fa fa-ban"></i> 禁用
                                 </button>
+                            </div>
+                            <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">
+                                <span style="color: #64748b;">组织类型：</span>
+                                <span id="org-type" style="color: #1e293b;font-weight: 600;">训练基地、专机设备、机器人</span>
                             </div>
                             <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
                                 <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
@@ -759,22 +763,14 @@
                         </div>
                     </div>
                    
-                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                    <div style="padding-top: 16px; border-top: 1px dashed #e2e8f0;">
                         <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                            <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
+                            <i class="fa fa-info-circle" style="color: #64748b;"></i> 企业信息
                             <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
                                 <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
                             </button>
                         </div> 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-left: 12px;">
-                             <div style="font-size: 13px;">
-                                <span style="color: #64748b;">组织类型：</span>
-                                <span id="org-type" style="color: #1e293b;">训练基地、专机设备、机器人</span>
-                            </div>
-                            <div style="font-size: 13px;">
-                                <span style="color: #64748b;">行业领域：</span>
-                                <span id="org-industry" style="color: #1e293b;">机器人与自动化</span>
-                            </div>
                             <div style="font-size: 13px;">
                                 <span style="color: #64748b;">企业名称：</span>
                                 <span id="org-company" style="color: #1e293b;">深圳智控机器人科技有限公司</span>
@@ -973,9 +969,7 @@
                                     <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none;">东莞市智联科技有限公司</a></div>
-                                    <div style="margin-top: 4px; color: #64748b;">法人：王建国</div>
-                                    <div style="color: #64748b;">信用代码：91441900MA4U5Y3L9S</div>
+                                   -
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
                                 <td style="padding: 10px 12px;">

@@ -1257,7 +1257,7 @@
                                 <div class="dropdown-panel" id="orgTypePanel">
                                     <div class="dropdown-cascade">
                                         <div class="cascade-level" id="level1">
-                                            <div class="cascade-title">一级分类</div>
+                                            <div class="cascade-title">组织类型</div>
                                             <div class="cascade-options">
                                                 <label class="cascade-option parent-option" data-value="training" data-has-children="true">
                                                     <span class="option-text">训练基地</span>
@@ -1682,7 +1682,7 @@
 
         function renderLevel2(level1Value) {
             level2.style.display = 'block';
-            level2Title.textContent = orgTypeData[level1Value].label + ' - 二级分类';
+            level2Title.textContent = orgTypeData[level1Value].label;
             level2Options.innerHTML = '';
             
             const children = orgTypeData[level1Value].children;

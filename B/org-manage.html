@@ -112,7 +112,7 @@
             overflow-y: auto;
         }
         .modal-header {
-            padding: 16px 20px;
+            padding: 8px 20px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -330,25 +330,281 @@
             background: #f8fafc;
             color: #64748b;
         }
+
+        /* 级联选择器样式 */
+        :root {
+            --border-gray: #e2e8f0;
+            --klein-blue: #0051d9;
+            --white: #ffffff;
+            --classic-gray: #64748b;
+            --font-size-base: 14px;
+            --font-size-sm: 12px;
+            --deep-gray: #1e293b;
+            --light-gray: #f8fafc;
+        }
+
+        .dropdown-multi-select {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-trigger {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-gray);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: var(--white);
+            min-height: 2.5rem;
+        }
+
+        .dropdown-trigger:hover {
+            border-color: var(--klein-blue);
+        }
+
+        .dropdown-trigger.active {
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+
+        .dropdown-placeholder {
+            color: var(--classic-gray);
+            font-size: var(--font-size-base);
+            flex: 1;
+        }
+
+        .dropdown-selected {
+            color: var(--deep-gray);
+            font-size: var(--font-size-base);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dropdown-arrow {
+            color: var(--classic-gray);
+            font-size: 0.625rem;
+            transition: transform 0.3s;
+            margin-left: 0.5rem;
+        }
+
+        .dropdown-trigger.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-panel {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            border: 1px solid var(--border-gray);
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+            display: none;
+            overflow: visible;
+        }
+
+        .dropdown-panel.show {
+            display: block;
+        }
+
+        .dropdown-cascade {
+            display: flex;
+            min-height: 280px;
+        }
+
+        .cascade-level {
+            flex: 1;
+            border-right: 1px solid var(--border-gray);
+        }
+
+        .cascade-level:last-child {
+            border-right: none;
+        }
+
+        .cascade-title {
+            padding: 0.75rem 1rem;
+            font-size: var(--font-size-sm);
+            color: var(--classic-gray);
+            font-weight: 500;
+            background-color: var(--light-gray);
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .cascade-options {
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 0.5rem 0;
+        }
+
+        .cascade-option {
+            display: flex;
+            align-items: center;
+            padding: 0.625rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 2.75rem;
+            position: relative;
+        }
+
+        .cascade-option:hover {
+            background-color: rgba(0, 81, 217, 0.05);
+        }
+
+        .cascade-option.active {
+            background-color: rgba(0, 81, 217, 0.08);
+        }
+
+        .cascade-option.selected {
+            background-color: rgba(0, 81, 217, 0.06);
+        }
+
+        .cascade-option.selected .option-text {
+            color: var(--klein-blue);
+            font-weight: 400;
+        }
+
+        .cascade-option .option-checkbox {
+            width: 1rem;
+            height: 1rem;
+            border: 1px solid var(--border-gray);
+            border-radius: 3px;
+            margin-right: 0.75rem;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .cascade-option.selected .option-checkbox {
+            background-color: var(--klein-blue);
+            border-color: var(--klein-blue);
+        }
+
+        .cascade-option.selected .option-checkbox::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--white);
+            font-size: 0.625rem;
+        }
+
+        .cascade-option .option-text {
+            font-size: var(--font-size-base);
+            color: var(--deep-gray);
+        }
+
+        .cascade-option .option-arrow {
+            color: var(--classic-gray);
+            font-size: 1rem;
+            margin-left: auto;
+        }
+
+        .cascade-option .option-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--border-gray);
+            border-radius: 50%;
+            color: var(--classic-gray);
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            cursor: help;
+            flex-shrink: 0;
+            position: relative;
+            background-color: var(--white);
+        }
+
+        .cascade-option .option-info-icon {
+            position: relative;
+        }
+        
+        .option-tooltip {
+            position: fixed;
+            background-color: #475569;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 99999;
+            max-width: 450px;
+            min-width: 200px;
+            white-space: normal;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            line-height: 1.5;
+            pointer-events: none;
+            max-height: 80vh;
+            overflow-y: auto;
+            display: none;
+            opacity: 0.9;
+        }
+
+        .dropdown-footer {
+            padding: 0.75rem;
+            border-top: 1px solid var(--border-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .dropdown-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            border: 1px solid var(--border-gray);
+            background-color: var(--white);
+            color: var(--deep-gray);
+            transition: all 0.2s;
+        }
+
+        .dropdown-btn:hover {
+            background-color: var(--light-gray);
+        }
+
+        .dropdown-btn.dropdown-confirm {
+            background-color: var(--klein-blue);
+            color: var(--white);
+            border-color: var(--klein-blue);
+        }
+
+        .dropdown-btn.dropdown-confirm:hover {
+            background-color: #0044b3;
+            border-color: #0044b3;
+        }
     </style>
 </head>
 <body>
+    <div class="option-tooltip" id="editOrgTooltip"></div>
     <div style="padding: 16px;">
         <div class="card">
             <div class="section-header">
                 <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
-                <button class="btn-edit" onclick="showEditModal()">
+            </div>
+            <div class="section-content" style="padding: 16px; position: relative;">
+                <button style="position: absolute; top: 16px; right: 16px; padding: 4px 10px; font-size: 12px; color: #64748b; background: transparent; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showEditModal()">
                     <i class="fa fa-pencil"></i> 编辑
                 </button>
-            </div>
-            <div class="section-content" style="padding: 16px;">
                 <div style="display: flex; gap: 16px;">
-                    <div style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <div style="width: 100px; height: 100px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
                     </div>
                     <div style="flex: 1; min-width: 0;">
                         <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
-                            <span>东莞长安训练基地</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                            <span>东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                        </div>
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">
+                            <span style="color: #64748b;">组织类型：</span>
+                            <span style="color: #1e293b;font-weight: 600;">训练基地、专机设备、机器人</span>
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
                             <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
@@ -363,22 +619,19 @@
                     </div>
                 </div>
                
-                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
-                    <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <i class="fa fa-info-circle" style="color: #64748b;"></i> 组织详情
-                        <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
-                            <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
+                <div style="padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                    <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa fa-info-circle" style="color: #64748b;"></i> 企业信息
+                            <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
+                                <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
+                            </button>
+                        </div>
+                        <button style="padding: 4px 10px; font-size: 12px; color: #64748b; background: transparent; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showEditCompanyModal()">
+                            <i class="fa fa-pencil"></i> 编辑
                         </button>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-left: 12px;">
-                        <div style="font-size: 13px;">
-                            <span style="color: #64748b;">组织类型：</span>
-                            <span style="color: #1e293b;">训练基地、专机设备、机器人</span>
-                        </div>
-                        <div style="font-size: 13px;">
-                            <span style="color: #64748b;">行业领域：</span>
-                            <span style="color: #1e293b;">机器人与自动化</span>
-                        </div>
                         <div style="font-size: 13px;">
                             <span style="color: #64748b;">企业名称：</span>
                             <span style="color: #1e293b;">深圳智控机器人科技有限公司</span>
@@ -419,7 +672,7 @@
         <div class="card">
             <div class="section-header">
                 <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
-                <button class="btn-add" onclick="showAddModal()">
+                <button style="padding: 4px 10px; font-size: 12px; color: #64748b; background: transparent; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showAddModal()">
                     <i class="fa fa-plus"></i> 添加
                 </button>
             </div>
@@ -440,11 +693,11 @@
                         <tbody>
                             <tr style="border-bottom: 1px solid #f1f5f9;">
                                 <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">智能制造培训中心</div>
+                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">东莞市长安培训中心</div>
                                     <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB001</div>
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市蓓佳尔工艺品有限公司</a></div>
+                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市长安培训中心</a></div>
                                     <div style="margin-top: 4px; color: #64748b;">法人：李蓓佳</div>
                                     <div style="color: #64748b;">信用代码：91441900MA4U4X2K8R</div>
                                 </td>
@@ -466,13 +719,11 @@
                             </tr>
                             <tr style="border-bottom: 1px solid #f1f5f9;">
                                 <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">机器人实训基地</div>
+                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">东莞市长安训练基地</div>
                                     <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市智联科技有限公司</a></div>
-                                    <div style="margin-top: 4px; color: #64748b;">法人：王建国</div>
-                                    <div style="color: #64748b;">信用代码：91441900MA4U5Y3L9S</div>
+                                   -
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
                                 <td style="padding: 10px 12px;">
@@ -512,126 +763,212 @@
 
     <!-- 编辑组织信息弹窗 -->
     <div id="editModal" style="display: none;" class="modal-overlay" onclick="hideEditModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-content" style="width: 700px;" onclick="event.stopPropagation()">
             <div class="modal-header">
                 <h3>编辑组织信息</h3>
                 <button class="close-btn" onclick="hideEditModal()">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>组织图片</label>
-                        <div class="upload-area has-image" id="org-image-upload" onclick="document.getElementById('org-image-input').click()">
-                            <img src="images/logo.png" alt="组织图片" id="org-image-preview">
-                            <div class="upload-placeholder">
-                                <i class="fa fa-cloud-upload"></i>
-                                <div>点击上传组织图片</div>
+            <div class="modal-body" style="padding: 24px;">
+                <!-- 组织图片 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">组织图片:</label>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <!-- 上传区域 -->
+                        <div id="edit-org-image-upload" style="width: 100px; height: 100px; border: 1px dashed #e2e8f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('edit-org-image-input').click()">
+                            <i class="fa fa-plus" style="font-size: 24px; color: #94a3b8;"></i>
+                            <span style="font-size: 12px; color: #94a3b8; margin-top: 4px;">上传</span>
+                        </div>
+                        <!-- 预览区域 -->
+                        <div id="edit-org-image-preview" style="width: 100px; height: 100px; border-radius: 8px; display: none; cursor: pointer;" onclick="showOrgImagePreview()"></div>
+                        <input type="file" id="edit-org-image-input" accept="image/*" style="display: none;" onchange="previewOrgImage()">
+                        <!-- 操作按钮 -->
+                        <div id="edit-org-image-actions" style="display: flex; flex-direction: column; gap: 6px; display: none;">
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="document.getElementById('edit-org-image-input').click()">重新上传</button>
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="removeOrgImage()">移出</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 组织类型（隐藏，后续可能需要） -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px; display: none;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">
+                        <span style="color: #ef4444;">*</span> 组织类型:
+                    </label>
+                    <div style="flex: 1;">
+                        <div class="dropdown-multi-select" id="edit-orgTypeDropdown">
+                            <div class="dropdown-trigger" id="edit-orgTypeTrigger">
+                                <span class="dropdown-placeholder">请选择组织类型</span>
+                                <span class="dropdown-selected" id="edit-orgTypeSelected" style="display: none;"></span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-panel" id="edit-orgTypePanel">
+                                <div class="dropdown-cascade">
+                                    <div class="cascade-level" id="edit-level1">
+                                        <div class="cascade-title">组织类型</div>
+                                        <div class="cascade-options">
+                                            <label class="cascade-option parent-option" data-value="training" data-has-children="true">
+                                                <span class="option-text">训练基地</span>
+                                                <span class="option-info-icon" data-tooltip="训练基地说明：提供机器人训练服务的专业场所，包括独立训练基地、客户自训练和个人训练等类型。">?</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option parent-option" data-value="robot" data-has-children="true">
+                                                <span class="option-text">机器人及设备商</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option parent-option" data-value="terminal" data-has-children="true">
+                                                <span class="option-text">终端行业客户</span>
+                                                <span class="option-info-icon" data-tooltip="终端行业客户说明：使用机器人产品的终端用户企业，涵盖制造业、服务业等多个行业。">?</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option parent-option" data-value="supply" data-has-children="true">
+                                                <span class="option-text">供应链服务商</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option leaf-option" data-value="other" data-has-children="false">
+                                                <span class="option-checkbox"></span>
+                                                <span class="option-text">培训机构</span>
+                                                <span class="option-info-icon" data-tooltip="培训机构说明：提供机器人相关技能培训服务的机构。">?</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="cascade-level" id="edit-level2" style="display: none;">
+                                        <div class="cascade-title" id="edit-level2Title">二级分类</div>
+                                        <div class="cascade-options" id="edit-level2Options"></div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <button type="button" class="dropdown-btn dropdown-cancel" onclick="hideEditOrgTypeDropdown()">取消</button>
+                                    <button type="button" class="dropdown-btn dropdown-confirm" onclick="confirmEditOrgType()">确定</button>
+                                </div>
                             </div>
                         </div>
-                        <input type="file" id="org-image-input" accept="image/*" style="display: none;" onchange="previewOrgImage(this)">
-                    </div>
-                    <div class="form-group">
-                        <label>组织名称</label>
-                        <input type="text" id="edit-org-name" value="东莞长安训练基地" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>组织编号</label>
-                        <input type="text" id="edit-org-code" value="ORG001" readonly>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>地址</label>
-                        <input type="text" id="edit-org-address" value="广东省东莞市长安镇">
-                    </div>
-                    <div class="form-group">
-                        <label>联系电话</label>
-                        <input type="text" id="edit-org-phone" value="0769-88888888">
-                    </div>
+
+                <!-- 组织类型（只读） -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">组织类型:</label>
+                    <input type="text" id="edit-org-type-readonly" value="训练基地、专机设备、机器人" readonly style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; background-color: #f8fafc; cursor: not-allowed;">
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>邮箱</label>
-                        <input type="text" id="edit-org-email" value="contact@training.com">
-                    </div>
-                    <div class="form-group">
-                        <label>联系人</label>
-                        <input type="text" id="edit-org-contact" value="张经理">
-                    </div>
+
+                <!-- 组织名称 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">
+                        <span style="color: #ef4444;">*</span> 组织名称:
+                    </label>
+                    <input type="text" id="edit-org-name" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>联系人电话</label>
-                        <input type="text" id="edit-contact-phone" value="13800138000">
-                    </div>
-                    <div class="form-group">
-                        <label>组织类型</label>
-                        <select id="edit-org-type" multiple style="height: 80px;">
-                            <option value="训练基地" selected>训练基地</option>
-                            <option value="培训中心">培训中心</option>
-                            <option value="实训基地">实训基地</option>
-                            <option value="企业">企业</option>
-                        </select>
-                    </div>
+
+                <!-- 联系人 + 手机号 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">
+                        <span style="color: #ef4444;">*</span> 联系人:
+                    </label>
+                    <input type="text" id="edit-contact" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 70px; flex-shrink: 0; padding-top: 8px; text-align: right;">
+                        <span style="color: #ef4444;">*</span> 手机号:
+                    </label>
+                    <input type="text" id="edit-phone" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>行业领域</label>
-                        <input type="text" id="edit-industry" value="职业培训">
-                    </div>
-                    <div class="form-group">
-                        <label>经营范围</label>
-                        <input type="text" id="edit-business-scope" value="技能培训、企业内训">
-                    </div>
+
+                <!-- 联系地址 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">联系地址:</label>
+                    <input type="text" id="edit-address" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>营业执照</label>
-                        <div class="upload-area has-image" id="license-upload" onclick="document.getElementById('license-input').click()">
-                            <img src="images/1.png" alt="营业执照" id="license-preview">
-                            <div class="upload-placeholder">
-                                <i class="fa fa-cloud-upload"></i>
-                                <div>点击上传营业执照</div>
-                            </div>
-                        </div>
-                        <input type="file" id="license-input" accept="image/*" style="display: none;" onchange="previewLicense(this)">
-                    </div>
-                    <div class="form-group">
-                        <label>企业名称 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
-                        <input type="text" id="edit-company-name" value="东莞市蓓佳尔工艺品有限公司" readonly>
-                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>统一社会信用代码 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
-                        <input type="text" id="edit-credit-code" value="91441900MA510XXX" readonly>
-                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
-                    </div>
-                    <div class="form-group">
-                        <label>法定代表人 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
-                        <input type="text" id="edit-legal-representative" value="张建国" readonly>
-                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>注册资本 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
-                        <input type="text" id="edit-registered-capital" value="500万元" readonly>
-                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
-                    </div>
-                    <div class="form-group">
-                        <label>注册地址 <i class="fa fa-info-circle" style="color: #3b82f6; font-size: 12px; margin-left: 4px;" title="自动识别营业执照"></i></label>
-                        <input type="text" id="edit-registered-address" value="东莞市长安镇振安中路88号" readonly>
-                        <div class="auto-recognized show"><i class="fa fa-check-circle"></i> 已自动识别</div>
-                    </div>
+                
+                <!-- 联系电话 + 邮箱 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">联系电话:</label>
+                    <input type="text" id="edit-tel" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 50px; flex-shrink: 0; padding-top: 8px; text-align: right;">邮箱:</label>
+                    <input type="text" id="edit-email" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel" onclick="hideEditModal()">取消</button>
-                <button class="btn btn-confirm" onclick="saveOrgEdit()">保存</button>
+                <button class="btn btn-confirm" onclick="saveEditOrg()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑企业信息弹窗 -->
+    <div id="editCompanyModal" style="display: none;" class="modal-overlay" onclick="hideEditCompanyModal()">
+        <div class="modal-content" style="width: 680px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>编辑企业信息</h3>
+                <button class="close-btn" onclick="hideEditCompanyModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <!-- 营业执照 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">营业执照:</label>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div id="edit-license-upload" style="width: 100px; height: 100px; border: 1px dashed #e2e8f0; border-radius: 8px; display: none; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('edit-license-input').click()">
+                            <i class="fa fa-plus" style="font-size: 24px; color: #94a3b8;"></i>
+                            <span style="font-size: 12px; color: #94a3b8; margin-top: 4px;">上传</span>
+                        </div>
+                        <div id="edit-license-preview" style="width: 100px; height: 100px; border-radius: 8px; display: block; cursor: pointer; background-image: url('images/1.png'); background-size: cover; background-position: center;" onclick="showLicensePreview()"></div>
+                        <input type="file" id="edit-license-input" accept="image/*" style="display: none;" onchange="previewLicense()">
+                        <div id="edit-license-actions" style="display: flex; flex-direction: column; gap: 6px;">
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="document.getElementById('edit-license-input').click()">重新上传</button>
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="removeLicense()">移出</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 企业名称 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">企业名称:</label>
+                    <select style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                        <option value="">请选择</option>
+                        <option value="company1" selected>东莞市智联科技有限公司</option>
+                        <option value="company2">东莞市蓓佳尔工艺品有限公司</option>
+                        <option value="company3">东莞市智能制造有限公司</option>
+                    </select>
+                </div>
+
+                <!-- 统一社会信用代码 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">统一社会信用代码:</label>
+                    <input type="text" id="edit-company-code" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+
+                <!-- 法定代表人 + 注册资本 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">法定代表人:</label>
+                    <input type="text" id="edit-company-legal" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">注册资本:</label>
+                    <input type="text" id="edit-company-capital" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+
+                <!-- 成立日期 + 营业期限 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">成立日期:</label>
+                    <input type="text" id="edit-company-founded" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">营业期限:</label>
+                    <input type="text" id="edit-company-term" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+
+                <!-- 注册地址 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">注册地址:</label>
+                    <input type="text" id="edit-company-reg-address" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+
+                <!-- 经营范围 -->
+                <div style="display: flex; gap: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">经营范围:</label>
+                    <textarea id="edit-company-business" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; height: 120px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideEditCompanyModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveEditCompany()">确定</button>
             </div>
         </div>
     </div>
@@ -808,50 +1145,407 @@
             document.getElementById('licenseModal').style.display = 'none';
         }
 
+
         // 编辑组织信息弹窗
         function showEditModal() {
+            // 填充默认数据
+            document.getElementById('edit-org-name').value = '东莞长安训练基地';
+            document.getElementById('edit-contact').value = '李明';
+            document.getElementById('edit-phone').value = '13800138000';
+            document.getElementById('edit-address').value = '东莞市长安镇振安中路88号';
+            document.getElementById('edit-tel').value = '0769-88888888';
+            document.getElementById('edit-email').value = 'contact@example.com';
+            
+            // 设置组织类型默认选中
+            editSelectedOrgTypes = [{level1: 'training', level2: '独立训练基地'}];
+            updateEditOrgTypeDisplay();
+            
             document.getElementById('editModal').style.display = 'flex';
         }
         function hideEditModal() {
             document.getElementById('editModal').style.display = 'none';
         }
-        function saveOrgEdit() {
+        function saveEditOrg() {
             hideEditModal();
-            showToast('组织信息编辑成功');
         }
-
-        // 组织图片预览
-        function previewOrgImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('org-image-preview');
-                    const uploadArea = document.getElementById('org-image-upload');
-                    preview.src = e.target.result;
-                    uploadArea.classList.add('has-image');
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
+        
+        // 编辑企业信息弹窗
+        function showEditCompanyModal() {
+            // 填充默认数据
+            document.getElementById('edit-company-code').value = '91441900MA4U4X2K8R';
+            document.getElementById('edit-company-legal').value = '李蓓佳';
+            document.getElementById('edit-company-capital').value = '500.00万元';
+            document.getElementById('edit-company-founded').value = '2018-06-15';
+            document.getElementById('edit-company-term').value = '2018-06-15 至 长期';
+            document.getElementById('edit-company-reg-address').value = '广东省东莞市长安镇乌沙社区振安中路88号';
+            document.getElementById('edit-company-business').value = '机器人及自动化设备研发、生产、销售；自动化控制系统集成；智能装备技术开发；计算机软硬件技术开发及销售；国内贸易；货物进出口。';
+            
+            document.getElementById('editCompanyModal').style.display = 'flex';
         }
-
+        function hideEditCompanyModal() {
+            document.getElementById('editCompanyModal').style.display = 'none';
+        }
+        function saveEditCompany() {
+            hideEditCompanyModal();
+        }
+        
         // 营业执照预览
-        function previewLicense(input) {
+        function previewLicense() {
+            var input = document.getElementById('edit-license-input');
+            var upload = document.getElementById('edit-license-upload');
+            var preview = document.getElementById('edit-license-preview');
+            var actions = document.getElementById('edit-license-actions');
+            
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+                var reader = new FileReader();
                 reader.onload = function(e) {
-                    const preview = document.getElementById('license-preview');
-                    const uploadArea = document.getElementById('license-upload');
-                    preview.src = e.target.result;
-                    uploadArea.classList.add('has-image');
-                    
-                    // 模拟自动识别营业执照信息
-                    setTimeout(function() {
-                        showToast('营业执照识别成功');
-                    }, 1000);
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    upload.style.display = 'none';
+                    preview.style.display = 'block';
+                    actions.style.display = 'flex';
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        function removeLicense() {
+            var upload = document.getElementById('edit-license-upload');
+            var preview = document.getElementById('edit-license-preview');
+            var actions = document.getElementById('edit-license-actions');
+            var input = document.getElementById('edit-license-input');
+            
+            upload.style.display = 'flex';
+            preview.style.display = 'none';
+            actions.style.display = 'none';
+            preview.style.backgroundImage = '';
+            input.value = '';
+        }
+        var licensePreviewImage = '';
+        function showLicensePreview() {
+            var preview = document.getElementById('edit-license-preview');
+            if (preview.style.backgroundImage) {
+                licensePreviewImage = preview.style.backgroundImage.replace('url(', '').replace(')', '').replace(/"/g, '');
+                document.getElementById('licensePreviewModal').style.display = 'flex';
+                document.getElementById('licensePreviewImg').src = licensePreviewImage;
+            }
+        }
+        
+        // 组织图片预览
+        function previewOrgImage() {
+            var input = document.getElementById('edit-org-image-input');
+            var upload = document.getElementById('edit-org-image-upload');
+            var preview = document.getElementById('edit-org-image-preview');
+            var actions = document.getElementById('edit-org-image-actions');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    preview.style.display = 'block';
+                    upload.style.display = 'none';
+                    actions.style.display = 'flex';
+                    // 保存预览图地址用于查看大图
+                    preview.orgImageSrc = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        // 移除组织图片
+        function removeOrgImage() {
+            var input = document.getElementById('edit-org-image-input');
+            var upload = document.getElementById('edit-org-image-upload');
+            var preview = document.getElementById('edit-org-image-preview');
+            var actions = document.getElementById('edit-org-image-actions');
+            
+            input.value = '';
+            preview.style.backgroundImage = '';
+            preview.style.display = 'none';
+            upload.style.display = 'flex';
+            actions.style.display = 'none';
+        }
+        // 查看组织图片大图
+        function showOrgImagePreview() {
+            var preview = document.getElementById('edit-org-image-preview');
+            if (preview.orgImageSrc) {
+                // 隐藏编辑弹窗
+                document.getElementById('editModal').style.display = 'none';
+                
+                var popup = document.createElement('div');
+                popup.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 99999; cursor: pointer;';
+                popup.onclick = function() { 
+                    document.body.removeChild(popup); 
+                    // 重新显示编辑弹窗
+                    document.getElementById('editModal').style.display = 'flex';
+                };
+                
+                var img = document.createElement('img');
+                img.src = preview.orgImageSrc;
+                img.style.cssText = 'max-width: 95%; max-height: 95%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);';
+                
+                popup.appendChild(img);
+                document.body.appendChild(popup);
+            }
+        }
+
+        // 编辑组织类型级联选择
+        let editSelectedOrgTypes = [];
+        let editTempSelectedOrgTypes = [];
+        let editSelectedLevel1 = null;
+        let editSelectedLevel2 = null;
+
+        const editOrgTypeTrigger = document.getElementById('edit-orgTypeTrigger');
+        const editOrgTypePanel = document.getElementById('edit-orgTypePanel');
+        const editOrgTypeSelected = document.getElementById('edit-orgTypeSelected');
+        const editLevel1 = document.getElementById('edit-level1');
+        const editLevel2 = document.getElementById('edit-level2');
+        const editLevel2Title = document.getElementById('edit-level2Title');
+        const editLevel2Options = document.getElementById('edit-level2Options');
+
+        const editOrgTypeData = {
+            'training': {
+                label: '训练基地',
+                children: [
+                    { name: '独立训练基地', tooltip: '独立运营的专业机器人训练场所，提供标准化训练服务' },
+                    { name: '客户自训练' },
+                    { name: '个人训练', tooltip: '面向个人用户的机器人技能训练服务' }
+                ]
+            },
+            'robot': {
+                label: '机器人及设备商',
+                children: [
+                    { name: '整机机器人厂商' },
+                    { name: '专机与生产设备厂商', tooltip: '提供专用机器设备和生产线的企业' },
+                    { name: '零部件供应商' }
+                ]
+            },
+            'terminal': {
+                label: '终端行业客户',
+                children: [
+                    { name: '汽车制造企业', tooltip: '使用机器人进行汽车生产制造的企业' },
+                    { name: '电子电器厂商' },
+                    { name: '医疗器械公司', tooltip: '使用机器人进行医疗器械生产的企业' }
+                ]
+            },
+            'supply': {
+                label: '供应链服务商',
+                children: [
+                    { name: '物流运输企业' },
+                    { name: '仓储服务公司', tooltip: '提供机器人相关仓储管理服务的公司' }
+                ]
+            },
+            'other': {
+                label: '培训机构',
+                children: []
+            }
+        };
+
+        if (editOrgTypeTrigger) {
+            editOrgTypeTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                editOrgTypePanel.classList.toggle('show');
+                editOrgTypeTrigger.classList.toggle('active');
+                if (editOrgTypePanel.classList.contains('show')) {
+                    editTempSelectedOrgTypes = [...editSelectedOrgTypes];
+                    renderEditLevel1();
+                }
+            });
+        }
+
+        function renderEditLevel1() {
+            const level1Options = editLevel1.querySelectorAll('.cascade-option');
+            level1Options.forEach(option => {
+                const value = option.dataset.value;
+                const isSelected = editTempSelectedOrgTypes.some(item => item.level1 === value);
+                option.classList.toggle('selected', isSelected);
+                
+                option.onclick = function(e) {
+                    e.stopPropagation();
+                    const val = this.dataset.value;
+                    const hasChild = this.dataset.hasChildren === 'true';
+                    
+                    level1Options.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (hasChild) {
+                        editSelectedLevel1 = val;
+                        renderEditLevel2(val);
+                    } else {
+                        toggleEditLevel1Selection(val);
+                    }
+                };
+            });
+        }
+
+        function renderEditLevel2(level1Value) {
+            const data = editOrgTypeData[level1Value];
+            if (data && data.children) {
+                editLevel2Title.textContent = data.label;
+                editLevel2Options.innerHTML = '';
+                
+                data.children.forEach(child => {
+                    const childName = typeof child === 'object' ? child.name : child;
+                    const childTooltip = typeof child === 'object' ? child.tooltip : '';
+                    
+                    const option = document.createElement('label');
+                    option.className = 'cascade-option';
+                    
+                    const isSelected = editTempSelectedOrgTypes.some(item => 
+                        item.level1 === level1Value && item.level2 === childName
+                    );
+                    if (isSelected) {
+                        option.classList.add('selected');
+                    }
+                    
+                    let tooltipHtml = '';
+                    if (childTooltip) {
+                        tooltipHtml = `<span class="option-info-icon" data-tooltip="${childTooltip}">?</span>`;
+                    }
+                    
+                    option.innerHTML = `
+                        <span class="option-checkbox"></span>
+                        <span class="option-text">${childName}</span>
+                        ${tooltipHtml}
+                    `;
+                    
+                    option.onclick = function(e) {
+                        if (e.target.classList.contains('option-info-icon')) {
+                            return;
+                        }
+                        e.stopPropagation();
+                        toggleEditLevel2Selection(level1Value, childName);
+                        this.classList.toggle('selected');
+                    };
+                    
+                    // 为图标添加hover事件
+                    var infoIcon = option.querySelector('.option-info-icon');
+                    if (infoIcon) {
+                        infoIcon.addEventListener('mouseenter', showTooltip);
+                        infoIcon.addEventListener('mouseleave', hideTooltip);
+                    }
+                    
+                    editLevel2Options.appendChild(option);
+                });
+                
+                editLevel2.style.display = 'block';
+            }
+        }
+
+        function toggleEditLevel1Selection(level1Value) {
+            const existingIndex = editTempSelectedOrgTypes.findIndex(item => 
+                item.level1 === level1Value && !item.level2
+            );
+            
+            if (existingIndex > -1) {
+                editTempSelectedOrgTypes.splice(existingIndex, 1);
+            } else {
+                editTempSelectedOrgTypes.push({ level1: level1Value });
+            }
+            renderEditLevel1();
+        }
+
+        function toggleEditLevel2Selection(level1Value, level2Value) {
+            const existingIndex = editTempSelectedOrgTypes.findIndex(item => 
+                item.level1 === level1Value && item.level2 === level2Value
+            );
+            
+            if (existingIndex > -1) {
+                editTempSelectedOrgTypes.splice(existingIndex, 1);
+            } else {
+                editTempSelectedOrgTypes.push({ level1: level1Value, level2: level2Value });
+            }
+            
+            const level1Option = document.querySelector(`#edit-level1 .cascade-option[data-value="${level1Value}"]`);
+            const hasSelectedChildren = editTempSelectedOrgTypes.some(item => 
+                item.level1 === level1Value && item.level2
+            );
+            level1Option.classList.toggle('selected', hasSelectedChildren);
+        }
+
+        function hideEditOrgTypeDropdown() {
+            editOrgTypePanel.classList.remove('show');
+            editOrgTypeTrigger.classList.remove('active');
+            editLevel2.style.display = 'none';
+            hideTooltip();
+        }
+        
+        // tooltip功能
+        function showTooltip(e) {
+            var tooltip = document.getElementById('editOrgTooltip');
+            var icon = e.target;
+            var text = icon.getAttribute('data-tooltip');
+            if (!text) return;
+            
+            tooltip.textContent = text;
+            tooltip.style.display = 'block';
+            
+            var rect = icon.getBoundingClientRect();
+            var tooltipRect = tooltip.getBoundingClientRect();
+            
+            // 计算位置，显示在icon正上方居中
+            var x = rect.left + rect.width / 2 - tooltipRect.width / 2;
+            var y = rect.top - tooltipRect.height - 10;
+            
+            // 确保tooltip不超出视口
+            if (x < 10) {
+                x = 10;
+            }
+            if (x + tooltipRect.width > window.innerWidth - 10) {
+                x = window.innerWidth - tooltipRect.width - 10;
+            }
+            if (y < 10) {
+                y = rect.bottom + 10;
+            }
+            
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+        
+        function hideTooltip() {
+            var tooltip = document.getElementById('editOrgTooltip');
+            tooltip.style.display = 'none';
+        }
+
+        function confirmEditOrgType() {
+            editSelectedOrgTypes = [...editTempSelectedOrgTypes];
+            updateEditOrgTypeDisplay();
+            hideEditOrgTypeDropdown();
+        }
+
+        function updateEditOrgTypeDisplay() {
+            if (editSelectedOrgTypes.length === 0) {
+                editOrgTypeSelected.style.display = 'none';
+                editOrgTypeTrigger.querySelector('.dropdown-placeholder').style.display = 'inline';
+            } else {
+                editOrgTypeTrigger.querySelector('.dropdown-placeholder').style.display = 'none';
+                editOrgTypeSelected.style.display = 'inline';
+                const labels = editSelectedOrgTypes.map(item => {
+                    return item.level2 || editOrgTypeData[item.level1].label;
+                }).join('、');
+                editOrgTypeSelected.textContent = `已选择 ${editSelectedOrgTypes.length} 项：${labels}`;
+            }
+        }
+
+        // 页面加载完成后为静态图标添加hover事件
+        document.addEventListener('DOMContentLoaded', function() {
+            var infoIcons = document.querySelectorAll('.option-info-icon');
+            infoIcons.forEach(function(icon) {
+                icon.addEventListener('mouseenter', showTooltip);
+                icon.addEventListener('mouseleave', hideTooltip);
+            });
+        });
+
+        document.getElementById('edit-orgTypeDropdown').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('edit-orgTypeDropdown').contains(e.target)) {
+                hideEditOrgTypeDropdown();
+            }
+        });
 
         // 添加下级组织弹窗
         function showAddModal() {
