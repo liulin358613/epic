@@ -230,9 +230,23 @@
             flex: 1;
             min-height: 0;
             display: flex;
-            flex-direction: column;
+            gap: 16px;
             overflow: hidden;
             margin-top: 16px;
+        }
+        .role-section-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            border-right: 1px dashed #e5e7eb;
+            padding-right: 16px;
+        }
+        .role-section-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
         .role-header {
             flex-shrink: 0;
@@ -266,6 +280,7 @@
         }
         .basic-info {
             padding: 0;
+            border-bottom: 1px solid #e5e7eb;
         }
         .form-row {
             display: flex;
@@ -1251,66 +1266,121 @@
                         </div>
                         
                         <div class="role-section">
-                            <div class="role-header">
-                                组织角色
-                                <button class="btn btn-sm btn-outline btn-add-role" onclick="showAddRoleModal()">
-                                    <i class="fa fa-plus"></i> 添加
-                                </button>
+                            <div class="role-section-left">
+                                <div class="role-header">
+                                    组织部门
+                                    <button class="btn btn-sm btn-outline btn-add-role" onclick="showAddDeptModal()">
+                                        <i class="fa fa-plus"></i> 添加
+                                    </button>
+                                </div>
+                                <div class="role-list-container">
+                                    <div class="role-list" id="dept-list">
+                                        <label class="role-item" style="border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; margin-bottom: 4px;">
+                                            <input type="checkbox" id="select-all-depts" onclick="toggleAllDepts(this)">
+                                            <span style="font-weight: 600;">全选</span>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="dept-checkbox">
+                                            <span>研发部</span>
+                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '研发部')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '研发部')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="dept-checkbox">
+                                            <span>生产部</span>
+                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '生产部')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '生产部')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="dept-checkbox">
+                                            <span>销售部</span>
+                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '销售部')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '销售部')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="dept-checkbox">
+                                            <span>财务部</span>
+                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '财务部')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '财务部')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="dept-checkbox">
+                                            <span>人力资源部</span>
+                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '人力资源部')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '人力资源部')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="dept-checkbox">
+                                            <span>运维部</span>
+                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '运维部')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '运维部')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="role-list-container">
-                                <div class="role-list">
-                                    <label class="role-item" style="border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; margin-bottom: 4px;">
-                                        <input type="checkbox" id="select-all-roles" onclick="toggleAllRoles(this)">
-                                        <span style="font-weight: 600;">全选</span>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>总经理</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '总经理')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '总经理')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>生产主管</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '生产主管')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '生产主管')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>技术总监</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '技术总监')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '技术总监')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>开发经理</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '开发经理')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '开发经理')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>测试工程师</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '测试工程师')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '测试工程师')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>产品经理</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '产品经理')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '产品经理')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>运维工程师</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '运维工程师')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '运维工程师')"><i class="fa fa-trash"></i></button>
-                                    </label>
-                                    <label class="role-item">
-                                        <input type="checkbox" class="role-checkbox">
-                                        <span>财务主管</span>
-                                        <button class="edit-role-btn" onclick="showEditRoleModal(this, '财务主管')"><i class="fa fa-pencil"></i></button>
-                                        <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '财务主管')"><i class="fa fa-trash"></i></button>
-                                    </label>
+                            
+                            <div class="role-section-right">
+                                <div class="role-header">
+                                    组织角色
+                                    <button class="btn btn-sm btn-outline btn-add-role" onclick="showAddRoleModal()">
+                                        <i class="fa fa-plus"></i> 添加
+                                    </button>
+                                </div>
+                                <div class="role-list-container">
+                                    <div class="role-list">
+                                        <label class="role-item" style="border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; margin-bottom: 4px;">
+                                            <input type="checkbox" id="select-all-roles" onclick="toggleAllRoles(this)">
+                                            <span style="font-weight: 600;">全选</span>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>总经理</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '总经理')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '总经理')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>生产主管</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '生产主管')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '生产主管')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>技术总监</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '技术总监')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '技术总监')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>开发经理</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '开发经理')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '开发经理')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>测试工程师</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '测试工程师')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '测试工程师')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>产品经理</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '产品经理')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '产品经理')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>运维工程师</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '运维工程师')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '运维工程师')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                        <label class="role-item">
+                                            <input type="checkbox" class="role-checkbox">
+                                            <span>财务主管</span>
+                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '财务主管')"><i class="fa fa-pencil"></i></button>
+                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '财务主管')"><i class="fa fa-trash"></i></button>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1791,6 +1861,61 @@
         </main>
     </div>
 
+    <div class="modal-overlay hidden" id="add-dept-modal" onclick="hideAddDeptModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">添加组织部门</span>
+                <button class="modal-close" onclick="hideAddDeptModal()"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>部门名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入部门名称" id="dept-name-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideAddDeptModal()">取消</button>
+                <button class="btn btn-primary" onclick="addDept()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="edit-dept-modal" onclick="hideEditDeptModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">编辑部门</span>
+                <button class="modal-close" onclick="hideEditDeptModal()"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>部门名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入部门名称" id="edit-dept-name-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideEditDeptModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveEditDept()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="delete-dept-modal" onclick="hideDeleteDeptModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">删除部门</span>
+                <button class="modal-close" onclick="hideDeleteDeptModal()"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #374151; font-size: 14px; line-height: 1.6;">确定要删除部门 "<span id="delete-dept-name" style="color: #ef4444; font-weight: 600;"></span>" 吗？</p>
+                <p style="color: #9ca3af; font-size: 13px; margin-top: 8px;">删除后将无法恢复，请谨慎操作。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideDeleteDeptModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDeleteDept()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">确定删除</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay hidden" id="add-role-modal" onclick="hideAddRoleModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -1871,6 +1996,7 @@
             document.querySelectorAll('.expand-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    e.preventDefault();
                     const targetId = icon.dataset.target;
                     const target = document.getElementById(targetId);
                     if (target) {
@@ -2004,6 +2130,37 @@
                 document.getElementById('audit-no').checked = (data.audit === 'no');
                 document.getElementById('audit-yes').checked = (data.audit === 'yes');
             }
+            
+            selectRandomItems();
+        }
+
+        function selectRandomItems() {
+            document.querySelectorAll('.dept-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.role-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.perm-checkbox').forEach(cb => cb.checked = false);
+            
+            const deptCheckboxes = Array.from(document.querySelectorAll('.dept-checkbox'));
+            const roleCheckboxes = Array.from(document.querySelectorAll('.role-checkbox'));
+            const permCheckboxes = Array.from(document.querySelectorAll('.perm-checkbox'));
+            
+            const shuffleArray = (array) => {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            };
+            
+            const selectRandom = (checkboxes, minCount, maxCount) => {
+                const shuffled = shuffleArray(checkboxes);
+                const count = Math.floor(Math.random() * (maxCount - minCount + 1)) + minCount;
+                shuffled.slice(0, count).forEach(cb => cb.checked = true);
+            };
+            
+            selectRandom(deptCheckboxes, 2, 4);
+            selectRandom(roleCheckboxes, 3, 5);
+            selectRandom(permCheckboxes.filter(cb => cb.classList.contains('parent-checkbox')), 2, 3);
         }
 
         function showToast(message, type = 'info') {
@@ -2033,6 +2190,90 @@
                     }
                 }, 300);
             }, 3000);
+        }
+
+        function showAddDeptModal() {
+            document.getElementById('add-dept-modal').classList.remove('hidden');
+            document.getElementById('dept-name-input').value = '';
+            document.getElementById('dept-name-input').focus();
+        }
+
+        function hideAddDeptModal() {
+            document.getElementById('add-dept-modal').classList.add('hidden');
+        }
+
+        function addDept() {
+            const deptName = document.getElementById('dept-name-input').value.trim();
+            if (!deptName) {
+                showToast('请输入部门名称', 'error');
+                return;
+            }
+            
+            const deptList = document.getElementById('dept-list');
+            const newDept = document.createElement('label');
+            newDept.className = 'role-item';
+            newDept.innerHTML = `
+                <input type="checkbox" class="dept-checkbox">
+                <span>${deptName}</span>
+                <button class="edit-role-btn" onclick="showEditDeptModal(this, '${deptName}')"><i class="fa fa-pencil"></i></button>
+                <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '${deptName}')"><i class="fa fa-trash"></i></button>
+            `;
+            deptList.appendChild(newDept);
+            
+            hideAddDeptModal();
+        }
+
+        let currentDeleteDeptBtn = null;
+
+        function showDeleteDeptModal(btn, deptName) {
+            currentDeleteDeptBtn = btn;
+            document.getElementById('delete-dept-name').textContent = deptName;
+            document.getElementById('delete-dept-modal').classList.remove('hidden');
+        }
+
+        function hideDeleteDeptModal() {
+            document.getElementById('delete-dept-modal').classList.add('hidden');
+            currentDeleteDeptBtn = null;
+        }
+
+        function confirmDeleteDept() {
+            const deptItem = currentDeleteDeptBtn.closest('.role-item');
+            deptItem.remove();
+            
+            hideDeleteDeptModal();
+            showToast('部门删除成功', 'success');
+        }
+
+        let currentEditDeptBtn = null;
+
+        function showEditDeptModal(btn, deptName) {
+            currentEditDeptBtn = btn;
+            document.getElementById('edit-dept-name-input').value = deptName;
+            document.getElementById('edit-dept-modal').classList.remove('hidden');
+            document.getElementById('edit-dept-name-input').focus();
+        }
+
+        function hideEditDeptModal() {
+            document.getElementById('edit-dept-modal').classList.add('hidden');
+            currentEditDeptBtn = null;
+        }
+
+        function saveEditDept() {
+            const deptName = document.getElementById('edit-dept-name-input').value.trim();
+            if (!deptName) {
+                showToast('请输入部门名称', 'error');
+                return;
+            }
+            
+            const deptItem = currentEditDeptBtn.closest('.role-item');
+            deptItem.querySelector('span').textContent = deptName;
+            
+            hideEditDeptModal();
+        }
+
+        function toggleAllDepts(checkbox) {
+            const deptCheckboxes = document.querySelectorAll('.dept-checkbox');
+            deptCheckboxes.forEach(item => item.checked = checkbox.checked);
         }
 
         function showAddRoleModal() {
