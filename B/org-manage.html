@@ -233,6 +233,24 @@
         .btn-add:hover {
             background: #16a34a;
         }
+        .btn-outline-blue {
+            padding: 4px 10px;
+            font-size: 12px;
+            color: #64748b;
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+        .btn-outline-blue:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border-color: #3b82f6;
+        }
         .action-btn {
             padding: 4px 10px;
             border-radius: 4px;
@@ -591,7 +609,7 @@
                 <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
             </div>
             <div class="section-content" style="padding: 16px; position: relative;">
-                <button style="position: absolute; top: 16px; right: 16px; padding: 4px 10px; font-size: 12px; color: #64748b; background: transparent; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showEditModal()">
+                <button class="btn-outline-blue" style="position: absolute; top: 16px; right: 16px;" onclick="showEditModal()">
                     <i class="fa fa-pencil"></i> 编辑
                 </button>
                 <div style="display: flex; gap: 16px;">
@@ -627,7 +645,7 @@
                                 <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
                             </button>
                         </div>
-                        <button style="padding: 4px 10px; font-size: 12px; color: #64748b; background: transparent; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showEditCompanyModal()">
+                        <button class="btn-outline-blue" onclick="showEditCompanyModal()">
                             <i class="fa fa-pencil"></i> 编辑
                         </button>
                     </div>
@@ -672,7 +690,7 @@
         <div class="card">
             <div class="section-header">
                 <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
-                <button style="padding: 4px 10px; font-size: 12px; color: #64748b; background: transparent; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showAddModal()">
+                <button class="btn-outline-blue" onclick="window.location.href='add-sub-org.html'">
                     <i class="fa fa-plus"></i> 添加
                 </button>
             </div>
@@ -757,6 +775,19 @@
             <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
                 <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
                 <img src="images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- 营业执照图片预览弹窗 -->
+    <div id="licensePreviewModal" style="display: none; z-index: 10001;" class="modal-overlay" onclick="hideLicensePreview()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicensePreview()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照预览</div>
+                <img id="licensePreviewImg" src="" alt="营业执照预览" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
             </div>
         </div>
     </div>
@@ -915,8 +946,24 @@
                         <div id="edit-license-preview" style="width: 100px; height: 100px; border-radius: 8px; display: block; cursor: pointer; background-image: url('images/1.png'); background-size: cover; background-position: center;" onclick="showLicensePreview()"></div>
                         <input type="file" id="edit-license-input" accept="image/*" style="display: none;" onchange="previewLicense()">
                         <div id="edit-license-actions" style="display: flex; flex-direction: column; gap: 6px;">
-                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="document.getElementById('edit-license-input').click()">重新上传</button>
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="reuploadLicense()">重新上传</button>
                             <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="removeLicense()">移出</button>
+                        </div>
+                        <!-- AI识别状态 -->
+                        <div id="edit-ai-recognizing" style="display: none; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa fa-spinner fa-spin" style="color: #0051D9;"></i>
+                                <span style="font-size: 13px; color: #64748b;">AI识别中...</span>
+                            </div>
+                            <div style="margin-top: 8px; height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden;">
+                                <div id="edit-ai-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0051D9, #0066FF); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div id="edit-ai-result" style="display: none; margin-top: 10px; padding: 8px 12px; background: rgba(0, 180, 42, 0.08); border-radius: 4px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-check-circle" style="color: #00b42a;"></i>
+                                <span style="font-size: 13px; color: #00b42a;">AI识别完成，已自动填充表单</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -924,12 +971,7 @@
                 <!-- 企业名称 -->
                 <div style="display: flex; gap: 16px; margin-bottom: 16px;">
                     <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">企业名称:</label>
-                    <select style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
-                        <option value="">请选择</option>
-                        <option value="company1" selected>东莞市智联科技有限公司</option>
-                        <option value="company2">东莞市蓓佳尔工艺品有限公司</option>
-                        <option value="company3">东莞市智能制造有限公司</option>
-                    </select>
+                    <input type="text" id="edit-company-name" placeholder="请输入企业名称" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
                 </div>
 
                 <!-- 统一社会信用代码 -->
@@ -973,73 +1015,7 @@
         </div>
     </div>
 
-    <!-- 添加下级组织弹窗 -->
-    <div id="addModal" style="display: none;" class="modal-overlay" onclick="hideAddModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3>添加下级组织</h3>
-                <button class="close-btn" onclick="hideAddModal()">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>组织名称</label>
-                        <input type="text" id="add-org-name" placeholder="请输入组织名称">
-                    </div>
-                    <div class="form-group">
-                        <label>组织类型</label>
-                        <select id="add-org-type">
-                            <option value="">请选择类型</option>
-                            <option value="培训中心">培训中心</option>
-                            <option value="实训基地">实训基地</option>
-                            <option value="分公司">分公司</option>
-                            <option value="办事处">办事处</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>企业名称</label>
-                        <input type="text" id="add-company-name" placeholder="请输入企业名称">
-                    </div>
-                    <div class="form-group">
-                        <label>法人</label>
-                        <input type="text" id="add-legal-person" placeholder="请输入法人姓名">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>信用代码</label>
-                        <input type="text" id="add-credit-code" placeholder="请输入统一社会信用代码">
-                    </div>
-                    <div class="form-group">
-                        <label>联系人</label>
-                        <input type="text" id="add-contact" placeholder="请输入联系人">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>联系电话</label>
-                        <input type="text" id="add-phone" placeholder="请输入联系电话">
-                    </div>
-                    <div class="form-group">
-                        <label>人数</label>
-                        <input type="number" id="add-count" placeholder="请输入人数" min="0">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>地址</label>
-                    <textarea id="add-address" placeholder="请输入地址"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel" onclick="hideAddModal()">取消</button>
-                <button class="btn btn-confirm" onclick="saveAddOrg()">保存</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- 编辑下级组织弹窗 -->
     <div id="editSubModal" style="display: none;" class="modal-overlay" onclick="hideEditSubModal()">
@@ -1145,6 +1121,11 @@
             document.getElementById('licenseModal').style.display = 'none';
         }
 
+        // 营业执照图片预览弹窗
+        function hideLicensePreview() {
+            document.getElementById('licensePreviewModal').style.display = 'none';
+        }
+
 
         // 编辑组织信息弹窗
         function showEditModal() {
@@ -1172,6 +1153,7 @@
         // 编辑企业信息弹窗
         function showEditCompanyModal() {
             // 填充默认数据
+            document.getElementById('edit-company-name').value = '东莞市智联科技有限公司';
             document.getElementById('edit-company-code').value = '91441900MA4U4X2K8R';
             document.getElementById('edit-company-legal').value = '李蓓佳';
             document.getElementById('edit-company-capital').value = '500.00万元';
@@ -1205,21 +1187,201 @@
                     upload.style.display = 'none';
                     preview.style.display = 'block';
                     actions.style.display = 'flex';
+                    
+                    // 开始AI识别
+                    startAIRecognize();
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        
+        // AI识别模拟数据
+        var aiRecognizeData = {
+            companyName: '东莞市爱沛柯尔科技有限公司',
+            creditCode: '91441900MA55XRH67K',
+            legalPerson: '张三',
+            registeredCapital: '1000万元',
+            establishDate: '2024-01-15',
+            businessTerm: '长期',
+            registeredAddress: '广东省东莞市长安镇科技园区A栋101室',
+            businessScope: '一般项目：人工智能应用软件开发；智能机器人销售；智能机器人的研发；信息技术咨询服务；技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；计算机系统服务；软件开发；软件销售；机械设备销售；电子产品销售；五金产品批发；五金产品零售；货物进出口；技术进出口。'
+        };
+        
+        // 开始AI识别
+        function startAIRecognize() {
+            var aiRecognizing = document.getElementById('edit-ai-recognizing');
+            var aiResult = document.getElementById('edit-ai-result');
+            var aiProgress = document.getElementById('edit-ai-progress');
+            
+            // 隐藏之前的识别结果
+            aiResult.style.display = 'none';
+            
+            // 显示识别中状态
+            aiRecognizing.style.display = 'block';
+            aiProgress.style.width = '0%';
+            
+            // 模拟识别进度
+            var progress = 0;
+            var interval = setInterval(function() {
+                progress += Math.random() * 15 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // 识别完成，填充表单
+                    fillFormWithAI();
+                    
+                    // 显示识别结果
+                    setTimeout(function() {
+                        aiRecognizing.style.display = 'none';
+                        aiResult.style.display = 'block';
+                    }, 300);
+                }
+                aiProgress.style.width = progress + '%';
+            }, 200);
+        }
+        
+        // 使用AI识别结果填充表单
+        function fillFormWithAI() {
+            // 企业名称
+            var companyNameInput = document.getElementById('edit-company-name');
+            if (companyNameInput) {
+                companyNameInput.value = aiRecognizeData.companyName;
+            }
+            
+            // 统一社会信用代码
+            var creditCodeInput = document.getElementById('edit-company-code');
+            if (creditCodeInput) {
+                creditCodeInput.value = aiRecognizeData.creditCode;
+            }
+            
+            // 法定代表人
+            var legalPersonInput = document.getElementById('edit-company-legal');
+            if (legalPersonInput) {
+                legalPersonInput.value = aiRecognizeData.legalPerson;
+            }
+            
+            // 注册资本
+            var capitalInput = document.getElementById('edit-company-capital');
+            if (capitalInput) {
+                capitalInput.value = aiRecognizeData.registeredCapital;
+            }
+            
+            // 成立日期
+            var dateInput = document.getElementById('edit-company-founded');
+            if (dateInput) {
+                dateInput.value = aiRecognizeData.establishDate;
+            }
+            
+            // 营业期限
+            var termInput = document.getElementById('edit-company-term');
+            if (termInput) {
+                termInput.value = aiRecognizeData.businessTerm;
+            }
+            
+            // 注册地址
+            var addressInput = document.getElementById('edit-company-reg-address');
+            if (addressInput) {
+                addressInput.value = aiRecognizeData.registeredAddress;
+            }
+            
+            // 经营范围
+            var scopeTextarea = document.getElementById('edit-company-business');
+            if (scopeTextarea) {
+                scopeTextarea.value = aiRecognizeData.businessScope;
+            }
+        }
+        
+        // 清空企业信息表单
+        function clearEnterpriseForm() {
+            // 企业名称
+            var companyNameInput = document.getElementById('edit-company-name');
+            if (companyNameInput) {
+                companyNameInput.value = '';
+            }
+            
+            // 统一社会信用代码
+            var creditCodeInput = document.getElementById('edit-company-code');
+            if (creditCodeInput) {
+                creditCodeInput.value = '';
+            }
+            
+            // 法定代表人
+            var legalPersonInput = document.getElementById('edit-company-legal');
+            if (legalPersonInput) {
+                legalPersonInput.value = '';
+            }
+            
+            // 注册资本
+            var capitalInput = document.getElementById('edit-company-capital');
+            if (capitalInput) {
+                capitalInput.value = '';
+            }
+            
+            // 成立日期
+            var dateInput = document.getElementById('edit-company-founded');
+            if (dateInput) {
+                dateInput.value = '';
+            }
+            
+            // 营业期限
+            var termInput = document.getElementById('edit-company-term');
+            if (termInput) {
+                termInput.value = '';
+            }
+            
+            // 注册地址
+            var addressInput = document.getElementById('edit-company-reg-address');
+            if (addressInput) {
+                addressInput.value = '';
+            }
+            
+            // 经营范围
+            var scopeTextarea = document.getElementById('edit-company-business');
+            if (scopeTextarea) {
+                scopeTextarea.value = '';
+            }
+        }
+        
         function removeLicense() {
             var upload = document.getElementById('edit-license-upload');
             var preview = document.getElementById('edit-license-preview');
             var actions = document.getElementById('edit-license-actions');
             var input = document.getElementById('edit-license-input');
+            var aiRecognizing = document.getElementById('edit-ai-recognizing');
+            var aiResult = document.getElementById('edit-ai-result');
             
             upload.style.display = 'flex';
             preview.style.display = 'none';
             actions.style.display = 'none';
+            aiRecognizing.style.display = 'none';
+            aiResult.style.display = 'none';
             preview.style.backgroundImage = '';
             input.value = '';
+            
+            // 清空表单内容
+            clearEnterpriseForm();
+        }
+        
+        // 重新上传营业执照
+        function reuploadLicense() {
+            var aiResult = document.getElementById('edit-ai-result');
+            
+            // 隐藏之前的识别结果
+            aiResult.style.display = 'none';
+            
+            // 清空表单内容
+            clearEnterpriseForm();
+            
+            // 清空之前的图片预览
+            var preview = document.getElementById('edit-license-preview');
+            preview.style.display = 'none';
+            preview.style.backgroundImage = '';
+            
+            // 触发文件选择
+            var input = document.getElementById('edit-license-input');
+            input.value = '';
+            input.click();
         }
         var licensePreviewImage = '';
         function showLicensePreview() {
@@ -1547,26 +1709,10 @@
             }
         });
 
-        // 添加下级组织弹窗
+
+
         function showAddModal() {
-            document.getElementById('addModal').style.display = 'flex';
-        }
-        function hideAddModal() {
-            document.getElementById('addModal').style.display = 'none';
-            // 清空表单
-            document.getElementById('add-org-name').value = '';
-            document.getElementById('add-org-type').value = '';
-            document.getElementById('add-company-name').value = '';
-            document.getElementById('add-legal-person').value = '';
-            document.getElementById('add-credit-code').value = '';
-            document.getElementById('add-contact').value = '';
-            document.getElementById('add-phone').value = '';
-            document.getElementById('add-count').value = '';
-            document.getElementById('add-address').value = '';
-        }
-        function saveAddOrg() {
-            hideAddModal();
-            showToast('下级组织添加成功');
+            showToast('功能开发中');
         }
 
         // 编辑下级组织弹窗

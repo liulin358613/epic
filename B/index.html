@@ -236,8 +236,57 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            min-width: 140px;
+            min-width: 220px;
             z-index: 1000;
+        }
+        .user-dropdown .has-submenu {
+            position: relative;
+        }
+        .user-dropdown .org-submenu {
+            display: block;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 4px 0;
+        }
+        .user-dropdown .org-submenu.hide {
+            display: none;
+        }
+        .user-dropdown .org-submenu li a.active {
+            background: #e0ebff;
+            color: #0051D9;
+            font-weight: 500;
+        }
+        .user-dropdown .org-submenu li {
+            position: relative;
+        }
+        .user-dropdown .org-submenu li a {
+            margin: 0;
+            border-radius: 0;
+            font-size: 13px;
+            color: #555;
+            position: relative;
+        }
+        .user-dropdown .org-submenu li.child-org a::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 2px;
+            width: 2px;
+            height: 16px;
+            background-color: #e0e0e0;
+        }
+        .user-dropdown .org-submenu li.child-org a::after {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 18px;
+            width: 12px;
+            height: 2px;
+            background-color: #e0e0e0;
+        }
+        .user-dropdown .org-submenu li a:hover {
+            background: #e9ecef;
+            color: #0051D9;
         }
         .user-dropdown ul {
             list-style: none;
@@ -464,16 +513,26 @@
                 <h1 class="header-title text-2xl font-bold">RaaS.Dao</h1>
                 <span class="text-sm text-gray-400 mt-0.5">共创·共享</span>
             </div>
-            <span class="text-xl font-medium text-gray-300 ml-4">东莞市智联科技有限公司</span>
+
         </div>
         <div class="flex items-center space-x-4 relative" id="userMenu" onclick="toggleUserMenu()">
-            <span class="text-gray-300 text-sm font-medium cursor-pointer hover:text-white transition-colors">管理员</span>
+            <span class="text-gray-300 text-base font-medium cursor-pointer hover:text-white transition-colors" id="currentOrgInfo">东莞市智联科技有限公司[买买提(总经理)]</span>
             <i class="fa fa-angle-down text-gray-300 text-xs cursor-pointer hover:text-white transition-colors"></i>
             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-medium cursor-pointer">A</div>
             <!-- 下拉菜单 -->
             <div class="user-dropdown" id="userDropdown" style="display: none;">
                 <ul>
                     <li><a href="#" onclick="event.stopPropagation(); showLogoutModal()">退出登录</a></li>
+                    <li class="has-submenu">
+                        <a href="#" onclick="event.stopPropagation(); toggleOrgSubmenu()">切换组织 <i class="fa fa-angle-up" id="orgArrow" style="float: right;"></i></a>
+                        <ul class="org-submenu">
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞嘉东科技有限公司', '买买提', '总经理')" class="active" style="padding-left: 24px;">东莞市智联科技有限公司(总经理)</a></li>
+                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('长安训练中心', '买买提', '工程师')" style="padding-left: 44px;">长安训练中心(工程师)</a></li>
+                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '工程师')" style="padding-left: 44px;">万江训练中心(工程师)</a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞华天设备有限公司', '买买提', '业务员')" style="padding-left: 24px;">东莞华天设备有限公司(业务员)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" onclick="event.stopPropagation()">个人中心</a></li>
                 </ul>
             </div>
         </div>
@@ -731,6 +790,17 @@
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         }
 
+        function toggleOrgSubmenu() {
+            const orgSubmenu = document.querySelector('.org-submenu');
+            const orgArrow = document.getElementById('orgArrow');
+            if (orgSubmenu) {
+                orgSubmenu.classList.toggle('hide');
+            }
+            if (orgArrow) {
+                orgArrow.classList.toggle('rotate-180');
+            }
+        }
+
         function showLogoutModal() {
             const modal = document.getElementById('logoutModal');
             const dropdown = document.getElementById('userDropdown');
@@ -753,8 +823,61 @@
             const dropdown = document.getElementById('userDropdown');
             if (userMenu && dropdown && !userMenu.contains(e.target)) {
                 dropdown.style.display = 'none';
+                resetOrgSubmenu();
             }
+        }, true);
+
+        // 使用mousedown事件监听，更可靠地捕获所有点击
+        document.addEventListener('mousedown', function(e) {
+            const userMenu = document.getElementById('userMenu');
+            const dropdown = document.getElementById('userDropdown');
+            if (userMenu && dropdown && !userMenu.contains(e.target)) {
+                dropdown.style.display = 'none';
+                resetOrgSubmenu();
+            }
+        }, true);
+
+        // 监听窗口焦点变化，当用户点击iframe时关闭下拉菜单
+        window.addEventListener('blur', function() {
+            setTimeout(function() {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown && dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                    resetOrgSubmenu();
+                }
+            }, 100);
         });
+
+        function resetOrgSubmenu() {
+            const orgSubmenu = document.querySelector('.org-submenu');
+            const orgArrow = document.getElementById('orgArrow');
+            if (orgSubmenu) {
+                orgSubmenu.classList.remove('hide');
+            }
+            if (orgArrow) {
+                orgArrow.classList.remove('rotate-180');
+            }
+        }
+
+        function switchOrg(orgName, userName, role) {
+            const currentOrgInfo = document.getElementById('currentOrgInfo');
+            if (currentOrgInfo) {
+                currentOrgInfo.textContent = orgName + '[' + userName + '(' + role + ')]';
+            }
+
+            const orgLinks = document.querySelectorAll('.org-submenu li a');
+            orgLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) {
+                dropdown.style.display = 'none';
+            }
+            resetOrgSubmenu();
+        }
     </script>
 </body>
 </html>

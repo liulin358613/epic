@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>添加下级组织</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .main-content {
+            padding:24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100%;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            padding: 0 0 14px 0;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* 步骤指示器 */
+        .steps-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            /* border-radius: 8px; */
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 120px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 22px;
+            width: 100px;
+            height: 3px;
+            background: #e2e8f0;
+            transform: translateX(50%);
+            z-index: 0;
+            border-radius: 2px;
+        }
+        .step.active::after {
+            background: linear-gradient(90deg, #0051D9, #0066FF);
+        }
+        .step.completed::after {
+            background: linear-gradient(90deg, #00b42a, #00d936);
+        }
+        .step-circle {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #94a3b8;
+            z-index: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(0, 81, 217, 0.4);
+            transform: scale(1.05);
+        }
+        .step.completed .step-circle {
+            background: linear-gradient(135deg, #00b42a 0%, #00d936 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(0, 180, 42, 0.4);
+        }
+        .step-label {
+            font-size: 14px;
+            color: #64748b;
+            z-index: 1;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .step.active .step-label {
+            color: #0051D9;
+            font-weight: 600;
+        }
+        .step.completed .step-label {
+            color: #00b42a;
+            font-weight: 600;
+        }
+
+        /* 表单卡片 */
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .form-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-card h3::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: linear-gradient(180deg, #0051D9 0%, #0066FF 100%);
+            border-radius: 2px;
+        }
+
+        /* 表单样式 */
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group.full-width {
+            flex: 2;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .form-group label.required::after {
+            content: '*';
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #1e293b;
+            background: white;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0051D9;
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        .form-group input:disabled {
+            background-color: #f8fafc;
+            border-color: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        /* 图片上传区域 */
+        .upload-area {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .upload-box {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+        }
+        .upload-box:hover {
+            border-color: #0051D9;
+            background: rgba(0, 81, 217, 0.03);
+        }
+        .upload-box i {
+            font-size: 28px;
+            color: #94a3b8;
+        }
+        .upload-box span {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+        .preview-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        .preview-box:hover {
+            border-color: #0051D9;
+            transform: scale(1.02);
+        }
+        .upload-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .upload-actions button {
+            padding: 6px 14px;
+            background: transparent;
+            color: #0051D9;
+            border: 1px solid #0051D9;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .upload-actions button:hover {
+            background: #0051D9;
+            color: white;
+        }
+
+        /* 操作按钮 */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1.4;
+        }
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-cancel:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.3);
+        }
+        .btn-confirm:hover {
+            background: linear-gradient(135deg, #0047c9 0%, #005ce6 100%);
+            box-shadow: 0 6px 20px rgba(0, 81, 217, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Toast提示 */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .toast i {
+            font-size: 18px;
+            color: #00d936;
+        }
+
+        /* 步骤内容 */
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 级联选择器 */
+        :root {
+            --white: #ffffff;
+            --border-gray: #e2e8f0;
+            --classic-gray: #64748b;
+            --deep-gray: #1e293b;
+            --light-gray: #f8fafc;
+            --klein-blue: #0051D9;
+            --font-size-base: 14px;
+            --font-size-sm: 13px;
+        }
+        .dropdown-multi-select {
+            position: relative;
+            width: 100%;
+        }
+        .dropdown-trigger {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: var(--white);
+            min-height: 40px;
+        }
+        .dropdown-trigger:hover {
+            border-color: var(--klein-blue);
+        }
+        .dropdown-trigger.active {
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        .dropdown-placeholder {
+            color: var(--classic-gray);
+            font-size: var(--font-size-base);
+            flex: 1;
+        }
+        .dropdown-selected {
+            color: var(--deep-gray);
+            font-size: var(--font-size-base);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .dropdown-arrow {
+            color: var(--classic-gray);
+            font-size: 10px;
+            transition: transform 0.3s;
+            margin-left: 8px;
+        }
+        .dropdown-trigger.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        .dropdown-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+            display: none;
+            overflow: visible;
+        }
+        .dropdown-panel.show {
+            display: block;
+        }
+        .dropdown-cascade {
+            display: flex;
+            min-height: 280px;
+        }
+        .cascade-level {
+            flex: 1;
+            border-right: 1px solid var(--border-gray);
+        }
+        .cascade-level:last-child {
+            border-right: none;
+        }
+        .cascade-title {
+            padding: 12px 16px;
+            font-size: var(--font-size-sm);
+            color: var(--classic-gray);
+            font-weight: 500;
+            background-color: var(--light-gray);
+            border-bottom: 1px solid var(--border-gray);
+        }
+        .cascade-options {
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 0.5rem 0;
+        }
+        .cascade-option {
+            display: flex;
+            align-items: center;
+            padding: 0.625rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .cascade-option:hover {
+            background-color: rgba(0, 81, 217, 0.05);
+        }
+
+        .cascade-option.active {
+            background-color: rgba(0, 81, 217, 0.08);
+        }
+
+        .cascade-option.selected {
+            background-color: rgba(0, 81, 217, 0.12);
+        }
+
+        .cascade-option.selected .option-text {
+            color: var(--klein-blue);
+            font-weight: 500;
+        }
+
+        .cascade-option .option-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            margin-right: 8px;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            background-color: #ffffff;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .cascade-option.selected .option-checkbox {
+            background-color: #0051D9;
+            border-color: #0051D9;
+        }
+
+        .cascade-option.selected .option-checkbox::after {
+            content: '\2713';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .cascade-option .option-text {
+            font-size: var(--font-size-base);
+            color: var(--deep-gray);
+        }
+
+        .parent-option .option-checkbox {
+            display: none;
+        }
+
+        .leaf-option {
+            padding-left: 1.75rem;
+        }
+        .cascade-option .option-arrow {
+            color: var(--classic-gray);
+            font-size: 1rem;
+            margin-left: auto;
+        }
+        .cascade-option .option-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--border-gray);
+            border-radius: 50%;
+            color: var(--classic-gray);
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            cursor: help;
+            flex-shrink: 0;
+            position: relative;
+            background-color: var(--white);
+        }
+        .dropdown-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-gray);
+            background-color: var(--light-gray);
+        }
+        .dropdown-btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: var(--font-size-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .dropdown-cancel {
+            background: var(--white);
+            color: var(--classic-gray);
+            border: 1px solid var(--border-gray);
+        }
+        .dropdown-cancel:hover {
+            background: var(--light-gray);
+        }
+        .dropdown-confirm {
+            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
+            color: white;
+        }
+        .dropdown-confirm:hover {
+            background: linear-gradient(135deg, #0047c9 0%, #005ce6 100%);
+        }
+
+        /* tooltip */
+        #addOrgTooltip {
+            position: fixed;
+            background: #1e293b;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            max-width: 300px;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 联系人选择器 */
+        .contact-select {
+            position: relative;
+            width: 100%;
+        }
+        .contact-trigger {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #ffffff;
+            min-height: 40px;
+        }
+        .contact-trigger:hover {
+            border-color: #0051D9;
+        }
+        .contact-trigger.active {
+            border-color: #0051D9;
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        .contact-placeholder {
+            color: #64748b;
+            font-size: 14px;
+            flex: 1;
+        }
+        .contact-value {
+            color: #1e293b;
+            font-size: 14px;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .contact-arrow {
+            color: #64748b;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+        .contact-trigger.active .contact-arrow {
+            transform: rotate(180deg);
+        }
+        .contact-panel {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 100 ;
+            overflow: hidden;
+        }
+        .contact-panel.show {
+            display: block;
+        }
+        .contact-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        .contact-item:hover {
+            background-color: rgba(0, 81, 217, 0.05);
+        }
+        .contact-item.selected {
+            background-color: rgba(0, 81, 217, 0.1);
+        }
+        .contact-item .contact-name {
+            font-size: 14px;
+            color: #1e293b;
+            flex: 1;
+        }
+        .contact-item .contact-phone {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .contact-footer {
+            padding: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .contact-add-btn {
+            width: 100%;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px dashed #0051D9;
+            border-radius: 4px;
+            color: #0051D9;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .contact-add-btn:hover {
+            background-color: rgba(0, 81, 217, 0.05);
+            border-style: solid;
+        }
+
+        /* 添加联系人弹窗 */
+        #addContactModal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            width: 400px;
+            z-index: 10001;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        #addContactModal.show {
+            display: block;
+        }
+        #addContactModal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        #addContactModal .modal-body {
+            margin-bottom: 20px;
+        }
+        #addContactModal .form-group {
+            margin-bottom: 16px;
+        }
+        #addContactModal .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        #addContactModal .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #1e293b;
+        }
+        #addContactModal .form-group input:focus {
+            outline: none;
+            border-color: #0051D9;
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        #addContactModal .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* 占位内容 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+            color: #94a3b8;
+        }
+        .empty-state i {
+            font-size: 56px;
+            margin-bottom: 16px;
+            color: #cbd5e1;
+        }
+        .empty-state p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 14px; color: #64748b;">
+            <a href="org-manage.html" style="color: #64748b; text-decoration: none; transition: color 0.2s;">组织管理</a>
+            <i class="fa fa-angle-right" style="font-size: 12px; color: #cbd5e1;"></i>
+            <span style="color: #0051D9; font-weight: 500;">添加下级组织</span>
+        </div>
+        
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">添加下级组织</h1>
+            <p class="page-subtitle">请按照步骤填写组织信息</p>
+        </div>
+
+        <!-- 步骤指示器 -->
+        <div class="steps-container">
+            <div class="steps">
+                <div class="step active" id="step1">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">组织基本信息</span>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">企业信息</span>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">组织授权</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤内容 -->
+        <!-- 第一步：组织基本信息 -->
+        <div class="step-content active" id="content1">
+            <div class="form-card">
+                <h3>组织基本信息</h3>
+                
+                <!-- 组织图片 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label class="required" style="flex-shrink: 0; padding-top: 8px;">组织图片</label>
+                    <div class="upload-area">
+                        <div class="upload-box" onclick="document.getElementById('org-image-input').click()">
+                            <i class="fa fa-plus"></i>
+                            <span>上传</span>
+                        </div>
+                        <div id="org-image-preview" class="preview-box" style="display: none;" onclick="showOrgImagePreview()"></div>
+                        <input type="file" id="org-image-input" accept="image/*" style="display: none;" onchange="previewOrgImage()">
+                        <div id="org-image-actions" class="upload-actions" style="display: none;">
+                            <button onclick="document.getElementById('org-image-input').click()">重新上传</button>
+                            <button onclick="removeOrgImage()">移出</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 组织类型 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">组织类型</label>
+                        <div class="dropdown-multi-select" id="add-orgTypeDropdown">
+                            <div class="dropdown-trigger" id="add-orgTypeTrigger">
+                                <span class="dropdown-placeholder">请选择组织类型</span>
+                                <span class="dropdown-selected" id="add-orgTypeSelected" style="display: none;"></span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-panel" id="add-orgTypePanel">
+                                <div class="dropdown-cascade">
+                                    <div class="cascade-level" id="add-level1">
+                                        <div class="cascade-title">组织类型</div>
+                                        <div class="cascade-options">
+                                            <label class="cascade-option parent-option" data-value="training" data-has-children="true">
+                                                <span class="option-text">训练基地</span>
+                                                <span class="option-info-icon" data-tooltip="训练基地说明：提供机器人训练服务的专业场所，包括独立训练基地、客户自训练和个人训练等类型。">?</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option parent-option" data-value="robot" data-has-children="true">
+                                                <span class="option-text">机器人及设备商</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option parent-option" data-value="terminal" data-has-children="true">
+                                                <span class="option-text">终端行业客户</span>
+                                                <span class="option-info-icon" data-tooltip="终端行业客户说明：使用机器人产品的终端用户企业，涵盖制造业、服务业等多个行业。">?</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option parent-option" data-value="supply" data-has-children="true">
+                                                <span class="option-text">供应链服务商</span>
+                                                <span class="option-arrow">›</span>
+                                            </label>
+                                            <label class="cascade-option leaf-option" data-value="培训机构" data-has-children="false">
+                                                <span class="option-checkbox"></span>
+                                                <span class="option-text">培训机构</span>
+                                                <span class="option-info-icon" data-tooltip="培训机构说明：提供机器人相关技能培训服务的机构。">?</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="cascade-level" id="add-level2" style="display: none;">
+                                        <div class="cascade-title" id="add-level2Title">二级分类</div>
+                                        <div class="cascade-options" id="add-level2Options"></div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <button type="button" class="dropdown-btn dropdown-cancel" onclick="hideAddOrgTypeDropdown()">取消</button>
+                                    <button type="button" class="dropdown-btn dropdown-confirm" onclick="confirmAddOrgType()">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 组织名称 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">组织名称</label>
+                        <input type="text" placeholder="请输入组织名称">
+                    </div>
+                </div>
+
+                <!-- 联系人 + 手机号 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">联系人</label>
+                        <div class="contact-select" id="contactSelect">
+                            <div class="contact-trigger" id="contactTrigger">
+                                <span class="contact-placeholder">请选择联系人</span>
+                                <span class="contact-value" id="contactValue" style="display: none;"></span>
+                                <span class="contact-arrow">▼</span>
+                            </div>
+                            <div class="contact-panel" id="contactPanel">
+                                <div class="contact-list" id="contactList">
+                                    <!-- 联系人列表将通过JS动态生成 -->
+                                </div>
+                                <div class="contact-footer">
+                                    <button type="button" class="contact-add-btn" onclick="showAddContactModal()">+ 添加联系人</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">手机号</label>
+                        <input type="text" id="contactPhone" placeholder="请输入手机号" disabled>
+                    </div>
+                </div>
+
+                <!-- 联系地址 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>联系地址</label>
+                        <input type="text" placeholder="请输入联系地址">
+                    </div>
+                </div>
+
+                <!-- 联系电话 + 邮箱 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>联系电话</label>
+                        <input type="text" placeholder="请输入联系电话">
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="text" placeholder="请输入邮箱">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二步：企业信息 -->
+        <div class="step-content" id="content2">
+            <div class="form-card">
+                <h3>企业信息</h3>
+                
+                <!-- 营业执照 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label style="flex-shrink: 0; padding-top: 8px;">营业执照</label>
+                    <div class="upload-area">
+                        <div class="upload-box" onclick="document.getElementById('license-input').click()">
+                            <i class="fa fa-plus"></i>
+                            <span>上传</span>
+                        </div>
+                        <div id="license-preview" class="preview-box" style="display: none;" onclick="showLicensePreview()"></div>
+                        <input type="file" id="license-input" accept="image/*" style="display: none;" onchange="previewLicense()">
+                        <div id="license-actions" class="upload-actions" style="display: none;">
+                        <button onclick="reuploadLicense()">重新上传</button>
+                        <button onclick="removeLicense()">移出</button>
+                    </div>
+                        <!-- AI识别状态 -->
+                        <div id="ai-recognizing" style="display: none; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa fa-spinner fa-spin" style="color: #0051D9;"></i>
+                                <span style="font-size: 13px; color: #64748b;">AI识别中...</span>
+                            </div>
+                            <div style="margin-top: 8px; height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden;">
+                                <div id="ai-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0051D9, #0066FF); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div id="ai-result" style="display: none; margin-top: 10px; padding: 8px 12px; background: rgba(0, 180, 42, 0.08); border-radius: 4px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-check-circle" style="color: #00b42a;"></i>
+                                <span style="font-size: 13px; color: #00b42a;">AI识别完成，已自动填充表单</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 企业名称 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>企业名称</label>
+                        <input type="text" placeholder="请输入企业名称">
+                    </div>
+                </div>
+
+                <!-- 统一社会信用代码 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>统一社会信用代码</label>
+                        <input type="text" placeholder="请输入统一社会信用代码">
+                    </div>
+                </div>
+
+                <!-- 法定代表人 + 注册资本 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>法定代表人</label>
+                        <input type="text" placeholder="请输入法定代表人">
+                    </div>
+                    <div class="form-group">
+                        <label>注册资本</label>
+                        <input type="text" placeholder="请输入注册资本">
+                    </div>
+                </div>
+
+                <!-- 成立日期 + 营业期限 -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>成立日期</label>
+                        <input type="text" placeholder="请输入成立日期">
+                    </div>
+                    <div class="form-group">
+                        <label>营业期限</label>
+                        <input type="text" placeholder="请输入营业期限">
+                    </div>
+                </div>
+
+                <!-- 注册地址 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>注册地址</label>
+                        <input type="text" placeholder="请输入注册地址">
+                    </div>
+                </div>
+
+                <!-- 经营范围 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>经营范围</label>
+                        <textarea placeholder="请输入经营范围"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三步：组织授权 -->
+        <div class="step-content" id="content3">
+            <div class="form-card">
+                <h3>组织授权</h3>
+                <div class="empty-state">
+                    <i class="fa fa-lock"></i>
+                    <p>组织授权内容待补充</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="form-actions">
+            <button class="btn btn-cancel" onclick="goBack()">
+                <i class="fa fa-arrow-left"></i> 返回
+            </button>
+            <button class="btn btn-confirm" id="btnPrev" style="display: none;" onclick="prevStep()">
+                <i class="fa fa-arrow-left"></i> 上一步
+            </button>
+            <button class="btn btn-confirm" id="btnNext" onclick="nextStep()">
+                下一步 <i class="fa fa-arrow-right"></i>
+            </button>
+            <button class="btn btn-confirm" id="btnSubmit" style="display: none;" onclick="submitForm()">
+                <i class="fa fa-check"></i> 提交
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast提示 -->
+    <div id="toast" class="toast-container" style="display: none;">
+        <div class="toast">
+            <i class="fa fa-check-circle"></i>
+            <span id="toast-message">操作成功</span>
+        </div>
+    </div>
+
+    <!-- 图片预览弹窗 -->
+    <div id="imagePreviewModal" style="display: none;" class="modal-overlay" onclick="hideImagePreview()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideImagePreview()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <img id="previewImg" src="" alt="图片预览" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- tooltip元素 -->
+    <div id="addOrgTooltip"></div>
+
+    <!-- 弹窗遮罩 -->
+    <div class="modal-overlay" id="modalOverlay" onclick="hideAddContactModal()"></div>
+
+    <!-- 添加联系人弹窗 -->
+    <div id="addContactModal">
+        <div class="modal-title">添加联系人</div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="required">联系人姓名</label>
+                <input type="text" id="newContactName" placeholder="请输入联系人姓名">
+            </div>
+            <div class="form-group">
+                <label class="required">手机号</label>
+                <input type="text" id="newContactPhone" placeholder="请输入手机号">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" onclick="hideAddContactModal()">取消</button>
+            <button type="button" class="btn btn-primary" onclick="confirmAddContact()">确定</button>
+        </div>
+    </div>
+
+    <script>
+        // 组织类型数据
+        var orgTypeData = {
+            'training': {
+                label: '训练基地',
+                children: [
+                    { value: 'independent', label: '独立训练基地' },
+                    { value: 'self', label: '客户自训练' },
+                    { value: 'personal', label: '个人训练' }
+                ]
+            },
+            'robot': {
+                label: '机器人及设备商',
+                children: [
+                    { value: 'special', label: '专机设备' },
+                    { value: 'robot', label: '机器人' },
+                    { value: 'accessory', label: '配件耗材' },
+                    { value: 'software', label: '软件系统' }
+                ]
+            },
+            'terminal': {
+                label: '终端行业客户',
+                children: [
+                    { value: 'manufacture', label: '制造业' },
+                    { value: 'service', label: '服务业' },
+                    { value: 'logistics', label: '物流仓储' },
+                    { value: 'medical', label: '医疗健康' }
+                ]
+            },
+            'supply': {
+                label: '供应链服务商',
+                children: [
+                    { value: 'agent', label: '代理商' },
+                    { value: 'distributor', label: '经销商' },
+                    { value: 'integrator', label: '系统集成商' },
+                    { value: 'aftersales', label: '售后服务商' }
+                ]
+            }
+        };
+
+        // 组织类型选择相关变量
+        var addOrgTypePanel = document.getElementById('add-orgTypePanel');
+        var addOrgTypeTrigger = document.getElementById('add-orgTypeTrigger');
+        var addOrgTypeSelected = document.getElementById('add-orgTypeSelected');
+        var addLevel1 = document.getElementById('add-level1');
+        var addLevel2 = document.getElementById('add-level2');
+        var addLevel2Title = document.getElementById('add-level2Title');
+        var addLevel2Options = document.getElementById('add-level2Options');
+        var addSelectedOrgTypes = [];
+        var addTempSelectedOrgTypes = [];
+        var addCurrentParent = '';
+
+        // 打开组织类型选择器
+        addOrgTypeTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (addOrgTypePanel.classList.contains('show')) {
+                hideAddOrgTypeDropdown();
+            } else {
+                // 重置临时选择
+                addTempSelectedOrgTypes = [...addSelectedOrgTypes];
+                // 清空二级选择状态
+                addLevel2.style.display = 'none';
+                addLevel2Options.innerHTML = '';
+                // 重置一级选项状态
+                addLevel1.querySelectorAll('.cascade-option').forEach(function(opt) {
+                    opt.classList.remove('active', 'selected');
+                });
+                // 高亮已选择的选项（如果有子级被选中，父级也显示selected状态）
+                var selectedLevel1 = new Set();
+                addTempSelectedOrgTypes.forEach(function(item) {
+                    if (item.level1) {
+                        selectedLevel1.add(item.level1);
+                    }
+                });
+                selectedLevel1.forEach(function(level1) {
+                    var opt = addLevel1.querySelector('.cascade-option[data-value="' + level1 + '"]');
+                    if (opt) {
+                        opt.classList.add('selected');
+                    }
+                });
+                addOrgTypePanel.classList.add('show');
+                addOrgTypeTrigger.classList.add('active');
+            }
+        });
+
+        // 点击一级选项
+        addLevel1.addEventListener('click', function(e) {
+            var target = e.target.closest('.cascade-option');
+            if (!target) return;
+            
+            var value = target.getAttribute('data-value');
+            var hasChildren = target.getAttribute('data-has-children') === 'true';
+            
+            // 清除其他选项的active状态
+            addLevel1.querySelectorAll('.cascade-option').forEach(function(opt) {
+                opt.classList.remove('active');
+            });
+            
+            if (hasChildren) {
+                // 有子级的选项
+                target.classList.add('active');
+                addCurrentParent = value;
+                
+                // 显示二级菜单
+                addLevel2Title.textContent = orgTypeData[value].label ;
+                renderAddLevel2Options(value);
+                addLevel2.style.display = 'block';
+                
+                // 高亮二级菜单中已选择的选项（支持多选）
+                var parentSelectedList = addTempSelectedOrgTypes.filter(function(item) {
+                    return item.level1 === value;
+                });
+                addLevel2Options.querySelectorAll('.cascade-option').forEach(function(opt) {
+                    opt.classList.remove('selected');
+                    var isSelected = parentSelectedList.some(function(item) {
+                        return item.level2 === opt.getAttribute('data-value');
+                    });
+                    if (isSelected) {
+                        opt.classList.add('selected');
+                    }
+                });
+            } else {
+                // 叶子选项（培训机构）
+                addLevel2.style.display = 'none';
+                addCurrentParent = '';
+                
+                // 切换选中状态
+                if (target.classList.contains('selected')) {
+                    target.classList.remove('selected');
+                    addTempSelectedOrgTypes = addTempSelectedOrgTypes.filter(function(item) {
+                        return item.level1 !== value;
+                    });
+                } else {
+                    target.classList.add('selected');
+                    addTempSelectedOrgTypes.push({ level1: value, level2: '' });
+                }
+                
+                updateAddOrgTypeDisplay();
+            }
+        });
+
+        // 渲染二级选项
+        function renderAddLevel2Options(parentValue) {
+            var children = orgTypeData[parentValue]?.children || [];
+            var html = '';
+            
+            children.forEach(function(child) {
+                html += '<label class="cascade-option leaf-option" data-value="' + child.value + '" data-parent="' + parentValue + '">';
+                html += '<span class="option-checkbox"></span>';
+                html += '<span class="option-text">' + child.label + '</span>';
+                html += '</label>';
+            });
+            
+            addLevel2Options.innerHTML = html;
+        }
+
+        // 点击二级选项
+        addLevel2Options.addEventListener('click', function(e) {
+            var target = e.target.closest('.cascade-option');
+            if (!target) return;
+            
+            var value = target.getAttribute('data-value');
+            var parent = target.getAttribute('data-parent');
+            
+            // 切换当前选项的选中状态（支持多选，不清除同组其他选项）
+            if (target.classList.contains('selected')) {
+                target.classList.remove('selected');
+                addTempSelectedOrgTypes = addTempSelectedOrgTypes.filter(function(item) {
+                    return !(item.level1 === parent && item.level2 === value);
+                });
+            } else {
+                target.classList.add('selected');
+                addTempSelectedOrgTypes.push({ level1: parent, level2: value });
+            }
+            
+            updateAddOrgTypeDisplay();
+        });
+
+        // 更新显示
+        function updateAddOrgTypeDisplay() {
+            if (addTempSelectedOrgTypes.length === 0) {
+                addOrgTypeSelected.style.display = 'none';
+                addOrgTypeTrigger.querySelector('.dropdown-placeholder').style.display = 'block';
+            } else {
+                addOrgTypeTrigger.querySelector('.dropdown-placeholder').style.display = 'none';
+                addOrgTypeSelected.style.display = 'block';
+                var labels = addTempSelectedOrgTypes.map(function(item) {
+                    if (item.level2) {
+                        var parentData = orgTypeData[item.level1];
+                        if (parentData) {
+                            var child = parentData.children.find(function(c) { return c.value === item.level2; });
+                            return child ? child.label : parentData.label;
+                        }
+                    }
+                    return orgTypeData[item.level1]?.label || item.level1;
+                }).join('、');
+                addOrgTypeSelected.textContent = '已选择 ' + addTempSelectedOrgTypes.length + ' 项：' + labels;
+            }
+        }
+
+        // 隐藏下拉框
+        function hideAddOrgTypeDropdown() {
+            addOrgTypePanel.classList.remove('show');
+            addOrgTypeTrigger.classList.remove('active');
+            addLevel2.style.display = 'none';
+            hideAddTooltip();
+        }
+
+        // 确认选择
+        function confirmAddOrgType() {
+            addSelectedOrgTypes = [...addTempSelectedOrgTypes];
+            updateAddOrgTypeDisplay();
+            hideAddOrgTypeDropdown();
+        }
+
+        // tooltip功能
+        function showAddTooltip(e) {
+            var tooltip = document.getElementById('addOrgTooltip');
+            var icon = e.target;
+            var text = icon.getAttribute('data-tooltip');
+            if (!text) return;
+            
+            tooltip.textContent = text;
+            tooltip.style.display = 'block';
+            
+            var rect = icon.getBoundingClientRect();
+            var tooltipRect = tooltip.getBoundingClientRect();
+            
+            var x = rect.left + rect.width / 2 - tooltipRect.width / 2;
+            var y = rect.top - tooltipRect.height - 10;
+            
+            if (x < 10) x = 10;
+            if (x + tooltipRect.width > window.innerWidth - 10) {
+                x = window.innerWidth - tooltipRect.width - 10;
+            }
+            if (y < 10) {
+                y = rect.bottom + 10;
+            }
+            
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+
+        function hideAddTooltip() {
+            document.getElementById('addOrgTooltip').style.display = 'none';
+        }
+
+        // 点击外部关闭下拉框
+        document.getElementById('add-orgTypeDropdown').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('add-orgTypeDropdown').contains(e.target)) {
+                hideAddOrgTypeDropdown();
+            }
+        });
+
+        // 页面加载完成后为图标添加hover事件
+        document.addEventListener('DOMContentLoaded', function() {
+            var infoIcons = document.querySelectorAll('#add-level1 .option-info-icon');
+            infoIcons.forEach(function(icon) {
+                icon.addEventListener('mouseenter', showAddTooltip);
+                icon.addEventListener('mouseleave', hideAddTooltip);
+            });
+        });
+
+        var currentStep = 1;
+        var totalSteps = 3;
+
+        // 步骤切换
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                // 隐藏当前步骤
+                document.getElementById('content' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.add('completed');
+                
+                // 显示下一步
+                currentStep++;
+                document.getElementById('content' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+                
+                updateButtons();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                // 隐藏当前步骤
+                document.getElementById('content' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('completed');
+                
+                // 显示上一步
+                currentStep--;
+                document.getElementById('content' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.remove('completed');
+                
+                updateButtons();
+            }
+        }
+
+        function updateButtons() {
+            var btnPrev = document.getElementById('btnPrev');
+            var btnNext = document.getElementById('btnNext');
+            var btnSubmit = document.getElementById('btnSubmit');
+            
+            if (currentStep === 1) {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'inline-flex';
+                btnSubmit.style.display = 'none';
+            } else if (currentStep === totalSteps) {
+                btnPrev.style.display = 'inline-flex';
+                btnNext.style.display = 'none';
+                btnSubmit.style.display = 'inline-flex';
+            } else {
+                btnPrev.style.display = 'inline-flex';
+                btnNext.style.display = 'inline-flex';
+                btnSubmit.style.display = 'none';
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function submitForm() {
+            showToast('提交成功');
+            setTimeout(function() {
+                window.history.back();
+            }, 1500);
+        }
+
+        // Toast提示
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            var toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(function() {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+
+        // 组织图片预览
+        function previewOrgImage() {
+            var input = document.getElementById('org-image-input');
+            var preview = document.getElementById('org-image-preview');
+            var upload = document.querySelector('#content1 .upload-box');
+            var actions = document.getElementById('org-image-actions');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.display = 'block';
+                    upload.style.display = 'none';
+                    actions.style.display = 'flex';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeOrgImage() {
+            var input = document.getElementById('org-image-input');
+            var preview = document.getElementById('org-image-preview');
+            var upload = document.querySelector('#content1 .upload-box');
+            var actions = document.getElementById('org-image-actions');
+            
+            preview.style.display = 'none';
+            preview.style.backgroundImage = '';
+            upload.style.display = 'flex';
+            actions.style.display = 'none';
+            input.value = '';
+        }
+
+        // 营业执照预览
+        function previewLicense() {
+            var input = document.getElementById('license-input');
+            var preview = document.getElementById('license-preview');
+            var upload = document.querySelector('#content2 .upload-box');
+            var actions = document.getElementById('license-actions');
+            var aiRecognizing = document.getElementById('ai-recognizing');
+            var aiResult = document.getElementById('ai-result');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.display = 'block';
+                    upload.style.display = 'none';
+                    actions.style.display = 'flex';
+                    
+                    // 开始AI识别
+                    startAIRecognize();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // AI识别模拟数据
+        var aiRecognizeData = {
+            companyName: '东莞市爱沛柯尔科技有限公司',
+            creditCode: '91441900MA55XRH67K',
+            legalPerson: '张三',
+            registeredCapital: '1000万元',
+            establishDate: '2024-01-15',
+            businessTerm: '长期',
+            registeredAddress: '广东省东莞市长安镇科技园区A栋101室',
+            businessScope: '一般项目：人工智能应用软件开发；智能机器人销售；智能机器人的研发；信息技术咨询服务；技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；计算机系统服务；软件开发；软件销售；机械设备销售；电子产品销售；五金产品批发；五金产品零售；货物进出口；技术进出口。'
+        };
+        
+        // 开始AI识别
+        function startAIRecognize() {
+            var aiRecognizing = document.getElementById('ai-recognizing');
+            var aiResult = document.getElementById('ai-result');
+            var aiProgress = document.getElementById('ai-progress');
+            
+            // 隐藏之前的识别结果
+            aiResult.style.display = 'none';
+            
+            // 显示识别中状态
+            aiRecognizing.style.display = 'block';
+            aiProgress.style.width = '0%';
+            
+            // 模拟识别进度
+            var progress = 0;
+            var interval = setInterval(function() {
+                progress += Math.random() * 15 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // 识别完成，填充表单
+                    fillFormWithAI();
+                    
+                    // 显示识别结果
+                    setTimeout(function() {
+                        aiRecognizing.style.display = 'none';
+                        aiResult.style.display = 'block';
+                    }, 300);
+                }
+                aiProgress.style.width = progress + '%';
+            }, 200);
+        }
+        
+        // 使用AI识别结果填充表单
+        function fillFormWithAI() {
+            var formRows = document.querySelectorAll('#content2 .form-row');
+            
+            if (formRows.length >= 6) {
+                // 企业名称 (第1个form-row)
+                var companyNameInput = formRows[0].querySelector('input');
+                if (companyNameInput) {
+                    companyNameInput.value = aiRecognizeData.companyName;
+                }
+                
+                // 统一社会信用代码 (第2个form-row)
+                var creditCodeInput = formRows[1].querySelector('input');
+                if (creditCodeInput) {
+                    creditCodeInput.value = aiRecognizeData.creditCode;
+                }
+                
+                // 法定代表人 (第3个form-row, 第1个form-group)
+                var legalPersonInput = formRows[2].querySelector('.form-group:first-child input');
+                if (legalPersonInput) {
+                    legalPersonInput.value = aiRecognizeData.legalPerson;
+                }
+                
+                // 注册资本 (第3个form-row, 第2个form-group)
+                var capitalInput = formRows[2].querySelector('.form-group:last-child input');
+                if (capitalInput) {
+                    capitalInput.value = aiRecognizeData.registeredCapital;
+                }
+                
+                // 成立日期 (第4个form-row, 第1个form-group)
+                var dateInput = formRows[3].querySelector('.form-group:first-child input');
+                if (dateInput) {
+                    dateInput.value = aiRecognizeData.establishDate;
+                }
+                
+                // 营业期限 (第4个form-row, 第2个form-group)
+                var termInput = formRows[3].querySelector('.form-group:last-child input');
+                if (termInput) {
+                    termInput.value = aiRecognizeData.businessTerm;
+                }
+                
+                // 注册地址 (第5个form-row)
+                var addressInput = formRows[4].querySelector('input');
+                if (addressInput) {
+                    addressInput.value = aiRecognizeData.registeredAddress;
+                }
+                
+                // 经营范围 (第6个form-row)
+                var scopeTextarea = formRows[5].querySelector('textarea');
+                if (scopeTextarea) {
+                    scopeTextarea.value = aiRecognizeData.businessScope;
+                }
+            }
+        }
+        
+        // 清空企业信息表单
+        function clearEnterpriseForm() {
+            var formRows = document.querySelectorAll('#content2 .form-row');
+            
+            if (formRows.length >= 6) {
+                // 企业名称
+                var companyNameInput = formRows[0].querySelector('input');
+                if (companyNameInput) {
+                    companyNameInput.value = '';
+                }
+                
+                // 统一社会信用代码
+                var creditCodeInput = formRows[1].querySelector('input');
+                if (creditCodeInput) {
+                    creditCodeInput.value = '';
+                }
+                
+                // 法定代表人
+                var legalPersonInput = formRows[2].querySelector('.form-group:first-child input');
+                if (legalPersonInput) {
+                    legalPersonInput.value = '';
+                }
+                
+                // 注册资本
+                var capitalInput = formRows[2].querySelector('.form-group:last-child input');
+                if (capitalInput) {
+                    capitalInput.value = '';
+                }
+                
+                // 成立日期
+                var dateInput = formRows[3].querySelector('.form-group:first-child input');
+                if (dateInput) {
+                    dateInput.value = '';
+                }
+                
+                // 营业期限
+                var termInput = formRows[3].querySelector('.form-group:last-child input');
+                if (termInput) {
+                    termInput.value = '';
+                }
+                
+                // 注册地址
+                var addressInput = formRows[4].querySelector('input');
+                if (addressInput) {
+                    addressInput.value = '';
+                }
+                
+                // 经营范围
+                var scopeTextarea = formRows[5].querySelector('textarea');
+                if (scopeTextarea) {
+                    scopeTextarea.value = '';
+                }
+            }
+        }
+
+        function removeLicense() {
+            var input = document.getElementById('license-input');
+            var preview = document.getElementById('license-preview');
+            var upload = document.querySelector('#content2 .upload-box');
+            var actions = document.getElementById('license-actions');
+            var aiRecognizing = document.getElementById('ai-recognizing');
+            var aiResult = document.getElementById('ai-result');
+            
+            preview.style.display = 'none';
+            preview.style.backgroundImage = '';
+            upload.style.display = 'flex';
+            actions.style.display = 'none';
+            aiRecognizing.style.display = 'none';
+            aiResult.style.display = 'none';
+            input.value = '';
+            
+            // 清空表单内容
+            clearEnterpriseForm();
+        }
+        
+        // 重新上传营业执照
+        function reuploadLicense() {
+            var aiResult = document.getElementById('ai-result');
+            
+            // 隐藏之前的识别结果
+            aiResult.style.display = 'none';
+            
+            // 清空表单内容
+            clearEnterpriseForm();
+            
+            // 清空之前的图片预览
+            var preview = document.getElementById('license-preview');
+            preview.style.display = 'none';
+            preview.style.backgroundImage = '';
+            
+            // 触发文件选择
+            var input = document.getElementById('license-input');
+            input.value = '';
+            input.click();
+        }
+
+        // 图片预览弹窗
+        function showOrgImagePreview() {
+            showImagePreview(document.getElementById('org-image-preview').style.backgroundImage);
+        }
+
+        function showLicensePreview() {
+            showImagePreview(document.getElementById('license-preview').style.backgroundImage);
+        }
+
+        function showImagePreview(imageUrl) {
+            var modal = document.getElementById('imagePreviewModal');
+            var img = document.getElementById('previewImg');
+            img.src = imageUrl.replace('url(', '').replace(')', '').replace(/"/g, '');
+            modal.style.display = 'flex';
+        }
+
+        function hideImagePreview() {
+            document.getElementById('imagePreviewModal').style.display = 'none';
+        }
+
+        // 联系人数据
+        var contactData = [
+            { id: 1, name: '张三', phone: '13800138001' },
+            { id: 2, name: '李四', phone: '13800138002' },
+            { id: 5, name: '钱七', phone: '13800138005' }
+        ];
+
+        // 渲染联系人列表
+        function renderContactList() {
+            var contactList = document.getElementById('contactList');
+            contactList.innerHTML = '';
+            
+            contactData.forEach(function(contact) {
+                var item = document.createElement('div');
+                item.className = 'contact-item';
+                item.setAttribute('data-id', contact.id);
+                item.innerHTML = `
+                    <span class="contact-name">${contact.name}</span>
+                    <span class="contact-phone">${contact.phone}</span>
+                `;
+                item.addEventListener('click', function() {
+                    selectContact(contact);
+                });
+                contactList.appendChild(item);
+            });
+        }
+
+        // 选择联系人
+        function selectContact(contact) {
+            var trigger = document.getElementById('contactTrigger');
+            var placeholder = document.querySelector('.contact-placeholder');
+            var value = document.getElementById('contactValue');
+            var phoneInput = document.getElementById('contactPhone');
+            
+            placeholder.style.display = 'none';
+            value.style.display = 'block';
+            value.textContent = contact.name;
+            
+            phoneInput.value = contact.phone;
+            
+            hideContactPanel();
+            
+            // 高亮选中项
+            document.querySelectorAll('.contact-item').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+            var selectedItem = document.querySelector('.contact-item[data-id="' + contact.id + '"]');
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+            }
+        }
+
+        // 显示联系人面板
+        function showContactPanel() {
+            var panel = document.getElementById('contactPanel');
+            var trigger = document.getElementById('contactTrigger');
+            panel.classList.add('show');
+            trigger.classList.add('active');
+        }
+
+        // 隐藏联系人面板
+        function hideContactPanel() {
+            var panel = document.getElementById('contactPanel');
+            var trigger = document.getElementById('contactTrigger');
+            panel.classList.remove('show');
+            trigger.classList.remove('active');
+        }
+
+        // 切换联系人面板
+        document.getElementById('contactTrigger').addEventListener('click', function(e) {
+            e.stopPropagation();
+            var panel = document.getElementById('contactPanel');
+            if (panel.classList.contains('show')) {
+                hideContactPanel();
+            } else {
+                showContactPanel();
+            }
+        });
+
+        // 点击其他区域关闭面板
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('contactSelect').contains(e.target)) {
+                hideContactPanel();
+            }
+        });
+
+        // 显示添加联系人弹窗
+        function showAddContactModal() {
+            hideContactPanel();
+            document.getElementById('addContactModal').classList.add('show');
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        // 隐藏添加联系人弹窗
+        function hideAddContactModal() {
+            document.getElementById('addContactModal').classList.remove('show');
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('newContactName').value = '';
+            document.getElementById('newContactPhone').value = '';
+        }
+
+        // 确认添加联系人
+        function confirmAddContact() {
+            var name = document.getElementById('newContactName').value.trim();
+            var phone = document.getElementById('newContactPhone').value.trim();
+            
+            if (!name) {
+                alert('请输入联系人姓名');
+                return;
+            }
+            if (!phone) {
+                alert('请输入手机号');
+                return;
+            }
+            
+            var newContact = {
+                id: contactData.length + 1,
+                name: name,
+                phone: phone
+            };
+            
+            contactData.push(newContact);
+            renderContactList();
+            hideAddContactModal();
+            
+            // 自动选中新添加的联系人
+            selectContact(newContact);
+        }
+
+        // 初始化联系人列表
+        renderContactList();
+    </script>
+</body>
+</html>
