@@ -631,6 +631,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>部门ID</th>
                                 <th>部门名称</th>
                                 <th>所属组织</th>
                                 <th>备注</th>
@@ -694,15 +695,21 @@
                     </div>
                     <div class="form-group">
                         <label><span class="required">*</span>所属组织</label>
-                        <select id="form-org-select">
-                            <option value="">请选择组织</option>
-                            <option value="main">东莞长安训练基地</option>
-                            <option value="sub1">└─ 智能制造培训中心</option>
-                            <option value="sub2">└─ 机器人实训基地</option>
-                            <option value="org1">└─ 东莞嘉东轴承商贸有限公司</option>
-                            <option value="org2">└─ 技能考核中心</option>
-                            <option value="org3">└─ 杭州阿里云智能科技有限公司</option>
-                        </select>
+                        <div style="position: relative;">
+                            <select id="form-org-select" onchange="updateOrgDisplay()" style="width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #1e293b; background: #fafbfc; appearance: none; -webkit-appearance: none; -moz-appearance: none; cursor: pointer;">
+                                <option value="">请选择组织</option>
+                                <option value="main">东莞长安训练基地</option>
+                                <option value="sub1">└─ 智能制造培训中心</option>
+                                <option value="sub2">└─ 机器人实训基地</option>
+                                <option value="org1">└─ 东莞嘉东轴承商贸有限公司</option>
+                                <option value="org2">└─ 技能考核中心</option>
+                                <option value="org3">└─ 杭州阿里云智能科技有限公司</option>
+                            </select>
+                            <div id="org-display" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px 14px; border-radius: 8px; pointer-events: none; opacity: 0;"></div>
+                            <div style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #94a3b8;">
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
@@ -837,6 +844,7 @@
             // 渲染表格
             tbody.innerHTML = filteredData.map(dept => `
                 <tr>
+                    <td>${dept.id}</td>
                     <td>${dept.name}</td>
                     <td>${dept.orgName}</td>
                     <td>${formatRemark(dept.remark)}</td>
@@ -871,7 +879,34 @@
             document.getElementById('form-org-select').value = '';
             document.getElementById('form-remark').value = '';
             currentDeptId = null;
+            
+            // 重置组织显示
+            updateOrgDisplay();
+            
             document.getElementById('add-modal').style.display = 'flex';
+        }
+
+        // 更新组织显示
+        function updateOrgDisplay() {
+            const select = document.getElementById('form-org-select');
+            const display = document.getElementById('org-display');
+            const value = select.value;
+            const option = select.options[select.selectedIndex];
+            
+            if (value) {
+                // 获取组织名称（不包含层级符号）
+                const orgName = orgNameMap[value];
+                // 设置自定义显示
+                display.textContent = orgName;
+                display.style.opacity = '1';
+                // 隐藏原生选择框的文本
+                select.style.color = 'transparent';
+            } else {
+                // 重置显示
+                display.textContent = '';
+                display.style.opacity = '0';
+                select.style.color = '#1e293b';
+            }
         }
 
         // 打开编辑部门弹窗
@@ -884,6 +919,10 @@
             document.getElementById('form-org-select').value = dept.org;
             document.getElementById('form-remark').value = dept.remark;
             currentDeptId = deptId;
+            
+            // 更新组织显示
+            updateOrgDisplay();
+            
             document.getElementById('add-modal').style.display = 'flex';
         }
 
