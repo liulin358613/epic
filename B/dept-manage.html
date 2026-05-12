@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>组织部门管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        .content-wrapper {
+            padding: 16px 16px 0px 16px;
+            display: flex;
+            gap: 16px;
+            height: 100vh;
+        }
+        .left-panel {
+            width: 280px;
+            flex-shrink: 0;
+            height: 100%;
+        }
+        .right-panel {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+        }
+        td:last-child {
+            white-space: nowrap;
+            min-width: 120px;
+        }
+        tr {
+            white-space: nowrap;
+        }
+        .placeholder {
+            color: #94a3b8;
+            font-style: italic;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 12px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i {
+            color: #64748b;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-content {
+            padding: 16px;
+            overflow-x: auto;
+            flex: 1;
+            overflow-y: auto;
+        }
+        table {
+            min-width: 100%;
+        }
+        th, td {
+            white-space: nowrap;
+        }
+        .section-count {
+            font-size: 12px;
+            font-weight: 400;
+            color: #64748b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+            white-space: nowrap;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #475569;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease-out;
+        }
+        .modal-header {
+            padding: 4px 24px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-header h3::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 2px;
+        }
+        .modal-header .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .modal-header .close-btn:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .modal-body {
+            padding: 14px 24px;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group label {
+            font-size: 14px;
+            color: #475569;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .form-group label .required {
+            color: #ef4444;
+            font-weight: bold;
+            margin-right: 2px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1e293b;
+            background: #fafbfc;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+            background: white;
+        }
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            border-color: #cbd5e1;
+            background: white;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #94a3b8;
+        }
+        .modal-footer {
+            padding: 10px 24px;
+            background: linear-gradient(180deg, #fafbfc 0%, #f8fafc 100%);
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn {
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: #64748b;
+        }
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+            color: #475569;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .btn-confirm:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            color: #64748b;
+        }
+        .btn-outline:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            color: #475569;
+        }
+        .btn-add {
+            padding: 6px 14px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn-add:hover {
+            background: #16a34a;
+        }
+        .action-btn {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            margin-right: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .action-btn.edit {
+            background: #f1f5f9;
+            color: #3b82f6;
+        }
+        .action-btn.edit:hover {
+            background: #dbeafe;
+        }
+        .action-btn.delete {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+        .action-btn.delete:hover {
+            background: #fee2e2;
+        }
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .confirm-modal .modal-content {
+            width: 400px;
+        }
+        .org-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .org-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+        .org-item:hover {
+            background: #f1f5f9;
+        }
+        .org-item.active {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: 500;
+        }
+        .org-item.child {
+            padding-left: 34px;
+            position: relative;
+        }
+        .org-item.child::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 16px;
+            width: 12px;
+            height: 2px;
+            background-color: #e2e8f0;
+        }
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 200px;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .search-select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 160px;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .search-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 12px 24px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            gap: 16px;
+        }
+        .pagination-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pagination-center {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .pagination-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        .pagination-btn:hover:not(.active):not(:disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .pagination-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination-select {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #64748b;
+            background: white;
+            outline: none;
+            cursor: pointer;
+        }
+        .pagination-select:focus {
+            border-color: #3b82f6;
+        }
+        .pagination-input {
+            width: 60px;
+            padding: 6px 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+            outline: none;
+        }
+        .pagination-input:focus {
+            border-color: #3b82f6;
+        }
+        .pagination-text {
+            font-size: 13px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <!-- 左侧组织列表 -->
+        <div class="left-panel">
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-sitemap"></i> 组织列表</div>
+                </div>
+                <div class="section-content">
+                    <ul class="org-list" id="org-list">
+                        <li class="org-item active" data-org-id="all">
+                            <i class="fa fa-th-large"></i> 全部组织
+                        </li>
+                        <li class="org-item" data-org-id="main">
+                            <i class="fa fa-building"></i> 东莞长安训练基地
+                        </li>
+                        <li class="org-item child" data-org-id="sub1">
+                            <i class="fa fa-building-o"></i> 智能制造培训中心
+                        </li>
+                        <li class="org-item child" data-org-id="sub2">
+                            <i class="fa fa-building-o"></i> 机器人实训基地
+                        </li>
+                        <li class="org-item child" data-org-id="org1">
+                            <i class="fa fa-building-o"></i> 东莞嘉东轴承商贸有限公司
+                        </li>
+                        <li class="org-item child" data-org-id="org2">
+                            <i class="fa fa-building-o"></i> 技能考核中心
+                        </li>
+                        <li class="org-item child" data-org-id="org3">
+                            <i class="fa fa-building-o"></i> 杭州阿里云智能科技有限公司
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧部门列表 -->
+        <div class="right-panel">
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-users"></i> 部门列表 <span class="section-count" id="dept-count">(20个)</span></div>
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="搜索部门名称" id="search-input">
+                        <button class="btn-add" onclick="searchDepts()">
+                            <i class="fa fa-search"></i>搜索
+                        </button>
+                        <button class="btn-add" onclick="resetSearch()" style="background: #f1f5f5; color: #64748b;">
+                            <i class="fa fa-refresh"></i>重置
+                        </button>
+                        <button class="btn-add" onclick="openAddModal()">
+                            <i class="fa fa-plus"></i> 添加部门
+                        </button>
+                    </div>
+                </div>
+                <div class="section-content" style="padding: 0;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>部门名称</th>
+                                <th>所属组织</th>
+                                <th>备注</th>
+                                <th>添加时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dept-table-body">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <div class="pagination-left">
+                        <span class="pagination-text">共 20 条</span>
+                    </div>
+                    <div class="pagination-center">
+                        <button class="pagination-btn" disabled>
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">4</button>
+                        <button class="pagination-btn">5</button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                    </div>
+                    <div class="pagination-right">
+                        <select class="pagination-select">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                            <option>50条/页</option>
+                            <option>100条/页</option>
+                        </select>
+                        <span class="pagination-text">跳至</span>
+                        <input type="text" class="pagination-input" value="1">
+                        <span class="pagination-text">页</span>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加部门弹窗 -->
+    <div id="add-modal" class="modal-overlay" style="display: none;" onclick="closeAddModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+            <div class="modal-header">
+                <h3 id="modal-title">添加部门</h3>
+                <button class="close-btn" onclick="closeAddModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="required">*</span>部门名称</label>
+                        <input type="text" id="form-dept-name" placeholder="请输入部门名称">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="required">*</span>所属组织</label>
+                        <select id="form-org-select">
+                            <option value="">请选择组织</option>
+                            <option value="main">东莞长安训练基地</option>
+                            <option value="sub1">└─ 智能制造培训中心</option>
+                            <option value="sub2">└─ 机器人实训基地</option>
+                            <option value="org1">└─ 东莞嘉东轴承商贸有限公司</option>
+                            <option value="org2">└─ 技能考核中心</option>
+                            <option value="org3">└─ 杭州阿里云智能科技有限公司</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>备注</label>
+                        <textarea id="form-remark" placeholder="请输入备注" style="width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #1e293b; background: #fafbfc; min-height: 80px; resize: vertical;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeAddModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveDept()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除部门弹窗 -->
+    <div id="delete-modal" class="modal-overlay confirm-modal" style="display: none;" onclick="closeDeleteModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 420px;">
+            <div class="modal-header">
+                <h3>确认删除</h3>
+                <button class="close-btn" onclick="closeDeleteModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px; text-align: center;">
+                <div style="width: 64px; height: 64px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fa fa-exclamation-triangle" style="font-size: 32px; color: #dc2626;"></i>
+                </div>
+                <p style="color: #64748b; margin-bottom: 8px;">确定要删除部门 <span style="color: #1e293b; font-weight: 600;" id="delete-dept-name"></span> 吗？</p>
+                <p style="color: #94a3b8; font-size: 13px;">此操作不可撤销，删除后该部门下的成员将被转移。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeDeleteModal()">取消</button>
+                <button class="btn btn-confirm" onclick="confirmDelete()" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        // 部门数据
+        const deptData = [
+            { id: 'D001', name: '管理部', org: 'main', orgName: '东莞长安训练基地', remark: '负责组织整体管理', createTime: '2024-01-15 10:30:45' },
+            { id: 'D002', name: '培训部', org: 'main', orgName: '东莞长安训练基地', remark: '', createTime: '2024-01-15 10:35:20' },
+            { id: 'D003', name: '技术部', org: 'sub1', orgName: '智能制造培训中心', remark: '负责技术支持与开发', createTime: '2024-02-20 14:20:15' },
+            { id: 'D004', name: '行政部', org: 'sub1', orgName: '智能制造培训中心', remark: '', createTime: '2024-02-20 14:25:30' },
+            { id: 'D005', name: '实训部', org: 'sub2', orgName: '机器人实训基地', remark: '', createTime: '2024-03-10 09:15:30' },
+            { id: 'D006', name: '销售部', org: 'org1', orgName: '东莞嘉东轴承商贸有限公司', remark: '负责产品销售', createTime: '2024-04-05 16:45:00' },
+            { id: 'D007', name: '售后部', org: 'org1', orgName: '东莞嘉东轴承商贸有限公司', remark: '', createTime: '2024-04-05 16:50:00' },
+            { id: 'D008', name: '考核部', org: 'org2', orgName: '技能考核中心', remark: '', createTime: '2024-05-12 08:30:15' },
+            { id: 'D009', name: '研发部', org: 'org3', orgName: '杭州阿里云智能科技有限公司', remark: '负责技术研发', createTime: '2024-06-01 11:20:45' },
+            { id: 'D010', name: '市场部', org: 'org3', orgName: '杭州阿里云智能科技有限公司', remark: '', createTime: '2024-06-01 11:25:30' },
+            { id: 'D011', name: '财务部', org: 'main', orgName: '东莞长安训练基地', remark: '', createTime: '2024-01-15 10:40:10' },
+            { id: 'D012', name: '采购部', org: 'main', orgName: '东莞长安训练基地', remark: '负责物资采购', createTime: '2024-01-15 10:45:25' },
+            { id: 'D013', name: '运维部', org: 'sub2', orgName: '机器人实训基地', remark: '', createTime: '2024-03-10 09:20:45' },
+            { id: 'D014', name: '人力资源部', org: 'sub1', orgName: '智能制造培训中心', remark: '', createTime: '2024-02-20 14:30:15' },
+            { id: 'D015', name: '企划部', org: 'org1', orgName: '东莞嘉东轴承商贸有限公司', remark: '', createTime: '2024-04-05 16:55:00' },
+            { id: 'D016', name: '客服部', org: 'org2', orgName: '技能考核中心', remark: '负责客户服务', createTime: '2024-05-12 08:35:20' },
+            { id: 'D017', name: '质量部', org: 'org3', orgName: '杭州阿里云智能科技有限公司', remark: '', createTime: '2024-06-01 11:30:15' },
+            { id: 'D018', name: '生产部', org: 'org1', orgName: '东莞嘉东轴承商贸有限公司', remark: '', createTime: '2024-04-05 17:00:00' },
+            { id: 'D019', name: '仓储部', org: 'main', orgName: '东莞长安训练基地', remark: '', createTime: '2024-01-15 10:50:30' },
+            { id: 'D020', name: '法务部', org: 'org3', orgName: '杭州阿里云智能科技有限公司', remark: '', createTime: '2024-06-01 11:35:45' }
+        ];
+
+        // 组织名称映射
+        const orgNameMap = {
+            'main': '东莞长安训练基地',
+            'sub1': '智能制造培训中心',
+            'sub2': '机器人实训基地',
+            'org1': '东莞嘉东轴承商贸有限公司',
+            'org2': '技能考核中心',
+            'org3': '杭州阿里云智能科技有限公司'
+        };
+
+        let currentOrgId = 'all';
+        let currentDeptId = null;
+
+        // 初始化页面
+        function initPage() {
+            renderDeptList();
+            bindEvents();
+        }
+
+        // 绑定事件
+        function bindEvents() {
+            // 组织列表点击事件
+            const orgItems = document.querySelectorAll('.org-item');
+            orgItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // 移除其他组织的active状态
+                    orgItems.forEach(i => i.classList.remove('active'));
+                    // 添加当前组织的active状态
+                    this.classList.add('active');
+                    // 更新当前选中的组织ID
+                    currentOrgId = this.dataset.orgId;
+                    // 渲染部门列表
+                    renderDeptList();
+                });
+            });
+        }
+
+        // 渲染部门列表
+        function renderDeptList() {
+            const tbody = document.getElementById('dept-table-body');
+            const searchText = document.getElementById('search-input').value.toLowerCase();
+            
+            // 过滤数据
+            let filteredData = deptData;
+            if (currentOrgId !== 'all') {
+                filteredData = filteredData.filter(dept => dept.org === currentOrgId);
+            }
+            if (searchText) {
+                filteredData = filteredData.filter(dept => 
+                    dept.name.toLowerCase().includes(searchText) ||
+                    dept.orgName.toLowerCase().includes(searchText)
+                );
+            }
+
+            // 更新部门数量
+            document.getElementById('dept-count').textContent = `(${filteredData.length}个)`;
+
+            // 格式化备注字段
+            function formatRemark(remark) {
+                if (!remark || remark.trim() === '') {
+                    return '<span class="placeholder">-</span>';
+                }
+                return remark;
+            }
+
+            // 渲染表格
+            tbody.innerHTML = filteredData.map(dept => `
+                <tr>
+                    <td>${dept.name}</td>
+                    <td>${dept.orgName}</td>
+                    <td>${formatRemark(dept.remark)}</td>
+                    <td>${dept.createTime}</td>
+                    <td>
+                        <button class="action-btn edit" onclick="openEditModal('${dept.id}')">
+                            <i class="fa fa-pencil"></i>编辑
+                        </button>
+                        <button class="action-btn delete" onclick="openDeleteModal('${dept.id}')">
+                            <i class="fa fa-trash"></i>删除
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 搜索部门
+        function searchDepts() {
+            renderDeptList();
+        }
+
+        // 重置搜索
+        function resetSearch() {
+            document.getElementById('search-input').value = '';
+            renderDeptList();
+        }
+
+        // 打开添加部门弹窗
+        function openAddModal() {
+            document.getElementById('modal-title').textContent = '添加部门';
+            document.getElementById('form-dept-name').value = '';
+            document.getElementById('form-org-select').value = '';
+            document.getElementById('form-remark').value = '';
+            currentDeptId = null;
+            document.getElementById('add-modal').style.display = 'flex';
+        }
+
+        // 打开编辑部门弹窗
+        function openEditModal(deptId) {
+            const dept = deptData.find(d => d.id === deptId);
+            if (!dept) return;
+            
+            document.getElementById('modal-title').textContent = '编辑部门';
+            document.getElementById('form-dept-name').value = dept.name;
+            document.getElementById('form-org-select').value = dept.org;
+            document.getElementById('form-remark').value = dept.remark;
+            currentDeptId = deptId;
+            document.getElementById('add-modal').style.display = 'flex';
+        }
+
+        // 关闭添加/编辑部门弹窗
+        function closeAddModal() {
+            document.getElementById('add-modal').style.display = 'none';
+        }
+
+        // 保存部门
+        function saveDept() {
+            const deptName = document.getElementById('form-dept-name').value.trim();
+            const orgId = document.getElementById('form-org-select').value;
+            const remark = document.getElementById('form-remark').value.trim();
+
+            // 表单验证
+            if (!deptName) {
+                showToast('请输入部门名称', 'error');
+                return;
+            }
+            if (!orgId) {
+                showToast('请选择所属组织', 'error');
+                return;
+            }
+
+            if (currentDeptId) {
+                // 编辑部门
+                const deptIndex = deptData.findIndex(d => d.id === currentDeptId);
+                if (deptIndex !== -1) {
+                    deptData[deptIndex] = {
+                        ...deptData[deptIndex],
+                        name: deptName,
+                        org: orgId,
+                        orgName: orgNameMap[orgId],
+                        remark: remark
+                    };
+                    showToast('部门编辑成功', 'success');
+                }
+            } else {
+                // 添加部门
+                const newDept = {
+                    id: `D${String(deptData.length + 1).padStart(3, '0')}`,
+                    name: deptName,
+                    org: orgId,
+                    orgName: orgNameMap[orgId],
+                    remark: remark,
+                    createTime: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                };
+                deptData.push(newDept);
+                showToast('部门添加成功', 'success');
+            }
+
+            // 关闭弹窗并刷新列表
+            closeAddModal();
+            renderDeptList();
+        }
+
+        // 打开删除部门弹窗
+        function openDeleteModal(deptId) {
+            const dept = deptData.find(d => d.id === deptId);
+            if (!dept) return;
+            
+            document.getElementById('delete-dept-name').textContent = dept.name;
+            currentDeptId = deptId;
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
+
+        // 关闭删除部门弹窗
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        // 确认删除部门
+        function confirmDelete() {
+            const deptIndex = deptData.findIndex(d => d.id === currentDeptId);
+            if (deptIndex !== -1) {
+                deptData.splice(deptIndex, 1);
+                showToast('部门删除成功', 'success');
+                closeDeleteModal();
+                renderDeptList();
+            }
+        }
+
+        // 显示提示消息
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon;
+            if (type === 'success') {
+                icon = '<i class="fa fa-check"></i>';
+            } else if (type === 'error') {
+                icon = '<i class="fa fa-times"></i>';
+            } else {
+                icon = '<i class="fa fa-exclamation"></i>';
+            }
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icon}</div>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // 3秒后自动消失
+            setTimeout(() => {
+                toast.style.animation = 'toastIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

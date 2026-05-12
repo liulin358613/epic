@@ -516,7 +516,7 @@
 
         </div>
         <div class="flex items-center space-x-4 relative" id="userMenu" onclick="toggleUserMenu()">
-            <span class="text-gray-300 text-base font-medium cursor-pointer hover:text-white transition-colors" id="currentOrgInfo">东莞市智联科技有限公司[买买提(总经理)]</span>
+            <span class="text-gray-300 text-base font-medium cursor-pointer hover:text-white transition-colors" id="currentOrgInfo">东莞市智联科技有限公司[买买提(业务部-总经理)]</span>
             <i class="fa fa-angle-down text-gray-300 text-xs cursor-pointer hover:text-white transition-colors"></i>
             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-medium cursor-pointer">A</div>
             <!-- 下拉菜单 -->
@@ -526,10 +526,10 @@
                     <li class="has-submenu">
                         <a href="#" onclick="event.stopPropagation(); toggleOrgSubmenu()">切换组织 <i class="fa fa-angle-up" id="orgArrow" style="float: right;"></i></a>
                         <ul class="org-submenu">
-                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞嘉东科技有限公司', '买买提', '总经理')" class="active" style="padding-left: 24px;">东莞市智联科技有限公司(总经理)</a></li>
-                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('长安训练中心', '买买提', '工程师')" style="padding-left: 44px;">长安训练中心(工程师)</a></li>
-                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '工程师')" style="padding-left: 44px;">万江训练中心(工程师)</a></li>
-                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞华天设备有限公司', '买买提', '业务员')" style="padding-left: 24px;">东莞华天设备有限公司(业务员)</a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞嘉东科技有限公司', '买买提', '业务部-总经理')" class="active" style="padding-left: 24px;">东莞市智联科技有限公司(业务部-总经理)</a></li>
+                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('长安训练中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">长安训练中心(技术部-工程师)</a></li>
+                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">万江训练中心(技术部-工程师)</a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞华天设备有限公司', '买买提', '业务部-业务员')" style="padding-left: 24px;">东莞华天设备有限公司(业务部-业务员)</a></li>
                         </ul>
                     </li>
                     <li><a href="#" onclick="event.stopPropagation()">个人中心</a></li>
@@ -683,9 +683,8 @@
                     <p class="text-gray-500 text-sm mt-1">角色权限配置</p>
                 </div>
 
-                <div id="member-manage-module" class="module hidden p-6">
-                    <h2 class="text-xl font-bold text-gray-800">组织成员</h2>
-                    <p class="text-gray-500 text-sm mt-1">成员信息管理</p>
+                <div id="member-manage-module" class="module hidden p-0" style="height: 100%;">
+                    <iframe src="member-manage.html" style="width: 100%; height: 100%; border: none;"></iframe>
                 </div>
 
                 <div id="order-manage-module" class="module hidden p-6">
