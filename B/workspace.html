@@ -16,21 +16,21 @@
             padding: 0;
             box-sizing: border-box;
         }
-        html, body {
+        html {
+            height: 100%;
+        }
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f7fa;
-            height: 100%;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
             font-size: 14px;
             line-height: 1.5;
-            overflow: hidden;
         }
 
         .card {
@@ -68,18 +68,16 @@
             font-weight: 400;
         }
         .main-content {
-            flex: 1;
             padding: 16px;
+            min-height: 100vh;
             overflow-x: auto;
             overflow-y: auto;
-            min-height: 0;
         }
         .workspace-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            align-items: stretch;
-            height: 100%;
+            align-items: flex-start;
             min-height: calc(100vh - 32px);
         }
         .left-section, .right-section {
@@ -430,6 +428,7 @@
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加时间</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -450,6 +449,7 @@
                                         </td>
                                         <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
                                         <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">2024-03-15</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #f1f5f9;">
                                         <td style="padding: 10px 12px;">
@@ -466,6 +466,7 @@
                                         </td>
                                         <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
                                         <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
+                                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">2024-05-20</td>
                                     </tr>
                                 </tbody>
                             </table>

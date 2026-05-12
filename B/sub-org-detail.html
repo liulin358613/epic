@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>组织详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i {
+            color: #64748b;
+        }
+        .section-content {
+            padding: 16px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-level {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+        .btn-outline-blue {
+            padding: 4px 10px;
+            font-size: 12px;
+            color: #64748b;
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+        .btn-outline-blue:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border-color: #3b82f6;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            padding: 8px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #1e293b;
+            background: white;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .btn-cancel:hover {
+            background: #e2e8f0;
+        }
+        .btn-confirm {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-confirm:hover {
+            background: #2563eb;
+        }
+        .toast-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+        }
+        .toast {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body onload="toggleEnterpriseInfo()">
+    <div style="padding: 16px;">
+        <div style="margin-bottom: 12px; font-size: 13px; color: #64748b;">
+            <span style="cursor: pointer;" onclick="window.location.href='org-manage.html'">组织管理</span>
+            <span style="margin: 0 8px; color: #cbd5e1;">&gt;</span>
+            <span style="color: #1e293b;">组织详情</span>
+        </div>
+        <div class="card">
+            <div class="section-header">
+                <div class="section-title">组织详情</div>
+            </div>
+            <div class="section-content" style="padding: 16px; position: relative;">
+                <button class="btn-outline-blue" style="position: absolute; top: 16px; right: 16px;" onclick="showEditModal()">
+                    <i class="fa fa-pencil"></i> 编辑
+                </button>
+                <div style="display: flex; gap: 16px;">
+                    <div style="width: 100px; height: 100px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
+                            <span>东莞市长安培训中心</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(SUB001)</span>
+                        </div>
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">
+                            <span style="color: #64748b;">组织类型：</span>
+                            <span style="color: #1e293b;font-weight: 600;">培训中心</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                            <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇振安中路88号A栋</span>
+                            <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 13812345678</span>
+                        </div>
+                        <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                            <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 添加时间：2024-03-15</span>
+                            <span><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：李明 / 13812345678</span>
+                            <span><i class="fa fa-users" style="color: #94a3b8;"></i> 25 名成员</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding-top: 16px; border-top: 1px dashed #e2e8f0;" id="enterpriseInfoSection">
+                    <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fa fa-info-circle" style="color: #64748b;"></i> 企业信息
+                            <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
+                                <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
+                            </button>
+                        </div>
+                        <button class="btn-outline-blue" onclick="showEditCompanyModal()">
+                            <i class="fa fa-pencil"></i> 编辑
+                        </button>
+                    </div>
+                    <div id="enterpriseInfoContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-left: 12px;">
+                        <div style="font-size: 13px;">
+                            <span style="color: #64748b;">企业名称：</span>
+                            <span style="color: #1e293b;">东莞市长安培训中心</span>
+                        </div>
+                        <div style="font-size: 13px;">
+                            <span style="color: #64748b;">统一社会信用代码：</span>
+                            <span style="color: #1e293b;">91441900MA4U4X2K8R</span>
+                        </div>
+                        <div style="font-size: 13px;">
+                            <span style="color: #64748b;">法定代表人：</span>
+                            <span style="color: #1e293b;">李蓓佳</span>
+                        </div>
+                        <div style="font-size: 13px;">
+                            <span style="color: #64748b;">注册资本：</span>
+                            <span style="color: #1e293b;">100万元人民币</span>
+                        </div>
+                        <div style="font-size: 13px;">
+                            <span style="color: #64748b;">成立日期：</span>
+                            <span style="color: #1e293b;">2020-05-15</span>
+                        </div>
+                        <div style="font-size: 13px;">
+                            <span style="color: #64748b;">营业期限：</span>
+                            <span style="color: #1e293b;">2020-05-15 至 无固定期限</span>
+                        </div>
+                        <div style="font-size: 13px; grid-column: 1 / -1;">
+                            <span style="color: #64748b;">注册地址：</span>
+                            <span style="color: #1e293b;">广东省东莞市长安镇振安中路88号A栋</span>
+                        </div>
+                        <div style="font-size: 13px; grid-column: 1 / -1;">
+                            <span style="color: #64748b;">经营范围：</span>
+                            <span style="color: #1e293b;">机器人技术培训、自动化设备操作培训、技能认证服务。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding-top: 16px; border-top: 1px dashed #e2e8f0; display: none;" id="noEnterpriseInfoSection">
+                    <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-info-circle" style="color: #64748b;"></i> 企业信息
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; padding: 32px; color: #94a3b8;">
+                        <i class="fa fa-building-o" style="font-size: 40px; margin-bottom: 12px;"></i>
+                        <p style="margin-bottom: 20px; font-size: 15px;">暂无企业信息</p>
+                        <button class="btn-outline-blue" onclick="showAddCompanyModal()" style="background: #3b82f6; color: white; border-color: #3b82f6; padding: 12px 32px; font-size: 15px; border-radius: 8px; font-weight: 500;">
+                            <i class="fa fa-plus" style="margin-right: 6px;"></i> 完善企业信息
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="licenseModal" style="display: none;" class="modal-overlay" onclick="hideLicense()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicense()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
+                <img src="images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="licensePreviewModal" style="display: none; z-index: 10001;" class="modal-overlay" onclick="hideLicensePreview()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideLicensePreview()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照预览</div>
+                <img id="licensePreviewImg" src="" alt="营业执照预览" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="editCompanyModal" style="display: none;" class="modal-overlay" onclick="hideEditCompanyModal()">
+        <div class="modal-content" style="width: 680px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>编辑企业信息</h3>
+                <button class="close-btn" onclick="hideEditCompanyModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">营业执照:</label>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div id="edit-license-upload" style="width: 100px; height: 100px; border: 1px dashed #e2e8f0; border-radius: 8px; display: none; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('edit-license-input').click()">
+                            <i class="fa fa-plus" style="font-size: 24px; color: #94a3b8;"></i>
+                            <span style="font-size: 12px; color: #94a3b8; margin-top: 4px;">上传</span>
+                        </div>
+                        <div id="edit-license-preview" style="width: 100px; height: 100px; border-radius: 8px; display: block; cursor: pointer; background-image: url('images/1.png'); background-size: cover; background-position: center;" onclick="showLicensePreview()"></div>
+                        <input type="file" id="edit-license-input" accept="image/*" style="display: none;" onchange="previewLicense()">
+                        <div id="edit-license-actions" style="display: flex; flex-direction: column; gap: 6px;">
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="reuploadLicense()">重新上传</button>
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="removeLicense()">移出</button>
+                        </div>
+                        <div id="edit-ai-recognizing" style="display: none; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa fa-spinner fa-spin" style="color: #0051D9;"></i>
+                                <span style="font-size: 13px; color: #64748b;">AI识别中...</span>
+                            </div>
+                            <div style="margin-top: 8px; height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden;">
+                                <div id="edit-ai-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0051D9, #0066FF); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div id="edit-ai-result" style="display: none; margin-top: 10px; padding: 8px 12px; background: rgba(0, 180, 42, 0.08); border-radius: 4px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-check-circle" style="color: #00b42a;"></i>
+                                <span style="font-size: 13px; color: #00b42a;">AI识别完成，已自动填充表单</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">企业名称:</label>
+                    <input type="text" id="edit-company-name" placeholder="请输入企业名称" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">统一社会信用代码:</label>
+                    <input type="text" id="edit-company-code" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">法定代表人:</label>
+                    <input type="text" id="edit-company-legal" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">注册资本:</label>
+                    <input type="text" id="edit-company-capital" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">成立日期:</label>
+                    <input type="text" id="edit-company-founded" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">营业期限:</label>
+                    <input type="text" id="edit-company-term" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">注册地址:</label>
+                    <input type="text" id="edit-company-reg-address" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">经营范围:</label>
+                    <textarea id="edit-company-business" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; height: 120px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideEditCompanyModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveEditCompany()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal" style="display: none;" class="modal-overlay" onclick="hideEditModal()">
+        <div class="modal-content" style="width: 700px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>编辑组织信息</h3>
+                <button class="close-btn" onclick="hideEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">组织图片:</label>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div id="edit-org-image-upload" style="width: 100px; height: 100px; border: 1px dashed #e2e8f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('edit-org-image-input').click()">
+                            <i class="fa fa-plus" style="font-size: 24px; color: #94a3b8;"></i>
+                            <span style="font-size: 12px; color: #94a3b8; margin-top: 4px;">上传</span>
+                        </div>
+                        <div id="edit-org-image-preview" style="width: 100px; height: 100px; border-radius: 8px; display: none; cursor: pointer;" onclick="showOrgImagePreview()"></div>
+                        <input type="file" id="edit-org-image-input" accept="image/*" style="display: none;" onchange="previewOrgImage()">
+                        <div id="edit-org-image-actions" style="display: none; flex-direction: column; gap: 6px;">
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="document.getElementById('edit-org-image-input').click()">重新上传</button>
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="removeOrgImage()">移出</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">组织类型:</label>
+                    <input type="text" id="edit-org-type-readonly" value="培训中心" readonly style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; background-color: #f8fafc; cursor: not-allowed;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">组织名称:</label>
+                    <input type="text" id="edit-org-name" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">联系人:</label>
+                    <input type="text" id="edit-contact" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 70px; flex-shrink: 0; padding-top: 8px; text-align: right;">手机号:</label>
+                    <input type="text" id="edit-phone" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">联系地址:</label>
+                    <input type="text" id="edit-address" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">联系电话:</label>
+                    <input type="text" id="edit-tel" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 50px; flex-shrink: 0; padding-top: 8px; text-align: right;">邮箱:</label>
+                    <input type="text" id="edit-email" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideEditModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveEditOrg()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addCompanyModal" style="display: none;" class="modal-overlay" onclick="hideAddCompanyModal()">
+        <div class="modal-content" style="width: 680px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>完善企业信息</h3>
+                <button class="close-btn" onclick="hideAddCompanyModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">营业执照:</label>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div id="add-license-upload" style="width: 100px; height: 100px; border: 1px dashed #e2e8f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('add-license-input').click()">
+                            <i class="fa fa-plus" style="font-size: 24px; color: #94a3b8;"></i>
+                            <span style="font-size: 12px; color: #94a3b8; margin-top: 4px;">上传</span>
+                        </div>
+                        <div id="add-license-preview" style="width: 100px; height: 100px; border-radius: 8px; display: none; cursor: pointer;" onclick="showAddLicensePreview()"></div>
+                        <input type="file" id="add-license-input" accept="image/*" style="display: none;" onchange="previewAddLicense()">
+                        <div id="add-license-actions" style="display: none; flex-direction: column; gap: 6px;">
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="reuploadAddLicense()">重新上传</button>
+                            <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="removeAddLicense()">移出</button>
+                        </div>
+                        <div id="add-ai-recognizing" style="display: none; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa fa-spinner fa-spin" style="color: #0051D9;"></i>
+                                <span style="font-size: 13px; color: #64748b;">AI识别中...</span>
+                            </div>
+                            <div style="margin-top: 8px; height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden;">
+                                <div id="add-ai-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0051D9, #0066FF); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div id="add-ai-result" style="display: none; margin-top: 10px; padding: 8px 12px; background: rgba(0, 180, 42, 0.08); border-radius: 4px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-check-circle" style="color: #00b42a;"></i>
+                                <span style="font-size: 13px; color: #00b42a;">AI识别完成，已自动填充表单</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">企业名称:</label>
+                    <input type="text" id="add-company-name" placeholder="请输入企业名称" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">统一社会信用代码:</label>
+                    <input type="text" id="add-company-code" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">法定代表人:</label>
+                    <input type="text" id="add-company-legal" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">注册资本:</label>
+                    <input type="text" id="add-company-capital" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">成立日期:</label>
+                    <input type="text" id="add-company-founded" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">营业期限:</label>
+                    <input type="text" id="add-company-term" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">注册地址:</label>
+                    <input type="text" id="add-company-reg-address" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 120px; flex-shrink: 0; padding-top: 8px; text-align: right;">经营范围:</label>
+                    <textarea id="add-company-business" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; height: 120px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideAddCompanyModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveAddCompany()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addLicensePreviewModal" style="display: none; z-index: 10001;" class="modal-overlay" onclick="hideAddLicensePreview()">
+        <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
+            <button onclick="hideAddLicensePreview()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                <i class="fa fa-times-circle"></i>
+            </button>
+            <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
+                <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照预览</div>
+                <img id="addLicensePreviewImg" src="" alt="营业执照预览" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getUrlParam(name) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function toggleEnterpriseInfo() {
+            var hasEnterpriseParam = getUrlParam('hasEnterprise');
+            var hasEnterpriseInfo = hasEnterpriseParam === 'true';
+            
+            if (hasEnterpriseInfo) {
+                document.getElementById('enterpriseInfoSection').style.display = 'block';
+                document.getElementById('noEnterpriseInfoSection').style.display = 'none';
+            } else {
+                document.getElementById('enterpriseInfoSection').style.display = 'none';
+                document.getElementById('noEnterpriseInfoSection').style.display = 'block';
+            }
+        }
+
+        function showLicense() {
+            document.getElementById('licenseModal').style.display = 'flex';
+        }
+
+        function hideLicense() {
+            document.getElementById('licenseModal').style.display = 'none';
+        }
+
+        function showEditModal() {
+            document.getElementById('edit-org-name').value = '东莞市长安培训中心';
+            document.getElementById('edit-contact').value = '李明';
+            document.getElementById('edit-phone').value = '13812345678';
+            document.getElementById('edit-address').value = '广东省东莞市长安镇振安中路88号A栋';
+            document.getElementById('edit-tel').value = '0769-88888888';
+            document.getElementById('edit-email').value = 'contact@training.com';
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function hideEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function saveEditOrg() {
+            hideEditModal();
+            showToast('组织信息保存成功');
+        }
+
+        function previewOrgImage() {
+            var input = document.getElementById('edit-org-image-input');
+            var upload = document.getElementById('edit-org-image-upload');
+            var preview = document.getElementById('edit-org-image-preview');
+            var actions = document.getElementById('edit-org-image-actions');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    preview.style.display = 'block';
+                    upload.style.display = 'none';
+                    actions.style.display = 'flex';
+                    preview.orgImageSrc = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeOrgImage() {
+            var input = document.getElementById('edit-org-image-input');
+            var upload = document.getElementById('edit-org-image-upload');
+            var preview = document.getElementById('edit-org-image-preview');
+            var actions = document.getElementById('edit-org-image-actions');
+            
+            input.value = '';
+            preview.style.backgroundImage = '';
+            preview.style.display = 'none';
+            upload.style.display = 'flex';
+            actions.style.display = 'none';
+        }
+
+        function showOrgImagePreview() {
+            var preview = document.getElementById('edit-org-image-preview');
+            if (preview.orgImageSrc) {
+                document.getElementById('editModal').style.display = 'none';
+                
+                var popup = document.createElement('div');
+                popup.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 99999; cursor: pointer;';
+                popup.onclick = function() { 
+                    document.body.removeChild(popup); 
+                    document.getElementById('editModal').style.display = 'flex';
+                };
+                
+                var img = document.createElement('img');
+                img.src = preview.orgImageSrc;
+                img.style.cssText = 'max-width: 95%; max-height: 95%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);';
+                
+                popup.appendChild(img);
+                document.body.appendChild(popup);
+            }
+        }
+
+        function showEditCompanyModal() {
+            document.getElementById('edit-company-name').value = '东莞市长安培训中心';
+            document.getElementById('edit-company-code').value = '91441900MA4U4X2K8R';
+            document.getElementById('edit-company-legal').value = '李蓓佳';
+            document.getElementById('edit-company-capital').value = '100.00万元';
+            document.getElementById('edit-company-founded').value = '2020-05-15';
+            document.getElementById('edit-company-term').value = '2020-05-15 至 无固定期限';
+            document.getElementById('edit-company-reg-address').value = '广东省东莞市长安镇振安中路88号A栋';
+            document.getElementById('edit-company-business').value = '机器人技术培训、自动化设备操作培训、技能认证服务。';
+            document.getElementById('editCompanyModal').style.display = 'flex';
+        }
+
+        function hideEditCompanyModal() {
+            document.getElementById('editCompanyModal').style.display = 'none';
+        }
+
+        function saveEditCompany() {
+            hideEditCompanyModal();
+            showToast('企业信息保存成功');
+        }
+
+        var aiRecognizeData = {
+            companyName: '东莞市爱沛柯尔科技有限公司',
+            creditCode: '91441900MA55XRH67K',
+            legalPerson: '张三',
+            registeredCapital: '1000万元',
+            establishDate: '2024-01-15',
+            businessTerm: '长期',
+            registeredAddress: '广东省东莞市长安镇科技园区A栋101室',
+            businessScope: '一般项目：人工智能应用软件开发；智能机器人销售；智能机器人的研发；信息技术咨询服务；技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；计算机系统服务；软件开发；软件销售；机械设备销售；电子产品销售；五金产品批发；五金产品零售；货物进出口；技术进出口。'
+        };
+
+        function previewLicense() {
+            var input = document.getElementById('edit-license-input');
+            var upload = document.getElementById('edit-license-upload');
+            var preview = document.getElementById('edit-license-preview');
+            var actions = document.getElementById('edit-license-actions');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    upload.style.display = 'none';
+                    preview.style.display = 'block';
+                    actions.style.display = 'flex';
+                    
+                    startAIRecognize();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function startAIRecognize() {
+            var aiRecognizing = document.getElementById('edit-ai-recognizing');
+            var aiResult = document.getElementById('edit-ai-result');
+            var aiProgress = document.getElementById('edit-ai-progress');
+            
+            aiResult.style.display = 'none';
+            aiRecognizing.style.display = 'block';
+            aiProgress.style.width = '0%';
+            
+            var progress = 0;
+            var interval = setInterval(function() {
+                progress += Math.random() * 15 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    fillFormWithAI();
+                    
+                    setTimeout(function() {
+                        aiRecognizing.style.display = 'none';
+                        aiResult.style.display = 'block';
+                    }, 300);
+                }
+                aiProgress.style.width = progress + '%';
+            }, 200);
+        }
+
+        function fillFormWithAI() {
+            var companyNameInput = document.getElementById('edit-company-name');
+            if (companyNameInput) companyNameInput.value = aiRecognizeData.companyName;
+            
+            var creditCodeInput = document.getElementById('edit-company-code');
+            if (creditCodeInput) creditCodeInput.value = aiRecognizeData.creditCode;
+            
+            var legalPersonInput = document.getElementById('edit-company-legal');
+            if (legalPersonInput) legalPersonInput.value = aiRecognizeData.legalPerson;
+            
+            var capitalInput = document.getElementById('edit-company-capital');
+            if (capitalInput) capitalInput.value = aiRecognizeData.registeredCapital;
+            
+            var dateInput = document.getElementById('edit-company-founded');
+            if (dateInput) dateInput.value = aiRecognizeData.establishDate;
+            
+            var termInput = document.getElementById('edit-company-term');
+            if (termInput) termInput.value = aiRecognizeData.businessTerm;
+            
+            var addressInput = document.getElementById('edit-company-reg-address');
+            if (addressInput) addressInput.value = aiRecognizeData.registeredAddress;
+            
+            var scopeTextarea = document.getElementById('edit-company-business');
+            if (scopeTextarea) scopeTextarea.value = aiRecognizeData.businessScope;
+        }
+
+        function clearEnterpriseForm() {
+            var companyNameInput = document.getElementById('edit-company-name');
+            if (companyNameInput) companyNameInput.value = '';
+            
+            var creditCodeInput = document.getElementById('edit-company-code');
+            if (creditCodeInput) creditCodeInput.value = '';
+            
+            var legalPersonInput = document.getElementById('edit-company-legal');
+            if (legalPersonInput) legalPersonInput.value = '';
+            
+            var capitalInput = document.getElementById('edit-company-capital');
+            if (capitalInput) capitalInput.value = '';
+            
+            var dateInput = document.getElementById('edit-company-founded');
+            if (dateInput) dateInput.value = '';
+            
+            var termInput = document.getElementById('edit-company-term');
+            if (termInput) termInput.value = '';
+            
+            var addressInput = document.getElementById('edit-company-reg-address');
+            if (addressInput) addressInput.value = '';
+            
+            var scopeTextarea = document.getElementById('edit-company-business');
+            if (scopeTextarea) scopeTextarea.value = '';
+        }
+
+        function removeLicense() {
+            var upload = document.getElementById('edit-license-upload');
+            var preview = document.getElementById('edit-license-preview');
+            var actions = document.getElementById('edit-license-actions');
+            var input = document.getElementById('edit-license-input');
+            var aiRecognizing = document.getElementById('edit-ai-recognizing');
+            var aiResult = document.getElementById('edit-ai-result');
+            
+            upload.style.display = 'flex';
+            preview.style.display = 'none';
+            actions.style.display = 'none';
+            aiRecognizing.style.display = 'none';
+            aiResult.style.display = 'none';
+            preview.style.backgroundImage = '';
+            input.value = '';
+            
+            clearEnterpriseForm();
+        }
+
+        function reuploadLicense() {
+            var aiResult = document.getElementById('edit-ai-result');
+            aiResult.style.display = 'none';
+            
+            clearEnterpriseForm();
+            
+            var preview = document.getElementById('edit-license-preview');
+            preview.style.display = 'none';
+            preview.style.backgroundImage = '';
+            
+            var input = document.getElementById('edit-license-input');
+            input.value = '';
+            input.click();
+        }
+
+        var licensePreviewImage = '';
+        function showLicensePreview() {
+            var preview = document.getElementById('edit-license-preview');
+            if (preview.style.backgroundImage) {
+                licensePreviewImage = preview.style.backgroundImage.replace('url(', '').replace(')', '').replace(/"/g, '');
+                document.getElementById('licensePreviewModal').style.display = 'flex';
+                document.getElementById('licensePreviewImg').src = licensePreviewImage;
+            }
+        }
+
+        function hideLicensePreview() {
+            document.getElementById('licensePreviewModal').style.display = 'none';
+        }
+
+        function handleImageUpload(uploadId, previewId, inputId) {
+            document.getElementById(inputId).click();
+        }
+
+        function handleImageChange(inputId, previewId, uploadId) {
+            var input = document.getElementById(inputId);
+            var preview = document.getElementById(previewId);
+            var upload = document.getElementById(uploadId);
+            var actions = document.getElementById(uploadId.replace('-upload', '-actions'));
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.display = 'block';
+                    upload.style.display = 'none';
+                    if (actions) actions.style.display = 'flex';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleReupload(uploadId, previewId, inputId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(uploadId).style.display = 'flex';
+            document.getElementById(previewId).style.display = 'none';
+            document.getElementById(inputId).click();
+        }
+
+        function handleRemoveImage(uploadId, previewId, inputId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(uploadId).style.display = 'flex';
+            document.getElementById(previewId).style.display = 'none';
+            var actions = document.getElementById(uploadId.replace('-upload', '-actions'));
+            if (actions) actions.style.display = 'none';
+        }
+
+        function previewAddLicense() {
+            var input = document.getElementById('add-license-input');
+            var upload = document.getElementById('add-license-upload');
+            var preview = document.getElementById('add-license-preview');
+            var actions = document.getElementById('add-license-actions');
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.backgroundImage = 'url(' + e.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    upload.style.display = 'none';
+                    preview.style.display = 'block';
+                    actions.style.display = 'flex';
+                    
+                    startAddAIRecognize();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function startAddAIRecognize() {
+            var aiRecognizing = document.getElementById('add-ai-recognizing');
+            var aiResult = document.getElementById('add-ai-result');
+            var aiProgress = document.getElementById('add-ai-progress');
+            
+            aiResult.style.display = 'none';
+            aiRecognizing.style.display = 'block';
+            aiProgress.style.width = '0%';
+            
+            var progress = 0;
+            var interval = setInterval(function() {
+                progress += Math.random() * 15 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    fillAddFormWithAI();
+                    
+                    setTimeout(function() {
+                        aiRecognizing.style.display = 'none';
+                        aiResult.style.display = 'block';
+                    }, 300);
+                }
+                aiProgress.style.width = progress + '%';
+            }, 200);
+        }
+
+        function fillAddFormWithAI() {
+            var companyNameInput = document.getElementById('add-company-name');
+            if (companyNameInput) companyNameInput.value = aiRecognizeData.companyName;
+            
+            var creditCodeInput = document.getElementById('add-company-code');
+            if (creditCodeInput) creditCodeInput.value = aiRecognizeData.creditCode;
+            
+            var legalPersonInput = document.getElementById('add-company-legal');
+            if (legalPersonInput) legalPersonInput.value = aiRecognizeData.legalPerson;
+            
+            var capitalInput = document.getElementById('add-company-capital');
+            if (capitalInput) capitalInput.value = aiRecognizeData.registeredCapital;
+            
+            var dateInput = document.getElementById('add-company-founded');
+            if (dateInput) dateInput.value = aiRecognizeData.establishDate;
+            
+            var termInput = document.getElementById('add-company-term');
+            if (termInput) termInput.value = aiRecognizeData.businessTerm;
+            
+            var addressInput = document.getElementById('add-company-reg-address');
+            if (addressInput) addressInput.value = aiRecognizeData.registeredAddress;
+            
+            var scopeTextarea = document.getElementById('add-company-business');
+            if (scopeTextarea) scopeTextarea.value = aiRecognizeData.businessScope;
+        }
+
+        function clearAddEnterpriseForm() {
+            var companyNameInput = document.getElementById('add-company-name');
+            if (companyNameInput) companyNameInput.value = '';
+            
+            var creditCodeInput = document.getElementById('add-company-code');
+            if (creditCodeInput) creditCodeInput.value = '';
+            
+            var legalPersonInput = document.getElementById('add-company-legal');
+            if (legalPersonInput) legalPersonInput.value = '';
+            
+            var capitalInput = document.getElementById('add-company-capital');
+            if (capitalInput) capitalInput.value = '';
+            
+            var dateInput = document.getElementById('add-company-founded');
+            if (dateInput) dateInput.value = '';
+            
+            var termInput = document.getElementById('add-company-term');
+            if (termInput) termInput.value = '';
+            
+            var addressInput = document.getElementById('add-company-reg-address');
+            if (addressInput) addressInput.value = '';
+            
+            var scopeTextarea = document.getElementById('add-company-business');
+            if (scopeTextarea) scopeTextarea.value = '';
+        }
+
+        function removeAddLicense() {
+            var upload = document.getElementById('add-license-upload');
+            var preview = document.getElementById('add-license-preview');
+            var actions = document.getElementById('add-license-actions');
+            var input = document.getElementById('add-license-input');
+            var aiRecognizing = document.getElementById('add-ai-recognizing');
+            var aiResult = document.getElementById('add-ai-result');
+            
+            upload.style.display = 'flex';
+            preview.style.display = 'none';
+            actions.style.display = 'none';
+            aiRecognizing.style.display = 'none';
+            aiResult.style.display = 'none';
+            preview.style.backgroundImage = '';
+            input.value = '';
+            
+            clearAddEnterpriseForm();
+        }
+
+        function reuploadAddLicense() {
+            var aiResult = document.getElementById('add-ai-result');
+            aiResult.style.display = 'none';
+            
+            clearAddEnterpriseForm();
+            
+            var preview = document.getElementById('add-license-preview');
+            preview.style.display = 'none';
+            preview.style.backgroundImage = '';
+            
+            var input = document.getElementById('add-license-input');
+            input.value = '';
+            input.click();
+        }
+
+        var addLicensePreviewImage = '';
+        function showAddLicensePreview() {
+            var preview = document.getElementById('add-license-preview');
+            if (preview.style.backgroundImage) {
+                addLicensePreviewImage = preview.style.backgroundImage.replace('url(', '').replace(')', '').replace(/"/g, '');
+                document.getElementById('addLicensePreviewModal').style.display = 'flex';
+                document.getElementById('addLicensePreviewImg').src = addLicensePreviewImage;
+            }
+        }
+
+        function hideAddLicensePreview() {
+            document.getElementById('addLicensePreviewModal').style.display = 'none';
+        }
+
+        function showAddCompanyModal() {
+            document.getElementById('add-company-name').value = '';
+            document.getElementById('add-company-code').value = '';
+            document.getElementById('add-company-legal').value = '';
+            document.getElementById('add-company-capital').value = '';
+            document.getElementById('add-company-founded').value = '';
+            document.getElementById('add-company-term').value = '';
+            document.getElementById('add-company-reg-address').value = '';
+            document.getElementById('add-company-business').value = '';
+            document.getElementById('addCompanyModal').style.display = 'flex';
+        }
+
+        function hideAddCompanyModal() {
+            document.getElementById('addCompanyModal').style.display = 'none';
+        }
+
+        function saveAddCompany() {
+            hideAddCompanyModal();
+            showToast('企业信息保存成功');
+        }
+    </script>
+</body>
+</html>

@@ -705,7 +705,8 @@
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
-                                <th style="padding: 10px 12px; text-align: center; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">操作</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加时间</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -726,13 +727,12 @@
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
-                                <td style="padding: 10px 12px;">
-                                    <button class="action-btn edit" onclick="showEditSubModal('SUB001')">
-                                        <i class="fa fa-pencil"></i> 编辑
-                                    </button>
-                                    <button class="action-btn delete" onclick="showDeleteConfirm('SUB001', '智能制造培训中心')">
-                                        <i class="fa fa-trash"></i> 删除
-                                    </button>
+                                <td style="padding: 10px 12px; white-space: nowrap;">2024-03-15</td>
+                                <td style="padding: 10px 12px; white-space: nowrap;">
+                                    <span style="display: inline-flex; gap: 4px; flex-wrap: nowrap;">
+                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #dbeafe; color: #1e40af;" onclick="window.location.href='sub-org-detail.html?hasEnterprise=true'"><i class="fa fa-eye"></i>详情</button>
+                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #fef2f2; color: #ef4444;" onclick="showDeleteConfirm('SUB001', '东莞市长安培训中心')"><i class="fa fa-trash"></i>删除</button>
+                                    </span>
                                 </td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f1f5f9;">
@@ -750,13 +750,12 @@
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
-                                <td style="padding: 10px 12px;">
-                                    <button class="action-btn edit" onclick="showEditSubModal('SUB002')">
-                                        <i class="fa fa-pencil"></i> 编辑
-                                    </button>
-                                    <button class="action-btn delete" onclick="showDeleteConfirm('SUB002', '机器人实训基地')">
-                                        <i class="fa fa-trash"></i> 删除
-                                    </button>
+                                <td style="padding: 10px 12px; white-space: nowrap;">2024-05-20</td>
+                                <td style="padding: 10px 12px; white-space: nowrap;">
+                                    <span style="display: inline-flex; gap: 4px; flex-wrap: nowrap;">
+                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #dbeafe; color: #1e40af;" onclick="window.location.href='sub-org-detail.html?hasEnterprise=false'"><i class="fa fa-eye"></i>详情</button>
+                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #fef2f2; color: #ef4444;" onclick="showDeleteConfirm('SUB002', '东莞市长安训练基地')"><i class="fa fa-trash"></i>删除</button>
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>

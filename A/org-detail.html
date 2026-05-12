@@ -169,6 +169,51 @@
         .license-modal-close:hover {
             background: #e2e8f0;
         }
+        .org-tree-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #475569;
+        }
+        .org-tree-item:hover {
+            background: #f8fafc;
+        }
+        .org-tree-item.selected {
+            background: #dbeafe;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        .org-tree-item-level-1 {
+            padding-left: 12px;
+        }
+        .org-tree-item-level-2 {
+            padding-left: 28px;
+        }
+        .org-tree-item-level-3 {
+            padding-left: 44px;
+        }
+        .org-tree-toggle {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 10px;
+        }
+        .org-tree-toggle.expanded {
+            transform: rotate(90deg);
+        }
+        .org-tree-children {
+            display: none;
+        }
+        .org-tree-children.expanded {
+            display: block;
+        }
         .license-modal-title {
             font-size: 16px;
             font-weight: 600;
@@ -811,7 +856,18 @@
 
             <div id="org-data-card" class="card" style="height: 0; overflow: hidden;">
                 <div class="section-header">
-                    <div class="section-title"><i class="fa fa-bar-chart"></i> 组织运营数据</div>
+                    <div class="section-title"><i class="fa fa-bar-chart"></i> 组织运营数据
+                        <span id="org-filter-container" style="display: none; margin-left: 12px;">
+                            <div class="org-dropdown-wrapper" style="position: relative; display: inline-block;">
+                                <button id="org-filter-btn" class="btn btn-outline" style="padding: 4px 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;" onclick="toggleOrgFilterDropdown()">
+                                    <span id="org-filter-label">全部组织</span>
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div id="org-filter-dropdown" class="org-filter-dropdown" style="display: none; position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 240px; max-height: 300px; overflow-y: auto; z-index: 100;">
+                                </div>
+                            </div>
+                        </span>
+                    </div>
                 </div>
                 <div id="data-content" class="section-content" style="overflow-y: auto;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -924,9 +980,9 @@
             </div>
         </div>
 
-        <div class="card" style="margin-top: 12px;">
+        <div id="sub-org-card" class="card" style="margin-top: 12px; display: none;">
             <div class="section-header">
-                <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
+                <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span id="sub-org-count" class="section-count">(0个)</span></div>
                 <button id="sub-org-toggle" class="btn btn-outline" style="padding: 4px 10px; font-size: 12px; margin-left: auto;" onclick="toggleSubOrgSection()">
                     <i class="fa fa-caret-up"></i> 折叠
                 </button>
@@ -942,43 +998,11 @@
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加日期</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">操作</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">智能制造培训中心</div>
-                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB001</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none;">东莞市蓓佳尔工艺品有限公司</a></div>
-                                    <div style="margin-top: 4px; color: #64748b;">法人：李蓓佳</div>
-                                    <div style="color: #64748b;">信用代码：91441900MA4U4X2K8R</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">培训中心</td>
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569;">李明</div>
-                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13812345678</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">机器人实训基地</div>
-                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                   -
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569;">王强</div>
-                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13987654321</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
-                            </tr>
+                        <tbody id="sub-org-table-body">
                         </tbody>
                     </table>
                 </div>
@@ -991,17 +1015,17 @@
                 <div style="display: flex; gap: 8px; margin-left: 20px;">
                     <input type="text" placeholder="搜索姓名/手机号" style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px; width: 180px;">
                     <select style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px;">
-                        <option>全部角色</option>
-                        <option>管理员</option>
-                        <option>培训师</option>
-                        <option>学员</option>
-                    </select>
-                    <select style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px;">
                         <option>全部组织</option>
                         <option>东莞长安训练基地</option>
                         <option>智能制造培训中心</option>
                         <option>机器人实训基地</option>
                         <option>技能考核中心</option>
+                    </select>
+                     <select style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 13px;">
+                        <option>全部角色</option>
+                        <option>管理员</option>
+                        <option>培训师</option>
+                        <option>学员</option>
                     </select>
                     <button class="btn btn-primary" style="padding: 6px 14px; font-size: 13px;" onclick="searchMembers()">
                         <i class="fa fa-search"></i> 搜索
@@ -1017,7 +1041,7 @@
                         <tr>
                             <th>用户信息</th>
                             <th>手机号</th>
-                            <th>所属组织（角色/职务）</th>
+                            <th>所属组织/部门/角色</th>
                             <th>加入时间</th>
                         </tr>
                     </thead>
@@ -1032,7 +1056,7 @@
                                 </div>
                             </td>
                             <td>13826469793</td>
-                            <td>东莞长安训练基地(总经理)</td>
+                            <td>东莞长安训练基地(管理部-总经理)</td>
                             <td>2024-01-15</td>
                         </tr>
                         <tr>
@@ -1045,7 +1069,7 @@
                                 </div>
                             </td>
                             <td>13912345678</td>
-                            <td>东莞长安训练基地(培训总监)</td>
+                            <td>东莞长安训练基地(培训部-培训总监)</td>
                             <td>2024-02-20</td>
                         </tr>
                         <tr>
@@ -1058,7 +1082,7 @@
                                 </div>
                             </td>
                             <td>13698765432</td>
-                            <td>智能制造培训中心(高级培训师)<br>东莞长安训练基地(讲师)</td>
+                            <td>智能制造培训中心(培训部-高级培训师)<br>东莞长安训练基地(培训部-讲师)</td>
                             <td>2024-03-10</td>
                         </tr>
                         <tr>
@@ -1084,7 +1108,7 @@
                                 </div>
                             </td>
                             <td>15834567890</td>
-                            <td>技能考核中心(技术主管)</td>
+                            <td>技能考核中心(技术部-技术主管)</td>
                             <td>2024-05-18</td>
                         </tr>
                     </tbody>
@@ -1130,6 +1154,246 @@
     </div>
 
     <script>
+        const subOrgData = {
+            'SUB001': {
+                id: 'SUB001',
+                name: '智能制造培训中心',
+                type: '培训中心',
+                contact: '李明',
+                phone: '13812345678',
+                address: '广东省东莞市长安镇振安中路88号A栋',
+                memberCount: '25',
+                createDate: '2024-01-15',
+                company: {
+                    name: '东莞市蓓佳尔工艺品有限公司',
+                    creditCode: '91441900MA4U4X2K8R',
+                    legalPerson: '李蓓佳',
+                    capital: '100万元人民币',
+                    establishDate: '2015-03-20',
+                    businessTerm: '2015-03-20 至 2035-03-19',
+                    address: '东莞市长安镇振安中路88号',
+                    businessScope: '工业机器人及自动化设备的研发、生产、销售；自动化控制系统集成；智能装备技术开发；计算机软硬件技术开发及销售；国内贸易；经营进出口业务。'
+                }
+            },
+            'SUB002': {
+                id: 'SUB002',
+                name: '机器人实训基地',
+                type: '实训基地',
+                contact: '王强',
+                phone: '13987654321',
+                address: '广东省东莞市长安镇乌沙社区兴发路',
+                memberCount: '18',
+                createDate: '2024-03-20',
+                company: null
+            },
+            'SUB003': {
+                id: 'SUB003',
+                name: '教学区A栋',
+                type: '教学区',
+                contact: '赵老师',
+                phone: '13800138001',
+                address: '长安镇振安中路88号A栋1楼',
+                memberCount: '10',
+                createDate: '2024-06-10',
+                company: null
+            }
+        };
+
+        function showSubOrgDetail(subOrgId) {
+            const modal = document.getElementById('sub-org-detail-modal');
+            const data = subOrgData[subOrgId];
+            
+            if (data) {
+                document.getElementById('sub-org-detail-name').textContent = data.name || '-';
+                document.getElementById('sub-org-detail-id-display').textContent = '(' + (data.id || '-') + ')';
+                document.getElementById('sub-org-detail-type-display').textContent = data.type || '-';
+                document.getElementById('sub-org-detail-address-line').innerHTML = '<i class="fa fa-map-marker" style="color: #94a3b8;"></i> ' + (data.address || '-');
+                document.getElementById('sub-org-detail-contact-line').innerHTML = '<i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：' + (data.contact || '-') + ' / ' + (data.phone || '-');
+                document.getElementById('sub-org-detail-member-count-display').textContent = data.memberCount || '-';
+                document.getElementById('sub-org-detail-create-date-display').textContent = data.createDate || '-';
+                
+                const companyInfoSection = document.getElementById('sub-org-company-info');
+                const viewLicenseBtn = document.getElementById('sub-org-view-license');
+                const businessScopeDiv = document.getElementById('sub-org-business-scope');
+                const companyFieldsContainer = document.getElementById('sub-org-company-fields');
+                const noInfoMessage = document.getElementById('sub-org-no-company-info');
+                
+                if (companyInfoSection) companyInfoSection.style.display = 'block';
+                
+                if (data.company) {
+                    if (viewLicenseBtn) viewLicenseBtn.style.display = 'flex';
+                    if (companyFieldsContainer) companyFieldsContainer.style.display = 'grid';
+                    if (noInfoMessage) noInfoMessage.style.display = 'none';
+                    document.getElementById('sub-org-detail-company-name').textContent = data.company.name || '-';
+                    document.getElementById('sub-org-detail-credit-code').textContent = data.company.creditCode || '-';
+                    document.getElementById('sub-org-detail-legal-person').textContent = data.company.legalPerson || '-';
+                    document.getElementById('sub-org-detail-capital').textContent = data.company.capital || '-';
+                    document.getElementById('sub-org-detail-establish-date').textContent = data.company.establishDate || '-';
+                    document.getElementById('sub-org-detail-business-term').textContent = data.company.businessTerm || '-';
+                    document.getElementById('sub-org-detail-company-address').textContent = data.company.address || '-';
+                    if (businessScopeDiv) {
+                        businessScopeDiv.innerHTML = '<span style="color: #64748b;">经营范围：</span><span style="color: #1e293b;">' + (data.company.businessScope || '-') + '</span>';
+                    }
+                } else {
+                    if (viewLicenseBtn) viewLicenseBtn.style.display = 'none';
+                    if (companyFieldsContainer) companyFieldsContainer.style.display = 'none';
+                    if (noInfoMessage) noInfoMessage.style.display = 'block';
+                }
+                
+                modal.style.display = 'flex';
+            }
+        }
+
+        function hideSubOrgDetailModal() {
+            document.getElementById('sub-org-detail-modal').style.display = 'none';
+        }
+
+        const orgHierarchyData = {
+            'ORG001': {
+                id: 'ORG001',
+                name: '东莞长安训练基地',
+                children: [
+                    {
+                        id: 'SUB001',
+                        name: '智能制造培训中心',
+                        children: []
+                    },
+                    {
+                        id: 'SUB002',
+                        name: '机器人实训基地',
+                        children: []
+                    }
+                ]
+            },
+            'ORG001-01': {
+                id: 'ORG001-01',
+                name: '长安训练基地-教学区',
+                children: [
+                    {
+                        id: 'SUB003',
+                        name: '教学区A栋',
+                        children: []
+                    }
+                ]
+            }
+        };
+
+        let currentSelectedOrg = null;
+
+        function toggleOrgFilterDropdown() {
+            const dropdown = document.getElementById('org-filter-dropdown');
+            if (dropdown) {
+                const isVisible = dropdown.style.display === 'block';
+                dropdown.style.display = isVisible ? 'none' : 'block';
+            }
+        }
+
+        function closeOrgFilterDropdown() {
+            const dropdown = document.getElementById('org-filter-dropdown');
+            if (dropdown) {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function renderOrgFilterTree(orgId) {
+            const dropdown = document.getElementById('org-filter-dropdown');
+            if (!dropdown) return;
+
+            const currentOrgData = orgHierarchyData[orgId];
+            if (!currentOrgData) {
+                dropdown.innerHTML = '';
+                return;
+            }
+
+            let html = `
+                <div class="org-tree-item org-tree-item-level-1" data-org-id="all" onclick="selectOrg('all', '全部组织')">
+                    <span style="width: 16px;"></span>
+                    <span>全部组织</span>
+                </div>
+                <div class="org-tree-item org-tree-item-level-1" data-org-id="${currentOrgData.id}" onclick="selectOrg('${currentOrgData.id}', '${currentOrgData.name}')">
+                    ${currentOrgData.children && currentOrgData.children.length > 0 ? `
+                        <span class="org-tree-toggle" onclick="toggleOrgTreeNode(event, '${currentOrgData.id}')">
+                            <i class="fa fa-caret-right"></i>
+                        </span>
+                    ` : '<span style="width: 16px;"></span>'}
+                    <span>${currentOrgData.name}</span>
+                </div>
+            `;
+
+            if (currentOrgData.children && currentOrgData.children.length > 0) {
+                html += `<div class="org-tree-children" id="tree-children-${currentOrgData.id}">`;
+                currentOrgData.children.forEach(child => {
+                    html += `
+                        <div class="org-tree-item org-tree-item-level-2" data-org-id="${child.id}" onclick="selectOrg('${child.id}', '${child.name}')">
+                            ${child.children && child.children.length > 0 ? `
+                                <span class="org-tree-toggle" onclick="toggleOrgTreeNode(event, '${child.id}')">
+                                    <i class="fa fa-caret-right"></i>
+                                </span>
+                            ` : '<span style="width: 16px;"></span>'}
+                            <span>${child.name}</span>
+                        </div>
+                    `;
+                    if (child.children && child.children.length > 0) {
+                        html += `<div class="org-tree-children" id="tree-children-${child.id}">`;
+                        child.children.forEach(subChild => {
+                            html += `
+                                <div class="org-tree-item org-tree-item-level-3" data-org-id="${subChild.id}" onclick="selectOrg('${subChild.id}', '${subChild.name}')">
+                                    <span style="width: 16px;"></span>
+                                    <span>${subChild.name}</span>
+                                </div>
+                            `;
+                        });
+                        html += `</div>`;
+                    }
+                });
+                html += `</div>`;
+            }
+
+            dropdown.innerHTML = html;
+        }
+
+        function toggleOrgTreeNode(event, nodeId) {
+            event.stopPropagation();
+            const children = document.getElementById(`tree-children-${nodeId}`);
+            const toggle = event.currentTarget;
+            if (children) {
+                const isExpanded = children.classList.contains('expanded');
+                if (isExpanded) {
+                    children.classList.remove('expanded');
+                    toggle.classList.remove('expanded');
+                } else {
+                    children.classList.add('expanded');
+                    toggle.classList.add('expanded');
+                }
+            }
+        }
+
+        function selectOrg(orgId, orgName) {
+            currentSelectedOrg = orgId;
+            document.getElementById('org-filter-label').textContent = orgName;
+
+            document.querySelectorAll('.org-tree-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            const selectedItem = document.querySelector(`.org-tree-item[data-org-id="${orgId}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+            }
+
+            closeOrgFilterDropdown();
+        }
+
+        function initOrgFilter(orgId) {
+            const filterContainer = document.getElementById('org-filter-container');
+            const subOrgs = subOrgListData[orgId] || [];
+
+            if (subOrgs.length === 0) {
+                if (filterContainer) filterContainer.style.display = 'none';
+            } else {
+                if (filterContainer) filterContainer.style.display = 'block';
+                renderOrgFilterTree(orgId);
+            }
+        }
         
         function closeLicenseModal() {
             const modal = document.getElementById('license-modal');
@@ -1174,6 +1438,14 @@
 
         document.addEventListener('DOMContentLoaded', alignCardHeights);
         window.addEventListener('resize', alignCardHeights);
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('org-filter-dropdown');
+            const filterBtn = document.getElementById('org-filter-btn');
+            if (dropdown && filterBtn && !filterBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                closeOrgFilterDropdown();
+            }
+        });
 
         function getUrlParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1280,6 +1552,98 @@
             updateOrgStatusBadge(orgData.status, orgData.statusReason);
 
             updateActionButtons(orgData.status);
+
+            renderSubOrgList(orgData.id);
+        }
+
+        const subOrgListData = {
+            'ORG001': [
+                {
+                    id: 'SUB001',
+                    name: '智能制造培训中心',
+                    type: '培训中心',
+                    contact: '李明',
+                    phone: '13812345678',
+                    address: '长安镇振安中路88号A栋',
+                    memberCount: '25',
+                    createDate: '2024-01-15',
+                    company: {
+                        name: '东莞市蓓佳尔工艺品有限公司',
+                        creditCode: '91441900MA4U4X2K8R',
+                        legalPerson: '李蓓佳'
+                    }
+                },
+                {
+                    id: 'SUB002',
+                    name: '机器人实训基地',
+                    type: '实训基地',
+                    contact: '王强',
+                    phone: '13987654321',
+                    address: '长安镇乌沙社区兴发路',
+                    memberCount: '18',
+                    createDate: '2024-03-20',
+                    company: null
+                }
+            ],
+            'ORG001-01': [
+                {
+                    id: 'SUB003',
+                    name: '教学区A栋',
+                    type: '教学区',
+                    contact: '赵老师',
+                    phone: '13800138001',
+                    address: '长安镇振安中路88号A栋1楼',
+                    memberCount: '10',
+                    createDate: '2024-06-10',
+                    company: null
+                }
+            ]
+        };
+
+        function renderSubOrgList(orgId) {
+            const subOrgCard = document.getElementById('sub-org-card');
+            const subOrgTableBody = document.getElementById('sub-org-table-body');
+            const subOrgCount = document.getElementById('sub-org-count');
+            
+            if (!subOrgCard || !subOrgTableBody) return;
+            
+            const subOrgs = subOrgListData[orgId] || [];
+            
+            if (subOrgs.length === 0) {
+                subOrgCard.style.display = 'none';
+                return;
+            }
+            
+            subOrgCard.style.display = 'block';
+            if (subOrgCount) subOrgCount.textContent = '(' + subOrgs.length + '个)';
+            
+            subOrgTableBody.innerHTML = subOrgs.map(org => {
+                const companyHtml = org.company 
+                    ? `<div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none;">${org.company.name}</a></div>
+                       <div style="margin-top: 4px; color: #64748b;">法人：${org.company.legalPerson}</div>
+                       <div style="color: #64748b;">信用代码：${org.company.creditCode}</div>`
+                    : '-';
+                
+                return `<tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 10px 12px;">
+                        <div style="font-size: 14px; color: #475569; font-weight: 500;">${org.name}</div>
+                        <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">${org.id}</div>
+                    </td>
+                    <td style="padding: 10px 12px; font-size: 13px; color: #475569;">${companyHtml}</td>
+                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${org.type}</td>
+                    <td style="padding: 10px 12px;">
+                        <div style="font-size: 14px; color: #475569;">${org.contact}</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">${org.phone}</div>
+                    </td>
+                    <td style="padding: 10px 12px; font-size: 14px; color: #475569;">${org.address}</td>
+                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${org.memberCount}</td>
+                    <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${org.createDate || '-'}</td>
+                    <td style="padding: 10px 12px;">
+                        <span class="action-link" onclick="showSubOrgDetail('${org.id}')">详情</span>
+                    </td>
+                </tr>`;
+            }).join('');
+            initOrgFilter(orgId);
         }
 
         function updateActionButtons(status) {
@@ -1422,7 +1786,31 @@
         }
 
         function showUserDetail(userId) {
-            showToast('查看用户详情: ' + userId, 'info');
+            const users = [
+                { id: 1, name: '工元0001', avatar: 'images/tx-1.png', phone: '13826469793', org: '东莞长安训练基地(管理部-总经理)', joinTime: '2024-01-15' },
+                { id: 2, name: '张伟', avatar: '', phone: '13912345678', org: '东莞长安训练基地(培训部-培训总监)', joinTime: '2024-02-20' },
+                { id: 3, name: '李娜', avatar: 'images/tx-2.png', phone: '13698765432', org: '智能制造培训中心(培训部-高级培训师)<br>东莞长安训练基地(培训部-讲师)', joinTime: '2024-03-10' },
+                { id: 4, name: '王芳', avatar: '', phone: '13523456789', org: '机器人实训基地(行政主管)', joinTime: '2024-04-05' },
+                { id: 5, name: '陈强', avatar: '', phone: '15834567890', org: '技能考核中心(技术部-技术主管)', joinTime: '2024-05-18' }
+            ];
+            const user = users.find(u => u.id === userId);
+            if (user) {
+                const avatarEl = document.getElementById('user-detail-avatar');
+                if (user.avatar) {
+                    avatarEl.innerHTML = `<img src="${user.avatar}" alt="avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                } else {
+                    avatarEl.innerHTML = `<i class="fa fa-user"></i>`;
+                }
+                document.getElementById('user-detail-name').textContent = user.name;
+                document.getElementById('user-detail-phone').textContent = user.phone;
+                document.getElementById('user-detail-org').innerHTML = user.org;
+                document.getElementById('user-detail-join-time').textContent = user.joinTime;
+                document.getElementById('user-detail-modal').style.display = 'flex';
+            }
+        }
+
+        function hideUserDetailModal() {
+            document.getElementById('user-detail-modal').style.display = 'none';
         }
 
         function showLicense() {
@@ -1512,7 +1900,7 @@
         </div>
     </div>
 
-    <div id="licenseModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;" onclick="hideLicense()">
+    <div id="licenseModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10005; justify-content: center; align-items: center;" onclick="hideLicense()">
         <div style="position: relative; max-width: 90%; max-height: 90%;" onclick="event.stopPropagation()">
             <button onclick="hideLicense()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
                 <i class="fa fa-times-circle"></i>
@@ -1520,6 +1908,127 @@
             <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
                 <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
                 <img src="../A/images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="user-detail-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10002; justify-content: center; align-items: center;" onclick="hideUserDetailModal()">
+        <div style="position: relative; background: white; border-radius: 8px; width: 500px; max-height: 80vh; overflow-y: auto;" onclick="event.stopPropagation()">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-size: 16px; font-weight: 600; color: #1e293b;">用户详情</div>
+                <button onclick="hideUserDetailModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 24px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="user-detail-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: #f1f5f9; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #94a3b8;">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div style="font-size: 18px; font-weight: 600; color: #1e293b;" id="user-detail-name">姓名</div>
+                </div>
+                <div style="border-top: 1px solid #f1f5f9; padding-top: 16px;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f8fafc;">
+                        <span style="color: #64748b;">手机号</span>
+                        <span style="color: #1e293b; font-weight: 500;" id="user-detail-phone">-</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f8fafc;">
+                        <span style="color: #64748b;">所属组织/部门/角色</span>
+                        <span style="color: #1e293b; font-weight: 500; text-align: right;" id="user-detail-org">-</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span style="color: #64748b;">加入时间</span>
+                        <span style="color: #1e293b; font-weight: 500;" id="user-detail-join-time">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sub-org-detail-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10002; justify-content: center; align-items: center;" onclick="hideSubOrgDetailModal()">
+        <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 900px; max-height: 90vh; overflow: hidden;" onclick="event.stopPropagation()">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-size: 16px; font-weight: 600; color: #1e293b;">下级组织详情</div>
+                <button onclick="hideSubOrgDetailModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 20px; overflow-y: auto; max-height: calc(90vh - 60px);">
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="section-header">
+                        <div class="section-title"><i class="fa fa-building-o"></i> 组织信息</div>
+                    </div>
+                    <div class="section-content" style="padding: 16px;">
+                        <div style="display: flex; gap: 16px;">
+                            <div style="width: 100px; height: 100px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
+                                    <span id="sub-org-detail-name">-</span>
+                                    <span id="sub-org-detail-id-display" style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(-)</span>
+                                </div>
+                                <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">
+                                    <span style="color: #64748b;">组织类型：</span>
+                                    <span id="sub-org-detail-type-display" style="color: #1e293b;font-weight: 600;">-</span>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                                    <span id="sub-org-detail-address-line"><i class="fa fa-map-marker" style="color: #94a3b8;"></i> -</span>
+                                </div>
+                                <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                                    <span id="sub-org-detail-contact-line"><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：-</span>
+                                    <span id="sub-org-detail-member-line"><i class="fa fa-users" style="color: #94a3b8;"></i> <span id="sub-org-detail-member-count-display">-</span> 名成员</span>
+                                    <span id="sub-org-detail-create-date-line"><i class="fa fa-calendar" style="color: #94a3b8;"></i> 添加日期：<span id="sub-org-detail-create-date-display">-</span></span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div id="sub-org-company-info" style="padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                            <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fa fa-info-circle" style="color: #64748b;"></i> 企业信息
+                                <button id="sub-org-view-license" style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
+                                    <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
+                                </button>
+                            </div> 
+                            <div id="sub-org-company-fields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-left: 12px;">
+                                <div style="font-size: 13px;">
+                                    <span style="color: #64748b;">企业名称：</span>
+                                    <span id="sub-org-detail-company-name" style="color: #1e293b;">-</span>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    <span style="color: #64748b;">统一社会信用代码：</span>
+                                    <span id="sub-org-detail-credit-code" style="color: #1e293b;">-</span>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    <span style="color: #64748b;">法定代表人：</span>
+                                    <span id="sub-org-detail-legal-person" style="color: #1e293b;">-</span>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    <span style="color: #64748b;">注册资本：</span>
+                                    <span id="sub-org-detail-capital" style="color: #1e293b;">-</span>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    <span style="color: #64748b;">成立日期：</span>
+                                    <span id="sub-org-detail-establish-date" style="color: #1e293b;">-</span>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    <span style="color: #64748b;">营业期限：</span>
+                                    <span id="sub-org-detail-business-term" style="color: #1e293b;">-</span>
+                                </div>
+                                <div style="font-size: 13px; grid-column: 1 / -1;">
+                                    <span style="color: #64748b;">注册地址：</span>
+                                    <span id="sub-org-detail-company-address" style="color: #1e293b;">-</span>
+                                </div>
+                                <div id="sub-org-business-scope" style="font-size: 13px; grid-column: 1 / -1;">
+                                    <span style="color: #64748b;">经营范围：</span>
+                                    <span style="color: #1e293b;">-</span>
+                                </div>
+                            </div>
+                            <div id="sub-org-no-company-info" style="display: none; padding-left: 12px; font-size: 13px; color: #94a3b8;">暂无</div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
