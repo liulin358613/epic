@@ -55,6 +55,32 @@
             align-items: center;
             gap: 6px;
         }
+        /* 角色说明图标样式 */
+        .role-description-icon {
+            position: relative;
+            cursor: help;
+        }
+        .role-description-icon:hover .role-description-tooltip {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .role-description-tooltip {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 999999;
+            pointer-events: none;
+        }
         .tab:hover {
             color: #3b82f6;
             background: #f1f5f9;
@@ -2164,26 +2190,42 @@ function updateTableHeader(type) {
         // 角色数据 - 按组织分类
         const roleData = {
             'main': [
-                { id: '1', name: '超级管理员', description: '系统最高权限' },
-                { id: '2', name: '管理员', description: '组织管理权限' },
-                { id: '3', name: '财务主管', description: '财务管理权限' },
-                { id: '4', name: '行政主管', description: '行政事务权限' },
-                { id: '5', name: '市场经理', description: '市场运营权限' },
-                { id: '6', name: '业务专员', description: '业务处理权限' }
+                { id: '1', name: '超级管理员', description: '系统最高权限', hasDescription: true },
+                { id: '2', name: '管理员', description: '组织管理权限', hasDescription: true },
+                { id: '3', name: '财务主管' },
+                { id: '4', name: '行政主管' },
+                { id: '5', name: '市场经理', description: '市场运营权限', hasDescription: true },
+                { id: '6', name: '业务专员' },
+                { id: '17', name: '人力资源经理', description: '人力资源管理权限', hasDescription: true },
+                { id: '18', name: '技术总监' },
+                { id: '19', name: '客服主管' },
+                { id: '20', name: '销售经理', description: '销售管理权限', hasDescription: true },
+                { id: '21', name: '采购经理' },
+                { id: '22', name: '仓库主管' }
             ],
             'sub1': [
-                { id: '7', name: '培训主管', description: '培训管理权限' },
-                { id: '8', name: '培训师', description: '培训授课权限' },
-                { id: '9', name: '课程研发', description: '课程开发权限' },
-                { id: '10', name: '技术支持', description: '技术维护权限' },
-                { id: '11', name: '教学助理', description: '教学辅助权限' }
+                { id: '7', name: '培训主管', description: '培训管理权限', hasDescription: true },
+                { id: '8', name: '培训师' },
+                { id: '9', name: '课程研发', description: '课程开发权限', hasDescription: true },
+                { id: '10', name: '技术支持' },
+                { id: '11', name: '教学助理' },
+                { id: '23', name: '培训顾问', description: '培训咨询权限', hasDescription: true },
+                { id: '24', name: '学习管理员' },
+                { id: '25', name: '评估专员' },
+                { id: '26', name: '教材管理员', description: '教材管理权限', hasDescription: true },
+                { id: '27', name: '证书管理员' }
             ],
             'sub2': [
-                { id: '12', name: '实训主管', description: '实训管理权限' },
-                { id: '13', name: '设备管理员', description: '设备管理权限' },
-                { id: '14', name: '实训导师', description: '实训指导权限' },
-                { id: '15', name: '学员', description: '学习相关权限' },
-                { id: '16', name: '安全管理员', description: '安全管理权限' }
+                { id: '12', name: '实训主管', description: '实训管理权限', hasDescription: true },
+                { id: '13', name: '设备管理员' },
+                { id: '14', name: '实训导师', description: '实训指导权限', hasDescription: true },
+                { id: '15', name: '学员' },
+                { id: '16', name: '安全管理员', description: '安全管理权限', hasDescription: true },
+                { id: '28', name: '实训协调员' },
+                { id: '29', name: '设备维护员' },
+                { id: '30', name: '实训评估师', description: '实训评估权限', hasDescription: true },
+                { id: '31', name: '技能鉴定员' },
+                { id: '32', name: '实训记录员' }
             ]
         };
 
@@ -2202,56 +2244,64 @@ function updateTableHeader(type) {
                         <i class="fa fa-shield"></i> 角色管理
                     </div>
                 </div>
-                <div class="search-bar" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; background: #f8fafc;">
-                    <button class="btn-add" onclick="openAddRoleModal()">
-                        <i class="fa fa-plus"></i> 添加角色
-                    </button>
-                </div>
-                <div style="display: flex; height: calc(100% - 120px);">
+
+                <div style="display: flex; flex: 1; overflow: hidden;">
                     <!-- 左侧角色列表 -->
-                    <div style="width: 280px; border-right: 1px solid #e2e8f0; overflow-y: auto;">
-                        <div style="padding: 16px;">
-                            <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 12px;">角色列表</h3>
+                    <div style="width: 280px; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+                        <div style="padding: 8px 16px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0;">角色列表</h3>
+                            <button class="btn-add" onclick="openAddRoleModal()" style="padding: 4px 12px; font-size: 12px;">
+                                <i class="fa fa-plus"></i> 添加角色
+                            </button>
+                        </div>
+                        <div style="flex: 1; padding: 16px; overflow-y: auto;">
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                ${roles.map(role => `
-                                    <div class="role-card" data-role-id="${role.id}" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px; cursor: pointer; transition: all 0.2s; position: relative; display: flex; justify-content: space-between; align-items: flex-start;">
-                                        <div>
-                                            <div style="font-size: 14px; font-weight: 500; color: #1e293b; margin-bottom: 4px;">${role.name}</div>
-                                            <div style="font-size: 12px; color: #94a3b8;">${role.description}</div>
+                                    ${roles.map(role => `
+                                        <div class="role-card" data-role-id="${role.id}" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 10px; cursor: pointer; transition: all 0.2s; position: relative; display: flex; justify-content: space-between; align-items: center;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <div style="font-size: 14px; font-weight: 500; color: #1e293b;">${role.name}</div>
+                                                ${role.hasDescription ? `
+                                                <span class="role-description-icon" style="position: relative; cursor: help; z-index: 999999;">
+                                                    <i class="fa fa-info-circle" style="font-size: 12px; color: #94a3b8;"></i>
+                                                    <span class="role-description-tooltip">${role.description}</span>
+                                                </span>
+                                                ` : ''}
+                                            </div>
+                                            <div class="role-actions" style="opacity: 0; transition: opacity 0.2s; display: flex; gap: 8px;">
+                                                <button class="action-btn edit" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; background: #f1f5f9; color: #3b82f6;">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                                <button class="action-btn delete" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; background: #fef2f2; color: #ef4444;">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="role-actions" style="opacity: 0; transition: opacity 0.2s; display: flex; gap: 8px;">
-                                            <button class="action-btn edit" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; background: #f1f5f9; color: #3b82f6;">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
-                                            <button class="action-btn delete" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; background: #fef2f2; color: #ef4444;">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
+                                    `).join('')}
+                                </div>
+
                         </div>
                     </div>
                     <!-- 右侧权限管理 -->
-                    <div style="flex: 1; overflow-y: auto;">
-                        <div style="padding: 16px;">
-                            <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 12px;">绑定菜单/功能权限</h3>
-                            <div style="border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden;">
-                                <!-- 权限类型Tab -->
-                                <div style="display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-                                    <button class="permission-tab active" data-tab="function" style="padding: 10px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #3b82f6; font-weight: 500; border-bottom: 2px solid #3b82f6;">
-                                        功能权限
-                                    </button>
-                                    <button class="permission-tab" data-tab="data" style="padding: 10px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #64748b;">
-                                        数据权限
-                                    </button>
-                                    <button class="permission-tab" data-tab="field" style="padding: 10px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #64748b;">
-                                        字段权限
-                                    </button>
-                                </div>
-                                
-                                <!-- 权限内容区域 -->
-                                <div class="permission-content" style="padding: 16px;">
+                    <div style="flex: 1; display: flex; flex-direction: column;">
+                        <div style="padding: 8px 16px; border-bottom: 1px solid #f1f5f9;">
+                            <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0;">绑定菜单/功能权限</h3>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; margin: 8px 16px 16px 16px;">
+                            <!-- 权限类型Tab -->
+                            <div style="display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                                <button class="permission-tab active" data-tab="function" style="padding: 10px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #3b82f6; font-weight: 500; border-bottom: 2px solid #3b82f6;">
+                                    功能权限
+                                </button>
+                                <button class="permission-tab" data-tab="data" style="padding: 10px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #64748b;">
+                                    数据权限
+                                </button>
+                                <button class="permission-tab" data-tab="field" style="padding: 10px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #64748b;">
+                                    字段权限
+                                </button>
+                            </div>
+                            
+                            <!-- 权限内容区域 -->
+                            <div class="permission-content" style="flex: 1; padding: 16px; overflow-y: auto;">
                                     <!-- 功能权限内容 -->
                                     <div id="function-permission" style="display: block;">
                                         <div style="margin-bottom: 16px;">
@@ -2265,85 +2315,113 @@ function updateTableHeader(type) {
                                         <div style="margin-left: 8px;">
                                             <!-- 订单中心 -->
                                             <div class="permission-item" style="margin-bottom: 8px; position: relative;">
-                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                <div style="display: flex; align-items: center; cursor: pointer;">
                                                     <span class="expand-icon" style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 4px;" onclick="toggleExpand(this)">▼</span>
-                                                    <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                    <span style="font-size: 14px; color: #475569;">订单中心</span>
-                                                </label>
+                                                    <label style="display: flex; align-items: center; cursor: pointer;">
+                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                        <span style="font-size: 14px; color: #475569;">订单中心</span>
+                                                    </label>
+                                                </div>
                                                 <div class="permission-children" style="margin-left: 36px; margin-top: 8px; position: relative;">
                                                     <!-- 层级连线 -->
                                                     <div style="position: absolute; left: 8px; top: 8px; bottom: 0; width: 1px; background-color: #e2e8f0;"></div>
                                                     
                                                     <!-- 订单管理 -->
                                                     <div class="permission-item" style="margin-bottom: 12px; position: relative;">
-                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                        <div style="display: flex; align-items: center; cursor: pointer;">
                                                             <span class="expand-icon" style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 4px;" onclick="toggleExpand(this)">▼</span>
-                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                            <span style="font-size: 14px; color: #475569;">订单管理</span>
-                                                        </label>
+                                                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                <span style="font-size: 14px; color: #475569;">订单管理</span>
+                                                            </label>
+                                                        </div>
                                                         <div class="permission-children" style="margin-left: 36px; margin-top: 8px; position: relative;">
                                                             <!-- 层级连线 -->
                                                             <div style="position: absolute; left: 8px; top: 8px; bottom: 0; width: 1px; background-color: #e2e8f0;"></div>
                                                             
                                                             <!-- 采购订单 -->
                                                             <div class="permission-item" style="margin-bottom: 12px; position: relative;">
-                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                <div style="display: flex; align-items: center; cursor: pointer;">
                                                                     <span class="expand-icon" style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 4px;" onclick="toggleExpand(this)">▼</span>
-                                                                    <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                    <span style="font-size: 14px; color: #475569;">采购订单</span>
-                                                                </label>
-                                                                <div class="permission-children" style="margin-left: 36px; margin-top: 8px;">
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">查看</span>
-                                                                    </label>
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">新增</span>
-                                                                    </label>
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">编辑</span>
-                                                                    </label>
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">删除</span>
-                                                                    </label>
                                                                     <label style="display: flex; align-items: center; cursor: pointer;">
                                                                         <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">审核</span>
+                                                                        <span style="font-size: 14px; color: #475569;">采购订单</span>
                                                                     </label>
+                                                                </div>
+                                                                <div class="permission-children" style="margin-left: 36px; margin-top: 8px;">
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">查看</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">新增</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">编辑</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">删除</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">审核</span>
+                                                                        </label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             
                                                             <!-- 销售订单 -->
                                                             <div class="permission-item" style="margin-bottom: 12px; position: relative;">
-                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                <div style="display: flex; align-items: center; cursor: pointer;">
                                                                     <span class="expand-icon" style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-right: 4px;" onclick="toggleExpand(this)">▼</span>
-                                                                    <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                    <span style="font-size: 14px; color: #475569;">销售订单</span>
-                                                                </label>
-                                                                <div class="permission-children" style="margin-left: 36px; margin-top: 8px;">
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">查看</span>
-                                                                    </label>
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">新增</span>
-                                                                    </label>
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">编辑</span>
-                                                                    </label>
-                                                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 6px;">
-                                                                        <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">删除</span>
-                                                                    </label>
                                                                     <label style="display: flex; align-items: center; cursor: pointer;">
                                                                         <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
-                                                                        <span style="font-size: 14px; color: #475569;">审核</span>
+                                                                        <span style="font-size: 14px; color: #475569;">销售订单</span>
                                                                     </label>
+                                                                </div>
+                                                                <div class="permission-children" style="margin-left: 36px; margin-top: 8px;">
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">查看</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">新增</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">编辑</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item" style="margin-bottom: 6px;">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">删除</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="permission-item">
+                                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                            <input type="checkbox" style="margin-right: 8px;" onchange="togglePermission(this)">
+                                                                            <span style="font-size: 14px; color: #475569;">审核</span>
+                                                                        </label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2384,22 +2462,396 @@ function updateTableHeader(type) {
                                     </div>
                                     
                                     <!-- 数据权限内容 -->
-                                    <div id="data-permission" style="display: none;">
-                                        <div style="font-size: 14px; color: #64748b; text-align: center; padding: 40px 0;">
-                                            数据权限配置
+                                    <div id="data-permission" style="display: none; height: 100%;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <div style="margin-bottom: 8px; padding: 10px; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px; font-size: 14px; font-weight: 600; color: #1e40af;">
+                                                提示：不设置，默认全部数据
+                                            </div>
+                                            <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2; flex: 1;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">业务模块</th>
+                                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">隔离维度</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">订单管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="order-isolation" value="salesman" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">业务员</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="order-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="order-isolation" value="org" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">组织</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">仓储管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="warehouse-isolation" value="warehouse" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">仓库</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="warehouse-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="warehouse-isolation" value="org" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">组织</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">人员管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="person-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="person-isolation" value="org" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">组织</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="person-isolation" value="role" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">角色</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">财务管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="finance-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="finance-isolation" value="org" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">组织</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="finance-isolation" value="project" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">项目</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">客户管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="customer-isolation" value="salesman" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">业务员</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="customer-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="customer-isolation" value="region" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">区域</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">供应商管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="supplier-isolation" value="buyer" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">采购员</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="supplier-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="supplier-isolation" value="category" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">类别</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">项目管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="project-isolation" value="project_manager" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">项目经理</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="project-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="project-isolation" value="status" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">状态</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">资产管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="asset-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="asset-isolation" value="location" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">位置</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="asset-isolation" value="type" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">类型</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">销售管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="sales-isolation" value="salesman" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">业务员</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="sales-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="sales-isolation" value="region" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">区域</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">采购管理</td>
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 20px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="purchase-isolation" value="buyer" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">采购员</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="purchase-isolation" value="department" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">部门</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="purchase-isolation" value="category" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">类别</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     
                                     <!-- 字段权限内容 -->
-                                    <div id="field-permission" style="display: none;">
-                                        <div style="font-size: 14px; color: #64748b; text-align: center; padding: 40px 0;">
-                                            字段权限配置
+                                    <div id="field-permission" style="display: none; height: 100%;">
+                                        <div style="display: flex; flex-direction: column; height: 100%;">
+                                            <div style="margin-bottom: 12px; padding: 10px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 4px; font-size: 14px; font-weight: 600; color: #92400e;">
+                                                提示：不设置，默认全部字段【可操作、可见】
+                                            </div>
+                                            <table style="width: 100%; border-collapse: collapse; flex: 1;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                                                            <span style="color: #ef4444;">*</span>字段名称
+                                                        </th>
+                                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                                                            <span style="color: #ef4444;">*</span>权限
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                <span style="color: #475569;">设备售价(设备管理)</span>
+                                                            </label>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-all" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-all" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-all" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <span style="color: #475569;">订单编号(订单模块)</span>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-order-number" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-order-number" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-order-number" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <span style="color: #475569;">产品成本(订单模块)</span>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-product-cost" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-product-cost" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-product-cost" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <span style="color: #475569;">供应商报价(采购模块)</span>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-supplier-price" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-supplier-price" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-supplier-price" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <span style="color: #475569;">销售金额(订单模块)</span>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-sales-amount" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-sales-amount" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-sales-amount" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <span style="color: #475569;">库存数量(仓储模块)</span>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-inventory-quantity" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-inventory-quantity" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-inventory-quantity" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <span style="color: #475569;">客户联系方式(客户模块)</span>
+                                                        </td>
+                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                            <div style="display: flex; gap: 12px;">
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-customer-contact" value="hidden" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">隐藏</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-customer-contact" value="readonly" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">只读</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                    <input type="radio" name="field-permission-customer-contact" value="editable" style="margin-right: 4px;">
+                                                                    <span style="color: #475569;">可编辑</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- 操作按钮栏 -->
+                <div style="padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #f8fafc; text-align: center;">
+                    <button style="padding: 8px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: 500;">
+                        保存
+                    </button>
                 </div>
             `;
             
@@ -2749,15 +3201,39 @@ function updateTableHeader(type) {
         function togglePermission(checkbox) {
             const isChecked = checkbox.checked;
             
-            // 切换所有子权限
+            // 1. 处理子权限：如果当前元素被选中，子级全部选中；如果取消选中，子级全部取消
             const permissionItem = checkbox.closest('.permission-item');
-            const childCheckboxes = permissionItem.querySelectorAll('.permission-children input[type="checkbox"]');
-            childCheckboxes.forEach(childCheckbox => {
-                childCheckbox.checked = isChecked;
-            });
+            const childrenContainer = permissionItem.querySelector('.permission-children');
+            if (childrenContainer) {
+                const childCheckboxes = childrenContainer.querySelectorAll('input[type="checkbox"]');
+                childCheckboxes.forEach(childCheckbox => {
+                    childCheckbox.checked = isChecked;
+                    // 递归处理子级的子级
+                    const childItem = childCheckbox.closest('.permission-item');
+                    const grandChildrenContainer = childItem.querySelector('.permission-children');
+                    if (grandChildrenContainer) {
+                        const grandChildCheckboxes = grandChildrenContainer.querySelectorAll('input[type="checkbox"]');
+                        grandChildCheckboxes.forEach(grandChildCheckbox => {
+                            grandChildCheckbox.checked = isChecked;
+                        });
+                    }
+                });
+            }
             
-            // 检查父权限
-            updateParentPermission(permissionItem);
+            // 2. 处理父权限：如果当前元素被选中，所有父级都选中
+            if (isChecked) {
+                let parentItem = permissionItem.parentElement.closest('.permission-item');
+                while (parentItem) {
+                    const parentCheckbox = parentItem.querySelector('input[type="checkbox"]');
+                    if (parentCheckbox) {
+                        parentCheckbox.checked = true;
+                    }
+                    parentItem = parentItem.parentElement.closest('.permission-item');
+                }
+            } else {
+                // 3. 取消选中时，只处理父权限的状态更新
+                updateParentPermission(permissionItem);
+            }
         }
 
         // 更新父权限状态

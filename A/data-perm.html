@@ -370,7 +370,7 @@
         .tabs-container {
             display: flex;
             border-bottom: 2px solid #e5e7eb;
-            margin-top: 24px;
+            margin-top: 14px;
             padding-bottom: 0;
         }
         .tab {
@@ -957,6 +957,45 @@
                 opacity: 0;
             }
         }
+        
+        .tabs-wrapper {
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            padding-left: 24px;
+        }
+        .tabs {
+            display: flex;
+            gap: 32px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .tabs li {
+            position: relative;
+            padding: 12px 32px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            line-height: 1.4;
+        }
+        .tabs li.active {
+            color: #6366f1;
+        }
+        .tabs li.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 1px;
+        }
+        .tabs li:hover:not(.active) {
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
@@ -966,6 +1005,15 @@
             <p class="page-subtitle">管理组织的类型，预设组织类型功能权限，用户创建组织成功后自动分配功能菜单</p>
         </div>
     </header>
+    
+    <div class="tabs-wrapper">
+        <ul class="tabs">
+            <li class="active" onclick="switchTab('org-type')">组织类型</li>
+            <li onclick="switchTab('org-dept')">组织部门</li>
+            <li onclick="switchTab('org-role')">组织角色</li>
+        </ul>
+    </div>
+
     <div class="page-container">
         <main class="main-content">
             <div class="sidebar">
@@ -1265,125 +1313,7 @@
                             </div>
                         </div>
                         
-                        <div class="role-section">
-                            <div class="role-section-left">
-                                <div class="role-header">
-                                    组织部门
-                                    <button class="btn btn-sm btn-outline btn-add-role" onclick="showAddDeptModal()">
-                                        <i class="fa fa-plus"></i> 添加
-                                    </button>
-                                </div>
-                                <div class="role-list-container">
-                                    <div class="role-list" id="dept-list">
-                                        <label class="role-item" style="border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; margin-bottom: 4px;">
-                                            <input type="checkbox" id="select-all-depts" onclick="toggleAllDepts(this)">
-                                            <span style="font-weight: 600;">全选</span>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="dept-checkbox">
-                                            <span>研发部</span>
-                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '研发部')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '研发部')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="dept-checkbox">
-                                            <span>生产部</span>
-                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '生产部')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '生产部')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="dept-checkbox">
-                                            <span>销售部</span>
-                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '销售部')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '销售部')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="dept-checkbox">
-                                            <span>财务部</span>
-                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '财务部')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '财务部')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="dept-checkbox">
-                                            <span>人力资源部</span>
-                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '人力资源部')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '人力资源部')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="dept-checkbox">
-                                            <span>运维部</span>
-                                            <button class="edit-role-btn" onclick="showEditDeptModal(this, '运维部')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '运维部')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="role-section-right">
-                                <div class="role-header">
-                                    组织角色
-                                    <button class="btn btn-sm btn-outline btn-add-role" onclick="showAddRoleModal()">
-                                        <i class="fa fa-plus"></i> 添加
-                                    </button>
-                                </div>
-                                <div class="role-list-container">
-                                    <div class="role-list">
-                                        <label class="role-item" style="border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; margin-bottom: 4px;">
-                                            <input type="checkbox" id="select-all-roles" onclick="toggleAllRoles(this)">
-                                            <span style="font-weight: 600;">全选</span>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>总经理</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '总经理')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '总经理')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>生产主管</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '生产主管')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '生产主管')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>技术总监</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '技术总监')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '技术总监')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>开发经理</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '开发经理')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '开发经理')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>测试工程师</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '测试工程师')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '测试工程师')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>产品经理</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '产品经理')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '产品经理')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>运维工程师</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '运维工程师')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '运维工程师')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                        <label class="role-item">
-                                            <input type="checkbox" class="role-checkbox">
-                                            <span>财务主管</span>
-                                            <button class="edit-role-btn" onclick="showEditRoleModal(this, '财务主管')"><i class="fa fa-pencil"></i></button>
-                                            <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '财务主管')"><i class="fa fa-trash"></i></button>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     
                     <div class="content-right">
@@ -1854,122 +1784,13 @@
                     </div>
                 </div>
                 <div class="content-footer">
-                    <button class="btn btn-outline">取消</button>
-                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-primary">保存</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <div class="modal-overlay hidden" id="add-dept-modal" onclick="hideAddDeptModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">添加组织部门</span>
-                <button class="modal-close" onclick="hideAddDeptModal()"><i class="fa fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>部门名称：</label>
-                    <input type="text" class="form-control" placeholder="请输入部门名称" id="dept-name-input">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="hideAddDeptModal()">取消</button>
-                <button class="btn btn-primary" onclick="addDept()">确定</button>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal-overlay hidden" id="edit-dept-modal" onclick="hideEditDeptModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">编辑部门</span>
-                <button class="modal-close" onclick="hideEditDeptModal()"><i class="fa fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>部门名称：</label>
-                    <input type="text" class="form-control" placeholder="请输入部门名称" id="edit-dept-name-input">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="hideEditDeptModal()">取消</button>
-                <button class="btn btn-primary" onclick="saveEditDept()">确定</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="delete-dept-modal" onclick="hideDeleteDeptModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">删除部门</span>
-                <button class="modal-close" onclick="hideDeleteDeptModal()"><i class="fa fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <p style="color: #374151; font-size: 14px; line-height: 1.6;">确定要删除部门 "<span id="delete-dept-name" style="color: #ef4444; font-weight: 600;"></span>" 吗？</p>
-                <p style="color: #9ca3af; font-size: 13px; margin-top: 8px;">删除后将无法恢复，请谨慎操作。</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="hideDeleteDeptModal()">取消</button>
-                <button class="btn btn-primary" onclick="confirmDeleteDept()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">确定删除</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="add-role-modal" onclick="hideAddRoleModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">添加组织角色</span>
-                <button class="modal-close" onclick="hideAddRoleModal()"><i class="fa fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>角色名称：</label>
-                    <input type="text" class="form-control" placeholder="请输入角色名称" id="role-name-input">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="hideAddRoleModal()">取消</button>
-                <button class="btn btn-primary" onclick="addRole()">确定</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="edit-role-modal" onclick="hideEditRoleModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">编辑角色</span>
-                <button class="modal-close" onclick="hideEditRoleModal()"><i class="fa fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>角色名称：</label>
-                    <input type="text" class="form-control" placeholder="请输入角色名称" id="edit-role-name-input">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="hideEditRoleModal()">取消</button>
-                <button class="btn btn-primary" onclick="saveEditRole()">确定</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="delete-role-modal" onclick="hideDeleteRoleModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">删除角色</span>
-                <button class="modal-close" onclick="hideDeleteRoleModal()"><i class="fa fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <p style="color: #374151; font-size: 14px; line-height: 1.6;">确定要删除角色 "<span id="delete-role-name" style="color: #ef4444; font-weight: 600;"></span>" 吗？</p>
-                <p style="color: #9ca3af; font-size: 13px; margin-top: 8px;">删除后将无法恢复，请谨慎操作。</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="hideDeleteRoleModal()">取消</button>
-                <button class="btn btn-primary" onclick="confirmDeleteRole()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">确定删除</button>
-            </div>
-        </div>
-    </div>
 
     <script>
         window.onload = function() {
@@ -2135,12 +1956,8 @@
         }
 
         function selectRandomItems() {
-            document.querySelectorAll('.dept-checkbox').forEach(cb => cb.checked = false);
-            document.querySelectorAll('.role-checkbox').forEach(cb => cb.checked = false);
             document.querySelectorAll('.perm-checkbox').forEach(cb => cb.checked = false);
             
-            const deptCheckboxes = Array.from(document.querySelectorAll('.dept-checkbox'));
-            const roleCheckboxes = Array.from(document.querySelectorAll('.role-checkbox'));
             const permCheckboxes = Array.from(document.querySelectorAll('.perm-checkbox'));
             
             const shuffleArray = (array) => {
@@ -2158,8 +1975,6 @@
                 shuffled.slice(0, count).forEach(cb => cb.checked = true);
             };
             
-            selectRandom(deptCheckboxes, 2, 4);
-            selectRandom(roleCheckboxes, 3, 5);
             selectRandom(permCheckboxes.filter(cb => cb.classList.contains('parent-checkbox')), 2, 3);
         }
 
@@ -2192,299 +2007,16 @@
             }, 3000);
         }
 
-        function showAddDeptModal() {
-            document.getElementById('add-dept-modal').classList.remove('hidden');
-            document.getElementById('dept-name-input').value = '';
-            document.getElementById('dept-name-input').focus();
-        }
 
-        function hideAddDeptModal() {
-            document.getElementById('add-dept-modal').classList.add('hidden');
-        }
 
-        function addDept() {
-            const deptName = document.getElementById('dept-name-input').value.trim();
-            if (!deptName) {
-                showToast('请输入部门名称', 'error');
-                return;
-            }
-            
-            const deptList = document.getElementById('dept-list');
-            const newDept = document.createElement('label');
-            newDept.className = 'role-item';
-            newDept.innerHTML = `
-                <input type="checkbox" class="dept-checkbox">
-                <span>${deptName}</span>
-                <button class="edit-role-btn" onclick="showEditDeptModal(this, '${deptName}')"><i class="fa fa-pencil"></i></button>
-                <button class="delete-role-btn" onclick="showDeleteDeptModal(this, '${deptName}')"><i class="fa fa-trash"></i></button>
-            `;
-            deptList.appendChild(newDept);
-            
-            hideAddDeptModal();
-        }
 
-        let currentDeleteDeptBtn = null;
-
-        function showDeleteDeptModal(btn, deptName) {
-            currentDeleteDeptBtn = btn;
-            document.getElementById('delete-dept-name').textContent = deptName;
-            document.getElementById('delete-dept-modal').classList.remove('hidden');
-        }
-
-        function hideDeleteDeptModal() {
-            document.getElementById('delete-dept-modal').classList.add('hidden');
-            currentDeleteDeptBtn = null;
-        }
-
-        function confirmDeleteDept() {
-            const deptItem = currentDeleteDeptBtn.closest('.role-item');
-            deptItem.remove();
-            
-            hideDeleteDeptModal();
-            showToast('部门删除成功', 'success');
-        }
-
-        let currentEditDeptBtn = null;
-
-        function showEditDeptModal(btn, deptName) {
-            currentEditDeptBtn = btn;
-            document.getElementById('edit-dept-name-input').value = deptName;
-            document.getElementById('edit-dept-modal').classList.remove('hidden');
-            document.getElementById('edit-dept-name-input').focus();
-        }
-
-        function hideEditDeptModal() {
-            document.getElementById('edit-dept-modal').classList.add('hidden');
-            currentEditDeptBtn = null;
-        }
-
-        function saveEditDept() {
-            const deptName = document.getElementById('edit-dept-name-input').value.trim();
-            if (!deptName) {
-                showToast('请输入部门名称', 'error');
-                return;
-            }
-            
-            const deptItem = currentEditDeptBtn.closest('.role-item');
-            deptItem.querySelector('span').textContent = deptName;
-            
-            hideEditDeptModal();
-        }
-
-        function toggleAllDepts(checkbox) {
-            const deptCheckboxes = document.querySelectorAll('.dept-checkbox');
-            deptCheckboxes.forEach(item => item.checked = checkbox.checked);
-        }
-
-        function showAddRoleModal() {
-            document.getElementById('add-role-modal').classList.remove('hidden');
-            document.getElementById('role-name-input').value = '';
-            document.getElementById('role-name-input').focus();
-        }
-
-        function hideAddRoleModal() {
-            document.getElementById('add-role-modal').classList.add('hidden');
-        }
-
-        function addRole() {
-            const roleName = document.getElementById('role-name-input').value.trim();
-            if (!roleName) {
-                showToast('请输入角色名称', 'error');
-                return;
-            }
-            
-            const roleList = document.querySelector('.role-list');
-            const newRole = document.createElement('label');
-            newRole.className = 'role-item';
-            newRole.innerHTML = `
-                <input type="checkbox" class="role-checkbox">
-                <span>${roleName}</span>
-                <button class="edit-role-btn" onclick="showEditRoleModal(this, '${roleName}')"><i class="fa fa-pencil"></i></button>
-                <button class="delete-role-btn" onclick="showDeleteRoleModal(this, '${roleName}')"><i class="fa fa-trash"></i></button>
-            `;
-            roleList.appendChild(newRole);
-            
-            hideAddRoleModal();
-        }
-
-        let currentDeleteBtn = null;
-
-        function showDeleteRoleModal(btn, roleName) {
-            currentDeleteBtn = btn;
-            document.getElementById('delete-role-name').textContent = roleName;
-            document.getElementById('delete-role-modal').classList.remove('hidden');
-        }
-
-        function hideDeleteRoleModal() {
-            document.getElementById('delete-role-modal').classList.add('hidden');
-            currentDeleteBtn = null;
-        }
-
-        function confirmDeleteRole() {
-            const roleItem = currentDeleteBtn.closest('.role-item');
-            roleItem.remove();
-            
-            hideDeleteRoleModal();
-            showToast('角色删除成功', 'success');
-        }
-
-        let currentEditBtn = null;
-
-        function showEditRoleModal(btn, roleName) {
-            currentEditBtn = btn;
-            document.getElementById('edit-role-name-input').value = roleName;
-            document.getElementById('edit-role-modal').classList.remove('hidden');
-            document.getElementById('edit-role-name-input').focus();
-        }
-
-        function hideEditRoleModal() {
-            document.getElementById('edit-role-modal').classList.add('hidden');
-            currentEditBtn = null;
-        }
-
-        function saveEditRole() {
-            const roleName = document.getElementById('edit-role-name-input').value.trim();
-            if (!roleName) {
-                showToast('请输入角色名称', 'error');
-                return;
-            }
-            
-            const roleItem = currentEditBtn.closest('.role-item');
-            roleItem.querySelector('span').textContent = roleName;
-            
-            hideEditRoleModal();
-        }
-
-        function toggleDimensionSection(select) {
-            const item = select.closest('.data-module-item');
-            const dimensionSection = item.querySelector('.dimension-section');
-            dimensionSection.style.display = select.value ? 'block' : 'none';
-        }
-
-        function toggleAllDimensions(checkbox) {
-            const item = checkbox.closest('.data-module-item');
-            const dimensionItems = item.querySelectorAll('.dimension-item');
-            dimensionItems.forEach(dimItem => dimItem.checked = checkbox.checked);
-        }
 
         function toggleAllPerms(checkbox) {
             const permCheckboxes = document.querySelectorAll('.perm-checkbox');
             permCheckboxes.forEach(item => item.checked = checkbox.checked);
         }
 
-        function toggleAllRoles(checkbox) {
-            const roleCheckboxes = document.querySelectorAll('.role-checkbox');
-            roleCheckboxes.forEach(item => item.checked = checkbox.checked);
-        }
 
-        function selectAllFields(checkbox) {
-            const fieldItems = document.querySelectorAll('.field-item');
-            fieldItems.forEach(item => item.checked = checkbox.checked);
-        }
-
-        function selectAllByPermission(checkbox, permissionType) {
-            if (checkbox.checked) {
-                const permissionTypes = ['hidden', 'readonly', 'editable'];
-                permissionTypes.forEach(type => {
-                    if (type !== permissionType) {
-                        document.getElementById(`field-${type}-all`).checked = false;
-                    }
-                });
-                const radios = document.querySelectorAll(`input[type="radio"][value="${permissionType}"]`);
-                radios.forEach(radio => radio.checked = true);
-            }
-        }
-
-        function createModuleItem(selectedValue = '') {
-            const item = document.createElement('div');
-            item.className = 'data-module-item';
-            item.style.marginBottom = '16px';
-            item.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
-                    <label style="font-weight: 500;">
-                        <span style="color: #dc2626;">*</span>业务模块：
-                    </label>
-                    <select class="module-select" style="flex: 1; max-width: 400px; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 4px;">
-                        <option value="">请选择</option>
-                        <option value="sales">销售订单</option>
-                        <option value="purchase">采购订单</option>
-                        <option value="inventory">库存管理</option>
-                        <option value="user">用户管理</option>
-                    </select>
-                    <button class="delete-module-btn" style="color: #dc2626; background: none; border: none; cursor: pointer;">删除</button>
-                </div>
-                <div class="dimension-section" style="padding: 12px; border: 1px solid #d1d5db; margin-left: 80px; display: none;">
-                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
-                        <input type="checkbox" class="dimension-all">
-                        <span>全选</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <span>隔离维度：</span>
-                        <div style="display: flex; gap: 8px;">
-                            <div style="display: flex; align-items: center; gap: 4px;">
-                                <input type="checkbox" class="dimension-item">
-                                <span>业务员</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 4px;">
-                                <input type="checkbox" class="dimension-item">
-                                <span>客户</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 4px;">
-                                <input type="checkbox" class="dimension-item">
-                                <span>部门</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            const select = item.querySelector('.module-select');
-            if (selectedValue) {
-                select.value = selectedValue;
-                item.querySelector('.dimension-section').style.display = 'block';
-            }
-            
-            select.addEventListener('change', function() {
-                const dimensionSection = item.querySelector('.dimension-section');
-                dimensionSection.style.display = this.value ? 'block' : 'none';
-            });
-            
-            const allCheckbox = item.querySelector('.dimension-all');
-            const dimensionItems = item.querySelectorAll('.dimension-item');
-            allCheckbox.addEventListener('change', function() {
-                dimensionItems.forEach(dimItem => dimItem.checked = this.checked);
-            });
-            
-            const deleteBtn = item.querySelector('.delete-module-btn');
-            deleteBtn.addEventListener('click', function() {
-                item.remove();
-                updateDeleteButtons();
-            });
-            
-            return item;
-        }
-
-        function updateDeleteButtons() {
-            const items = document.querySelectorAll('.data-module-item');
-            items.forEach((item, index) => {
-                const deleteBtn = item.querySelector('.delete-module-btn');
-                deleteBtn.style.display = items.length > 1 ? 'block' : 'none';
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const addBtn = document.getElementById('add-data-module');
-            if (addBtn) {
-                addBtn.addEventListener('click', function() {
-                    const list = document.getElementById('data-module-list');
-                    const newItem = createModuleItem();
-                    list.appendChild(newItem);
-                    updateDeleteButtons();
-                });
-            }
-            
-            updateDeleteButtons();
-        });
 
         let currentDeleteOrgId = null;
 
@@ -2510,6 +2042,327 @@
                 showToast('组织类型删除成功！', 'success');
             }
         }
+        
+        function switchTab(tabName) {
+            // 移除所有Tab的active类
+            const tabs = document.querySelectorAll('.tabs li');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 给当前Tab添加active类
+            event.target.classList.add('active');
+            
+            // 切换内容
+            const contentArea = document.querySelector('.content-area');
+            if (tabName === 'org-type') {
+                contentArea.innerHTML = `
+                    <div class="content-header">组织详情</div>
+                    <div class="content-body">
+                        <div class="content-left">
+                            <div class="basic-info">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>组织名称：</label>
+                                        <input type="text" class="form-control" placeholder="请输入" id="org-name-input">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>上级组织：</label>
+                                        <select class="form-control" id="org-parent-input">
+                                            <option value="" selected>请选择</option>
+                                            <option value="1">训练基地</option>
+                                            <option value="2">机器人及设备商</option>
+                                            <option value="3">终端行业客户</option>
+                                            <option value="4">供应链服务商</option>
+                                            <option value="5">系统集成商</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>备注说明：</label>
+                                        <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>是否需要审核：</label>
+                                        <div class="radio-group">
+                                            <div class="radio-item">
+                                                <input type="radio" name="audit" value="no" checked id="audit-no">
+                                                <span>否</span>
+                                            </div>
+                                            <div class="radio-item">
+                                                <input type="radio" name="audit" value="yes" id="audit-yes">
+                                                <span>是</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="content-right">
+                            <div class="permission-section">
+                                <div class="perm-tabs">
+                                    <div class="perm-tab active" onclick="switchPermTab('function')">功能权限</div>
+                                    <div class="perm-tab" onclick="switchPermTab('data')">数据权限</div>
+                                    <div class="perm-tab" onclick="switchPermTab('field')">字段权限</div>
+                                </div>
+                                <div class="perm-content" id="function-content">
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e5e7eb;">
+                                            <input type="checkbox" id="select-all-perms" onclick="toggleAllPerms(this)">
+                                            <span style="font-weight: 600; color: #374151;">全选</span>
+                                        </div>
+                                        <div class="permission-group">
+                                            <label class="permission-label">
+                                                <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                                                <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
+                                                <span>订单中心</span>
+                                            </label>
+                                            <div class="permission-children" id="order-center-children">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
+                                                    <span>订单管理</span>
+                                                </label>
+                                                <div class="permission-children" id="order-children">
+                                                    <label class="permission-label">
+                                                        <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                                        <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
+                                                        <span>采购订单</span>
+                                                    </label>
+                                                    <div class="permission-children" id="purchase-children">
+                                                        <label class="permission-label">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <span>查看</span>
+                                                        </label>
+                                                        <label class="permission-label">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <span>新增</span>
+                                                        </label>
+                                                        <label class="permission-label">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <span>编辑</span>
+                                                        </label>
+                                                        <label class="permission-label">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <span>删除</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="perm-content hidden" id="data-content">
+                                    <div style="margin-bottom: 8px; padding: 10px; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px; font-size: 14px; font-weight: 600; color: #1e40af;">
+                                        提示：不设置，默认全部数据
+                                    </div>
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2;">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">业务模块</th>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">隔离维度</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">订单管理</td>
+                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
+                                                        <input type="radio" name="order-dim" value="org" style="width: 14px; height: 14px; accent-color: #3b82f6;">
+                                                        <span>组织</span>
+                                                    </label>
+                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
+                                                        <input type="radio" name="order-dim" value="dept" style="width: 14px; height: 14px; accent-color: #3b82f6;">
+                                                        <span>部门</span>
+                                                    </label>
+                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
+                                                        <input type="radio" name="order-dim" value="user" style="width: 14px; height: 14px; accent-color: #3b82f6;">
+                                                        <span>用户</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="perm-content hidden" id="field-content">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2;">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">业务模块</th>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">字段名称</th>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">权限</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; font-weight: 500;">订单管理</td>
+                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">订单编号</td>
+                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
+                                                        <input type="checkbox" name="order-field-1" value="view" style="width: 14px; height: 14px; accent-color: #3b82f6;">
+                                                        <span>查看</span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-footer">
+                        <button class="btn btn-outline" onclick="cancelEdit()">取消</button>
+                        <button class="btn btn-primary" onclick="saveOrg()">保存</button>
+                    </div>
+                </div>`;
+            } else if (tabName === 'org-dept') {
+                contentArea.innerHTML = `
+                    <div class="content-header">部门管理</div>
+                    <div class="content-body" style="display: block; padding: 0;">
+                        <div style="display: flex; justify-content: flex-start; padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">
+                            <button class="btn btn-primary" onclick="openAddDeptModal()">
+                                <i class="fa fa-plus"></i>
+                                添加部门
+                            </button>
+                        </div>
+                        <div style="overflow-x: auto; padding: 16px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">ID</th>
+                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">部门名称</th>
+                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">备注</th>
+                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">添加时间</th>
+                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">1</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; font-weight: 500;">总经办</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">公司决策层</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                            <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(1)">编辑</button>
+                                            <button class="btn btn-outline btn-sm" onclick="deleteDept(1)">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">2</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; padding-left: 32px;">总经理办公室</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">总经理直属办公室</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                            <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(2)">编辑</button>
+                                            <button class="btn btn-outline btn-sm" onclick="deleteDept(2)">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">3</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; padding-left: 32px;">董事会办公室</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">董事会秘书办公室</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                            <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(3)">编辑</button>
+                                            <button class="btn btn-outline btn-sm" onclick="deleteDept(3)">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">4</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; font-weight: 500;">人力资源部</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">负责人员招聘、培训、薪酬管理</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                            <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(4)">编辑</button>
+                                            <button class="btn btn-outline btn-sm" onclick="deleteDept(4)">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">5</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; padding-left: 32px;">招聘组</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">负责人员招聘工作</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                            <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(5)">编辑</button>
+                                            <button class="btn btn-outline btn-sm" onclick="deleteDept(5)">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">6</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; padding-left: 32px;">培训组</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">负责员工培训工作</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                                            <button class="btn btn-outline btn-sm" onclick="openEditDeptModal(6)">编辑</button>
+                                            <button class="btn btn-outline btn-sm" onclick="deleteDept(6)">删除</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="content-footer">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <span style="font-size: 14px; color: #64748b;">共 6 条记录</span>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-outline btn-sm" disabled>上一页</button>
+                                    <button class="btn btn-primary btn-sm">1</button>
+                                    <button class="btn btn-outline btn-sm" disabled>下一页</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+        }
+        
+        // 部门管理相关函数
+        function openAddDeptModal() {
+            document.getElementById('add-dept-modal').style.display = 'flex';
+        }
+        
+        function closeAddDeptModal() {
+            document.getElementById('add-dept-modal').style.display = 'none';
+        }
+        
+        function saveDept() {
+            // 保存部门信息
+            showToast('部门添加成功！', 'success');
+            closeAddDeptModal();
+        }
+        
+        function openEditDeptModal(id) {
+            // 打开编辑部门模态框
+            document.getElementById('edit-dept-modal').style.display = 'flex';
+        }
+        
+        function closeEditDeptModal() {
+            document.getElementById('edit-dept-modal').style.display = 'none';
+        }
+        
+        function updateDept() {
+            // 更新部门信息
+            showToast('部门编辑成功！', 'success');
+            closeEditDeptModal();
+        }
+        
+        function deleteDept(id) {
+            // 打开删除部门模态框
+            document.getElementById('delete-dept-modal').style.display = 'flex';
+        }
+        
+        function closeDeleteDeptModal() {
+            document.getElementById('delete-dept-modal').style.display = 'none';
+        }
+        
+        function confirmDeleteDept() {
+            // 确认删除部门
+            showToast('部门删除成功！', 'success');
+            closeDeleteDeptModal();
+        }
     </script>
 
     <div id="delete-org-modal" class="modal" style="display: none;">
@@ -2525,6 +2378,89 @@
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
                 <button class="btn btn-primary" onclick="confirmDeleteOrg()">确定</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 部门添加模态框 -->
+    <div id="add-dept-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3>添加部门</h3>
+                <span class="close" onclick="closeAddDeptModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">部门名称</label>
+                    <input type="text" id="dept-name" class="form-control" placeholder="请输入部门名称">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">上级部门</label>
+                    <select id="dept-parent" class="form-control">
+                        <option value="0">无</option>
+                        <option value="1">总经办</option>
+                        <option value="4">人力资源部</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">备注</label>
+                    <textarea id="dept-remark" class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeAddDeptModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveDept()">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 部门编辑模态框 -->
+    <div id="edit-dept-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3>编辑部门</h3>
+                <span class="close" onclick="closeEditDeptModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="dept-id">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">部门名称</label>
+                    <input type="text" id="edit-dept-name" class="form-control" placeholder="请输入部门名称">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">上级部门</label>
+                    <select id="edit-dept-parent" class="form-control">
+                        <option value="0">无</option>
+                        <option value="1">总经办</option>
+                        <option value="4">人力资源部</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">备注</label>
+                    <textarea id="edit-dept-remark" class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeEditDeptModal()">取消</button>
+                <button class="btn btn-primary" onclick="updateDept()">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 部门删除模态框 -->
+    <div id="delete-dept-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3>删除部门</h3>
+                <span class="close" onclick="closeDeleteDeptModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除部门「<span id="delete-dept-name"></span>」吗？</p>
+                <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该部门将无法恢复，请谨慎操作！</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDeptModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDeleteDept()">确定</button>
             </div>
         </div>
     </div>

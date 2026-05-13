@@ -915,56 +915,134 @@
                         <div class="panel panel-data">
                             <div class="panel-header">数据权限</div>
                             <div class="panel-content">
-                                <div class="permission-group" style="margin-bottom: 10px;">
-                                    <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px;">提示：不设置，默认全部数据</p>
-                                    
-                                    <div id="data-module-list">
-                                        <div class="data-module-item" style="margin-bottom: 10px;">
-                                            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 8px;">
-                                                <label style="font-weight: 500;">
-                                                    <span style="color: #dc2626;">*</span>业务模块：
-                                                </label>
-                                                <select class="module-select" style="flex: 1; max-width: 400px; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 4px;">
-                                                    <option value="">请选择</option>
-                                                    <option value="sales">销售订单</option>
-                                                    <option value="purchase">采购订单</option>
-                                                    <option value="inventory">库存管理</option>
-                                                    <option value="user">用户管理</option>
-                                                </select>
-                                                <button class="delete-module-btn" style="color: #dc2626; background: none; border: none; cursor: pointer; display: none;">删除</button>
-                                            </div>
-                                            <div class="dimension-section" style="padding: 12px; border: 1px solid #d1d5db; margin-left: 80px; display: none;">
-                                                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
-                                                    <input type="checkbox" class="dimension-all">
-                                                    <span>全选</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 4px;">
-                                                    <span>隔离维度：</span>
-                                                    <div style="display: flex; gap: 8px;">
-                                                        <div style="display: flex; align-items: center; gap: 4px;">
-                                                            <input type="checkbox" class="dimension-item">
-                                                            <span>业务员</span>
-                                                        </div>
-                                                        <div style="display: flex; align-items: center; gap: 4px;">
-                                                            <input type="checkbox" class="dimension-item">
-                                                            <span>客户</span>
-                                                        </div>
-                                                        <div style="display: flex; align-items: center; gap: 4px;">
-                                                            <input type="checkbox" class="dimension-item">
-                                                            <span>部门</span>
-                                                        </div>
+                                <div class="permission-group" style="margin-bottom: 10px; height: 100%;">
+                                    <div style="margin-bottom: 8px; padding: 10px; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px; font-size: 14px; font-weight: 600; color: #1e40af;">
+                                        提示：不设置，默认全部数据
+                                    </div>
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2;">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">业务模块</th>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">隔离维度</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">订单管理</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 20px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="order-isolation" value="salesman" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">业务员</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="order-isolation" value="department" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">部门</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="order-isolation" value="org" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">组织</span>
+                                                        </label>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="margin-left: 100px;">
-                                        <button id="add-data-module" style="display: flex; align-items: center; gap: 4px; padding: 8px 24px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer;">
-                                            <i class="fa fa-plus"></i>
-                                            添加
-                                        </button>
-                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">仓储管理</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 20px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="warehouse-isolation" value="warehouse" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">仓库</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="warehouse-isolation" value="department" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">部门</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="warehouse-isolation" value="org" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">组织</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">人员管理</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 20px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="person-isolation" value="department" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">部门</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="person-isolation" value="org" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">组织</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="person-isolation" value="role" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">角色</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">财务管理</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 20px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="finance-isolation" value="department" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">部门</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="finance-isolation" value="org" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">组织</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="finance-isolation" value="project" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">项目</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">客户管理</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 20px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="customer-isolation" value="salesman" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">业务员</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="customer-isolation" value="department" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">部门</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="customer-isolation" value="region" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">区域</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">供应商管理</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 20px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="supplier-isolation" value="buyer" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">采购员</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="supplier-isolation" value="department" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">部门</span>
+                                                        </label>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="supplier-isolation" value="category" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">类别</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -972,185 +1050,165 @@
                         <div class="panel panel-field">
                             <div class="panel-header">字段权限</div>
                             <div class="panel-content">
-                                <div class="permission-group">
-                                    <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px;">提示：不设置，默认全部字段【可操作、可见】</p>
-                                    
-                                    <table style="width: 100%; border-collapse: collapse;">
+                                <div class="permission-group" style="height: 100%;">
+                                    <div style="margin-bottom: 12px; padding: 10px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 4px; font-size: 14px; font-weight: 600; color: #92400e;">
+                                        提示：不设置，默认全部字段【可操作、可见】
+                                    </div>
+                                    <table style="width: 100%; border-collapse: collapse; flex: 1;">
                                         <thead>
-                                            <tr style="border-bottom: 1px solid #e5e7eb;">
-                                                <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
-                                                    <span style="color: #dc2626;">*</span>字段名称
+                                            <tr>
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                                                    <span style="color: #ef4444;">*</span>字段名称
                                                 </th>
-                                                <th style="text-align: center; padding: 10px 8px; font-weight: 600;">
-                                                    <span style="color: #dc2626;">*</span>权限
+                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                                                    <span style="color: #ef4444;">*</span>权限
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" id="role-field-all-select" onclick="selectAllFields(this)">
-                                                        <span>全选</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">设备售价(设备管理)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="checkbox" id="role-field-hidden-all" onclick="selectAllByPermission(this, 'hidden')">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-all" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="checkbox" id="role-field-readonly-all" onclick="selectAllByPermission(this, 'readonly')">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-all" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="checkbox" id="role-field-editable-all" onclick="selectAllByPermission(this, 'editable')">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-all" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" class="field-item">
-                                                        <span>订单编号(订单模块)</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">订单编号(订单模块)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-order-no" value="hidden">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-order-number" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-order-no" value="readonly">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-order-number" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-order-no" value="editable">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-order-number" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" class="field-item">
-                                                        <span>产品成本(订单模块)</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">产品成本(订单模块)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-product-cost" value="hidden">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-product-cost" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-product-cost" value="readonly">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-product-cost" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-product-cost" value="editable">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-product-cost" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" class="field-item">
-                                                        <span>供应商报价(采购模块)</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">供应商报价(采购模块)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-supplier-price" value="hidden">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-supplier-price" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-supplier-price" value="readonly">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-supplier-price" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-supplier-price" value="editable">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-supplier-price" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" class="field-item">
-                                                        <span>销售金额(订单模块)</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">销售金额(订单模块)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-sales-amount" value="hidden">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-sales-amount" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-sales-amount" value="readonly">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-sales-amount" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-sales-amount" value="editable">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-sales-amount" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" class="field-item">
-                                                        <span>库存数量(仓储模块)</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">库存数量(仓储模块)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-inventory-qty" value="hidden">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-inventory-quantity" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-inventory-qty" value="readonly">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-inventory-quantity" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-inventory-qty" value="editable">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-inventory-quantity" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 8px;">
-                                                    <label style="display: flex; align-items: center; gap: 4px;">
-                                                        <input type="checkbox" class="field-item">
-                                                        <span>客户联系方式(客户模块)</span>
-                                                    </label>
+                                            <tr>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <span style="color: #475569;">客户联系方式(客户模块)</span>
                                                 </td>
-                                                <td>
-                                                    <div style="display: flex; justify-content: space-around; gap: 8px;">
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-customer-contact" value="hidden">
-                                                            <span>隐藏</span>
+                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                    <div style="display: flex; gap: 12px;">
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-customer-contact" value="hidden" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">隐藏</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-customer-contact" value="readonly">
-                                                            <span>只读</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-customer-contact" value="readonly" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">只读</span>
                                                         </label>
-                                                        <label style="display: flex; align-items: center; gap: 2px;">
-                                                            <input type="radio" name="field-customer-contact" value="editable">
-                                                            <span>可编辑</span>
+                                                        <label style="display: flex; align-items: center; cursor: pointer;">
+                                                            <input type="radio" name="field-permission-customer-contact" value="editable" style="margin-right: 4px;">
+                                                            <span style="color: #475569;">可编辑</span>
                                                         </label>
                                                     </div>
                                                 </td>
@@ -1163,8 +1221,7 @@
                     </div>
                 </div>
                 <div class="content-footer">
-                    <button class="btn btn-outline">取消</button>
-                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-primary">保存</button>
                 </div>
             </div>
         </main>
@@ -1655,8 +1712,7 @@
                 <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该角色将无法恢复，请谨慎操作！</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
-                <button class="btn btn-primary" onclick="confirmDeleteRole()">确定</button>
+                <button class="btn btn-primary" onclick="confirmDeleteRole()">保存</button>
             </div>
         </div>
     </div>
