@@ -6,67 +6,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <title>RaaS创造中心</title>
     <script>
-        // 检查登录状态并加载相应的头部
+        // 全局登录状态
+        let isLoggedIn = false;
+        
+        // 检查登录状态
+        function checkLoginStatus() {
+            try {
+                isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            } catch (e) {
+                // 忽略localStorage错误
+                isLoggedIn = false;
+            }
+        }
+        
+        // 加载公共头部
         function loadHeader() {
             try {
-                // 检查登录状态，实际项目中应从localStorage或cookie中获取
-                // 确保localStorage.getItem返回的值被正确转换为布尔值
-                let isLoggedIn = false;
-                try {
-                    isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                } catch (e) {
-                    // 忽略localStorage错误
-                }
+                // 检查登录状态
+                checkLoginStatus();
                 
-                // 动态创建头部iframe
-                const headerIframe = document.createElement('iframe');
-                headerIframe.className = 'header-iframe';
-                headerIframe.src = isLoggedIn ? 'header_logged.html' : 'header_unlogged.html';
-                headerIframe.style.position = 'fixed';
-                headerIframe.style.top = '0';
-                headerIframe.style.left = '0';
-                headerIframe.style.width = '100%';
-                headerIframe.style.height = '4.375rem';
-                headerIframe.style.border = 'none';
-                headerIframe.style.zIndex = '9999';
-                
-                // 移除旧的头部iframe
-                const oldHeaderIframe = document.querySelector('.header-iframe');
-                if (oldHeaderIframe) {
-                    oldHeaderIframe.remove();
-                }
-                
-                // 将iframe添加到body的最前面
-                if (document.body.firstChild) {
-                    document.body.insertBefore(headerIframe, document.body.firstChild);
+                // 获取现有的头部iframe
+                const headerIframe = document.querySelector('iframe[src="header.html"]');
+                if (headerIframe) {
+                    // 发送登录状态给头部
+                    headerIframe.contentWindow.postMessage({ type: 'UPDATE_LOGIN_STATUS', isLoggedIn: isLoggedIn }, '*');
+                    // 发送消息设置nav-container宽度
+                    headerIframe.contentWindow.postMessage({ type: 'SET_NAV_CONTAINER_WIDTH', width: '94%' }, '*');
                 } else {
-                    document.body.appendChild(headerIframe);
+                    // 如果iframe不存在，创建一个新的
+                    const newHeaderIframe = document.createElement('iframe');
+                    newHeaderIframe.src = 'header.html';
+                    newHeaderIframe.style.width = '100%';
+                    newHeaderIframe.style.height = '36px';
+                    newHeaderIframe.style.border = 'none';
+                    newHeaderIframe.style.position = 'fixed';
+                    newHeaderIframe.style.top = '0';
+                    newHeaderIframe.style.left = '0';
+                    newHeaderIframe.style.zIndex = '99998';
+                    
+                    // 将iframe添加到body的最前面
+                    if (document.body.firstChild) {
+                        document.body.insertBefore(newHeaderIframe, document.body.firstChild);
+                    } else {
+                        document.body.appendChild(newHeaderIframe);
+                    }
+                    
+                    // 等待iframe加载完成后发送登录状态和设置宽度
+                    newHeaderIframe.onload = function() {
+                        newHeaderIframe.contentWindow.postMessage({ type: 'UPDATE_LOGIN_STATUS', isLoggedIn: isLoggedIn }, '*');
+                        newHeaderIframe.contentWindow.postMessage({ type: 'SET_NAV_CONTAINER_WIDTH', width: '94%' }, '*');
+                    };
                 }
                 
             } catch (error) {
-                // 出错时默认加载未登录头部
-                try {
-                    const headerIframe = document.createElement('iframe');
-                    headerIframe.className = 'header-iframe';
-                    headerIframe.src = 'header_unlogged.html';
-                    headerIframe.style.position = 'fixed';
-                    headerIframe.style.top = '0';
-                    headerIframe.style.left = '0';
-                    headerIframe.style.width = '100%';
-                    headerIframe.style.height = '70px';
-                    headerIframe.style.border = 'none';
-                    headerIframe.style.zIndex = '9999';
-                    
-                    // 移除旧的头部iframe
-                    const oldHeaderIframe = document.querySelector('.header-iframe');
-                    if (oldHeaderIframe) {
-                        oldHeaderIframe.remove();
-                    }
-                    
-                    document.body.appendChild(headerIframe);
-                } catch (e) {
-                    // 忽略所有错误
-                }
+                // 忽略所有错误
             }
         }
 
@@ -85,6 +78,69 @@
                 }, 100);
             }
         });
+
+        // 处理来自登录弹窗的消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'LOGIN_SUCCESS') {
+                // 设置登录状态
+                localStorage.setItem('isLoggedIn', 'true');
+                // 发送登录成功消息
+                const headerIframe = document.querySelector('iframe[src="header.html"]');
+                if (headerIframe) {
+                    headerIframe.contentWindow.postMessage({ type: 'LOGIN_SUCCESS' }, '*');
+                }
+                // 刷新头部
+                loadHeader();
+                // 关闭登录弹窗
+                const modalOverlay = document.querySelector('.modal-overlay');
+                if (modalOverlay) {
+                    modalOverlay.remove();
+                }
+            } else if (event.data.type === 'CLOSE_MODAL') {
+                // 关闭登录弹窗
+                const modalOverlay = document.querySelector('.modal-overlay');
+                if (modalOverlay) {
+                    modalOverlay.remove();
+                }
+            } else if (event.data.type === 'SHOW_LOGIN_MODAL') {
+                // 显示登录弹窗
+                openLoginModal();
+            } else if (event.data.type === 'SHOW_LOGOUT_MODAL') {
+                // 显示退出确认弹窗
+                showLogoutConfirm();
+            } else if (event.data.type === 'REFRESH_PAGE') {
+                // 刷新页面
+                location.reload();
+            }
+        });
+
+        // 打开登录弹窗
+        function openLoginModal() {
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay show';
+            modalOverlay.style.display = 'flex';
+            modalOverlay.style.alignItems = 'center';
+            modalOverlay.style.justifyContent = 'center';
+            modalOverlay.style.position = 'fixed';
+            modalOverlay.style.top = '0';
+            modalOverlay.style.left = '0';
+            modalOverlay.style.width = '100%';
+            modalOverlay.style.height = '100%';
+            modalOverlay.style.backgroundColor = 'rgba(29, 33, 41, 0.6)';
+            modalOverlay.style.backdropFilter = 'blur(2px)';
+            modalOverlay.style.zIndex = '99999';
+            modalOverlay.innerHTML = `
+                <iframe src="login_modal.html" class="modal-iframe"></iframe>
+            `;
+            document.body.appendChild(modalOverlay);
+
+            // 关闭弹窗的处理
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.remove();
+                }
+            });
+        }
 
         // 显示退出确认对话框
         function showLogoutConfirm() {
@@ -227,6 +283,12 @@
                         // 隐藏对话框
                         logoutModal.classList.remove('show');
                         document.body.style.overflow = '';
+                        
+                        // 发送退出成功消息
+                        const headerIframe = document.querySelector('iframe[src="header.html"]');
+                        if (headerIframe) {
+                            headerIframe.contentWindow.postMessage({ type: 'LOGOUT_SUCCESS' }, '*');
+                        }
                         
                         // 重新加载头部，显示未登录的头部
                         loadHeader();
@@ -666,7 +728,7 @@
 
         .sub-nav {
             position: fixed;
-            top: 4.375rem;
+            top: 2.25rem;
             left: 0;
             width: 100%;
             height: 3.75rem;
@@ -703,17 +765,17 @@
             color: var(--klein-blue);
             font-weight: bold;
             border-bottom-color: var(--klein-blue);
-            width: 17.5rem;
             font-size: 1.25rem;
+            width: 280px;
             text-align: center;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
 
-        body.fullscreen-preview .sub-nav-item.active {
-            width: 17.5rem;
-            text-align: center;
-            justify-content: center;
-        }
+
+
+
 
         .sub-nav-item:hover:not(.active) {
             color: var(--klein-blue);
@@ -721,13 +783,19 @@
         }
 
         .main-container {
-            margin-top: 8.125rem;
+            margin-top: 6rem;
             display: flex;
             justify-content: center;
-            height: calc(100vh - 7.5rem);
+            height: calc(100vh - 6rem);
             overflow: hidden;
             width: 100%;
             box-sizing: border-box;
+        }
+
+        /* 只在ai页面生效的样式 */
+        body #unloggedNav .nav-container,
+        body #loggedNav .nav-container {
+            width: 100% !important;
         }
         
         .main-container-inner {
@@ -748,7 +816,6 @@
             flex-shrink: 0;
             margin-right: 0;
             height: 100%;
-            max-height: calc(100vh - 7.5rem);
         }
 
         .new-chat-btn {
@@ -2691,23 +2758,9 @@
             display: none;
         }
 
-        /* 全屏布局时的二级导航栏样式 */
-        body.fullscreen-preview .sub-nav .sub-nav-inner {
-            max-width: none;
-            width: 100%;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body.fullscreen-preview .sub-nav {
-            border-bottom: 1px solid var(--border-gray);
-        }
 
-        /* 全屏状态下的非选中tab样式 */
-        body.fullscreen-preview .sub-nav-item:not(.active) {
-            text-align: center;
-            justify-content: center;
-        }
+
 
         /* 预览按钮样式 */
         .preview-btn {
@@ -3306,9 +3359,6 @@
             .sidebar {
                 width: 15rem;
             }
-            .sub-nav-item.active {
-                width: 14rem;
-            }
         }
 
         @media (max-width: 1024px) {
@@ -3317,10 +3367,6 @@
             }
             .sidebar {
                 width: 12rem;
-            }
-            .sub-nav-item.active {
-                width: 12rem;
-                font-size: 1.1rem;
             }
         }
 
@@ -3345,10 +3391,6 @@
                 padding: 0 0.625rem;
                 font-size: 0.9rem;
             }
-            .sub-nav-item.active {
-                width: 10rem;
-                font-size: 1rem;
-            }
             .message-content {
                 max-width: 85%;
             }
@@ -3364,10 +3406,6 @@
             .sub-nav-item {
                 padding: 0 0.5rem;
             }
-            .sub-nav-item.active {
-                width: 8rem;
-                font-size: 0.9rem;
-            }
             .message-content {
                 max-width: 90%;
                 padding: 0.625rem 0.75rem;
@@ -3377,7 +3415,8 @@
     </style>
 </head>
 <body>
-    <!-- 顶部导航栏 - 暂时移除iframe引用以解决错误 -->
+    <!-- 公共头部引用 -->
+    <iframe src="header.html" style="width: 100%; height: 36px; border: none; position: fixed; top: 0; left: 0; z-index: 99998;"></iframe>
 
     <!-- 登录弹窗 -->
     <div class="login-modal" id="loginModal">
@@ -3446,7 +3485,9 @@
     <!-- 二级导航栏 -->
     <div class="sub-nav">
         <div class="sub-nav-inner">
-            <div class="sub-nav-item active">创造中心</div>
+            <div class="sub-nav-item active">
+                创造中心
+            </div>
             <div class="sub-nav-item">生产力方案共享</div>
             <div class="sub-nav-item">机器人设备共享</div>
             <div class="sub-nav-item has-submenu">资源共享</div>
@@ -7044,7 +7085,7 @@
                                 fileLoadingContainer.innerHTML = `
                                     <div class="file-loading-info">
                                         <div class="file-loading-spinner"></div>
-                                        <span>正在加载资源...</span>
+                                        <span>生成中...</span>
                                     </div>
                                 `;
                                 messageContent.appendChild(fileLoadingContainer);

@@ -209,7 +209,7 @@
         }
         .content-body {
             flex: 1;
-            padding: 16px;
+            padding: 16px 16px 0 16px;
             min-height: 0;
             overflow: hidden;
         }
@@ -1536,33 +1536,33 @@
                                     <div class="permission-group" style="flex: 1; overflow-y: auto;">
                                         <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px; background: #f0f9ff; padding: 8px 12px; border-left: 4px solid #3b82f6;">提示：不设置，默认全部数据</p>
                                         
-                                        <table style="width: 100%; border-collapse: collapse;">
+                                        <table style="width: 100%; border-collapse: collapse; white-space: nowrap;">
                                             <thead>
                                                 <tr style="border-bottom: 1px solid #e5e7eb;">
-                                                    <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                    <th style="text-align: left; padding: 10px 8px; font-weight: 600; white-space: nowrap;">
                                                         业务模块
                                                     </th>
-                                                    <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                    <th style="text-align: left; padding: 10px 8px; font-weight: 600; white-space: nowrap;">
                                                         隔离维度
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 10px 8px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
                                                         订单管理
                                                     </td>
-                                                    <td style="padding: 10px 8px;">
-                                                        <div style="display: flex; gap: 16px;">
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
+                                                        <div style="display: flex; gap: 16px; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="order-dimension">
                                                                 <span>业务员</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="order-dimension">
                                                                 <span>部门</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="order-dimension">
                                                                 <span>组织</span>
                                                             </div>
@@ -1570,20 +1570,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 10px 8px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
                                                         仓储管理
                                                     </td>
-                                                    <td style="padding: 10px 8px;">
-                                                        <div style="display: flex; gap: 16px;">
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
+                                                        <div style="display: flex; gap: 16px; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="warehouse-dimension">
                                                                 <span>仓库</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="warehouse-dimension">
                                                                 <span>部门</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="warehouse-dimension">
                                                                 <span>组织</span>
                                                             </div>
@@ -1591,20 +1591,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 10px 8px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
                                                         人员管理
                                                     </td>
-                                                    <td style="padding: 10px 8px;">
-                                                        <div style="display: flex; gap: 16px;">
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
+                                                        <div style="display: flex; gap: 16px; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="person-dimension">
                                                                 <span>部门</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="person-dimension">
                                                                 <span>组织</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="person-dimension">
                                                                 <span>角色</span>
                                                             </div>
@@ -1612,20 +1612,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 10px 8px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
                                                         财务管理
                                                     </td>
-                                                    <td style="padding: 10px 8px;">
-                                                        <div style="display: flex; gap: 16px;">
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
+                                                        <div style="display: flex; gap: 16px; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="finance-dimension">
                                                                 <span>部门</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="finance-dimension">
                                                                 <span>组织</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="finance-dimension">
                                                                 <span>项目</span>
                                                             </div>
@@ -1633,20 +1633,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 10px 8px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
                                                         客户管理
                                                     </td>
-                                                    <td style="padding: 10px 8px;">
-                                                        <div style="display: flex; gap: 16px;">
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
+                                                        <div style="display: flex; gap: 16px; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="customer-dimension">
                                                                 <span>业务员</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="customer-dimension">
                                                                 <span>部门</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="customer-dimension">
                                                                 <span>区域</span>
                                                             </div>
@@ -1654,20 +1654,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <td style="padding: 10px 8px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
                                                         供应商管理
                                                     </td>
-                                                    <td style="padding: 10px 8px;">
-                                                        <div style="display: flex; gap: 16px;">
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                    <td style="padding: 10px 8px; white-space: nowrap;">
+                                                        <div style="display: flex; gap: 16px; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="supplier-dimension">
                                                                 <span>采购员</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="supplier-dimension">
                                                                 <span>部门</span>
                                                             </div>
-                                                            <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                            <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                                 <input type="radio" name="supplier-dimension">
                                                                 <span>类别</span>
                                                             </div>

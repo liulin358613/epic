@@ -6,6 +6,7 @@
     <title>用户协议</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <style>
         * {
             margin: 0;
@@ -390,7 +391,7 @@
                 
                 <div style="margin-bottom: 12px;">
                     <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
-                    <textarea class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容"></textarea>
+                    <textarea id="addAgreementContent" class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容"></textarea>
                 </div>
                 
                 <div style="margin-bottom: 12px;">
@@ -420,7 +421,7 @@
                 
                 <div style="margin-bottom: 12px;">
                     <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
-                    <textarea class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容">欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。
+                    <textarea id="agreementContent" class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容">欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。
 
 一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。
 二、用户注册：用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。
@@ -481,6 +482,21 @@
     </div>
 
     <script>
+        // 初始化TinyMCE富文本编辑器
+        tinymce.init({
+            selector: '#agreementContent, #addAgreementContent',
+            height: 300,
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            menubar: false,
+            content_css: 'https://cdn.tailwindcss.com',
+            setup: function(editor) {
+                editor.on('init', function() {
+                    // 编辑器初始化完成后的处理
+                });
+            }
+        });
+
         const addModal = document.getElementById('addAgreementModal');
         const editModal = document.getElementById('editAgreementModal');
         const deleteModal = document.getElementById('deleteAgreementModal');

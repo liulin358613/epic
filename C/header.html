@@ -86,13 +86,43 @@
             padding: 0 var(--spacing-xl);
         }
 
-        .nav-left, .nav-right {
+        .nav-left {
             display: flex;
             align-items: center;
             gap: 1.25rem;
             font-size: var(--font-size-base);
             color: var(--white);
             line-height: 2.25rem;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: var(--font-size-base);
+            color: var(--white);
+            line-height: 2.25rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--white);
+        }
+
+        .logo-slogan {
+            font-size: 0.75rem;
+            background: linear-gradient(135deg, var(--white), var(--hermes-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-link {
@@ -187,7 +217,8 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // 检查登录状态并更新头部显示
+        function updateHeader() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
             const unloggedNav = document.getElementById('unloggedNav');
@@ -202,6 +233,10 @@
                     loggedNav.style.display = 'none';
                 }
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateHeader();
 
             const loginButtons = document.querySelectorAll('a[href="#"]');
             loginButtons.forEach(button => {
@@ -239,9 +274,36 @@
             window.parent.postMessage({ type: 'SHOW_LOGOUT_MODAL' }, '*');
         }
 
+        function refreshPage() {
+            // 通过postMessage通知父页面刷新
+            window.parent.postMessage({ type: 'REFRESH_PAGE' }, '*');
+        }
+
         window.addEventListener('message', (event) => {
-            if (event.data.type === 'LOGIN_SUCCESS') {
-                window.location.reload();
+            if (event.data.type === 'LOGIN_SUCCESS' || event.data.type === 'LOGOUT_SUCCESS') {
+                // 直接更新头部显示状态，不需要刷新页面
+                updateHeader();
+            } else if (event.data.type === 'UPDATE_LOGIN_STATUS') {
+                // 根据收到的登录状态更新头部显示
+                const isLoggedIn = event.data.isLoggedIn;
+                const unloggedNav = document.getElementById('unloggedNav');
+                const loggedNav = document.getElementById('loggedNav');
+
+                if (unloggedNav && loggedNav) {
+                    if (isLoggedIn) {
+                        unloggedNav.style.display = 'none';
+                        loggedNav.style.display = 'block';
+                    } else {
+                        unloggedNav.style.display = 'block';
+                        loggedNav.style.display = 'none';
+                    }
+                }
+            } else if (event.data.type === 'SET_NAV_CONTAINER_WIDTH') {
+                // 设置nav-container的宽度
+                const navContainers = document.querySelectorAll('.nav-container');
+                navContainers.forEach(container => {
+                    container.style.width = event.data.width;
+                });
             }
         });
     </script>
@@ -250,14 +312,19 @@
     <div id="unloggedNav" class="top-nav">
         <div class="nav-container">
             <div class="nav-left">
-                <span>您好！欢迎您</span>
-                <a href="#" class="nav-link">登录</a>
+                <div class="logo-container" onclick="refreshPage()">
+                    <div class="logo-text">RaaS.Dao</div>
+                    <div class="logo-slogan">共创・共享</div>
+                </div>
             </div>
             <div class="nav-right">
+                
                 <a href="#" class="nav-link">消息中心</a>
                 <a href="#" class="nav-link">我的订单</a>
                 <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
                 <a href="#" onclick="goToCreateOrg()" class="nav-link">创建组织</a>
+                <span>您好！欢迎您</span>
+                <a href="#" class="nav-link">登录</a>
                 <a href="#" class="nav-link"></a>
                 <div class="location-info">
                     <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -274,15 +341,19 @@
     <div id="loggedNav" class="top-nav logged-nav" style="display: none;">
         <div class="nav-container">
             <div class="nav-left">
-                <span>林工，您好</span>
-                <a href="#" class="logout-link" onclick="showLogoutConfirm()">退出</a>
+                <div class="logo-container" onclick="refreshPage()">
+                    <div class="logo-text">RaaS.Dao</div>
+                    <div class="logo-slogan">共创・共享</div>
+                </div>
             </div>
             <div class="nav-right">
+                
                 <a href="#" class="nav-link">消息中心<span class="message-badge">(99+)</span></a>
                 <a href="#" class="nav-link">我的订单</a>
                 <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
                 <a href="#" onclick="goToCreateOrg()" class="nav-link">创建组织</a>
-                <a href="#" class="nav-link"></a>
+                <span>林工，您好</span>
+                <a href="#" class="logout-link" onclick="showLogoutConfirm()">退出</a>
                 <div class="location-info">
                     <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
