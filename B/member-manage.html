@@ -2261,7 +2261,7 @@ function updateTableHeader(type) {
                                             <div style="display: flex; align-items: center; gap: 8px;">
                                                 <div style="font-size: 14px; font-weight: 500; color: #1e293b;">${role.name}</div>
                                                 ${role.hasDescription ? `
-                                                <span class="role-description-icon" style="position: relative; cursor: help; z-index: 999999;">
+                                                <span class="role-description-icon" style="position: relative; cursor: help; z-index: 9999;">
                                                     <i class="fa fa-info-circle" style="font-size: 12px; color: #94a3b8;"></i>
                                                     <span class="role-description-tooltip">${role.description}</span>
                                                 </span>
@@ -2676,7 +2676,7 @@ function updateTableHeader(type) {
                                             <div style="margin-bottom: 12px; padding: 10px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 4px; font-size: 14px; font-weight: 600; color: #92400e;">
                                                 提示：不设置，默认全部字段【可操作、可见】
                                             </div>
-                                            <table style="width: 100%; border-collapse: collapse; flex: 1;">
+                                            <table style="width: 100%; border-collapse: collapse;">
                                                 <thead>
                                                     <tr>
                                                         <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
@@ -2689,12 +2689,12 @@ function updateTableHeader(type) {
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <label style="display: flex; align-items: center; cursor: pointer;">
                                                                 <span style="color: #475569;">设备售价(设备管理)</span>
                                                             </label>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-all" value="hidden" style="margin-right: 4px;">
@@ -2712,10 +2712,10 @@ function updateTableHeader(type) {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <span style="color: #475569;">订单编号(订单模块)</span>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-order-number" value="hidden" style="margin-right: 4px;">
@@ -2733,10 +2733,10 @@ function updateTableHeader(type) {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <span style="color: #475569;">产品成本(订单模块)</span>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-product-cost" value="hidden" style="margin-right: 4px;">
@@ -2754,10 +2754,10 @@ function updateTableHeader(type) {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <span style="color: #475569;">供应商报价(采购模块)</span>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-supplier-price" value="hidden" style="margin-right: 4px;">
@@ -2775,10 +2775,10 @@ function updateTableHeader(type) {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <span style="color: #475569;">销售金额(订单模块)</span>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-sales-amount" value="hidden" style="margin-right: 4px;">
@@ -2796,10 +2796,10 @@ function updateTableHeader(type) {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <span style="color: #475569;">库存数量(仓储模块)</span>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-inventory-quantity" value="hidden" style="margin-right: 4px;">
@@ -2817,10 +2817,10 @@ function updateTableHeader(type) {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <span style="color: #475569;">客户联系方式(客户模块)</span>
                                                         </td>
-                                                        <td style="padding: 10px; border-bottom: 1px solid #f1f5f9;">
+                                                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
                                                             <div style="display: flex; gap: 12px;">
                                                                 <label style="display: flex; align-items: center; cursor: pointer;">
                                                                     <input type="radio" name="field-permission-customer-contact" value="hidden" style="margin-right: 4px;">
