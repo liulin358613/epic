@@ -173,6 +173,10 @@
         .tree-item.active .delete-icon:hover {
             color: #dc2626;
         }
+        /* 当切换到非组织类型标签时，隐藏删除icon */
+        .sidebar.hide-delete .tree-item:hover .delete-icon {
+            display: none;
+        }
         .tree-content {
             display: flex;
             align-items: center;
@@ -497,7 +501,7 @@
         .perm-tabs {
             display: flex;
             gap: 32px;
-            margin-bottom: 10px;
+            margin-top: 10px;
             /* padding-bottom: 8px;
             border-bottom: 2px solid #e2e8f0; */
         }
@@ -737,7 +741,7 @@
             background: #fafafa;
         }
         .btn {
-            padding: 8px 16px;
+            padding: 8px 24px;
             border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
@@ -996,9 +1000,9 @@
     
     <div class="tabs-wrapper">
         <ul class="tabs">
-            <li class="active" onclick="switchTab('org-type')">组织类型</li>
-            <li onclick="switchTab('org-dept')">组织部门</li>
-            <li onclick="switchTab('org-role')">组织角色</li>
+            <li class="active" onclick="switchTab(event, 'org-type')">组织类型</li>
+            <li onclick="switchTab(event, 'org-dept')">组织部门</li>
+            <li onclick="switchTab(event, 'org-role')">组织角色</li>
         </ul>
     </div>
 
@@ -1012,7 +1016,7 @@
                     </button>
                 </div>
                 <div class="sidebar-tree">
-                    <div class="tree-item parent" data-org="training" onclick="handleParentClick('training');loadOrgData('训练基地')">
+                    <div class="tree-item parent" data-org="training" onclick="handleParentClick(event, 'training');loadOrgData('训练基地')">
                         <span class="tree-content">
                             <span class="expand-icon">-</span>
                             <span>训练基地</span>
@@ -1042,7 +1046,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'training-3', '个人训练')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="robot" onclick="handleParentClick('robot');loadOrgData('机器人及设备商')">
+                    <div class="tree-item parent" data-org="robot" onclick="handleParentClick(event, 'robot');loadOrgData('机器人及设备商')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>机器人及设备商</span>
@@ -1072,7 +1076,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'robot-3', '零部件供应商')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="client" onclick="handleParentClick('client');loadOrgData('终端行业客户')">
+                    <div class="tree-item parent" data-org="client" onclick="handleParentClick(event, 'client');loadOrgData('终端行业客户')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>终端行业客户</span>
@@ -1102,7 +1106,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'client-3', '医疗器械公司')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="supply" onclick="handleParentClick('supply');loadOrgData('供应链服务商')">
+                    <div class="tree-item parent" data-org="supply" onclick="handleParentClick(event, 'supply');loadOrgData('供应链服务商')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>供应链服务商</span>
@@ -1125,7 +1129,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'supply-2', '仓储服务公司')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="system" onclick="handleParentClick('system');loadOrgData('系统集成商')">
+                    <div class="tree-item parent" data-org="system" onclick="handleParentClick(event, 'system');loadOrgData('系统集成商')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>系统集成商</span>
@@ -1148,7 +1152,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'system-2', '软件服务提供商')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="education" onclick="handleParentClick('education');loadOrgData('教育培训机构')">
+                    <div class="tree-item parent" data-org="education" onclick="handleParentClick(event, 'education');loadOrgData('教育培训机构')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>教育培训机构</span>
@@ -1178,7 +1182,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'education-3', '在线教育平台')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="finance" onclick="handleParentClick('finance');loadOrgData('金融服务机构')">
+                    <div class="tree-item parent" data-org="finance" onclick="handleParentClick(event, 'finance');loadOrgData('金融服务机构')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>金融服务机构</span>
@@ -1201,7 +1205,7 @@
                             <i class="fa fa-trash delete-icon" onclick="deleteOrg(event, 'finance-2', '融资租赁公司')"></i>
                         </div>
                     </div>
-                    <div class="tree-item parent" data-org="research" onclick="handleParentClick('research');loadOrgData('科研院所')">
+                    <div class="tree-item parent" data-org="research" onclick="handleParentClick(event, 'research');loadOrgData('科研院所')">
                         <span class="tree-content">
                             <span class="expand-icon">+</span>
                             <span>科研院所</span>
@@ -1305,10 +1309,10 @@
                     </div>
                     
                     <div class="content-right">
-                        <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; background: #f9fafb; display: flex; flex-direction: column; flex: 1; min-height: 0;">
-                            <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 16px 0;">绑定菜单/功能权限</h3>
+                        <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                            <h3 style="font-size: 14px; font-weight: 600; color: #475569;">绑定菜单/功能权限</h3>
                             <div style="display: flex !important;gap: 14px; flex: 1; min-height: 0;">
-                                <div class="perm-content" id="function-content" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0;">
+                                <div class="perm-content" id="function-content" style="flex: 1; border-right: 1px dashed #e5e7eb; border-radius: 8px; padding: 16px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0;">
                                     <h4 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 16px 0;">功能权限</h4>
                                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e5e7eb;">
                                             <input type="checkbox" id="select-all-perms" onclick="toggleAllPerms(this)">
@@ -1527,7 +1531,7 @@
                                         </div>
                                         </div>
                                 </div>
-                                <div class="perm-content" id="data-content" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0;">
+                                <div class="perm-content" id="data-content" style="flex: 1; border-right: 1px dashed #e5e7eb; border-radius: 8px; padding: 16px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0;">
                                     <h4 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 16px 0;">数据权限</h4>
                                     <div class="permission-group" style="flex: 1; overflow-y: auto;">
                                         <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px; background: #f0f9ff; padding: 8px 12px; border-left: 4px solid #3b82f6;">提示：不设置，默认全部数据</p>
@@ -1674,7 +1678,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="perm-content" id="field-content" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0;">
+                                <div class="perm-content" id="field-content" style="flex: 1;border-radius: 8px; padding: 16px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0;">
                                     <h4 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 16px 0;">字段权限</h4>
                                     <div class="permission-group" style="flex: 1; overflow-y: auto;">
                                         <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px; background: #fffbeb; padding: 8px 12px; border-left: 4px solid #f59e0b;">提示：不设置，默认全部字段【可操作、可见】</p>
@@ -1876,20 +1880,7 @@
             document.querySelector('.content-header').textContent = '添加组织';
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.expand-icon').forEach(icon => {
-                icon.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    const targetId = icon.dataset.target;
-                    const target = document.getElementById(targetId);
-                    if (target) {
-                        const isExpanded = icon.classList.toggle('expanded');
-                        target.style.display = isExpanded ? 'block' : 'none';
-                    }
-                });
-            });
-
+        function bindPermissionEvents() {
             function checkAllChildren(checkbox, checked) {
                 const group = checkbox.dataset.group;
                 if (group) {
@@ -1911,6 +1902,19 @@
                 }
             }
 
+            document.querySelectorAll('.expand-icon').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const targetId = icon.dataset.target;
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        const isExpanded = icon.classList.toggle('expanded');
+                        target.style.display = isExpanded ? 'block' : 'none';
+                    }
+                });
+            });
+
             document.querySelectorAll('.parent-checkbox, .child-checkbox, .leaf-checkbox, .perm-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', (e) => {
                     const isChecked = e.target.checked;
@@ -1922,6 +1926,93 @@
                     }
                 });
             });
+        }
+
+        // 存储选中的组织类型和组织角色
+        let selectedOrgType = null;
+        let selectedRole = null;
+
+        // 检查并更新绑定菜单/功能权限区的显示
+        function updatePermissionSection() {
+            const permissionSection = document.getElementById('permission-section');
+            const permissionTitle = document.getElementById('permission-title');
+            const roleSaveButton = document.querySelector('button[onclick="saveRole()"]');
+            
+            console.log('updatePermissionSection called:', 'selectedOrgType:', selectedOrgType, 'selectedRole:', selectedRole);
+            
+            if (selectedOrgType && selectedRole) {
+                // 显示权限区并更新标题
+                console.log('Showing permission section');
+                if (permissionSection) {
+                    permissionSection.style.display = 'block';
+                    if (permissionTitle) {
+                        permissionTitle.textContent = `【${selectedOrgType} - ${selectedRole}】绑定菜单/功能权限`;
+                    }
+                } else {
+                    console.log('permissionSection not found');
+                }
+                
+                // 隐藏角色列表的保存按钮
+                if (roleSaveButton) {
+                    roleSaveButton.closest('div').style.display = 'none';
+                }
+            } else {
+                // 隐藏权限区
+                console.log('Hiding permission section');
+                if (permissionSection) {
+                    permissionSection.style.display = 'none';
+                }
+                
+                // 显示角色列表的保存按钮
+                if (roleSaveButton) {
+                    roleSaveButton.closest('div').style.display = 'flex';
+                }
+            }
+        }
+
+        // 为组织类型和组织角色添加事件监听器
+        function bindSelectionEvents() {
+            // 监听组织类型的选择
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.tree-item')) {
+                    // 选中组织类型
+                    selectedOrgType = e.target.closest('.tree-item').querySelector('span').textContent.trim();
+                    console.log('Selected org type:', selectedOrgType);
+                    
+                    // 清空角色列表的选中效果
+                    selectedRole = null;
+                    document.querySelectorAll('.role-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                    
+                    updatePermissionSection();
+                }
+            });
+
+            // 监听组织角色的复选框选择
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('role-checkbox')) {
+                    // 复选框可以多选，不影响角色的选中状态
+                }
+            });
+        }
+
+        // 当切换到组织角色标签页时，重新绑定事件
+        function bindRoleEvents() {
+            // 这里可以添加额外的事件绑定逻辑
+            console.log('Role events bound');
+        }
+
+        // 处理角色点击事件
+
+
+        // 页面加载时绑定选择事件
+        document.addEventListener('DOMContentLoaded', function() {
+            bindSelectionEvents();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            bindPermissionEvents();
         });
 
         // 保存组织类型标签页的原始HTML结构
@@ -1935,7 +2026,7 @@
             }
         };
         
-        function switchTab(tabName) {
+        function switchTab(event, tabName) {
             // 移除所有Tab的active类
             const tabs = document.querySelectorAll('.tabs li');
             tabs.forEach(tab => {
@@ -1943,197 +2034,820 @@
             });
             
             // 给当前Tab添加active类
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // 如果没有event参数，找到对应的Tab并添加active类
+                const targetTab = document.querySelector(`.tabs li[data-tab="${tabName}"]`);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+            }
             
-            // 切换内容
-            const contentArea = document.querySelector('.content-area');
+            // 控制左侧组织类型区域的显示
+            const sidebar = document.querySelector('.sidebar');
+            const addButton = sidebar.querySelector('.sidebar-header button');
+            const deleteIcons = document.querySelectorAll('.delete-icon');
+            
             if (tabName === 'org-type') {
+                // 显示添加按钮和删除icon
+                addButton.style.display = 'block';
+                addButton.style.visibility = 'visible';
+                addButton.style.opacity = '1';
+                sidebar.classList.remove('hide-delete');
+                deleteIcons.forEach(icon => {
+                    icon.style.display = 'none'; // 恢复默认状态，hover时会显示
+                    icon.style.visibility = 'visible';
+                });
                 // 恢复组织类型标签页的原始HTML结构
+                const contentArea = document.querySelector('.content-area');
                 if (orgTypeOriginalHTML) {
                     contentArea.innerHTML = orgTypeOriginalHTML;
+                    // 重新绑定权限事件
+                    setTimeout(bindPermissionEvents, 100);
+                    // 重新绑定组织类型列表的hover事件
+                    setTimeout(() => {
+                        const treeItems = document.querySelectorAll('.tree-item');
+                        treeItems.forEach(item => {
+                            item.addEventListener('mouseenter', function() {
+                                const deleteIcon = this.querySelector('.delete-icon');
+                                if (deleteIcon) {
+                                    deleteIcon.style.display = 'inline-block';
+                                }
+                            });
+                            item.addEventListener('mouseleave', function() {
+                                const deleteIcon = this.querySelector('.delete-icon');
+                                if (deleteIcon) {
+                                    deleteIcon.style.display = 'none';
+                                }
+                            });
+                        });
+                    }, 100);
                 }
                 // 恢复到最初的添加组织模式
                 addNewOrg();
-            } else if (tabName === 'org-dept') {
-                contentArea.innerHTML = `
-                    <div class="content-header">组织部门</div>
-                    <div class="content-body" style="display: block; padding: 0;">
-                        <div style="display: flex; justify-content: flex-start; padding: 10px 14px; border-bottom: 1px solid #f1f5f9;">
-                            <button class="btn btn-primary" onclick="openAddDeptModal()">
-                                <i class="fa fa-plus"></i>
-                                添加部门
-                            </button>
-                        </div>
-                        <div style="overflow-x: auto; padding: 16px;">
-                            <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5;">
-                                <thead>
-                                    <tr>
-                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">ID</th>
-                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">部门名称</th>
-                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">备注</th>
-                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">添加时间</th>
-                                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">1</td>
-                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; font-weight: 500;">总经办</td>
-                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">公司决策层</td>
-                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">2024-01-01 10:00:00</td>
-                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
-                                            <button class="btn btn-outline" style="padding: 4px 8px; font-size: 12px; margin-right: 4px;">编辑</button>
-                                            <button class="btn btn-outline" style="padding: 4px 8px; font-size: 12px;">删除</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>`;
-            } else if (tabName === 'org-role') {
-                contentArea.innerHTML = `
-                    <div class="content-header">组织角色</div>
-                    <div class="content-body" style="display: flex; flex: 1; overflow: hidden;">
-                        <div style="width: 280px; padding-right: 16px; border-right: 1px dashed #e5e7eb; min-width: 0;">
-                            <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-                                <h3 style="font-size: 14px; font-weight: 600; color: #374151; margin: 0;">组织角色列表</h3>
-                                <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fa fa-plus"></i> 添加角色
+            } else if (tabName === 'org-dept' || tabName === 'org-role') {
+                // 隐藏添加按钮和删除icon
+                addButton.style.display = 'block';
+                addButton.style.visibility = 'hidden';
+                addButton.style.opacity = '0';
+                sidebar.classList.add('hide-delete');
+                deleteIcons.forEach(icon => {
+                    icon.style.display = 'none';
+                    icon.style.visibility = 'hidden';
+                });
+                
+                // 切换内容
+                const contentArea = document.querySelector('.content-area');
+                if (tabName === 'org-dept') {
+                    contentArea.innerHTML = `
+                        <div class="content-header">组织部门</div>
+                        <div class="content-body" style="display: block; padding: 0;">
+                            <div style="display: flex; justify-content: flex-start; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; background: #f9fafb;">
+                                <button class="btn btn-primary" onclick="openAddDeptModal()">
+                                    <i class="fa fa-plus"></i>
+                                    添加部门
                                 </button>
                             </div>
-                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; height: calc(100% - 40px); overflow-y: auto;">
-                                <div class="role-list">
-                                    <!-- 角色列表内容 -->
+                            <div style="overflow-x: auto; padding: 16px;">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.6; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border-radius: 8px; overflow: hidden;">
+                                    <thead>
+                                        <tr style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+                                            <th style="padding: 14px; text-align: center; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0; width: 60px;">
+                                                <input type="checkbox" id="select-all-depts" onclick="toggleAllDepts(this)" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </th>
+                                            <th style="padding: 14px; text-align: center; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0; width: 90px;">序号</th>
+                                            <th style="padding: 14px; text-align: left; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">部门名称</th>
+                                            <th style="padding: 14px; text-align: left; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">备注</th>
+                                            <th style="padding: 14px; text-align: left; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">添加时间</th>
+                                            <th style="padding: 14px; text-align: left; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="dept-parent" data-dept-id="1" style="transition: background-color 0.2s ease;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="1" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155; font-weight: 500;">1</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-weight: 600;">
+                                                总经办
+                                                <span class="expand-icon" style="cursor: pointer; margin-left: 8px; font-size: 14px; color: #64748b; transition: transform 0.2s ease; display: inline-block; width: 16px; text-align: center;" onclick="toggleDeptChildren(1)">▼</span>
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">公司决策层</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-01 10:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(1)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(1)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-child" data-parent-id="1" style="transition: background-color 0.2s ease; background-color: #f8fafc;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="2" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155;">2</td>
+                                            <td style="padding: 14px 14px 14px 50px; border-bottom: 1px solid #f1f5f9; color: #334155;">总经理办公室</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">总经理日常办公</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-01 10:30:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(2)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(2)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-child" data-parent-id="1" style="transition: background-color 0.2s ease; background-color: #f8fafc;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="3" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155;">3</td>
+                                            <td style="padding: 14px 14px 14px 50px; border-bottom: 1px solid #f1f5f9; color: #334155;">董事会办公室</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">董事会事务</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-01 11:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(3)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(3)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-parent" data-dept-id="4" style="transition: background-color 0.2s ease;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="4" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155; font-weight: 500;">4</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-weight: 600;">
+                                                人力资源部
+                                                <span class="expand-icon" style="cursor: pointer; margin-left: 8px; font-size: 14px; color: #64748b; transition: transform 0.2s ease; display: inline-block; width: 16px; text-align: center;" onclick="toggleDeptChildren(4)">▼</span>
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">人力资源管理</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-02 09:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(4)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(4)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-child" data-parent-id="4" style="transition: background-color 0.2s ease; background-color: #f8fafc;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="5" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155;">5</td>
+                                            <td style="padding: 14px 14px 14px 50px; border-bottom: 1px solid #f1f5f9; color: #334155;">招聘组</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">人员招聘</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-02 09:30:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(5)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(5)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-child" data-parent-id="4" style="transition: background-color 0.2s ease; background-color: #f8fafc;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="6" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155;">6</td>
+                                            <td style="padding: 14px 14px 14px 50px; border-bottom: 1px solid #f1f5f9; color: #334155;">培训组</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">员工培训</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-02 10:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(6)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(6)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-parent" data-dept-id="7" style="transition: background-color 0.2s ease;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="7" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155; font-weight: 500;">7</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-weight: 600;">
+                                                财务部
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">财务管理</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-03 09:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(7)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(7)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-parent" data-dept-id="8" style="transition: background-color 0.2s ease;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="8" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155; font-weight: 500;">8</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-weight: 600;">
+                                                市场部
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">市场营销</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-03 10:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(8)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(8)">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="dept-parent" data-dept-id="9" style="transition: background-color 0.2s ease;">
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                                                <input type="checkbox" class="dept-checkbox" data-dept-id="9" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #334155; font-weight: 500;">9</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-weight: 600;">
+                                                技术部
+                                            </td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">技术研发</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9; color: #64748b;">2024-01-04 09:00:00</td>
+                                            <td style="padding: 14px; border-bottom: 1px solid #f1f5f9;">
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; margin-right: 8px; border-radius: 6px; transition: all 0.2s ease;" onclick="openEditDeptModal(9)">编辑</button>
+                                                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; transition: all 0.2s ease;" onclick="deleteDept(9)">删除</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                           
+                        </div>
+                    </div>
+                     <!-- 底部操作栏 -->
+                            <div style="bottom: 0; left: 0; right: 0; background: #fafafa; border-top: 1px solid #e2e8f0; padding: 10px 16px; display: flex; justify-content: center; z-index: 1000;">
+                                <div style="max-width: calc(100% - 280px); width: 100%; display: flex; justify-content: center;">
+                                    <button class="btn btn-primary" style="padding: 8px 24px; font-size: 14px; border-radius: 6px; transition: all 0.2s ease;" onclick="saveDeptChanges()">
+                                        保存
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div style="flex: 1; padding-left: 16px; min-width: 0;">
-                            <div class="permission-section">
-                                <div class="perm-tabs">
-                                    <div class="perm-tab active" onclick="switchPermTab('function')">功能权限</div>
-                                    <div class="perm-tab" onclick="switchPermTab('data')">数据权限</div>
-                                    <div class="perm-tab" onclick="switchPermTab('field')">字段权限</div>
+                    `;
+                    
+                    
+
+
+                } else if (tabName === 'org-role') {
+                    contentArea.innerHTML = `<style>
+                        .role-item {
+                            transition: all 0.2s ease;
+                        }
+                        .role-item.selected {
+                            background-color: #e0f2fe !important;
+                            border: 1px solid #3b82f6 !important;
+                        }
+                        .role-item-all {
+                            pointer-events: none;
+                        }
+                        .role-item-all input[type="checkbox"] {
+                            pointer-events: auto;
+                        }
+                        .role-actions button:hover {
+                            color: #3b82f6 !important;
+                            background: #f0f9ff !important;
+                        }
+                        .role-settings-menu {
+                            position: absolute;
+                            top: 100%;
+                            right: 0;
+                            background-color: white;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 6px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                            z-index: 1000;
+                            min-width: 120px;
+                            width: 0;
+                        }
+                        .menu-item {
+                            padding: 8px 12px;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            font-size: 14px;
+                            color: #374151;
+                        }
+                        .menu-item:hover {
+                            background-color: #f3f4f6;
+                            color: #3b82f6;
+                        }
+                    </style>` + `
+                        <div class="content-header">组织角色</div>
+                        <div class="content-body" style="display: flex; flex: 1; overflow: hidden;">
+                            <div style="width: 280px; padding-right: 16px; border-right: 1px dashed #e5e7eb; min-width: 0;">
+                                <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 style="font-size: 14px; font-weight: 600; color: #374151; margin: 0;">组织角色列表</h3>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="openAddRoleModal()">
+                                        <i class="fa fa-plus"></i> 添加角色
+                                    </button>
                                 </div>
-                                <div class="perm-content" id="function-content">
-                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e5e7eb;">
-                                            <input type="checkbox" id="select-all-perms" onclick="toggleAllPerms(this)">
-                                            <span style="font-weight: 600; color: #374151;">全选</span>
+                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; height: calc(100% - 40px); display: flex; flex-direction: column;">
+                                    <div class="role-list" style="flex: 1; overflow-y: auto;">
+                                        <!-- 全选选项 -->
+                                        <div class="role-item role-item-all" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 6px; transition: all 0.2s ease; position: relative; pointer-events: none;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" id="select-all-roles" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer; pointer-events: auto;" onclick="toggleAllRoles(this)">
+                                                <span style="font-size: 14px; color: #374151; font-weight: 500;">全选</span>
+                                            </div>
                                         </div>
-                                        <div class="permission-group">
-                                            <label class="permission-label">
-                                                <span class="expand-icon expanded" data-target="order-center-children">▶</span>
-                                                <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
-                                                <span>订单中心</span>
-                                            </label>
-                                            <div class="permission-children" id="order-center-children">
+                                        <!-- 角色列表内容 -->
+                                        <div class="role-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 6px; position: relative; margin-top: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" class="role-checkbox" data-role-id="1" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                                <span style="font-size: 14px; color: #374151;">超级管理员</span>
+                                                <div style="position: relative; display: inline-block;">
+                                                    <i class="fa fa-info-circle" style="color: #64748b; font-size: 14px; cursor: help;"></i>
+                                                    <div class="tooltip" style="position: fixed; background: #333; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 9999; pointer-events: none;">
+                                                        拥有系统所有权限
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="role-actions" style="display: none; gap: 8px;">
+                                                    <button style="padding: 6px 10px; font-size: 14px; border-radius: 4px; transition: all 0.2s ease; border: none; background: transparent; color: #64748b; cursor: pointer;" onclick="showRoleSettingsMenu(event, 1)">
+                                                        <i class="fa fa-cog"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                        <div class="role-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 6px; position: relative; margin-top: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" class="role-checkbox" data-role-id="2" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                                <span style="font-size: 14px; color: #374151;">系统管理员</span>
+                                            </div>
+                                            <div class="role-actions" style="display: none; gap: 8px;">
+                                                    <button style="padding: 6px 10px; font-size: 14px; border-radius: 4px; transition: all 0.2s ease; border: none; background: transparent; color: #64748b; cursor: pointer;" onclick="showRoleSettingsMenu(event, 2)">
+                                                        <i class="fa fa-cog"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                        <div class="role-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 6px; position: relative; margin-top: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" class="role-checkbox" data-role-id="3" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                                <span style="font-size: 14px; color: #374151;">业务管理员</span>
+                                                <div style="position: relative; display: inline-block;">
+                                                    <i class="fa fa-info-circle" style="color: #64748b; font-size: 14px; cursor: help;"></i>
+                                                    <div class="tooltip" style="position: fixed; background: #333; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 9999; pointer-events: none;">
+                                                        管理业务相关功能
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="role-actions" style="display: none; gap: 8px;">
+                                                    <button style="padding: 6px 10px; font-size: 14px; border-radius: 4px; transition: all 0.2s ease; border: none; background: transparent; color: #64748b; cursor: pointer;" onclick="showRoleSettingsMenu(event, 3)">
+                                                        <i class="fa fa-cog"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                        <div class="role-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 6px; position: relative; margin-top: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" class="role-checkbox" data-role-id="4" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                                <span style="font-size: 14px; color: #374151;">普通用户</span>
+                                            </div>
+                                            <div class="role-actions" style="display: none; gap: 8px;">
+                                                    <button style="padding: 6px 10px; font-size: 14px; border-radius: 4px; transition: all 0.2s ease; border: none; background: transparent; color: #64748b; cursor: pointer;" onclick="showRoleSettingsMenu(event, 4)">
+                                                        <i class="fa fa-cog"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                        <div class="role-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 6px; position: relative; margin-top: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" class="role-checkbox" data-role-id="5" style="width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer;">
+                                                <span style="font-size: 14px; color: #374151;">访客</span>
+                                                <div style="position: relative; display: inline-block;">
+                                                    <i class="fa fa-info-circle" style="color: #64748b; font-size: 14px; cursor: help;"></i>
+                                                    <div class="tooltip" style="position: fixed; background: #333; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 9999; pointer-events: none;">
+                                                        仅查看权限
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="role-actions" style="display: none; gap: 8px;">
+                                                    <button style="padding: 6px 10px; font-size: 14px; border-radius: 4px; transition: all 0.2s ease; border: none; background: transparent; color: #64748b; cursor: pointer;" onclick="showRoleSettingsMenu(event, 5)">
+                                                        <i class="fa fa-cog"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <!-- 操作栏 -->
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; justify-content: center;">
+                                        <button class="btn btn-primary" onclick="saveRole()">保存</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="flex: 1; padding-left: 16px; min-width: 0; display: none;" id="permission-section">
+                                <div class="permission-section" style="display: flex; flex-direction: column; height: 100%;">
+                                    <h3 style="font-size: 16px; font-weight: 600; color: #374151; " id="permission-title">绑定菜单/功能权限</h3>
+                                    <div class="perm-tabs">
+                                        <div class="perm-tab active" onclick="switchPermTab('role-function')">功能权限</div>
+                                        <div class="perm-tab" onclick="switchPermTab('role-data')">数据权限</div>
+                                        <div class="perm-tab" onclick="switchPermTab('role-field')">字段权限</div>
+                                    </div>
+                                    <div style="flex: 1; border-radius: 8px; background: white; min-width: 300px; display: flex; flex-direction: column; min-height: 0; position: relative; margin-top: 12px;">
+                                        <div class="perm-content" id="role-function-content" style="padding-bottom: 60px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e5e7eb;">
+                                                <input type="checkbox" id="select-all-perms" onclick="toggleAllPerms(this)">
+                                                <span style="font-weight: 600; color: #374151;">全选</span>
+                                            </div>
+                                            <div style="flex: 1; overflow-y: auto;">
+                                            <div class="permission-group">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon expanded" data-target="order-children">▶</span>
-                                                    <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
-                                                    <span>订单管理</span>
+                                                    <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
+                                                    <span>订单中心</span>
                                                 </label>
-                                                <div class="permission-children" id="order-children">
+                                                <div class="permission-children" id="order-center-children">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon expanded" data-target="purchase-children">▶</span>
-                                                        <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
-                                                        <span>采购订单</span>
+                                                        <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                                        <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
+                                                        <span>订单管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="purchase-children">
+                                                    <div class="permission-children" id="order-children">
                                                         <label class="permission-label">
-                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                                            <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
+                                                            <span>采购订单</span>
+                                                        </label>
+                                                        <div class="permission-children" id="purchase-children">
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                                <span>查看</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                                <span>新增</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                                <span>编辑</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                                <span>删除</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                                <span>审核</span>
+                                                            </label>
+                                                        </div>
+                                                        <label class="permission-label">
+                                                            <span class="expand-icon expanded" data-target="sales-children">▶</span>
+                                                            <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="sales">
+                                                            <span>销售订单</span>
+                                                        </label>
+                                                        <div class="permission-children" id="sales-children">
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                                <span>查看</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                                <span>新增</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                                <span>编辑</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                                <span>删除</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
+                                                                <span>审核</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="permission-group">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="warehouse-center-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="warehouse-center">
+                                                    <span>仓储中心</span>
+                                                </label>
+                                                <div class="permission-children" id="warehouse-center-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <span class="expand-icon" data-target="warehouse-children">▶</span>
+                                                        <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse-center" data-group="warehouse">
+                                                        <span>仓库管理</span>
+                                                    </label>
+                                                    <div class="permission-children" id="warehouse-children" style="display: none;">
+                                                        <label class="permission-label">
+                                                            <span class="expand-icon" data-target="inventory-children">▶</span>
+                                                            <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="inventory">
+                                                            <span>库存管理</span>
+                                                        </label>
+                                                        <div class="permission-children" id="inventory-children" style="display: none;">
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                                <span>查看</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                                <span>入库</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                                <span>出库</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
+                                                                <span>盘点</span>
+                                                            </label>
+                                                        </div>
+                                                        <label class="permission-label">
+                                                            <span class="expand-icon" data-target="location-children">▶</span>
+                                                            <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="location">
+                                                            <span>货位管理</span>
+                                                        </label>
+                                                        <div class="permission-children" id="location-children" style="display: none;">
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
+                                                                <span>查看</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
+                                                                <span>分配</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
+                                                                <span>编辑</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="permission-group">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="user-center-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="user-center">
+                                                    <span>人员中心</span>
+                                                </label>
+                                                <div class="permission-children" id="user-center-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <span class="expand-icon" data-target="user-children">▶</span>
+                                                        <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="user-center" data-group="user">
+                                                        <span>用户管理</span>
+                                                    </label>
+                                                    <div class="permission-children" id="user-children" style="display: none;">
+                                                        <label class="permission-label">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                             <span>查看</span>
                                                         </label>
                                                         <label class="permission-label">
-                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                             <span>新增</span>
                                                         </label>
                                                         <label class="permission-label">
-                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                             <span>编辑</span>
                                                         </label>
                                                         <label class="permission-label">
-                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
+                                                            <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                             <span>删除</span>
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="permission-group">
+                                                <label class="permission-label">
+                                                    <span class="expand-icon" data-target="system-center-children">▶</span>
+                                                    <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="system-center">
+                                                    <span>系统中心</span>
+                                                </label>
+                                                <div class="permission-children" id="system-center-children" style="display: none;">
+                                                    <label class="permission-label">
+                                                        <span class="expand-icon" data-target="system-children">▶</span>
+                                                        <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system-center" data-group="system">
+                                                        <span>系统设置</span>
+                                                    </label>
+                                                    <div class="permission-children" id="system-children" style="display: none;">
+                                                        <label class="permission-label">
+                                                            <span class="expand-icon" data-target="config-children">▶</span>
+                                                            <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="config">
+                                                            <span>基础配置</span>
+                                                        </label>
+                                                        <div class="permission-children" id="config-children" style="display: none;">
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
+                                                                <span>查看</span>
+                                                            </label>
+                                                            <label class="permission-label">
+                                                                <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
+                                                                <span>修改</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
                                         </div>
-                                </div>
-                                <div class="perm-content hidden" id="data-content">
-                                    <div style="margin-bottom: 8px; padding: 10px; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px; font-size: 14px; font-weight: 600; color: #1e40af;">
-                                        提示：不设置，默认全部数据
+                                        <div class="perm-content hidden" id="role-data-content" style="padding-bottom: 60px;">
+                                            <div class="permission-group" style="flex: 1; overflow-y: auto;">
+                                                <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px; background: #f0f9ff; padding: 8px 12px; border-left: 4px solid #3b82f6;">提示：不设置，默认全部数据</p>
+                                                
+                                                <table style="width: 100%; border-collapse: collapse;">
+                                                    <thead>
+                                                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                                                            <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                                业务模块
+                                                            </th>
+                                                            <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                                隔离维度
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                订单管理
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; gap: 16px;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="order-dimension">
+                                                                        <span>业务员</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="order-dimension">
+                                                                        <span>部门</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="order-dimension">
+                                                                        <span>组织</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                仓储管理
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; gap: 16px;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="warehouse-dimension">
+                                                                        <span>仓库</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="warehouse-dimension">
+                                                                        <span>部门</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="warehouse-dimension">
+                                                                        <span>组织</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                人员管理
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; gap: 16px;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="person-dimension">
+                                                                        <span>部门</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="person-dimension">
+                                                                        <span>组织</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px; width: 80px;">
+                                                                        <input type="radio" name="person-dimension">
+                                                                        <span>角色</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="perm-content hidden" id="role-field-content" style="padding-bottom: 60px;">
+                                            <div class="permission-group" style="flex: 1; overflow-y: auto;">
+                                                <p style="color: #f59e0b; font-size: 14px; margin-bottom: 12px; background: #fffbeb; padding: 8px 12px; border-left: 4px solid #f59e0b;">提示：不设置，默认全部字段【可操作、可见】</p>
+                                                
+                                                <table style="width: 100%; border-collapse: collapse;">
+                                                    <thead>
+                                                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                                                            <th style="text-align: left; padding: 10px 8px; font-weight: 600;">
+                                                                <span style="color: #dc2626;"></span>字段名称
+                                                            </th>
+                                                            <th style="text-align: center; padding: 10px 8px; font-weight: 600;">
+                                                                <span style="color: #dc2626;"></span>权限
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                设备售价(设备管理)
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; justify-content: space-around;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-device-price">
+                                                                        <span>隐藏</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-device-price">
+                                                                        <span>可见</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-device-price">
+                                                                        <span>可操作</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                客户联系方式(客户管理)
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; justify-content: space-around;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-customer-contact">
+                                                                        <span>隐藏</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-customer-contact">
+                                                                        <span>可见</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-customer-contact">
+                                                                        <span>可操作</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                员工薪资(人员管理)
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; justify-content: space-around;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-employee-salary">
+                                                                        <span>隐藏</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-employee-salary">
+                                                                        <span>可见</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-employee-salary">
+                                                                        <span>可操作</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                            <td style="padding: 10px 8px;">
+                                                                采购价格(采购管理)
+                                                            </td>
+                                                            <td style="padding: 10px 8px;">
+                                                                <div style="display: flex; justify-content: space-around;">
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-purchase-price">
+                                                                        <span>隐藏</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-purchase-price">
+                                                                        <span>可见</span>
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                                        <input type="radio" name="field-purchase-price">
+                                                                        <span>可操作</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- 操作栏 -->
+                                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; padding: 10px 16px; display: flex; justify-content: center; z-index: 10;">
+                                            <button class="btn btn-primary">保存</button>
+                                        </div>
                                     </div>
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2;">
-                                        <thead>
-                                            <tr>
-                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">业务模块</th>
-                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">隔离维度</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">订单管理</td>
-                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
-                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
-                                                        <input type="radio" name="order-dim" value="org" style="width: 14px; height: 14px; accent-color: #3b82f6;">
-                                                        <span>组织</span>
-                                                    </label>
-                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
-                                                        <input type="radio" name="order-dim" value="dept" style="width: 14px; height: 14px; accent-color: #3b82f6;">
-                                                        <span>部门</span>
-                                                    </label>
-                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
-                                                        <input type="radio" name="order-dim" value="user" style="width: 14px; height: 14px; accent-color: #3b82f6;">
-                                                        <span>用户</span>
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="perm-content hidden" id="field-content">
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2;">
-                                        <thead>
-                                            <tr>
-                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">业务模块</th>
-                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">字段名称</th>
-                                                <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">权限</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; font-weight: 500;">订单管理</td>
-                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155;">订单编号</td>
-                                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
-                                                    <label style="display: inline-flex; align-items: center; gap: 4px; margin-right: 16px; font-size: 13px; color: #334155;">
-                                                        <input type="checkbox" name="order-field-1" value="view" style="width: 14px; height: 14px; accent-color: #3b82f6;">
-                                                        <span>查看</span>
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="content-footer">
-                        <button class="btn btn-primary" onclick="saveRole()">保存</button>
-                    </div>
-                </div>`;
+
+                    </div>`;
+                    // 绑定权限事件
+                    setTimeout(bindPermissionEvents, 100);
+                    // 绑定选择事件
+                    setTimeout(bindSelectionEvents, 100);
+                }
             }
         }
 
         function switchPermTab(tabName) {
-            const tabs = document.querySelectorAll('.perm-tab');
-            const contents = document.querySelectorAll('.perm-content');
+            // 只处理当前权限区域的tab
+            const permSection = event.target.closest('.permission-section');
+            const tabs = permSection.querySelectorAll('.perm-tab');
+            const contents = permSection.querySelectorAll('.perm-content');
             
-            tabs.forEach(tab => tab.classList.remove('active'));
+            // 隐藏所有内容
             contents.forEach(content => content.classList.add('hidden'));
             
+            // 移除所有tab的active类
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // 激活当前tab
             event.target.classList.add('active');
-            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // 显示当前tab对应的内容
+            const contentId = tabName + '-content';
+            const content = permSection.querySelector('#' + contentId);
+            if (content) {
+                content.classList.remove('hidden');
+            }
         }
 
         function toggleExpand(parentId) {
@@ -2157,7 +2871,8 @@
             event.currentTarget.classList.add('active');
         }
 
-        function handleParentClick(parentId) {
+        function handleParentClick(event, parentId) {
+            event.stopPropagation();
             toggleExpand(parentId);
             selectItem(event);
         }
@@ -2194,41 +2909,119 @@
         };
 
         function loadOrgData(orgName) {
-            document.querySelector('.content-header').textContent = '组织详情';
+            // 检查当前active tab
+            const activeTab = document.querySelector('.tabs li.active');
+            const activeTabText = activeTab ? activeTab.textContent.trim() : '';
+            
+            // 更新选中的组织类型
+            selectedOrgType = orgName;
+            console.log('loadOrgData selectedOrgType:', selectedOrgType);
+            
+            // 清空角色列表的选中效果
+            selectedRole = null;
+            document.querySelectorAll('.role-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // 只有当active tab是组织类型时，才修改内容标题
+            if (activeTabText === '组织类型') {
+                document.querySelector('.content-header').textContent = '组织详情';
+            }
             
             const data = orgData[orgName];
             if (data) {
-                document.getElementById('org-name-input').value = data.name;
-                document.getElementById('org-parent-input').value = data.parent;
-                document.getElementById('org-remark-input').value = data.remark;
-                document.getElementById('audit-no').checked = (data.audit === 'no');
-                document.getElementById('audit-yes').checked = (data.audit === 'yes');
+                // 检查元素是否存在
+                const orgNameInput = document.getElementById('org-name-input');
+                const orgParentInput = document.getElementById('org-parent-input');
+                const orgRemarkInput = document.getElementById('org-remark-input');
+                const auditNo = document.getElementById('audit-no');
+                const auditYes = document.getElementById('audit-yes');
+                
+                if (orgNameInput) orgNameInput.value = data.name;
+                if (orgParentInput) orgParentInput.value = data.parent;
+                if (orgRemarkInput) orgRemarkInput.value = data.remark;
+                if (auditNo) auditNo.checked = (data.audit === 'no');
+                if (auditYes) auditYes.checked = (data.audit === 'yes');
             }
             
             selectRandomItems();
+            
+            // 只有当当前活跃的标签页是组织部门时，才随机勾选部门
+            if (activeTabText === '组织部门') {
+                // 延迟执行，确保DOM完全渲染
+                setTimeout(() => {
+                    // 随机勾选2-4个部门复选框
+                    const checkboxes = document.querySelectorAll('.dept-checkbox');
+                    if (checkboxes.length > 0) {
+                        // 先取消所有勾选
+                        checkboxes.forEach(cb => cb.checked = false);
+                        
+                        // 随机勾选2-4个部门
+                        const count = Math.floor(Math.random() * 3) + 2; // 2-4个
+                        const shuffled = Array.from(checkboxes).sort(() => 0.5 - Math.random());
+                        shuffled.slice(0, count).forEach(cb => cb.checked = true);
+                    }
+                }, 200);
+            } else if (activeTabText === '组织角色') {
+                // 延迟执行，确保DOM完全渲染
+                setTimeout(() => {
+                    // 随机勾选2-4个角色复选框
+                    const checkboxes = document.querySelectorAll('.role-checkbox');
+                    if (checkboxes.length > 0) {
+                        // 先取消所有勾选
+                        checkboxes.forEach(cb => cb.checked = false);
+                        
+                        // 随机勾选2-4个角色
+                        const count = Math.floor(Math.random() * 3) + 2; // 2-4个
+                        const shuffled = Array.from(checkboxes).sort(() => 0.5 - Math.random());
+                        shuffled.slice(0, count).forEach(cb => cb.checked = true);
+                    }
+                }, 200);
+            }
+            
+            // 更新权限区显示
+            updatePermissionSection();
+        }
+        
+        // 当切换到组织部门标签时，随机勾选部门复选框
+        function selectRandomDepts() {
+            const checkboxes = document.querySelectorAll('.dept-checkbox');
+            if (checkboxes.length > 0) {
+                // 先取消所有勾选
+                checkboxes.forEach(cb => cb.checked = false);
+                
+                // 随机勾选2-4个部门
+                const count = Math.floor(Math.random() * 3) + 2; // 2-4个
+                const shuffled = Array.from(checkboxes).sort(() => 0.5 - Math.random());
+                shuffled.slice(0, count).forEach(cb => cb.checked = true);
+            }
         }
 
         function selectRandomItems() {
-            document.querySelectorAll('.perm-checkbox').forEach(cb => cb.checked = false);
-            
-            const permCheckboxes = Array.from(document.querySelectorAll('.perm-checkbox'));
-            
-            const shuffleArray = (array) => {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            };
-            
-            const selectRandom = (checkboxes, minCount, maxCount) => {
-                const shuffled = shuffleArray(checkboxes);
-                const count = Math.floor(Math.random() * (maxCount - minCount + 1)) + minCount;
-                shuffled.slice(0, count).forEach(cb => cb.checked = true);
-            };
-            
-            selectRandom(permCheckboxes.filter(cb => cb.classList.contains('parent-checkbox')), 2, 3);
+            // 检查是否存在perm-checkbox元素
+            const permCheckboxes = document.querySelectorAll('.perm-checkbox');
+            if (permCheckboxes.length > 0) {
+                permCheckboxes.forEach(cb => cb.checked = false);
+                
+                const permCheckboxesArray = Array.from(permCheckboxes);
+                
+                const shuffleArray = (array) => {
+                    const shuffled = [...array];
+                    for (let i = shuffled.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                    }
+                    return shuffled;
+                };
+                
+                const selectRandom = (checkboxes, minCount, maxCount) => {
+                    const shuffled = shuffleArray(checkboxes);
+                    const count = Math.floor(Math.random() * (maxCount - minCount + 1)) + minCount;
+                    shuffled.slice(0, count).forEach(cb => cb.checked = true);
+                };
+                
+                selectRandom(permCheckboxesArray.filter(cb => cb.classList.contains('parent-checkbox')), 2, 3);
+            }
         }
 
         function showToast(message, type = 'info') {
@@ -2342,6 +3135,331 @@
             showToast('部门删除成功！', 'success');
             closeDeleteDeptModal();
         }
+        
+        function saveDeptChanges() {
+            // 获取所有选中的部门
+            const selectedDepts = Array.from(document.querySelectorAll('.dept-checkbox:checked')).map(cb => cb.dataset.deptId);
+            if (selectedDepts.length > 0) {
+                alert('已保存选中的部门：' + selectedDepts.join(', '));
+            } else {
+                alert('请选择要保存的部门');
+            }
+        }
+        
+        // 为角色列表项添加hover事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 监听角色列表项的hover事件
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.closest('.role-item')) {
+                    const roleItem = e.target.closest('.role-item');
+                    const actions = roleItem.querySelector('.role-actions');
+                    if (actions) {
+                        actions.style.display = 'flex';
+                    }
+                }
+                
+                // 显示提示气泡
+                if (e.target.closest('.fa-info-circle')) {
+                    const infoIcon = e.target.closest('.fa-info-circle');
+                    const tooltip = infoIcon.nextElementSibling;
+                    if (tooltip && tooltip.classList.contains('tooltip')) {
+                        // 设置气泡提示的位置为鼠标当前位置
+                        tooltip.style.left = e.clientX + 'px';
+                        tooltip.style.top = (e.clientY - 30) + 'px';
+                        tooltip.style.opacity = '1';
+                        tooltip.style.visibility = 'visible';
+                    }
+                }
+            });
+            
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.closest('.role-item')) {
+                    const roleItem = e.target.closest('.role-item');
+                    const actions = roleItem.querySelector('.role-actions');
+                    if (actions) {
+                        actions.style.display = 'none';
+                    }
+                }
+                
+                // 隐藏提示气泡
+                if (e.target.closest('.fa-info-circle')) {
+                    const infoIcon = e.target.closest('.fa-info-circle');
+                    const tooltip = infoIcon.nextElementSibling;
+                    if (tooltip && tooltip.classList.contains('tooltip')) {
+                        tooltip.style.opacity = '0';
+                        tooltip.style.visibility = 'hidden';
+                    }
+                }
+            });
+        });
+        
+        // 角色相关函数
+        let currentRoleId = null;
+
+        // 打开添加角色弹窗
+        function openAddRoleModal() {
+            currentRoleId = null;
+            document.getElementById('role-modal-title').textContent = '添加角色';
+            document.getElementById('role-name').value = '';
+            document.getElementById('role-remark').value = '';
+            document.getElementById('role-modal').style.display = 'flex';
+        }
+
+        // 打开编辑角色弹窗
+        function openEditRoleModal(roleId) {
+            currentRoleId = roleId;
+            document.getElementById('role-modal-title').textContent = '编辑角色';
+            // 这里可以根据角色ID获取角色信息并填充表单
+            // 暂时使用模拟数据
+            const roleNames = {
+                1: '超级管理员',
+                2: '系统管理员',
+                3: '业务管理员',
+                4: '普通用户',
+                5: '访客'
+            };
+            const roleRemarks = {
+                1: '拥有系统所有权限',
+                2: '管理系统相关功能',
+                3: '管理业务相关功能',
+                4: '普通用户权限',
+                5: '仅查看权限'
+            };
+            document.getElementById('role-name').value = roleNames[roleId] || '';
+            document.getElementById('role-remark').value = roleRemarks[roleId] || '';
+            document.getElementById('role-modal').style.display = 'flex';
+        }
+
+        // 关闭角色弹窗
+        function closeRoleModal() {
+            document.getElementById('role-modal').style.display = 'none';
+        }
+
+        // 保存角色
+        function saveRoleModal() {
+            const roleName = document.getElementById('role-name').value;
+            const roleRemark = document.getElementById('role-remark').value;
+            
+            if (!roleName) {
+                showToast('请输入角色名称', 'warning');
+                return;
+            }
+            
+            if (currentRoleId) {
+                showToast(`角色 ${roleName} 已更新`, 'success');
+            } else {
+                showToast(`角色 ${roleName} 已添加`, 'success');
+            }
+            
+            closeRoleModal();
+        }
+
+        // 打开删除角色确认对话框
+        function openDeleteRoleConfirm(roleId) {
+            currentRoleId = roleId;
+            document.getElementById('delete-role-modal').style.display = 'flex';
+        }
+
+        // 关闭删除角色确认对话框
+        function closeDeleteRoleConfirm() {
+            document.getElementById('delete-role-modal').style.display = 'none';
+        }
+
+        // 确认删除角色
+        function confirmDeleteRole() {
+            showToast('角色已删除', 'success');
+            closeDeleteRoleConfirm();
+        }
+
+        // 编辑角色
+        function editRole(roleId) {
+            openEditRoleModal(roleId);
+        }
+
+        // 显示角色设置菜单
+        function showRoleSettingsMenu(event, roleId) {
+            event.stopPropagation();
+            
+            // 先关闭所有已打开的菜单
+            closeAllRoleSettingsMenus();
+            
+            // 检查是否有选中的组织类型
+            const hasSelectedOrg = selectedOrgType !== null;
+            
+            // 创建菜单元素
+            const menu = document.createElement('div');
+            menu.className = 'role-settings-menu';
+            
+            // 构建菜单内容
+            let menuContent = '';
+            if (hasSelectedOrg) {
+                menuContent += `<div class="menu-item" onclick="setRolePermissions(${roleId})">设置权限</div>`;
+            }
+            menuContent += `
+                <div class="menu-item" onclick="editRole(${roleId})">编辑</div>
+                <div class="menu-item" onclick="deleteRole(${roleId})">删除</div>
+            `;
+            
+            menu.innerHTML = menuContent;
+            
+            // 设置菜单样式
+            menu.style.position = 'absolute';
+            menu.style.top = '100%';
+            menu.style.right = '0';
+            menu.style.backgroundColor = 'white';
+            menu.style.border = '1px solid #e5e7eb';
+            menu.style.borderRadius = '6px';
+            menu.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            menu.style.zIndex = '1000';
+            menu.style.minWidth = '120px';
+            
+            // 定位菜单
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const roleItem = button.closest('.role-item');
+            const roleItemRect = roleItem.getBoundingClientRect();
+            
+            menu.style.position = 'fixed';
+            menu.style.top = (rect.top + window.scrollY + rect.height) + 'px';
+            menu.style.left = (rect.left + window.scrollX - 80) + 'px';
+            
+            // 添加到页面
+            document.body.appendChild(menu);
+            
+            // 添加点击外部关闭菜单的事件
+            setTimeout(() => {
+                document.addEventListener('click', closeRoleSettingsMenu);
+            }, 10);
+        }
+        
+        // 关闭角色设置菜单
+        function closeRoleSettingsMenu(event) {
+            const menu = document.querySelector('.role-settings-menu');
+            if (menu && !menu.contains(event.target) && !event.target.closest('.role-actions button[onclick*="showRoleSettingsMenu"]')) {
+                menu.remove();
+                document.removeEventListener('click', closeRoleSettingsMenu);
+            }
+        }
+        
+        // 关闭所有角色设置菜单
+        function closeAllRoleSettingsMenus() {
+            const menus = document.querySelectorAll('.role-settings-menu');
+            menus.forEach(menu => menu.remove());
+            document.removeEventListener('click', closeRoleSettingsMenu);
+        }
+        
+        // 设置角色权限
+        function setRolePermissions(roleId) {
+            closeAllRoleSettingsMenus();
+            
+            // 获取角色名称
+            const roleItem = document.querySelector(`.role-item [data-role-id="${roleId}"]`).closest('.role-item');
+            if (roleItem) {
+                const roleName = roleItem.querySelector('span').textContent.trim();
+                
+                // 设置选中的角色
+                selectedRole = roleName;
+                
+                // 显示权限区域
+                updatePermissionSection();
+                
+                // 滚动到权限区域
+                const permissionSection = document.getElementById('permission-section');
+                if (permissionSection) {
+                    permissionSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+
+        // 删除角色
+        function deleteRole(roleId) {
+            openDeleteRoleConfirm(roleId);
+        }
+
+        // 全选/取消全选角色
+        function toggleAllRoles(checkbox) {
+            const checked = checkbox.checked;
+            document.querySelectorAll('.role-checkbox').forEach(cb => {
+                cb.checked = checked;
+            });
+            
+            // 当取消全选时，清空选中的角色，隐藏权限区域
+            if (!checked) {
+                selectedRole = null;
+                document.querySelectorAll('.role-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                updatePermissionSection();
+            }
+        }
+        
+        // 切换部门子项展开/收起
+        function toggleDeptChildren(deptId) {
+            const children = document.querySelectorAll(`.dept-child[data-parent-id="${deptId}"]`);
+            const expandIcon = document.querySelector(`.dept-parent[data-dept-id="${deptId}"] .expand-icon`);
+            
+            let isExpanded = false;
+            children.forEach(child => {
+                if (child.style.display === 'none') {
+                    child.style.display = '';
+                    child.style.opacity = '0';
+                    child.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        child.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        child.style.opacity = '1';
+                        child.style.transform = 'translateY(0)';
+                    }, 10);
+                    isExpanded = true;
+                } else {
+                    child.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    child.style.opacity = '0';
+                    child.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        child.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            if (expandIcon) {
+                expandIcon.style.transition = 'transform 0.3s ease';
+                if (isExpanded) {
+                    expandIcon.textContent = '▼';
+                    expandIcon.style.transform = 'rotate(0deg)';
+                } else {
+                    expandIcon.textContent = '▶';
+                    expandIcon.style.transform = 'rotate(0deg)';
+                }
+            }
+        }
+        
+        // 添加行hover效果
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.closest('.dept-parent') || e.target.closest('.dept-child')) {
+                    const row = e.target.closest('tr');
+                    if (row) {
+                        row.style.backgroundColor = '#f8fafc';
+                    }
+                }
+            });
+            
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.closest('.dept-parent') || e.target.closest('.dept-child')) {
+                    const row = e.target.closest('tr');
+                    if (row) {
+                        row.style.backgroundColor = '';
+                    }
+                }
+            });
+        });
+        
+        // 全选/取消全选部门
+        function toggleAllDepts(checkbox) {
+            const checkboxes = document.querySelectorAll('.dept-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+        }
     </script>
 
     <div id="delete-org-modal" class="modal" style="display: none;">
@@ -2434,7 +3552,7 @@
                 <span class="close" onclick="closeDeleteDeptModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <p>确定要删除部门「<span id="delete-dept-name"></span>」吗？</p>
+                <p>确定要删除部门吗？</p>
                 <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该部门将无法恢复，请谨慎操作！</p>
             </div>
             <div class="modal-footer">
@@ -2512,5 +3630,46 @@
     </style>
 
     <div id="toast-container" class="toast-container"></div>
+
+    <!-- 角色添加/编辑弹窗 -->
+    <div id="role-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3 id="role-modal-title" class="modal-title">添加角色</h3>
+                <button class="modal-close" onclick="closeRoleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #374151;">角色名称</label>
+                    <input type="text" id="role-name" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px;" placeholder="请输入角色名称">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #374151;">角色备注</label>
+                    <textarea id="role-remark" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; resize: vertical; min-height: 80px;" placeholder="请输入角色备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeRoleModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveRoleModal()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 角色删除确认对话框 -->
+    <div id="delete-role-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="width: 400px; max-width: 90%;">
+            <div class="modal-header">
+                <h3 class="modal-title">确认删除</h3>
+                <button class="modal-close" onclick="closeDeleteRoleConfirm()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除这个角色吗？此操作不可撤销。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteRoleConfirm()">取消</button>
+                <button class="btn btn-danger" onclick="confirmDeleteRole()">删除</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
