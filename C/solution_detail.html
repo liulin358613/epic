@@ -104,6 +104,7 @@
             display: none;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
             z-index: 99999;
             backdrop-filter: blur(3px);
         }
@@ -116,10 +117,11 @@
         .modal-iframe {
             background-color: transparent !important;
             width: 26.25rem;
-            height: 31.25rem;
+            min-height: 31.25rem;
             border: none;
             border-radius: 0.75rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
 
         @media (max-width: 768px) {
@@ -1187,6 +1189,16 @@
                 modal.classList.remove('show');
             }
         }
+
+        // 点击遮罩层关闭登录弹窗
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginModal = document.getElementById('loginModal');
+            loginModal.addEventListener('click', function(e) {
+                if (e.target === loginModal) {
+                    hideLoginModal();
+                }
+            });
+        });
 
         // 显示退出确认弹窗
         function showLogoutModal() {

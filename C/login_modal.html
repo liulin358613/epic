@@ -6,14 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>登录弹窗组件</title>
     <style>
-        /* 固定字体大小，避免被父页面iframe影响 */
         html {
             font-size: 16px !important;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
         }
 
-        /* 全局样式重置与变量定义 */
         * {
             margin: 0;
             padding: 0;
@@ -22,7 +21,6 @@
         }
 
         :root {
-            /* 主色调 */
             --klein-blue: #0051D9;
             --hermes-orange: #F37021;
             --deep-gray: #1D2129;
@@ -31,36 +29,36 @@
             --white: #FFFFFF;
             --border-gray: #E5E7EB;
             --hover-gray: #F7F8FA;
+            --error-red: #F53F3F;
         }
 
         body {
             background-color: transparent;
-            width: 420px;
-            height: 500px;
+            width: 100%;
+            max-width: 420px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             margin: 0;
             padding: 0;
             line-height: 1.5;
+            overflow: hidden;
         }
 
-        /* 登录弹窗样式 - 默认展示 */
         .login-modal {
             position: relative;
             z-index: 99999;
             background-color: transparent;
-            width: 420px;
-            height: 500px;
+            width: 100%;
         }
         
         .modal-content {
             position: relative;
             background-color: var(--white);
             border-radius: 12px;
-            width: 420px;
-            min-width: 420px;
-            height: 500px;
+            width: 100%;
+            min-width: 100%;
+            min-height: 450px;
             box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
             line-height: 1.5;
             border: 1px solid var(--border-gray);
@@ -71,13 +69,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 10px 12px 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border-gray);
         }
         
         .modal-header h2 {
             margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             color: var(--deep-gray);
             font-weight: 600;
         }
@@ -85,12 +83,12 @@
         .close-btn {
             background: none;
             border: none;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             color: var(--classic-gray);
             transition: all 0.3s;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -104,13 +102,14 @@
         
         .login-tabs {
             display: flex;
-            padding: 12px 10px 12px 20px;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-gray);
         }
         
         .login-tab {
             padding: 8px 24px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--classic-gray);
             border-bottom: 2px solid transparent;
             transition: all 0.3s;
@@ -128,14 +127,16 @@
         }
         
         .login-form {
-            margin-bottom: 20px;
-            padding: 12px;
+            padding: 20px;
         }
         
+        .form-group {
+            margin-bottom: 16px;
+        }
+
         .form-input {
             width: 100%;
             padding: 12px 16px;
-            margin-bottom: 16px;
             border: 1px solid var(--border-gray);
             border-radius: 8px;
             font-size: 14px;
@@ -153,15 +154,29 @@
         .form-input::placeholder {
             color: var(--classic-gray);
         }
+
+        .form-input.error {
+            border-color: var(--error-red);
+        }
+        
+        .error-message {
+            color: var(--error-red);
+            font-size: 12px;
+            margin-top: 6px;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
         
         .password-input {
             position: relative;
-            margin-bottom: 30px;
         }
         
         .password-input .form-input {
             padding-right: 40px;
-            margin-bottom: 0;
         }
         
         .eye-btn {
@@ -194,16 +209,14 @@
         .code-input {
             display: flex;
             gap: 12px;
-            margin-bottom: 30px;
         }
         
         .code-input .form-input {
             flex: 1;
-            margin-bottom: 0;
         }
         
         .code-btn {
-            padding: 0 16px;
+            padding: 0 20px;
             background-color: var(--light-gray);
             color: var(--deep-gray);
             border: 1px solid var(--border-gray);
@@ -242,7 +255,7 @@
         }
         
         .login-button {
-            width: 80%;
+            width: 100%;
             padding: 12px;
             background-color: var(--klein-blue);
             color: var(--white);
@@ -251,7 +264,7 @@
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
-            margin: auto;
+            margin-top: 8px;
             transition: all 0.3s;
             height: 44px;
             display: flex;
@@ -274,7 +287,7 @@
             text-align: center;
             font-size: 13px;
             color: var(--classic-gray);
-            margin-bottom: 20px;
+            padding: 0 20px 20px;
         }
         
         .login-links a {
@@ -295,15 +308,16 @@
         .other-login-line {
             position: relative;
             text-align: center;
-            margin-bottom: 20px;
+            padding: 0 20px;
+            margin-bottom: 16px;
         }
         
         .other-login-line::before {
             content: '';
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
+            left: 20px;
+            right: 20px;
             height: 1px;
             background-color: var(--border-gray);
             z-index: 1;
@@ -322,6 +336,7 @@
             display: flex;
             justify-content: center;
             gap: 24px;
+            padding-bottom: 20px;
         }
         
         .other-login-btn {
@@ -351,34 +366,6 @@
             box-shadow: 0 2px 6px rgba(0, 81, 217, 0.15);
         }
         
-        /* 第三方登录图标样式 */
-        .other-login-btn:nth-child(1) {
-            background-color: transparent;
-            color: var(--white);
-            border-color: var(--border-gray);
-        }
-        
-        .other-login-btn:nth-child(1):hover {
-            background-color: transparent;
-            border-color: var(--klein-blue);
-        }
-        
-        .other-login-btn:nth-child(2) {
-            background-color: transparent;
-            color: var(--white);
-            border-color: var(--border-gray);
-        }
-        
-        .other-login-btn:nth-child(2):hover {
-            background-color: transparent;
-            border-color: var(--klein-blue);
-        }
-        
-        /* 图标样式 */
-        .other-login-btn::before {
-            font-size: 18px;
-        }
-        
         .other-login-btn:nth-child(1)::before {
             content: "";
             width: 70%;
@@ -401,7 +388,6 @@
             display: inline-block;
         }
 
-        /* 响应式适配 - 仅在独立打开时生效 */
         @media (max-width: 768px) {
             .modal-content {
                 width: 90%;
@@ -411,13 +397,12 @@
             }
 
             .login-button {
-                width: 90%;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 登录弹窗 - 默认展示 -->
     <div class="login-modal" id="loginModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -429,24 +414,31 @@
                 <div class="login-tab">验证码登录</div>
             </div>
             <div class="login-form">
-                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
-                <div class="password-input">
-                    <input type="password" class="form-input" placeholder="请输入密码">
-                    <span class="eye-btn">
-                        <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="1" x2="23" y2="23"></line>
-                        </svg>
-                    </span>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="usernameInput" placeholder="请输入手机号/账号">
+                    <div class="error-message" id="usernameError"></div>
                 </div>
-                <div class="code-input" style="display: none;">
-                    <input type="text" class="form-input" placeholder="请输入验证码">
+                <div class="form-group">
+                    <div class="password-input">
+                        <input type="password" class="form-input" id="passwordInput" placeholder="请输入密码">
+                        <button class="eye-btn">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <div class="form-group code-input" style="display: none;">
+                    <input type="text" class="form-input" id="codeInput" placeholder="请输入验证码">
                     <button class="code-btn">获取验证码</button>
                 </div>
+                <div class="error-message" id="codeError"></div>
                 <button class="login-button">登录</button>
             </div>
             <div class="login-links">
@@ -467,21 +459,142 @@
     </div>
 
     <script>
-        // 登录弹窗交互
         const loginTabs = document.querySelectorAll('.login-tab');
-        const passwordInput = document.querySelector('.password-input');
+        const passwordInput = document.querySelector('.password-input').parentElement;
         const codeInput = document.querySelector('.code-input');
         const eyeBtn = document.querySelector('.eye-btn');
         const passwordField = document.querySelector('.password-input .form-input');
         const phoneField = document.querySelector('.login-form .form-input');
         const closeBtn = document.getElementById('closeBtn');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInputEl = document.getElementById('passwordInput');
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
 
-        // 关闭弹窗
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        const usernameRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{}|;:,.<>?]{1,20}$/;
+        const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{}|;:,.<>?]{1,20}$/;
+        const codeRegex = /^[a-zA-Z0-9]+$/;
+
+        const codeInputEl = document.getElementById('codeInput');
+        const codeError = document.getElementById('codeError');
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.classList.add('show');
+        }
+
+        function hideError(element) {
+            element.classList.remove('show');
+        }
+
+        function validateUsername(value) {
+            hideError(usernameError);
+            usernameInput.classList.remove('error');
+
+            if (!value.trim()) {
+                return true;
+            }
+
+            if (phoneRegex.test(value)) {
+                return true;
+            }
+
+            if (value.length < 4) {
+                showError(usernameError, '账号长度不能少于4个字符');
+                usernameInput.classList.add('error');
+                return false;
+            }
+
+            if (value.length > 20) {
+                showError(usernameError, '账号长度不能超过20个字符');
+                usernameInput.classList.add('error');
+                return false;
+            }
+
+            if (!usernameRegex.test(value)) {
+                showError(usernameError, '账号只能输入数字、字母或符号');
+                usernameInput.classList.add('error');
+                return false;
+            }
+
+            return true;
+        }
+
+        function validatePassword(value) {
+            hideError(passwordError);
+            passwordInputEl.classList.remove('error');
+
+            if (!value.trim()) {
+                return true;
+            }
+
+            if (value.length < 4) {
+                showError(passwordError, '密码长度不能少于4个字符');
+                passwordInputEl.classList.add('error');
+                return false;
+            }
+
+            if (value.length > 20) {
+                showError(passwordError, '密码长度不能超过20个字符');
+                passwordInputEl.classList.add('error');
+                return false;
+            }
+
+            if (!passwordRegex.test(value)) {
+                showError(passwordError, '密码只能输入数字、字母或符号');
+                passwordInputEl.classList.add('error');
+                return false;
+            }
+
+            return true;
+        }
+
+        function validateCode(value) {
+            hideError(codeError);
+            codeInputEl.classList.remove('error');
+
+            if (!value.trim()) {
+                return true;
+            }
+
+            if (!codeRegex.test(value)) {
+                showError(codeError, '验证码只能输入数字和字母');
+                codeInputEl.classList.add('error');
+                return false;
+            }
+
+            return true;
+        }
+
+        usernameInput.addEventListener('blur', function() {
+            validateUsername(this.value);
+        });
+
+        usernameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[\u4e00-\u9fa5]/g, '');
+        });
+
+        passwordInputEl.addEventListener('blur', function() {
+            validatePassword(this.value);
+        });
+
+        passwordInputEl.addEventListener('input', function() {
+            this.value = this.value.replace(/[\u4e00-\u9fa5]/g, '');
+        });
+
+        codeInputEl.addEventListener('blur', function() {
+            validateCode(this.value);
+        });
+
+        codeInputEl.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+        });
+
         closeBtn.addEventListener('click', () => {
             console.log('登录弹窗已关闭');
         });
 
-        // 登录方式切换
         loginTabs.forEach((tab, index) => {
             tab.addEventListener('click', () => {
                 loginTabs.forEach(t => t.classList.remove('active'));
@@ -490,7 +603,7 @@
                 if (index === 0) {
                     passwordInput.style.display = 'block';
                     codeInput.style.display = 'none';
-                    phoneField.placeholder = '请输入手机号/用户名';
+                    phoneField.placeholder = '请输入手机号/账号';
                 } else {
                     passwordInput.style.display = 'none';
                     codeInput.style.display = 'flex';
@@ -499,7 +612,6 @@
             });
         });
 
-        // 密码显示/隐藏
         eyeBtn.addEventListener('click', function() {
             const eyeIcon = this.querySelector('.eye-icon');
             const eyeOffIcon = this.querySelector('.eye-off-icon');
@@ -515,7 +627,6 @@
             }
         });
 
-        // 获取验证码按钮
         const codeBtn = document.querySelector('.code-btn');
         let countdownInterval = null;
 
@@ -539,17 +650,66 @@
             }, 1000);
         });
 
-        // 登录按钮点击事件
         document.querySelector('.login-button').addEventListener('click', function() {
+            const activeTab = document.querySelector('.login-tab.active');
+            const isPasswordLogin = activeTab.textContent === '密码登录';
+
+            if (isPasswordLogin) {
+                const username = usernameInput.value.trim();
+                const password = passwordInputEl.value.trim();
+
+                if (!username) {
+                    showError(usernameError, '请输入账号');
+                    usernameInput.classList.add('error');
+                    return;
+                }
+
+                if (!password) {
+                    showError(passwordError, '请输入密码');
+                    passwordInputEl.classList.add('error');
+                    return;
+                }
+
+                const isUsernameValid = validateUsername(username);
+                const isPasswordValid = validatePassword(password);
+
+                if (!isUsernameValid || !isPasswordValid) {
+                    return;
+                }
+            } else {
+                const phone = phoneField.value.trim();
+                const code = codeInputEl.value.trim();
+
+                if (!phone) {
+                    showError(usernameError, '请输入手机号');
+                    phoneField.classList.add('error');
+                    return;
+                }
+
+                if (!phoneRegex.test(phone)) {
+                    showError(usernameError, '请输入正确的手机号');
+                    phoneField.classList.add('error');
+                    return;
+                }
+
+                if (!code) {
+                    showError(codeError, '请输入验证码');
+                    codeInputEl.classList.add('error');
+                    return;
+                }
+
+                if (!validateCode(code)) {
+                    return;
+                }
+            }
+
             window.parent.postMessage({ type: 'LOGIN_SUCCESS' }, '*');
         });
         
-        // 关闭按钮点击事件
         document.querySelector('.close-btn').addEventListener('click', function() {
             window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*');
         });
 
-        // 注册账号链接点击事件
         const registerLink = document.getElementById('registerLink');
         if (registerLink) {
             registerLink.addEventListener('click', function(e) {
@@ -558,7 +718,6 @@
             });
         }
         
-        // 处理来自父页面的消息
         window.addEventListener('message', (event) => {
             if (event.data.type === 'MODAL_LOADED') {
                 console.log('登录弹窗已加载');
