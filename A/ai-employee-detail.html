@@ -112,7 +112,7 @@
             min-height: 0;
         }
         .left-panel {
-            flex: 6;
+            flex: 5;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -123,8 +123,34 @@
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 0;
             min-width: 300px;
+            min-height: 0;
+        }
+        .resizer {
+            height: 8px;
+            background: #e5e7eb;
+            cursor: row-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .resizer:hover {
+            background: #cbd5e1;
+        }
+        .resizer::before {
+            content: '';
+            width: 24px;
+            height: 4px;
+            background: #94a3b8;
+            border-radius: 2px;
+        }
+        #topic-card {
+            min-height: 0;
+        }
+        #chat-card {
+            min-height: 0;
         }
         .section-header {
             display: flex;
@@ -421,8 +447,275 @@
         .recent-chat:hover {
             background: #f8fafc;
         }
+        .topic-test-item {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .topic-test-item:hover {
+            background: #f8fafc;
+        }
+        .topic-test-item:last-child {
+            border-bottom: none;
+        }
+        .topic-test-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .topic-test-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #64748b;
+            flex-wrap: wrap;
+        }
+        .topic-test-model {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        .topic-test-score {
+            color: #f59e0b;
+            font-weight: 500;
+        }
+        .topic-test-time {
+            color: #94a3b8;
+            line-height: 1.3;
+        }
         .recent-chat:last-child {
             border-bottom: none;
+        }
+        .topic-test-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            table-layout: fixed;
+        }
+        .topic-test-table th {
+            background: #f8fafc;
+            padding: 10px 8px;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+        .topic-test-table th:nth-child(1) { width: 50%; text-align: left; }
+        .topic-test-table th:nth-child(2) { width: 15%; text-align: center; }
+        .topic-test-table th:nth-child(3) { width: 15%; text-align: center; }
+        .topic-test-table th:nth-child(4) { width: 30%; text-align: left; }
+        .topic-test-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #64748b;
+            vertical-align: middle;
+            overflow: hidden;
+        }
+        .topic-test-table td:nth-child(1) {
+            white-space: normal;
+            line-height: 1.5;
+            height: 48px;
+        }
+        .topic-name {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.5;
+        }
+        .topic-test-table td:nth-child(2),
+        .topic-test-table td:nth-child(3) {
+            white-space: nowrap;
+            text-align: center;
+        }
+        .topic-test-table td:nth-child(4) {
+            white-space: normal;
+            line-height: 1.4;
+        }
+        .topic-test-table tbody tr:hover {
+            background: #fafafa;
+        }
+        .topic-test-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .message {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 8px;
+        }
+        .user-message {
+            justify-content: flex-end;
+        }
+        .ai-message {
+            justify-content: flex-start;
+        }
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .user-message .message-avatar {
+            display: none;
+        }
+        .ai-message .message-avatar {
+            background: #10b981;
+            color: white;
+            margin-right: 8px;
+        }
+        .message-content {
+            max-width: 75%;
+        }
+        .message-text {
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .user-message .message-text {
+            background: #3b82f6;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .ai-message .message-text {
+            background: #f1f5f9;
+            color: #374151;
+            border-bottom-left-radius: 4px;
+        }
+        .message-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 4px;
+        }
+        .message-time {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-align: right;
+        }
+        .chat-input-wrapper {
+            background: white;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .chat-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 0;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: transparent;
+        }
+        .chat-input::placeholder {
+            color: #94a3b8;
+        }
+        .chat-bottom-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+        }
+        .question-select,
+        .model-select {
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .question-select:focus,
+        .model-select:focus {
+            border-color: #3b82f6;
+        }
+        .send-btn-circle {
+            width: 40px;
+            height: 40px;
+            background: #06b6d4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        .send-btn-circle:hover {
+            background: #0891b2;
+        }
+        .rating-panel {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .rating-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .rating-stars {
+            display: flex;
+            gap: 4px;
+        }
+        .star {
+            font-size: 20px;
+            color: #e5e7eb;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star:hover,
+        .star.active {
+            color: #fbbf24;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            border-bottom-left-radius: 4px;
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 80%, 100% { opacity: 0.4; }
+            40% { opacity: 1; }
         }
         .chat-header {
             display: flex;
@@ -520,13 +813,17 @@
         }
         .steps-nav {
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-around;
-            padding: 12px 16px;
+            padding: 8px 12px;
             background: white;
             border-bottom: 1px solid #e5e7eb;
-            flex-wrap: wrap;
-            gap: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            gap: 4px;
+        }
+        .steps-nav::-webkit-scrollbar {
+            display: none;
         }
         .step-item {
             display: flex;
@@ -534,10 +831,11 @@
             align-items: center;
             gap: 4px;
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
             transition: all 0.2s ease;
-            min-width: 70px;
+            min-width: 56px;
+            flex-shrink: 0;
         }
         .step-item:hover {
             background: #f8fafc;
@@ -554,40 +852,58 @@
             font-weight: 600;
         }
         .step-number {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: #e2e8f0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #64748b;
             transition: all 0.2s ease;
         }
         .step-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #64748b;
             transition: all 0.2s ease;
         }
         .step-divider {
-            width: 24px;
+            width: 16px;
             height: 2px;
             background: #e2e8f0;
-            margin: 0 4px;
+            margin: 0 2px;
             flex-shrink: 0;
+        }
+        .empty-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
         }
         .steps-content {
             flex: 1;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            max-height: calc(100vh - 280px);
         }
         .step-panel {
             display: none;
-            height: 100%;
+            flex: 1;
+            overflow: hidden;
+            flex-direction: column;
+            min-height: 0;
         }
         .step-panel.active {
-            display: block;
+            display: flex;
+        }
+        .step-panel .section-content {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
         }
         .function-table {
             width: 100%;
@@ -655,14 +971,6 @@
             <h1 class="page-title">AI员工详情</h1>
             <p class="page-subtitle">查看AI员工详细信息和相关话题</p>
         </div>
-        <div style="display: flex; gap: 8px;">
-            <button class="btn btn-outline" onclick="goBack()">
-                <i class="fa fa-arrow-left"></i> 返回列表
-            </button>
-            <button class="btn btn-primary">
-                <i class="fa fa-rocket"></i> 开始对话
-            </button>
-        </div>
     </header>
 
     <nav class="breadcrumb">
@@ -681,7 +989,7 @@
                     </button>
                 </div>
                 <div class="employee-card">
-                    <div class="employee-badge">通用专家</div>
+                    <div class="employee-badge">行业型</div>
                     <div class="employee-header">
                         <img src="images/tx-1.png" class="employee-avatar" alt="员工头像">
                         <div class="employee-info">
@@ -692,7 +1000,7 @@
                                 <span class="tag skill">决策支持</span>
                                 <span class="tag industry">企业服务</span>
                             </div>
-                            <div class="employee-desc">具备丰富的行业经验和专业知识，帮助企业制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
+                            <div class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
                     <div class="employee-footer">
                         <div style="display: flex; align-items: center; gap: 20px;">
                             <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
@@ -733,16 +1041,21 @@
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="5">
                             <span class="step-number">6</span>
-                            <span class="step-label">对齐</span>
+                            <span class="step-label">约束</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="6">
                             <span class="step-number">7</span>
-                            <span class="step-label">检查</span>
+                            <span class="step-label">对齐</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="7">
                             <span class="step-number">8</span>
+                            <span class="step-label">检查</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="8">
+                            <span class="step-number">9</span>
                             <span class="step-label">反馈</span>
                         </div>
                     </div>
@@ -762,15 +1075,15 @@
                                     <tbody>
                                         <tr>
                                             <td>能力定位</td>
-                                            <td>企业战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。</td>
+                                            <td>你战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。</td>
                                         </tr>
                                         <tr>
                                             <td>核心职能</td>
-                                            <td>为企业提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助企业明确发展方向和业务策略。</td>
+                                            <td>为你提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助你明确发展方向和业务策略。</td>
                                         </tr>
                                         <tr>
                                             <td>提示词</td>
-                                            <td>作为一名资深的企业战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。</td>
+                                            <td>作为一名资深的你战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -791,15 +1104,15 @@
                                     <tbody>
                                         <tr>
                                             <td>知识范围</td>
-                                            <td>经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、企业管理</td>
+                                            <td>经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、你管理</td>
                                         </tr>
                                         <tr>
                                             <td>使用条件</td>
-                                            <td>适用于企业日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景</td>
+                                            <td>适用于你日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景</td>
                                         </tr>
                                         <tr>
                                             <td>提示词</td>
-                                            <td>作为一名专业的企业管理知识顾问，<br>请基于通用商业知识为我解答以下问题：</td>
+                                            <td>作为一名专业的你管理知识顾问，<br>请基于通用商业知识为我解答以下问题：</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -820,7 +1133,7 @@
                                     <tbody>
                                         <tr>
                                             <td>知识来源</td>
-                                            <td>行业研究报告、专业数据库、学术论文、<br>企业内部文档、行业专家访谈、<br>市场调研数据、竞品分析报告</td>
+                                            <td>行业研究报告、专业数据库、学术论文、<br>你内部文档、行业专家访谈、<br>市场调研数据、竞品分析报告</td>
                                         </tr>
                                         <tr>
                                             <td>调用流程</td>
@@ -897,7 +1210,7 @@
                                             </tr>
                                             <tr>
                                                 <td>提示词</td>
-                                                <td>作为一名专业的企业顾问，<br>请严格遵循以下规则提供服务：<br><br>• 确保信息来源可靠<br>• 分析过程科学严谨<br>• 建议方案切实可行<br>• 遵守法律法规要求<br><br>请针对我的问题提供专业、全面的分析和建议。</td>
+                                                <td>作为一名专业的你顾问，<br>请严格遵循以下规则提供服务：<br><br>• 确保信息来源可靠<br>• 分析过程科学严谨<br>• 建议方案切实可行<br>• 遵守法律法规要求<br><br>请针对我的问题提供专业、全面的分析和建议。</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -905,6 +1218,37 @@
                             </div>
                         </div>
                         <div class="step-panel" id="step-5">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-ban"></i> 约束</div>
+                            </div>
+                            <div class="section-content">
+                                <div class="scrollable-table">
+                                    <table class="function-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>能力约束</td>
+                                                <td>• 仅能基于已训练知识进行回答<br>• 无法访问实时数据和外部链接<br>• 不具备执行实际操作的能力<br>• 复杂计算需借助计算器工具</td>
+                                            </tr>
+                                            <tr>
+                                                <td>内容约束</td>
+                                                <td>• 不生成违法违规内容<br>• 不涉及敏感政治话题<br>• 不提供医疗、法律等专业建议<br>• 不参与恶意对话和攻击</td>
+                                            </tr>
+                                            <tr>
+                                                <td>输出约束</td>
+                                                <td>• 回答长度控制在合理范围<br>• 避免过度展开和冗余内容<br>• 保持回答结构清晰有序<br>• 必要时提示信息局限性</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-6">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-align-center"></i> 对齐</div>
                             </div>
@@ -920,7 +1264,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>战略目标对齐</td>
-                                                <td>• 与企业长期发展战略保持一致<br>• 支持企业核心价值创造<br>• 助力实现战略目标和愿景<br>• 确保建议与战略方向匹配</td>
+                                                <td>• 与你长期发展战略保持一致<br>• 支持你核心价值创造<br>• 助力实现战略目标和愿景<br>• 确保建议与战略方向匹配</td>
                                             </tr>
                                             <tr>
                                                 <td>业务目标对齐</td>
@@ -935,7 +1279,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-6">
+                        <div class="step-panel" id="step-7">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-check-circle"></i> 检查</div>
                             </div>
@@ -966,7 +1310,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-7">
+                        <div class="step-panel" id="step-8">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-comments"></i> 反馈</div>
                             </div>
@@ -1002,172 +1346,124 @@
             </div>
         </div>
 
-        <div class="right-panel">
-            <div class="card">
+        <div class="right-panel" id="right-panel">
+            <div class="card" id="topic-card" style="flex: 1;">
                 <div class="section-header">
-                    <div class="section-title"><i class="fa fa-comment-o"></i> 快捷操作</div>
+                    <div class="section-title"><i class="fa fa-list-alt"></i> 话题测试记录</div>
                 </div>
-                <div class="section-content">
-                    <div class="quick-actions">
-                        <button class="action-btn">
-                            <i class="fa fa-file-text"></i>
-                            <span>生成报告</span>
-                        </button>
-                        <button class="action-btn">
-                            <i class="fa fa-bar-chart"></i>
-                            <span>数据分析</span>
-                        </button>
-                        <button class="action-btn">
-                            <i class="fa fa-pencil"></i>
-                            <span>文档撰写</span>
-                        </button>
-                        <button class="action-btn">
-                            <i class="fa fa-question-circle"></i>
-                            <span>问题解答</span>
-                        </button>
-                    </div>
+                <div class="section-content" style="padding: 8px; overflow-y: auto;">
+                    <table class="topic-test-table">
+                        <thead>
+                            <tr>
+                                <th>话题</th>
+                                <th>模型</th>
+                                <th>评价</th>
+                                <th>测试时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="topic-name">如何制定你年度如何制定你年度如何制定你年度战略规划与市场拓展策略分析报告如何制定你年度战略规划与市场拓展策略分析报告</div></td>
+                                <td>GPT-4</td>
+                                <td>5星</td>
+                                <td>2026-05-05<br>10:10:10</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">市场竞争分析方法论与竞品分析实战指南</div></td>
+                                <td>Claude-3</td>
+                                <td>4星</td>
+                                <td>2026-05-06<br>14:25:30</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">你数字化转型路径规划与实施策略</div></td>
+                                <td>文心一言</td>
+                                <td>5星</td>
+                                <td>2026-05-07<br>09:15:45</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">新兴市场进入策略分析与风险评估报告</div></td>
+                                <td>通义千问</td>
+                                <td>4星</td>
+                                <td>2026-05-08<br>16:30:20</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">团队效能提升方法与组织架构优化方案</div></td>
+                                <td>GPT-4</td>
+                                <td>5星</td>
+                                <td>2026-05-09<br>11:45:00</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">投资决策评估框架与财务分析模型构建</div></td>
+                                <td>Claude-3</td>
+                                <td>5星</td>
+                                <td>2026-05-10<br>08:20:15</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">供应链优化策略与成本控制方案设计</div></td>
+                                <td>文心一言</td>
+                                <td>4星</td>
+                                <td>2026-05-11<br>13:55:40</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">品牌营销策略与用户增长运营方案</div></td>
+                                <td>通义千问</td>
+                                <td>5星</td>
+                                <td>2026-05-12<br>15:10:25</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">产品创新方法论与敏捷开发流程优化</div></td>
+                                <td>GPT-4</td>
+                                <td>5星</td>
+                                <td>2026-05-13<br>10:35:50</td>
+                            </tr>
+                            <tr>
+                                <td><div class="topic-name">客户服务体验提升与满意度分析报告</div></td>
+                                <td>Claude-3</td>
+                                <td>4星</td>
+                                <td>2026-05-14<br>17:20:35</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="section-header">
-                    <div class="section-title"><i class="fa fa-hashtag"></i> 热门话题</div>
-                    <button style="margin-left: auto; font-size: 12px; color: #3b82f6; background: none; border: none; cursor: pointer;">查看全部</button>
-                </div>
-                <div class="section-content" style="padding: 0; max-height: 320px; overflow-y: auto;">
-                    <ul class="topic-list">
-                        <li class="topic-item">
-                            <div class="topic-avatar"><i class="fa fa-lightbulb-o"></i></div>
-                            <div class="topic-content">
-                                <div class="topic-title">如何制定企业年度战略规划</div>
-                                <div class="topic-meta">
-                                    <span><i class="fa fa-eye"></i> 1.2k</span>
-                                    <span><i class="fa fa-comment"></i> 86</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic-item">
-                            <div class="topic-avatar"><i class="fa fa-line-chart"></i></div>
-                            <div class="topic-content">
-                                <div class="topic-title">市场竞争分析方法论</div>
-                                <div class="topic-meta">
-                                    <span><i class="fa fa-eye"></i> 890</span>
-                                    <span><i class="fa fa-comment"></i> 52</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic-item">
-                            <div class="topic-avatar"><i class="fa fa-briefcase"></i></div>
-                            <div class="topic-content">
-                                <div class="topic-title">企业数字化转型路径</div>
-                                <div class="topic-meta">
-                                    <span><i class="fa fa-eye"></i> 1.5k</span>
-                                    <span><i class="fa fa-comment"></i> 124</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic-item">
-                            <div class="topic-avatar"><i class="fa fa-trending-up"></i></div>
-                            <div class="topic-content">
-                                <div class="topic-title">新兴市场进入策略分析</div>
-                                <div class="topic-meta">
-                                    <span><i class="fa fa-eye"></i> 670</span>
-                                    <span><i class="fa fa-comment"></i> 38</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic-item">
-                            <div class="topic-avatar"><i class="fa fa-users"></i></div>
-                            <div class="topic-content">
-                                <div class="topic-title">团队效能提升方法</div>
-                                <div class="topic-meta">
-                                    <span><i class="fa fa-eye"></i> 920</span>
-                                    <span><i class="fa fa-comment"></i> 65</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic-item">
-                            <div class="topic-avatar"><i class="fa fa-money"></i></div>
-                            <div class="topic-content">
-                                <div class="topic-title">投资决策评估框架</div>
-                                <div class="topic-meta">
-                                    <span><i class="fa fa-eye"></i> 780</span>
-                                    <span><i class="fa fa-comment"></i> 45</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <div class="resizer" id="resizer"></div>
 
-            <div class="card">
+            <div class="card" id="chat-card" style="flex: 1; display: flex; flex-direction: column;">
                 <div class="section-header">
-                    <div class="section-title"><i class="fa fa-history"></i> 最近对话</div>
-                    <button style="margin-left: auto; font-size: 12px; color: #3b82f6; background: none; border: none; cursor: pointer;">清空记录</button>
+                    <div class="section-title"><i class="fa fa-comment-o"></i> 聊天</div>
                 </div>
-                <div class="section-content" style="padding: 0; max-height: 240px; overflow-y: auto;">
-                    <div class="recent-chat">
-                        <div class="chat-header">
-                            <span class="chat-name">张三 <span class="online-dot"></span></span>
-                            <span class="chat-time">10分钟前</span>
+                <div class="section-content" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column;" id="chat-messages">
+                    <div class="message ai-message">
+                        <div class="message-avatar">AI</div>
+                        <div class="message-content">
+                            <div class="message-name">全局顾问</div>
+                            <div class="message-text">您好！我是您的全局顾问，请问有什么可以帮您的？</div>
+                            <div class="message-time">05-15 10:40</div>
                         </div>
-                        <div class="chat-preview">关于Q3季度的市场拓展策略，您有什么建议吗...</div>
-                    </div>
-                    <div class="recent-chat">
-                        <div class="chat-header">
-                            <span class="chat-name">李四</span>
-                            <span class="chat-time">1小时前</span>
-                        </div>
-                        <div class="chat-preview">能否帮我分析一下竞争对手的优劣势？</div>
-                    </div>
-                    <div class="recent-chat">
-                        <div class="chat-header">
-                            <span class="chat-name">王五 <span class="online-dot"></span></span>
-                            <span class="chat-time">3小时前</span>
-                        </div>
-                        <div class="chat-preview">公司下一步的战略方向应该如何规划...</div>
-                    </div>
-                    <div class="recent-chat">
-                        <div class="chat-header">
-                            <span class="chat-name">赵六</span>
-                            <span class="chat-time">昨天</span>
-                        </div>
-                        <div class="chat-preview">市场调研报告已收到，非常感谢您的帮助！</div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="section-header">
-                    <div class="section-title"><i class="fa fa-thumbs-up"></i> 用户评价</div>
-                </div>
-                <div class="section-content" style="padding: 12px;">
-                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
-                        <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">4.9</div>
-                        <div style="color: #f59e0b;">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <span style="font-size: 13px; color: #94a3b8; margin-left: 8px;">共 328 条评价</span>
-                    </div>
-                    <div style="background: #f8fafc; border-radius: 6px; padding: 12px; margin-bottom: 8px;">
-                        <div style="font-size: 13px; color: #64748b; line-height: 1.6;">
-                            "非常专业的AI顾问，提供的战略建议很有价值，帮助我们理清了发展方向。"
-                        </div>
-                        <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">
-                            —— 某科技公司CEO
-                        </div>
-                    </div>
-                    <div style="background: #f8fafc; border-radius: 6px; padding: 12px;">
-                        <div style="font-size: 13px; color: #64748b; line-height: 1.6;">
-                            "响应速度很快，分析报告质量很高，已经是第三次使用了！"
-                        </div>
-                        <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">
-                            —— 某咨询公司项目经理
-                        </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" class="chat-input" placeholder="输入你的问题..." />
+                    <div class="chat-bottom-bar">
+                        <select id="question-select" class="question-select">
+                            <option value="">标准题库</option>
+                            <option value="strategy">企业战略规划咨询</option>
+                            <option value="market">市场竞争分析报告</option>
+                            <option value="digital">数字化转型方案</option>
+                            <option value="investment">投资决策评估</option>
+                            <option value="team">团队效能提升建议</option>
+                            <option value="customer">客户服务满意度分析</option>
+                        </select>
+                        <select id="model-select" class="model-select">
+                            <option value="gpt4">GPT-4</option>
+                            <option value="claude3">Claude-3</option>
+                            <option value="wenxin">文心一言</option>
+                            <option value="tongyi">通义千问</option>
+                        </select>
+                        <button id="send-btn" class="send-btn-circle">
+                            <i class="fa fa-arrow-up"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1198,6 +1494,214 @@
                     document.getElementById('step-' + stepIndex).classList.add('active');
                 });
             });
+        });
+        
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const modelSelect = document.getElementById('model-select');
+        const questionSelect = document.getElementById('question-select');
+
+        // 标准题库内容映射
+        const questionBank = {
+            strategy: '请帮我制定一份企业年度战略规划方案，包括市场分析、目标设定和执行计划。',
+            market: '请分析当前市场竞争态势，并给出我们公司的差异化竞争策略建议。',
+            digital: '请为我们公司制定一份数字化转型方案，包括实施步骤和预期效果。',
+            investment: '请评估以下投资项目的可行性，并给出投资建议和风险提示。',
+            team: '请分析我们团队目前存在的问题，并给出提升团队效能的具体建议。',
+            customer: '请分析我们的客户服务数据，并给出提升客户满意度的改进方案。'
+        };
+        
+        const aiResponses = {
+            strategy: '你战略规划需要综合考虑内外部环境分析、资源配置、目标设定和执行监控四个维度。首先进行PEST分析了解宏观环境，然后通过SWOT分析明确竞争优势，制定3-5年的中长期发展目标，并建立KPI体系进行跟踪评估。',
+            market: '市场竞争分析应从竞争对手识别、竞争态势评估、差异化定位三个层面展开。建议使用波特五力模型分析行业竞争强度，通过竞品对比分析找出自身优势，并制定针对性的市场进入策略。',
+            digital: '数字化转型是你提升竞争力的关键。建议从业务流程数字化、数据资产化、组织能力升级三个方面入手，优先选择高价值、低复杂度的场景进行试点，逐步推进全面数字化转型。',
+            investment: '投资决策评估需要综合考虑投资回报率、风险评估、现金流分析和战略匹配度。建议建立量化评估模型，进行敏感性分析，并设置明确的投资门槛和退出机制，确保投资决策的科学性。',
+            team: '团队效能提升需要优化组织架构、完善激励机制、加强能力建设和促进知识共享。建议通过OKR目标管理体系对齐团队目标，建立人才梯队培养计划，并营造开放协作的你文化氛围。',
+            default: '感谢您的提问！我会根据您选择的模型为您提供专业的分析和建议。'
+        };
+        
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? 'Me' : 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            
+            if (!isUser) {
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'message-name';
+                nameDiv.textContent = '全局顾问';
+                content.appendChild(nameDiv);
+            }
+            
+            const textDiv = document.createElement('div');
+            textDiv.className = 'message-text';
+            textDiv.textContent = text;
+            content.appendChild(textDiv);
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            timeDiv.textContent = `${month}-${day} ${hours}:${minutes}`;
+            content.appendChild(timeDiv);
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return messageDiv;
+        }
+        
+        function addTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai-message';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return typingDiv;
+        }
+        
+        function addRatingPanel(messageElement) {
+            const ratingPanel = document.createElement('div');
+            ratingPanel.className = 'rating-panel';
+            ratingPanel.innerHTML = `
+                <span class="rating-label">评价：</span>
+                <div class="rating-stars">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+            `;
+            messageElement.appendChild(ratingPanel);
+            
+            const stars = ratingPanel.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    stars.forEach(s => s.classList.remove('active'));
+                    for (let i = 0; i < rating; i++) {
+                        stars[i].classList.add('active');
+                    }
+                });
+            });
+        }
+        
+        function typeWriter(element, text, callback) {
+            let index = 0;
+            element.textContent = '';
+            const speed = 50;
+            
+            function type() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+        
+        function sendMessage() {
+            const model = modelSelect.value;
+            const userInput = chatInput.value.trim();
+            
+            if (!userInput) return;
+            
+            addMessage(userInput, true);
+            chatInput.value = '';
+            
+            const typingIndicator = addTypingIndicator();
+            
+            setTimeout(() => {
+                typingIndicator.remove();
+                
+                const response = aiResponses['default'];
+                
+                const aiMessage = addMessage('', false);
+                const textElement = aiMessage.querySelector('.message-text');
+                
+                typeWriter(textElement, response, function() {
+                    addRatingPanel(aiMessage.querySelector('.message-content'));
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+            }, 800);
+        }
+        
+        // 标准题库选择事件
+        questionSelect.addEventListener('change', function() {
+            const questionKey = this.value;
+            if (questionKey && questionBank[questionKey]) {
+                chatInput.value = questionBank[questionKey];
+                chatInput.focus();
+            }
+        });
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // 可拖动分割线功能
+        const resizer = document.getElementById('resizer');
+        const rightPanel = document.getElementById('right-panel');
+        const topicCard = document.getElementById('topic-card');
+        const chatCard = document.getElementById('chat-card');
+
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.body.style.cursor = 'row-resize';
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+
+            const panelRect = rightPanel.getBoundingClientRect();
+            const panelHeight = panelRect.height;
+            const mouseY = e.clientY - panelRect.top;
+            
+            // 最小高度限制
+            const minHeight = 100;
+            const maxHeight = panelHeight - minHeight - 8; // 8是分割线高度
+            
+            let topicHeight = mouseY - 4; // 4是分割线半高
+            topicHeight = Math.max(minHeight, Math.min(topicHeight, maxHeight));
+            
+            topicCard.style.flex = '0 0 ' + topicHeight + 'px';
+            chatCard.style.flex = '1';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
         });
     </script>
 </body>

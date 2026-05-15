@@ -102,7 +102,7 @@
             padding: 12px;
             display: flex;
             flex-direction: column;
-            overflow-x: auto;
+            overflow-x: hidden;
             overflow-y: auto;
         }
         .tabs-wrapper {
@@ -142,18 +142,18 @@
         }
         .employee-grid {
             flex: 1;
-            padding: 16px;
+            padding: 12px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+            gap: 10px;
             grid-auto-rows: min-content;
             overflow-y: auto;
             min-height: 0;
         }
         .employee-card {
             background: white;
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 6px;
+            padding: 12px;
             border: 1px solid #e5e7eb;
             transition: all 0.2s ease;
             cursor: pointer;
@@ -165,25 +165,25 @@
         }
         .employee-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            font-size: 12px;
+            top: 8px;
+            right: 8px;
+            font-size: 11px;
             color: #64748b;
             background: #e2e2e2;
-            padding: 3px 10px;
-            border-radius: 4px;
+            padding: 2px 8px;
+            border-radius: 3px;
             font-weight: 500;
         }
         .employee-header {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
         .employee-avatar {
-            width: 54px;
-            height: 54px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
             object-fit: cover;
             flex-shrink: 0;
         }
@@ -192,41 +192,39 @@
             min-width: 0;
         }
         .employee-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .employee-id {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: normal;
             color: #94a3b8;
             margin-left: 4px;
         }
         .employee-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            height: 42px;
+            height: 36px;
         }
         .employee-tags {
             display: flex;
-            flex-wrap: nowrap;
-            gap: 6px;
+            flex-wrap: wrap;
+            gap: 4px;
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
         .tag {
-            padding: 3px 8px;
+            padding: 2px 6px;
             background: #f1f5f9;
-            border-radius: 4px;
-            font-size: 12px;
+            border-radius: 3px;
+            font-size: 11px;
             color: #64748b;
         }
         .tag.skill {
@@ -241,26 +239,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 12px;
-            padding-top: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid #f1f5f9;
         }
         .usage-count {
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .usage-count i {
             color: #94a3b8;
         }
         .btn-hire {
-            padding: 4px 14px;
+            padding: 3px 12px;
             background: #3b82f6;
             color: white;
-            border-radius: 4px;
-            font-size: 13px;
+            border-radius: 3px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -351,8 +349,8 @@
             <div class="tabs-wrapper">
                 <div class="tab-item active" data-tab="all" onclick="switchTab('all')">全部</div>
                 <div class="tab-item" data-tab="general" onclick="switchTab('general')">通用型</div>
-                <div class="tab-item" data-tab="expert" onclick="switchTab('expert')">通用专家</div>
-                <div class="tab-item" data-tab="industry" onclick="switchTab('industry')">行业专家</div>
+                <div class="tab-item" data-tab="expert" onclick="switchTab('expert')">通用型</div>
+                <div class="tab-item" data-tab="industry" onclick="switchTab('industry')">行业型</div>
             </div>
 
             <div class="search-bar">
@@ -379,8 +377,8 @@
             </div>
 
             <div class="employee-grid" id="employee-grid">
-                <div class="employee-card">
-                    <div class="employee-badge">通用专家</div>
+                <div class="employee-card" data-name="全局顾问">
+                    <div class="employee-badge">通用型</div>
                     <div class="employee-header">
                         <img src="images/tx-1.png" class="employee-avatar" alt="全局顾问">
                         <div class="employee-info">
@@ -389,18 +387,18 @@
                                 <span class="tag skill">战略规划</span>
                                 <span class="tag skill">商业分析</span>
                                 <span class="tag skill">决策支持</span>
-                                <span class="tag industry">企业服务</span>
+                                <span class="tag industry">你服务</span>
                             </div>
                         </div>
                     </div>
-                    <div class="employee-desc">提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。</div>
+                    <div class="employee-desc">提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('全局顾问')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
+                <div class="employee-card" data-name="我的秘书">
                     <div class="employee-badge">通用型</div>
                     <div class="employee-header">
                         <img src="images/AI-2.png" class="employee-avatar" alt="我的秘书">
@@ -417,12 +415,12 @@
                     <div class="employee-desc">协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>2.8万次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('我的秘书')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
-                    <div class="employee-badge">行业专家</div>
+                <div class="employee-card" data-name="项目经理">
+                    <div class="employee-badge">行业型</div>
                     <div class="employee-header">
                         <img src="images/AI-1.png" class="employee-avatar" alt="项目经理">
                         <div class="employee-info">
@@ -438,12 +436,12 @@
                     <div class="employee-desc">负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>1.2万次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('项目经理')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
-                    <div class="employee-badge">行业专家</div>
+                <div class="employee-card" data-name="销售工程师">
+                    <div class="employee-badge">行业型</div>
                     <div class="employee-header">
                         <img src="images/AI-3.png" class="employee-avatar" alt="销售工程师">
                         <div class="employee-info">
@@ -459,12 +457,12 @@
                     <div class="employee-desc">提供产品技术支持，协助客户选型和方案设计，促进销售达成。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>9800次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('销售工程师')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
-                    <div class="employee-badge">通用专家</div>
+                <div class="employee-card" data-name="方案工程师">
+                    <div class="employee-badge">通用型</div>
                     <div class="employee-header">
                         <img src="images/AI-1.png" class="employee-avatar" alt="方案工程师">
                         <div class="employee-info">
@@ -480,11 +478,11 @@
                     <div class="employee-desc">根据客户需求设计技术方案，提供专业的技术咨询和解决方案。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>7500次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('方案工程师')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
+                <div class="employee-card" data-name="产品经理">
                     <div class="employee-badge">通用型</div>
                     <div class="employee-header">
                         <img src="images/AI-2.png" class="employee-avatar" alt="产品经理">
@@ -501,12 +499,12 @@
                     <div class="employee-desc">负责产品规划、需求分析和迭代管理，推动产品持续优化。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>1.4万次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('产品经理')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
-                    <div class="employee-badge">行业专家</div>
+                <div class="employee-card" data-name="售后工程师">
+                    <div class="employee-badge">行业型</div>
                     <div class="employee-header">
                         <img src="images/tx-2.png" class="employee-avatar" alt="售后工程师">
                         <div class="employee-info">
@@ -522,12 +520,12 @@
                     <div class="employee-desc">提供产品售后技术支持，解决客户使用过程中遇到的问题。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>2.1万次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('售后工程师')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
 
-                <div class="employee-card">
-                    <div class="employee-badge">行业专家</div>
+                <div class="employee-card" data-name="文件管理员">
+                    <div class="employee-badge">行业型</div>
                     <div class="employee-header">
                         <img src="images/AI-4.png" class="employee-avatar" alt="文件管理员">
                         <div class="employee-info">
@@ -543,7 +541,7 @@
                     <div class="employee-desc">负责文件分类、存储管理和检索服务，确保文件安全有序。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>3.2万次使用</div>
-                        <div class="btn-hire" onclick="hireEmployee('文件管理员')">查看</div>
+                        <div class="btn-hire">查看</div>
                     </div>
                 </div>
             </div>
@@ -580,14 +578,14 @@
 
     <script>
         const employees = [
-            { id: 1, name: '全局顾问', avatar: 'images/tx-1.png', type: 'expert', typeLabel: '通用专家', desc: '提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。', tags: ['战略规划', '商业分析', '决策支持'], industry: '企业服务', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
+            { id: 1, name: '全局顾问', avatar: 'images/tx-1.png', type: 'expert', typeLabel: '通用型', desc: '提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。', tags: ['战略规划', '商业分析', '决策支持'], industry: '你服务', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
             { id: 2, name: '我的秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
-            { id: 3, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业专家', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
-            { id: 4, name: '销售工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业专家', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
-            { id: 5, name: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '通用专家', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
+            { id: 3, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
+            { id: 4, name: '销售工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
+            { id: 5, name: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '通用型', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
             { id: 6, name: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119 },
-            { id: 7, name: '售后工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业专家', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
-            { id: 8, name: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业专家', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89 }
+            { id: 7, name: '售后工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
+            { id: 8, name: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业型', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89 }
         ];
 
         function switchTab(tab) {
@@ -639,7 +637,7 @@
             grid.innerHTML = empList.map(emp => {
                 const usageCount = emp.tasks >= 1000 ? (emp.tasks / 1000).toFixed(1) + '万' : emp.tasks;
                 return `
-                    <div class="employee-card">
+                    <div class="employee-card" data-name="${emp.name}">
                         <div class="employee-badge">${emp.typeLabel}</div>
                         <div class="employee-header">
                             <img src="${emp.avatar}" class="employee-avatar" alt="${emp.name}">
@@ -654,11 +652,20 @@
                         <div class="employee-desc">${emp.desc}</div>
                         <div class="employee-footer">
                             <div class="usage-count"><i class="fa fa-bar-chart"></i>${usageCount}次使用</div>
-                            <div class="btn-hire" onclick="hireEmployee('${emp.name}')">查看</div>
+                            <div class="btn-hire">查看</div>
                         </div>
                     </div>
                 `;
             }).join('');
+            
+            // 添加点击事件监听
+            const cards = grid.querySelectorAll('.employee-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    hireEmployee(name);
+                });
+            });
         }
 
         function getAvatarGradient(type) {
@@ -680,12 +687,23 @@
         }
 
         function hireEmployee(name) {
-            alert(`已选择雇佣：${name}`);
+            window.location.href = 'ai-employee-detail.html';
         }
 
         function addAIEmployee() {
             alert('添加AI员工功能开发中...');
         }
+
+        // 页面加载完成后为所有员工卡片添加点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.employee-card[data-name]');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    hireEmployee(name);
+                });
+            });
+        });
     </script>
 </body>
 </html>
