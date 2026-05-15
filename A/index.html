@@ -1043,6 +1043,18 @@
                         <span>组织角色</span>
                     </div> -->
                 </div>
+                
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('ai-employee-submenu')">
+                    <i class="fa fa-user-circle"></i>
+                    <span>AI员工管理</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="ai-employee-submenu" class="submenu">
+                    <div class="submenu-item" data-module="ai-employee" onclick="showModule('ai-employee'); event.stopPropagation()">
+                        <i class="fa fa-user-circle"></i>
+                        <span>AI员工</span>
+                    </div>
+                </div>
             </div>
             
             <div class="nav-divider"></div>
@@ -1141,6 +1153,10 @@
 
                 <div id="data-perm-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
                     <iframe src="data-perm.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+
+                <div id="ai-employee-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="ai-employee.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
                 </div>
             </div>
         </main>
@@ -1387,7 +1403,8 @@
             'data-perm': { name: '组织类型', icon: 'fa-database' },
             'field-perm': { name: '组织角色', icon: 'fa-columns' },
             'user-list': { name: '用户管理', icon: 'fa-user' },
-            'org-list': { name: '组织管理', icon: 'fa-building' }
+            'org-list': { name: '组织管理', icon: 'fa-building' },
+            'ai-employee': { name: 'AI员工', icon: 'fa-user-circle' }
         };
 
         function showModule(moduleName) {

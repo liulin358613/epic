@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AI员工详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e5e7eb;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #eff6ff;
+        }
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: scale(1.1);
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .page-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .left-panel {
+            flex: 6;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+        }
+        .right-panel {
+            flex: 4;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 300px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i {
+            color: #3b82f6;
+        }
+        .section-content {
+            padding: 16px;
+        }
+        .employee-card {
+            background: white;
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .employee-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 12px;
+            color: #64748b;
+            background: #e2e2e2;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .employee-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .employee-avatar {
+            width: 120px;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .employee-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .employee-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+        .employee-badge {
+            display: inline-flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .badge {
+            padding: 3px 10px;
+            font-size: 12px;
+            color: #64748b;
+            background: #e2e2e2;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge-type-general {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .badge-type-expert {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .badge-type-industry {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .badge-status {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .employee-desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            display: -webkit-box;
+        }
+        .employee-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .usage-count {
+            font-size: 13px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .usage-count i {
+            color: #94a3b8;
+        }
+        .btn-hire {
+            padding: 4px 14px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-hire:hover {
+            background: #2563eb;
+        }
+        .employee-tags {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 12px;
+        }
+        .tag {
+            padding: 3px 8px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .tag.skill {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .tag.industry {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+        .detail-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .detail-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag {
+            padding: 4px 12px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .tag.skill {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+        .tag.industry {
+            background: rgba(234, 179, 8, 0.1);
+            color: #d97706;
+            border-color: rgba(234, 179, 8, 0.2);
+        }
+        .topic-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .topic-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .topic-item:hover {
+            background: #f8fafc;
+        }
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+        .topic-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .topic-avatar i {
+            font-size: 16px;
+            color: #94a3b8;
+        }
+        .topic-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .topic-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .topic-meta {
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topic-meta i {
+            font-size: 12px;
+        }
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-btn:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .action-btn i {
+            font-size: 18px;
+        }
+        .recent-chat {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .recent-chat:hover {
+            background: #f8fafc;
+        }
+        .recent-chat:last-child {
+            border-bottom: none;
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .chat-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .chat-time {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .chat-preview {
+            font-size: 13px;
+            color: #64748b;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-left: 4px;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+            padding: 12px 12px 0 12px;
+        }
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb-separator {
+            color: #cbd5e1;
+        }
+        .breadcrumb-current {
+            color: #696666;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media screen and (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .right-panel {
+                width: 100%;
+            }
+            .employee-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 8px;
+            }
+            .employee-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .employee-badge {
+                justify-content: center;
+            }
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .steps-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            min-width: 70px;
+        }
+        .step-item:hover {
+            background: #f8fafc;
+        }
+        .step-item.active {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .step-item.active .step-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        .step-item.active .step-label {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .step-label {
+            font-size: 12px;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .step-divider {
+            width: 24px;
+            height: 2px;
+            background: #e2e8f0;
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+        .steps-content {
+            flex: 1;
+            overflow: hidden;
+        }
+        .step-panel {
+            display: none;
+            height: 100%;
+        }
+        .step-panel.active {
+            display: block;
+        }
+        .function-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .function-table th {
+            background: #f8fafc;
+            padding: 12px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+            width: 150px;
+            min-width: 150px;
+            max-width: 150px;
+        }
+        .function-table th:last-child {
+            border-right: none;
+        }
+        .function-table td {
+            padding: 12px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+            color: #64748b;
+            vertical-align: top;
+        }
+        .function-table td:last-child {
+            border-right: none;
+        }
+        .function-table tbody tr:hover {
+            background: #fafafa;
+        }
+        .function-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .scrollable-table {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+        }
+        .scrollable-table::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scrollable-table::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 2px;
+        }
+        .scrollable-table::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+        .scrollable-table::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">AI员工详情</h1>
+            <p class="page-subtitle">查看AI员工详细信息和相关话题</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" onclick="goBack()">
+                <i class="fa fa-arrow-left"></i> 返回列表
+            </button>
+            <button class="btn btn-primary">
+                <i class="fa fa-rocket"></i> 开始对话
+            </button>
+        </div>
+    </header>
+
+    <nav class="breadcrumb">
+        <a href="ai-employee.html">AI员工管理</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">AI员工详情</span>
+    </nav>
+
+    <main class="main-content">
+        <div class="left-panel">
+            <div class="card">
+                <div class="section-header" style="display: flex; justify-content: space-between;padding: 8px 16px;">
+                    <div class="section-title"><i class="fa fa-info-circle"></i> 基本信息</div>
+                    <button class="btn btn-icon btn-edit" title="编辑信息">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </div>
+                <div class="employee-card">
+                    <div class="employee-badge">通用专家</div>
+                    <div class="employee-header">
+                        <img src="images/tx-1.png" class="employee-avatar" alt="员工头像">
+                        <div class="employee-info">
+                            <div class="employee-name">全局顾问 <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(00000001)</span></div>
+                            <div class="employee-tags">
+                                <span class="tag skill">战略规划</span>
+                                <span class="tag skill">商业分析</span>
+                                <span class="tag skill">决策支持</span>
+                                <span class="tag industry">企业服务</span>
+                            </div>
+                            <div class="employee-desc">具备丰富的行业经验和专业知识，帮助企业制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助企业制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
+                    <div class="employee-footer">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
+                            <div style="font-size: 12px; color: #94a3b8;">创建日期：2024-01-15 | 最后更新：2024-06-20</div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="empty-container" style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="steps-nav">
+                        <div class="step-item active" data-step="0">
+                            <span class="step-number">1</span>
+                            <span class="step-label">职能</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="1">
+                            <span class="step-number">2</span>
+                            <span class="step-label">普识</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="2">
+                            <span class="step-number">3</span>
+                            <span class="step-label">专识</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="3">
+                            <span class="step-number">4</span>
+                            <span class="step-label">工作流</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="4">
+                            <span class="step-number">5</span>
+                            <span class="step-label">规则</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="5">
+                            <span class="step-number">6</span>
+                            <span class="step-label">对齐</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="6">
+                            <span class="step-number">7</span>
+                            <span class="step-label">检查</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="7">
+                            <span class="step-number">8</span>
+                            <span class="step-label">反馈</span>
+                        </div>
+                    </div>
+                    <div class="steps-content">
+                        <div class="step-panel active" id="step-0">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-briefcase"></i> 职能</div>
+                            </div>
+                            <div class="section-content">
+                                <table class="function-table">
+                                    <thead>
+                                        <tr>
+                                            <th>项目</th>
+                                            <th>内容</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>能力定位</td>
+                                            <td>企业战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。</td>
+                                        </tr>
+                                        <tr>
+                                            <td>核心职能</td>
+                                            <td>为企业提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助企业明确发展方向和业务策略。</td>
+                                        </tr>
+                                        <tr>
+                                            <td>提示词</td>
+                                            <td>作为一名资深的企业战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-1">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-book"></i> 普识</div>
+                            </div>
+                            <div class="section-content">
+                                <table class="function-table">
+                                    <thead>
+                                        <tr>
+                                            <th>项目</th>
+                                            <th>内容</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>知识范围</td>
+                                            <td>经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、企业管理</td>
+                                        </tr>
+                                        <tr>
+                                            <td>使用条件</td>
+                                            <td>适用于企业日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景</td>
+                                        </tr>
+                                        <tr>
+                                            <td>提示词</td>
+                                            <td>作为一名专业的企业管理知识顾问，<br>请基于通用商业知识为我解答以下问题：</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-2">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-graduation-cap"></i> 专识</div>
+                            </div>
+                            <div class="section-content">
+                                <table class="function-table">
+                                    <thead>
+                                        <tr>
+                                            <th>项目</th>
+                                            <th>内容</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>知识来源</td>
+                                            <td>行业研究报告、专业数据库、学术论文、<br>企业内部文档、行业专家访谈、<br>市场调研数据、竞品分析报告</td>
+                                        </tr>
+                                        <tr>
+                                            <td>调用流程</td>
+                                            <td>1. 用户提出专业领域问题<br>2. 系统识别问题领域和意图<br>3. 检索相关专业知识库<br>4. 整合分析多源信息<br>5. 生成结构化专业回答<br>6. 返回详细分析报告</td>
+                                        </tr>
+                                        <tr>
+                                            <td>提示词</td>
+                                            <td>作为一名资深的行业专家，<br>请结合专业知识和行业经验，<br>深入分析以下问题并提供专业见解：</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-3">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-tasks"></i> 工作流</div>
+                            </div>
+                            <div class="section-content">
+                                <div class="scrollable-table">
+                                    <table class="function-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>特定工作流</td>
+                                                <td>• 市场调研流程：<br>需求确认 → 数据收集 → 竞品分析 → <br>趋势研判 → 报告撰写 → 方案交付<br><br>• 战略规划流程：<br>现状评估 → 目标设定 → 路径分析 → <br>资源配置 → 风险评估 → 战略落地<br><br>• 决策支持流程：<br>问题定义 → 信息整合 → 方案推演 → <br>效果预测 → 方案比选 → 决策建议</td>
+                                            </tr>
+                                            <tr>
+                                                <td>自主生成工作流</td>
+                                                <td>• 根据用户问题自动识别任务类型<br>• 智能规划执行路径和步骤顺序<br>• 动态调整流程以适应需求变化<br>• 自动分配资源和优先级<br>• 实时追踪执行进度和状态<br>• 根据反馈自动优化流程设计<br>• 支持多任务并行处理<br>• 提供流程可视化和进度展示</td>
+                                            </tr>
+                                            <tr>
+                                                <td>自主生成工作流</td>
+                                                <td>• 根据用户问题自动识别任务类型<br>• 智能规划执行路径和步骤顺序<br>• 动态调整流程以适应需求变化<br>• 自动分配资源和优先级<br>• 实时追踪执行进度和状态<br>• 根据反馈自动优化流程设计<br>• 支持多任务并行处理<br>• 提供流程可视化和进度展示</td>
+                                            </tr>
+                                            <tr>
+                                                <td>自主生成工作流</td>
+                                                <td>• 根据用户问题自动识别任务类型<br>• 智能规划执行路径和步骤顺序<br>• 动态调整流程以适应需求变化<br>• 自动分配资源和优先级<br>• 实时追踪执行进度和状态<br>• 根据反馈自动优化流程设计<br>• 支持多任务并行处理<br>• 提供流程可视化和进度展示</td>
+                                            </tr>
+                                            <tr>
+                                                <td>自主生成工作流</td>
+                                                <td>• 根据用户问题自动识别任务类型<br>• 智能规划执行路径和步骤顺序<br>• 动态调整流程以适应需求变化<br>• 自动分配资源和优先级<br>• 实时追踪执行进度和状态<br>• 根据反馈自动优化流程设计<br>• 支持多任务并行处理<br>• 提供流程可视化和进度展示</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-4">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-list-ol"></i> 规则</div>
+                            </div>
+                            <div class="section-content">
+                                <div class="scrollable-table">
+                                    <table class="function-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>行为规则</td>
+                                                <td>• 必须基于可靠数据和事实进行分析<br>• 分析方法需科学严谨，遵循行业标准<br>• 输出内容必须准确无误，可验证<br>• 建议方案需切实可行，具有操作性<br>• 严格遵守相关法律法规和政策要求<br>• 保护用户隐私和数据安全<br>• 避免提供未经证实的信息或猜测</td>
+                                            </tr>
+                                            <tr>
+                                                <td>交互规则</td>
+                                                <td>• 保持专业、友好的沟通态度<br>• 及时响应用户的问题和需求<br>• 使用清晰易懂的语言表达<br>• 提供结构化、有条理的回答<br>• 对于不确定的问题坦诚说明<br>• 尊重用户意见，保持耐心<br>• 避免使用专业术语过度，必要时解释</td>
+                                            </tr>
+                                            <tr>
+                                                <td>提示词</td>
+                                                <td>作为一名专业的企业顾问，<br>请严格遵循以下规则提供服务：<br><br>• 确保信息来源可靠<br>• 分析过程科学严谨<br>• 建议方案切实可行<br>• 遵守法律法规要求<br><br>请针对我的问题提供专业、全面的分析和建议。</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-5">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-align-center"></i> 对齐</div>
+                            </div>
+                            <div class="section-content">
+                                <div class="scrollable-table">
+                                    <table class="function-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>战略目标对齐</td>
+                                                <td>• 与企业长期发展战略保持一致<br>• 支持企业核心价值创造<br>• 助力实现战略目标和愿景<br>• 确保建议与战略方向匹配</td>
+                                            </tr>
+                                            <tr>
+                                                <td>业务目标对齐</td>
+                                                <td>• 支持各业务单元目标达成<br>• 优化业务流程和效率<br>• 提升业务竞争力<br>• 促进业务创新和发展</td>
+                                            </tr>
+                                            <tr>
+                                                <td>资源配置对齐</td>
+                                                <td>• 合理分配人力、财力资源<br>• 优化资源利用效率<br>• 确保资源投入产出比<br>• 支持重点项目和任务</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-6">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-check-circle"></i> 检查</div>
+                            </div>
+                            <div class="section-content">
+                                <div class="scrollable-table">
+                                    <table class="function-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>数据准确性检查</td>
+                                                <td>• 验证数据来源的可靠性和权威性<br>• 检查数据完整性和时效性<br>• 核实关键数据点的准确性<br>• 确保数据统计方法正确</td>
+                                            </tr>
+                                            <tr>
+                                                <td>逻辑合理性检查</td>
+                                                <td>• 验证分析逻辑的严密性<br>• 检查论证过程的合理性<br>• 确保结论与论据一致<br>• 排查潜在逻辑漏洞</td>
+                                            </tr>
+                                            <tr>
+                                                <td>建议可行性检查</td>
+                                                <td>• 评估建议的可操作性<br>• 分析实施所需资源<br>• 预判可能的风险和障碍<br>• 提供具体的执行建议</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-7">
+                            <div class="section-header">
+                                <div class="section-title"><i class="fa fa-comments"></i> 反馈</div>
+                            </div>
+                            <div class="section-content">
+                                <div class="scrollable-table">
+                                    <table class="function-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>反馈收集渠道</td>
+                                                <td>• 对话结束后即时评价<br>• 定期用户满意度调查<br>• 在线问卷调研<br>• 客服反馈热线<br>• 邮件反馈渠道<br>• 社交媒体反馈</td>
+                                            </tr>
+                                            <tr>
+                                                <td>反馈处理流程</td>
+                                                <td>• 实时收集用户反馈信息<br>• 分类整理反馈内容<br>• 分析反馈问题根源<br>• 制定改进措施方案<br>• 跟踪改进执行进度<br>• 定期反馈改进效果</td>
+                                            </tr>
+                                            <tr>
+                                                <td>反馈应用策略</td>
+                                                <td>• 将反馈纳入产品迭代<br>• 优化服务流程和体验<br>• 调整知识库内容<br>• 改进算法模型<br>• 提升响应速度<br>• 增强用户满意度</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-comment-o"></i> 快捷操作</div>
+                </div>
+                <div class="section-content">
+                    <div class="quick-actions">
+                        <button class="action-btn">
+                            <i class="fa fa-file-text"></i>
+                            <span>生成报告</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fa fa-bar-chart"></i>
+                            <span>数据分析</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fa fa-pencil"></i>
+                            <span>文档撰写</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fa fa-question-circle"></i>
+                            <span>问题解答</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-hashtag"></i> 热门话题</div>
+                    <button style="margin-left: auto; font-size: 12px; color: #3b82f6; background: none; border: none; cursor: pointer;">查看全部</button>
+                </div>
+                <div class="section-content" style="padding: 0; max-height: 320px; overflow-y: auto;">
+                    <ul class="topic-list">
+                        <li class="topic-item">
+                            <div class="topic-avatar"><i class="fa fa-lightbulb-o"></i></div>
+                            <div class="topic-content">
+                                <div class="topic-title">如何制定企业年度战略规划</div>
+                                <div class="topic-meta">
+                                    <span><i class="fa fa-eye"></i> 1.2k</span>
+                                    <span><i class="fa fa-comment"></i> 86</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="topic-item">
+                            <div class="topic-avatar"><i class="fa fa-line-chart"></i></div>
+                            <div class="topic-content">
+                                <div class="topic-title">市场竞争分析方法论</div>
+                                <div class="topic-meta">
+                                    <span><i class="fa fa-eye"></i> 890</span>
+                                    <span><i class="fa fa-comment"></i> 52</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="topic-item">
+                            <div class="topic-avatar"><i class="fa fa-briefcase"></i></div>
+                            <div class="topic-content">
+                                <div class="topic-title">企业数字化转型路径</div>
+                                <div class="topic-meta">
+                                    <span><i class="fa fa-eye"></i> 1.5k</span>
+                                    <span><i class="fa fa-comment"></i> 124</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="topic-item">
+                            <div class="topic-avatar"><i class="fa fa-trending-up"></i></div>
+                            <div class="topic-content">
+                                <div class="topic-title">新兴市场进入策略分析</div>
+                                <div class="topic-meta">
+                                    <span><i class="fa fa-eye"></i> 670</span>
+                                    <span><i class="fa fa-comment"></i> 38</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="topic-item">
+                            <div class="topic-avatar"><i class="fa fa-users"></i></div>
+                            <div class="topic-content">
+                                <div class="topic-title">团队效能提升方法</div>
+                                <div class="topic-meta">
+                                    <span><i class="fa fa-eye"></i> 920</span>
+                                    <span><i class="fa fa-comment"></i> 65</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="topic-item">
+                            <div class="topic-avatar"><i class="fa fa-money"></i></div>
+                            <div class="topic-content">
+                                <div class="topic-title">投资决策评估框架</div>
+                                <div class="topic-meta">
+                                    <span><i class="fa fa-eye"></i> 780</span>
+                                    <span><i class="fa fa-comment"></i> 45</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-history"></i> 最近对话</div>
+                    <button style="margin-left: auto; font-size: 12px; color: #3b82f6; background: none; border: none; cursor: pointer;">清空记录</button>
+                </div>
+                <div class="section-content" style="padding: 0; max-height: 240px; overflow-y: auto;">
+                    <div class="recent-chat">
+                        <div class="chat-header">
+                            <span class="chat-name">张三 <span class="online-dot"></span></span>
+                            <span class="chat-time">10分钟前</span>
+                        </div>
+                        <div class="chat-preview">关于Q3季度的市场拓展策略，您有什么建议吗...</div>
+                    </div>
+                    <div class="recent-chat">
+                        <div class="chat-header">
+                            <span class="chat-name">李四</span>
+                            <span class="chat-time">1小时前</span>
+                        </div>
+                        <div class="chat-preview">能否帮我分析一下竞争对手的优劣势？</div>
+                    </div>
+                    <div class="recent-chat">
+                        <div class="chat-header">
+                            <span class="chat-name">王五 <span class="online-dot"></span></span>
+                            <span class="chat-time">3小时前</span>
+                        </div>
+                        <div class="chat-preview">公司下一步的战略方向应该如何规划...</div>
+                    </div>
+                    <div class="recent-chat">
+                        <div class="chat-header">
+                            <span class="chat-name">赵六</span>
+                            <span class="chat-time">昨天</span>
+                        </div>
+                        <div class="chat-preview">市场调研报告已收到，非常感谢您的帮助！</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa fa-thumbs-up"></i> 用户评价</div>
+                </div>
+                <div class="section-content" style="padding: 12px;">
+                    <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 12px;">
+                        <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">4.9</div>
+                        <div style="color: #f59e0b;">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <span style="font-size: 13px; color: #94a3b8; margin-left: 8px;">共 328 条评价</span>
+                    </div>
+                    <div style="background: #f8fafc; border-radius: 6px; padding: 12px; margin-bottom: 8px;">
+                        <div style="font-size: 13px; color: #64748b; line-height: 1.6;">
+                            "非常专业的AI顾问，提供的战略建议很有价值，帮助我们理清了发展方向。"
+                        </div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">
+                            —— 某科技公司CEO
+                        </div>
+                    </div>
+                    <div style="background: #f8fafc; border-radius: 6px; padding: 12px;">
+                        <div style="font-size: 13px; color: #64748b; line-height: 1.6;">
+                            "响应速度很快，分析报告质量很高，已经是第三次使用了！"
+                        </div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">
+                            —— 某咨询公司项目经理
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function goBack() {
+            window.location.href = 'ai-employee.html';
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            var stepItems = document.querySelectorAll('.step-item');
+            var stepPanels = document.querySelectorAll('.step-panel');
+            
+            stepItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var stepIndex = this.getAttribute('data-step');
+                    
+                    stepItems.forEach(function(i) {
+                        i.classList.remove('active');
+                    });
+                    stepPanels.forEach(function(p) {
+                        p.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    document.getElementById('step-' + stepIndex).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
