@@ -84,6 +84,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 var(--spacing-xl);
+            transition: width 0s !important;
         }
 
         .nav-left {
@@ -177,7 +178,6 @@
 
         @media (max-width: 1024px) {
             .nav-container {
-                width: 100%;
                 padding: 0 var(--spacing-lg);
             }
 
@@ -279,6 +279,14 @@
             window.parent.postMessage({ type: 'REFRESH_PAGE' }, '*');
         }
 
+        function applyNavWidth(width) {
+            const navContainers = document.querySelectorAll('.nav-container');
+            navContainers.forEach(container => {
+                container.style.width = width;
+                container.style.maxWidth = 'none';
+            });
+        }
+
         window.addEventListener('message', (event) => {
             if (event.data.type === 'LOGIN_SUCCESS' || event.data.type === 'LOGOUT_SUCCESS') {
                 // 直接更新头部显示状态，不需要刷新页面
@@ -299,12 +307,21 @@
                     }
                 }
             } else if (event.data.type === 'SET_NAV_CONTAINER_WIDTH') {
-                // 设置nav-container的宽度
-                const navContainers = document.querySelectorAll('.nav-container');
-                navContainers.forEach(container => {
-                    container.style.width = event.data.width;
-                });
+                // 设置nav-container的宽度，立即生效
+                applyNavWidth(event.data.width);
             }
+        });
+
+        // 监听窗口resize事件，保持宽度设置
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const currentWidth = document.querySelector('.nav-container');
+                if (currentWidth && currentWidth.style.width) {
+                    applyNavWidth(currentWidth.style.width);
+                }
+            }, 100);
         });
     </script>
 </head>

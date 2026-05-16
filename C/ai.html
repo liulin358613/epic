@@ -18,12 +18,26 @@
                 isLoggedIn = false;
             }
         }
-        
+
+        // 更新"全能顾问"文本显示
+        function updateAdvisorText() {
+            const advisorText = document.getElementById('advisorText');
+            if (advisorText) {
+                if (isLoggedIn) {
+                    advisorText.textContent = '我的全能顾问';
+                } else {
+                    advisorText.textContent = '全能顾问';
+                }
+            }
+        }
+
         // 加载公共头部
         function loadHeader() {
             try {
                 // 检查登录状态
                 checkLoginStatus();
+                // 更新全能顾问文本
+                updateAdvisorText();
                 
                 // 获取现有的头部iframe
                 const headerIframe = document.querySelector('iframe[src="header.html"]');
@@ -3538,7 +3552,7 @@
                             <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
                         </svg>
                     </div>
-                    我的全能顾问
+                    <span id="advisorText">全能顾问</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: auto;">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>

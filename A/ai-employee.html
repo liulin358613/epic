@@ -319,6 +319,407 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            width: 900px;
+            max-height: 85vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fafafa;
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            gap: 10px;
+            background: #fafafa;
+        }
+        .form-section {
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-item {
+            flex: 1;
+            min-width: 0;
+        }
+        .form-item.w-1-3 {
+            flex: 0 0 calc(33.333% - 12px);
+        }
+        .form-item.w-2-3 {
+            flex: 0 0 calc(66.666% - 4px);
+        }
+        .form-item.w-full {
+            flex: 1 0 100%;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .modal .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .modal .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .modal .form-control.error {
+            border-color: #ef4444;
+        }
+        .modal .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .textarea-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .avatar-upload {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-upload:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .avatar-upload.has-image {
+            border-style: solid;
+            border-color: #3b82f6;
+        }
+        .avatar-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .avatar-upload .upload-icon {
+            font-size: 24px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .avatar-upload .upload-text {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .basic-info-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .avatar-section {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .avatar-section .form-label {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+        .avatar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .btn-upload {
+            padding: 6px 16px;
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0;
+        }
+        .btn-upload:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .type-name-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .form-item-inline {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .form-item-inline .form-label {
+            margin-bottom: 0;
+            padding-top: 6px;
+        }
+        .form-item-inline .form-control {
+            flex: 1;
+            max-width: none;
+        }
+        .input-wrapper {
+            flex: 1;
+            max-width: none;
+        }
+        .input-wrapper .form-control {
+            width: 100%;
+        }
+        .form-item-full {
+            margin-bottom: 16px;
+        }
+        .form-item-full .form-label {
+            display: inline-block;
+            min-width: 60px;
+            margin-right: 12px;
+            margin-bottom: 0;
+            vertical-align: top;
+        }
+        .form-item-full .form-control {
+            display: inline-block;
+            width: calc(100% - 72px);
+        }
+        .steps-wrapper {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+        }
+        .step-item {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            min-width: 70px;
+        }
+        .step-item:hover {
+            background: #f1f5f9;
+        }
+        .step-item.active {
+            background: #eff6ff;
+        }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            transition: all 0.2s ease;
+        }
+        .step-item.active .step-number {
+            background: #3b82f6;
+            color: white;
+        }
+        .step-label {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .step-item.active .step-label {
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .step-divider {
+            flex: 1;
+            height: 2px;
+            background: #e2e8f0;
+            margin: 0 4px;
+        }
+        .step-divider.active {
+            background: #3b82f6;
+        }
+        .dynamic-content {
+            margin-top: 16px;
+        }
+        .dynamic-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+        .dynamic-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dynamic-table th,
+        .dynamic-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .dynamic-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            font-size: 13px;
+        }
+        .dynamic-table tr:last-child td {
+            border-bottom: none;
+        }
+        .dynamic-table .input-cell {
+            padding: 6px 12px;
+        }
+        .dynamic-table .input-cell input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .dynamic-table .input-cell input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .dynamic-table .input-cell input.error {
+            border-color: #ef4444;
+        }
+        .dynamic-table .add-row-cell {
+            text-align: center;
+        }
+        .btn-add-row {
+            padding: 8px 20px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-add-row:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .btn-delete-row {
+            padding: 4px 12px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            color: #64748b;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-delete-row:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .error-text {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 4px;
+            display: none;
+            width: 100%;
+        }
+        .error-text.show {
+            display: block;
+        }
         @media screen and (max-width: 768px) {
             .main-content {
                 padding: 8px;
@@ -576,6 +977,168 @@
         </div>
     </main>
 
+    <div class="modal-overlay" id="add-employee-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">添加AI员工</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-section">
+                    <div class="basic-info-row">
+                        <div class="avatar-section">
+                            <label class="form-label">头像<span class="required">*</span></label>
+                            <div class="avatar-col">
+                                <div class="avatar-upload" id="avatar-upload" onclick="document.getElementById('avatar-input').click()">
+                                    <i class="fa fa-upload upload-icon"></i>
+                                    <span class="upload-text">点击上传</span>
+                                    <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+                                </div>
+                                <div class="error-text" id="avatar-error">请上传头像</div>
+                                <button class="btn-upload" id="avatar-btn" onclick="document.getElementById('avatar-input').click()" style="display: none;">重新上传</button>
+                            </div>
+                        </div>
+                        
+                        <div class="type-name-section">
+                            <div class="form-item-inline">
+                                <label class="form-label">类型<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <select class="form-control" id="employee-type">
+                                        <option value="">请选择类型</option>
+                                        <option value="general">通用型</option>
+                                        <option value="expert">专家型</option>
+                                        <option value="industry">行业型</option>
+                                    </select>
+                                    <div class="error-text" id="type-error">请选择类型</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">名称<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control" id="employee-name" placeholder="请输入AI员工名称">
+                                    <div class="error-text" id="name-error">请输入名称</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">技能<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control" id="employee-skills" placeholder="多个技能用"｜"分隔">
+                                    <div class="error-text" id="skills-error">请输入技能</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">描述<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <textarea class="form-control textarea-control" id="employee-desc" placeholder="请输入AI员工描述"></textarea>
+                                    <div class="error-text" id="desc-error">请输入描述</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="steps-wrapper" id="steps-wrapper">
+                        <div class="step-item active" data-step="0" onclick="switchStep(0)">
+                            <div class="step-number">1</div>
+                            <div class="step-label">职能</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="1" onclick="switchStep(1)">
+                            <div class="step-number">2</div>
+                            <div class="step-label">普识</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="2" onclick="switchStep(2)">
+                            <div class="step-number">3</div>
+                            <div class="step-label">专识</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="3" onclick="switchStep(3)">
+                            <div class="step-number">4</div>
+                            <div class="step-label">工作流</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="4" onclick="switchStep(4)">
+                            <div class="step-number">5</div>
+                            <div class="step-label">规则</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="5" onclick="switchStep(5)">
+                            <div class="step-number">6</div>
+                            <div class="step-label">约束</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="6" onclick="switchStep(6)">
+                            <div class="step-number">7</div>
+                            <div class="step-label">对齐</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="7" onclick="switchStep(7)">
+                            <div class="step-number">8</div>
+                            <div class="step-label">检查</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="8" onclick="switchStep(8)">
+                            <div class="step-number">9</div>
+                            <div class="step-label">反馈</div>
+                        </div>
+                    </div>
+
+                    <div class="dynamic-content">
+                        <h4 class="dynamic-title" id="step-title">职能配置</h4>
+                        <table class="dynamic-table" id="dynamic-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">项目<span class="required">*</span></th>
+                                    <th style="width: 55%;">内容<span class="required">*</span></th>
+                                    <th style="width: 15%;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr class="data-row">
+                                    <td class="input-cell">
+                                        <input type="text" class="project-input" placeholder="请输入项目">
+                                    </td>
+                                    <td class="input-cell">
+                                        <input type="text" class="content-input" placeholder="请输入内容">
+                                    </td>
+                                    <td class="input-cell" style="text-align: center;">
+                                        <span style="color: #94a3b8;">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="add-row-cell">
+                                        <button class="btn-add-row" onclick="addTableRow()">
+                                            <i class="fa fa-plus"></i> 添加行
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="prev-btn" style="display: none;" onclick="prevStep()">
+                    <i class="fa fa-angle-left"></i> 上一步
+                </button>
+                <button class="btn btn-outline" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary" id="next-btn" style="display: none;" onclick="nextStep()">
+                    下一步 <i class="fa fa-angle-right"></i>
+                </button>
+                <button class="btn btn-primary" onclick="saveEmployee()">保存</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const employees = [
             { id: 1, name: '全局顾问', avatar: 'images/tx-1.png', type: 'expert', typeLabel: '专家型', desc: '提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。', tags: ['战略规划', '商业分析', '决策支持'], industry: '你服务', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
@@ -724,8 +1287,234 @@
             }
         }
 
+        let currentStep = 0;
+        const stepTitles = [
+            '职能配置',
+            '普识配置',
+            '专识配置',
+            '工作流配置',
+            '规则配置',
+            '约束配置',
+            '对齐配置',
+            '检查配置',
+            '反馈配置'
+        ];
+
         function addAIEmployee() {
-            alert('添加AI员工功能开发中...');
+            const modal = document.getElementById('add-employee-modal');
+            modal.classList.add('show');
+            currentStep = 0;
+            updateStepUI();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('add-employee-modal');
+            modal.classList.remove('show');
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('avatar-upload').innerHTML = `
+                <i class="fa fa-upload upload-icon"></i>
+                <span class="upload-text">点击上传</span>
+                <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+            `;
+            document.getElementById('avatar-upload').classList.remove('has-image');
+            document.getElementById('avatar-btn').style.display = 'none';
+            document.getElementById('employee-type').value = '';
+            document.getElementById('employee-name').value = '';
+            document.getElementById('employee-skills').value = '';
+            document.getElementById('employee-desc').value = '';
+            
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = `
+                <tr class="data-row">
+                    <td class="input-cell">
+                        <input type="text" class="project-input" placeholder="请输入项目">
+                    </td>
+                    <td class="input-cell">
+                        <input type="text" class="content-input" placeholder="请输入内容">
+                    </td>
+                    <td class="input-cell" style="text-align: center;">
+                        <span style="color: #94a3b8;">-</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="add-row-cell">
+                        <button class="btn-add-row" onclick="addTableRow()">
+                            <i class="fa fa-plus"></i> 添加行
+                        </button>
+                    </td>
+                </tr>
+            `;
+            
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.form-control').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.dynamic-table input').forEach(el => el.classList.remove('error'));
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploader = document.getElementById('avatar-upload');
+                    uploader.innerHTML = `
+                        <img src="${e.target.result}" alt="avatar">
+                        <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+                    `;
+                    uploader.classList.add('has-image');
+                    document.getElementById('avatar-error').classList.remove('show');
+                    document.getElementById('avatar-btn').textContent = '重新上传';
+                    document.getElementById('avatar-btn').style.display = 'inline-flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function switchStep(stepIndex) {
+            currentStep = stepIndex;
+            updateStepUI();
+        }
+
+        function updateStepUI() {
+            const steps = document.querySelectorAll('.step-item');
+            steps.forEach((step, index) => {
+                step.classList.toggle('active', index === currentStep);
+            });
+            
+            document.getElementById('step-title').textContent = stepTitles[currentStep];
+            
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (currentStep > 0 && currentStep < 8) {
+                prevBtn.style.display = 'inline-flex';
+                nextBtn.style.display = 'inline-flex';
+            } else if (currentStep === 0) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-flex';
+            } else {
+                prevBtn.style.display = 'inline-flex';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateStepUI();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 8) {
+                currentStep++;
+                updateStepUI();
+            }
+        }
+
+        function addTableRow() {
+            const tableBody = document.getElementById('table-body');
+            const addRow = tableBody.querySelector('.add-row-cell').parentElement;
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'data-row';
+            newRow.innerHTML = `
+                <td class="input-cell">
+                    <input type="text" class="project-input" placeholder="请输入项目">
+                </td>
+                <td class="input-cell">
+                    <input type="text" class="content-input" placeholder="请输入内容">
+                </td>
+                <td class="input-cell" style="text-align: center;">
+                    <button class="btn-delete-row" onclick="deleteTableRow(this)">
+                        <i class="fa fa-trash"></i> 删除
+                    </button>
+                </td>
+            `;
+            
+            tableBody.insertBefore(newRow, addRow);
+            
+            updateDeleteButtons();
+        }
+
+        function deleteTableRow(btn) {
+            const row = btn.parentElement.parentElement;
+            row.remove();
+            updateDeleteButtons();
+        }
+
+        function updateDeleteButtons() {
+            const dataRows = document.querySelectorAll('.data-row');
+            dataRows.forEach((row, index) => {
+                const actionCell = row.querySelector('td:last-child');
+                if (dataRows.length > 1) {
+                    actionCell.innerHTML = `
+                        <button class="btn-delete-row" onclick="deleteTableRow(this)">
+                            <i class="fa fa-trash"></i> 删除
+                        </button>
+                    `;
+                } else {
+                    actionCell.innerHTML = '<span style="color: #94a3b8;">-</span>';
+                }
+            });
+        }
+
+        function validateBasicInfo() {
+            let isValid = true;
+            
+            const avatarUpload = document.getElementById('avatar-upload');
+            const hasAvatar = avatarUpload.classList.contains('has-image');
+            if (!hasAvatar) {
+                document.getElementById('avatar-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('avatar-error').classList.remove('show');
+            }
+            
+            const type = document.getElementById('employee-type').value;
+            if (!type) {
+                document.getElementById('type-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('type-error').classList.remove('show');
+            }
+            
+            const name = document.getElementById('employee-name').value.trim();
+            if (!name) {
+                document.getElementById('name-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('name-error').classList.remove('show');
+            }
+            
+            const skills = document.getElementById('employee-skills').value.trim();
+            if (!skills) {
+                document.getElementById('skills-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('skills-error').classList.remove('show');
+            }
+            
+            const desc = document.getElementById('employee-desc').value.trim();
+            if (!desc) {
+                document.getElementById('desc-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('desc-error').classList.remove('show');
+            }
+            
+            return isValid;
+        }
+
+        function saveEmployee() {
+            const isBasicValid = validateBasicInfo();
+            
+            if (isBasicValid) {
+                console.log('AI员工添加成功');
+                closeModal();
+            }
         }
 
         // 页面加载完成后为所有员工卡片添加点击事件
@@ -736,6 +1525,30 @@
                     const name = this.getAttribute('data-name');
                     hireEmployee(name);
                 });
+            });
+            
+            document.getElementById('employee-type').addEventListener('blur', function() {
+                if (this.value) {
+                    document.getElementById('type-error').classList.remove('show');
+                }
+            });
+            
+            document.getElementById('employee-name').addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    document.getElementById('name-error').classList.remove('show');
+                }
+            });
+            
+            document.getElementById('employee-skills').addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    document.getElementById('skills-error').classList.remove('show');
+                }
+            });
+            
+            document.getElementById('employee-desc').addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    document.getElementById('desc-error').classList.remove('show');
+                }
             });
         });
     </script>
