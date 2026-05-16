@@ -91,10 +91,12 @@
         }
         .main-content {
             flex: 1;
-            padding: 0 12px 12px 12px;
+            padding: 12px;
             overflow-x: auto;
             overflow-y: auto;
             min-height: 0;
+            height: calc(100vh - 120px);
+            box-sizing: border-box;
         }
         .page-loading {
             position: fixed;
@@ -608,25 +610,6 @@
             border-color: #3b82f6;
             color: white;
         }
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #64748b;
-            margin: 12px 0;
-            padding: 0 12px;
-        }
-        .breadcrumb a {
-            color: #3b82f6;
-            text-decoration: none;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        .breadcrumb-separator {
-            color: #cbd5e1;
-        }
         @media screen and (max-width: 1200px) {
             .org-detail-grid {
                 grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -647,9 +630,6 @@
                 flex-direction: column;
                 gap: 8px;
                 align-items: flex-start;
-            }
-            .breadcrumb {
-                flex-wrap: wrap;
             }
         }
         @media screen and (max-width: 480px) {
@@ -765,11 +745,7 @@
         </div>
     </header>
 
-    <div class="breadcrumb">
-        <a href="org-list.html">组织管理</a>
-        <span class="breadcrumb-separator">/</span>
-        <span>东莞长安训练基地</span>
-    </div>
+
 
     <main class="main-content">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: stretch;">

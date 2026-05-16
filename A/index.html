@@ -1044,16 +1044,9 @@
                     </div> -->
                 </div>
                 
-                <div class="nav-item has-submenu" onclick="toggleSubmenu('ai-employee-submenu')">
+                <div class="nav-item active" data-module="ai-employee" onclick="showModule('ai-employee')">
                     <i class="fa fa-user-circle"></i>
                     <span>AI员工管理</span>
-                    <i class="fa fa-angle-down"></i>
-                </div>
-                <div id="ai-employee-submenu" class="submenu">
-                    <div class="submenu-item" data-module="ai-employee" onclick="showModule('ai-employee'); event.stopPropagation()">
-                        <i class="fa fa-user-circle"></i>
-                        <span>AI员工</span>
-                    </div>
                 </div>
             </div>
             
@@ -1404,7 +1397,7 @@
             'field-perm': { name: '组织角色', icon: 'fa-columns' },
             'user-list': { name: '用户管理', icon: 'fa-user' },
             'org-list': { name: '组织管理', icon: 'fa-building' },
-            'ai-employee': { name: 'AI员工', icon: 'fa-user-circle' }
+            'ai-employee': { name: 'AI员工管理', icon: 'fa-user-circle' }
         };
 
         function showModule(moduleName) {
@@ -1767,6 +1760,61 @@
                 });
             }
         })();
+
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'openOrgDetail') {
+                const { moduleName, moduleTitle, icon, src } = event.data;
+                
+                const tabsContainer = document.querySelector('.tabs-container');
+                let targetTab = tabsContainer.querySelector(`.tab[data-module="${moduleName}"]`);
+
+                if (!targetTab) {
+                    targetTab = document.createElement('div');
+                    targetTab.className = 'tab';
+                    targetTab.dataset.module = moduleName;
+                    targetTab.innerHTML = `
+                        <i class="fa ${icon}"></i>
+                        <span>${moduleTitle}</span>
+                        <i class="fa fa-times tab-close" onclick="closeTab('${moduleName}'); event.stopPropagation()"></i>
+                    `;
+                    targetTab.onclick = function() {
+                        selectTab(moduleName);
+                    };
+                    tabsContainer.appendChild(targetTab);
+                }
+
+                setTimeout(() => {
+                    targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }, 0);
+
+                let moduleEl = document.getElementById(moduleName + '-module');
+                if (!moduleEl) {
+                    moduleEl = document.createElement('div');
+                    moduleEl.id = moduleName + '-module';
+                    moduleEl.className = 'module';
+                    moduleEl.style.cssText = 'padding: 0; height: calc(100vh - 120px);';
+                    const iframe = document.createElement('iframe');
+                    iframe.className = 'module-frame';
+                    iframe.src = src;
+                    iframe.frameBorder = '0';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    moduleEl.appendChild(iframe);
+                    document.getElementById('content-wrapper').appendChild(moduleEl);
+                } else {
+                    const iframe = moduleEl.querySelector('iframe');
+                    if (iframe && iframe.src !== src) {
+                        iframe.src = src;
+                    }
+                }
+
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.module').forEach(module => module.classList.add('hidden'));
+                
+                targetTab.classList.add('active');
+                moduleEl.classList.remove('hidden');
+            }
+        });
     </script>
 </body>
 </html>

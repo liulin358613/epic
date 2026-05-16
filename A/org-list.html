@@ -1260,24 +1260,36 @@
         function showOrgDetail(orgId) {
             const org = orgData[orgId];
             if (org) {
-                const params = new URLSearchParams({
-                    id: org.id,
-                    name: org.name,
-                    leader: org.leader,
-                    phone: org.phone,
-                    address: org.address,
-                    memberCount: org.memberCount,
-                    companyName: org.company ? org.company.name : '',
-                    legalPerson: org.company ? org.company.legalPerson : '',
-                    creditCode: org.company ? org.company.creditCode : '',
-                    type: org.type,
-                    industry: org.industry || '',
-                    createTime: org.createTime,
-                    status: org.status,
-                    statusReason: org.statusReason || '',
-                    level: org.level || 'Lv.0'
-                });
-                window.location.href = 'org-detail.html?' + params.toString();
+                const params = new URLSearchParams();
+                params.append('id', org.id);
+                params.append('name', encodeURIComponent(org.name));
+                params.append('leader', encodeURIComponent(org.leader));
+                params.append('phone', org.phone);
+                params.append('address', encodeURIComponent(org.address));
+                params.append('memberCount', org.memberCount);
+                if (org.company) {
+                    params.append('companyName', encodeURIComponent(org.company.name));
+                    params.append('legalPerson', encodeURIComponent(org.company.legalPerson));
+                    params.append('creditCode', org.company.creditCode);
+                }
+                params.append('type', org.type);
+                params.append('industry', encodeURIComponent(org.industry || ''));
+                params.append('createTime', org.createTime);
+                params.append('status', org.status);
+                params.append('statusReason', encodeURIComponent(org.statusReason || ''));
+                params.append('level', org.level || 'Lv.0');
+
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'openOrgDetail',
+                        moduleName: 'org-detail',
+                        moduleTitle: '组织详情',
+                        icon: 'fa-building-o',
+                        src: 'org-detail.html?' + params.toString()
+                    }, '*');
+                } else {
+                    window.location.href = 'org-detail.html?' + params.toString();
+                }
             }
         }
 
