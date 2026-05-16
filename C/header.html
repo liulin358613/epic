@@ -237,6 +237,8 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             updateHeader();
+            // 初始化时检查是否有待处理的宽度设置
+            initNavWidth();
 
             const loginButtons = document.querySelectorAll('a[href="#"]');
             loginButtons.forEach(button => {
@@ -279,12 +281,25 @@
             window.parent.postMessage({ type: 'REFRESH_PAGE' }, '*');
         }
 
+        let pendingWidth = null;
+
         function applyNavWidth(width) {
             const navContainers = document.querySelectorAll('.nav-container');
             navContainers.forEach(container => {
-                container.style.width = width;
-                container.style.maxWidth = 'none';
+                // 使用setProperty确保优先级
+                container.style.setProperty('width', width, 'important');
+                container.style.setProperty('max-width', 'none', 'important');
+                // 强制浏览器立即重绘
+                void container.offsetWidth;
             });
+            pendingWidth = width;
+        }
+
+        // 初始化时检查是否有待处理的宽度设置
+        function initNavWidth() {
+            if (pendingWidth) {
+                applyNavWidth(pendingWidth);
+            }
         }
 
         window.addEventListener('message', (event) => {
@@ -309,6 +324,19 @@
             } else if (event.data.type === 'SET_NAV_CONTAINER_WIDTH') {
                 // 设置nav-container的宽度，立即生效
                 applyNavWidth(event.data.width);
+                // 添加重试机制确保设置成功
+                setTimeout(() => {
+                    const container = document.querySelector('.nav-container');
+                    if (container && container.style.width !== event.data.width) {
+                        applyNavWidth(event.data.width);
+                    }
+                }, 50);
+                setTimeout(() => {
+                    const container = document.querySelector('.nav-container');
+                    if (container && container.style.width !== event.data.width) {
+                        applyNavWidth(event.data.width);
+                    }
+                }, 200);
             }
         });
 
