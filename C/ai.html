@@ -9132,18 +9132,54 @@
                 
                 // 模拟AI回复
                 setTimeout(() => {
+                    // 先添加消息容器，时间暂不显示
                     const aiReplyHTML = `
                         <div class="chat-message ai">
                             <div class="ai-message-wrapper">
                                 <div class="message-content">
-                                    感谢您的咨询！我已收到您的消息，会尽快为您解答。
-                                    <span class="message-time">${getCurrentTime()}</span>
+                                    <span class="message-time" style="display:none;"></span>
                                 </div>
                             </div>
                         </div>
                     `;
                     chatContent.insertAdjacentHTML('beforeend', aiReplyHTML);
                     chatContent.scrollTop = chatContent.scrollHeight;
+                    
+                    // 获取刚添加的消息元素
+                    const lastAiMessage = chatContent.querySelector('.chat-message.ai:last-child');
+                    const contentEl = lastAiMessage.querySelector('.message-content');
+                    const timeEl = contentEl.querySelector('.message-time');
+                    
+                    // 逐字显示内容
+                    const replyText = '感谢您的咨询！我已收到您的消息，会尽快为您解答。';
+                    let charIndex = 0;
+                    timeEl.style.display = 'none';
+                    
+                    function typeWriter() {
+                        if (charIndex < replyText.length) {
+                            let currentContent = replyText.substring(0, charIndex + 1);
+                            contentEl.innerHTML = currentContent + '<span class="message-time" style="display:none;"></span>';
+                            charIndex++;
+                            
+                            // 根据字符调整速度
+                            let delay = 80;
+                            if (replyText[charIndex - 1] === '。' || 
+                                replyText[charIndex - 1] === '，' || 
+                                replyText[charIndex - 1] === '！' ||
+                                replyText[charIndex - 1] === '？') {
+                                delay = 200;
+                            }
+                            
+                            setTimeout(typeWriter, delay);
+                            chatContent.scrollTop = chatContent.scrollHeight;
+                        } else {
+                            // 内容输出完毕后显示时间
+                            contentEl.innerHTML = replyText + `<span class="message-time">${getCurrentTime()}</span>`;
+                            chatContent.scrollTop = chatContent.scrollHeight;
+                        }
+                    }
+                    
+                    typeWriter();
                 }, 1000);
             }
         });
@@ -9151,10 +9187,12 @@
         // 获取当前时间
         function getCurrentTime() {
             const now = new Date();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
-            return `今天 ${hours}:${minutes}:${seconds}`;
+            return `${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
 
         // 标签点击功能
