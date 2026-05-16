@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <title>RaaS创造中心</title>
+    <style>
+        iframe[src="header.html"] ~ * .nav-container,
+        body > iframe[src="header.html"] ~ * .nav-container {
+            width: 94% !important;
+            max-width: 94% !important;
+        }
+    </style>
     <script>
         // 全局登录状态
         let isLoggedIn = false;
@@ -42,10 +49,36 @@
                 // 获取现有的头部iframe
                 const headerIframe = document.querySelector('iframe[src="header.html"]');
                 if (headerIframe) {
-                    // 发送登录状态给头部
-                    headerIframe.contentWindow.postMessage({ type: 'UPDATE_LOGIN_STATUS', isLoggedIn: isLoggedIn }, '*');
-                    // 发送消息设置nav-container宽度
-                    headerIframe.contentWindow.postMessage({ type: 'SET_NAV_CONTAINER_WIDTH', width: '94%' }, '*');
+                    // 直接修改iframe内容样式
+                    const applyHeaderStyles = () => {
+                        try {
+                            const iframeDoc = headerIframe.contentDocument || headerIframe.contentWindow.document;
+                            const navContainers = iframeDoc.querySelectorAll('.nav-container');
+                            navContainers.forEach(container => {
+                                container.style.width = '94%';
+                                container.style.maxWidth = 'none';
+                                container.style.transition = 'none';
+                            });
+                        } catch (e) {
+                            // 忽略跨域错误
+                        }
+                    };
+
+                    // 立即尝试应用样式
+                    applyHeaderStyles();
+
+                    // 如果iframe还没加载完成，等待加载后再应用
+                    if (headerIframe.contentDocument && headerIframe.contentDocument.readyState !== 'complete') {
+                        headerIframe.onload = function() {
+                            applyHeaderStyles();
+                            headerIframe.contentWindow.postMessage({ type: 'UPDATE_LOGIN_STATUS', isLoggedIn: isLoggedIn }, '*');
+                            headerIframe.contentWindow.postMessage({ type: 'SET_NAV_CONTAINER_WIDTH', width: '94%' }, '*');
+                        };
+                    } else {
+                        // 已经加载完成，发送登录状态
+                        headerIframe.contentWindow.postMessage({ type: 'UPDATE_LOGIN_STATUS', isLoggedIn: isLoggedIn }, '*');
+                        headerIframe.contentWindow.postMessage({ type: 'SET_NAV_CONTAINER_WIDTH', width: '94%' }, '*');
+                    }
                 } else {
                     // 如果iframe不存在，创建一个新的
                     const newHeaderIframe = document.createElement('iframe');
