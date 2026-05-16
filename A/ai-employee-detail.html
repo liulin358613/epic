@@ -106,7 +106,7 @@
             flex: 1;
             padding: 12px;
             display: flex;
-            gap: 12px;
+            gap: 0;
             overflow-x: auto;
             overflow-y: auto;
             min-height: 0;
@@ -117,6 +117,7 @@
             flex-direction: column;
             gap: 12px;
             min-width: 0;
+            overflow: hidden;
         }
         .right-panel {
             flex: 4;
@@ -126,6 +127,29 @@
             gap: 0;
             min-width: 300px;
             min-height: 0;
+            overflow: hidden;
+        }
+        .vertical-resizer {
+            width: 8px;
+            background: #e5e7eb;
+            cursor: col-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .vertical-resizer:hover,
+        .vertical-resizer.active {
+            background: #cbd5e1;
+        }
+        .vertical-resizer::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: #94a3b8;
+            border-radius: 2px;
         }
         .resizer {
             height: 8px;
@@ -500,6 +524,11 @@
             font-size: 13px;
             table-layout: fixed;
         }
+        .topic-test-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
         .topic-test-table th {
             background: #f8fafc;
             padding: 10px 8px;
@@ -508,10 +537,11 @@
             border-bottom: 1px solid #e5e7eb;
             white-space: nowrap;
         }
-        .topic-test-table th:nth-child(1) { width: 50%; text-align: left; }
-        .topic-test-table th:nth-child(2) { width: 15%; text-align: center; }
-        .topic-test-table th:nth-child(3) { width: 15%; text-align: center; }
-        .topic-test-table th:nth-child(4) { width: 30%; text-align: left; }
+        .topic-test-table th:nth-child(1) { width: 40%; text-align: left; }
+        .topic-test-table th:nth-child(2) { width: 12%; text-align: center; }
+        .topic-test-table th:nth-child(3) { width: 12%; text-align: center; }
+        .topic-test-table th:nth-child(4) { width: 20%; text-align: left; }
+        .topic-test-table th:nth-child(5) { width: 16%; text-align: left; padding-left: 16px; }
         .topic-test-table td {
             padding: 10px 8px;
             border-bottom: 1px solid #f1f5f9;
@@ -540,6 +570,10 @@
         .topic-test-table td:nth-child(4) {
             white-space: normal;
             line-height: 1.4;
+        }
+        .topic-test-table td:nth-child(5) {
+            text-align: left;
+            padding-left: 16px;
         }
         .topic-test-table tbody tr:hover {
             background: #fafafa;
@@ -692,6 +726,13 @@
         }
         .star:hover,
         .star.active {
+            color: #fbbf24;
+        }
+        .star.disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .star.disabled.active {
             color: #fbbf24;
         }
         .typing-indicator {
@@ -963,6 +1004,20 @@
         .scrollable-table::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        .btn-view {
+            padding: 4px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-view:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
@@ -972,12 +1027,6 @@
             <p class="page-subtitle">查看AI员工详细信息和相关话题</p>
         </div>
     </header>
-
-    <nav class="breadcrumb">
-        <a href="ai-employee.html">AI员工管理</a>
-        <span class="breadcrumb-separator">/</span>
-        <span class="breadcrumb-current">AI员工详情</span>
-    </nav>
 
     <main class="main-content">
         <div class="left-panel">
@@ -989,18 +1038,18 @@
                     </button>
                 </div>
                 <div class="employee-card">
-                    <div class="employee-badge">行业型</div>
+                    <div id="emp-type" class="employee-badge">行业型</div>
                     <div class="employee-header">
-                        <img src="images/tx-1.png" class="employee-avatar" alt="员工头像">
+                        <img id="emp-avatar" src="images/tx-1.png" class="employee-avatar" alt="员工头像">
                         <div class="employee-info">
-                            <div class="employee-name">全局顾问 <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(00000001)</span></div>
-                            <div class="employee-tags">
+                            <div class="employee-name"><span id="emp-name">全局顾问</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="emp-id">00000001</span>)</span></div>
+                            <div id="emp-tags" class="employee-tags">
                                 <span class="tag skill">战略规划</span>
                                 <span class="tag skill">商业分析</span>
                                 <span class="tag skill">决策支持</span>
                                 <span class="tag industry">企业服务</span>
                             </div>
-                            <div class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
+                            <div id="emp-desc" class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
                     <div class="employee-footer">
                         <div style="display: flex; align-items: center; gap: 20px;">
                             <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
@@ -1346,6 +1395,8 @@
             </div>
         </div>
 
+        <div class="vertical-resizer" id="vertical-resizer"></div>
+
         <div class="right-panel" id="right-panel">
             <div class="card" id="topic-card" style="flex: 1;">
                 <div class="section-header">
@@ -1359,6 +1410,7 @@
                                 <th>模型</th>
                                 <th>评价</th>
                                 <th>测试时间</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1367,60 +1419,70 @@
                                 <td>GPT-4</td>
                                 <td>5星</td>
                                 <td>2026-05-05<br>10:10:10</td>
+                                <td><button class="btn-view" data-topic="如何制定你年度如何制定你年度如何制定你年度战略规划与市场拓展策略分析报告如何制定你年度战略规划与市场拓展策略分析报告" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">市场竞争分析方法论与竞品分析实战指南</div></td>
                                 <td>Claude-3</td>
                                 <td>4星</td>
                                 <td>2026-05-06<br>14:25:30</td>
+                                <td><button class="btn-view" data-topic="市场竞争分析方法论与竞品分析实战指南" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">你数字化转型路径规划与实施策略</div></td>
                                 <td>文心一言</td>
                                 <td>5星</td>
                                 <td>2026-05-07<br>09:15:45</td>
+                                <td><button class="btn-view" data-topic="你数字化转型路径规划与实施策略" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">新兴市场进入策略分析与风险评估报告</div></td>
                                 <td>通义千问</td>
                                 <td>4星</td>
                                 <td>2026-05-08<br>16:30:20</td>
+                                <td><button class="btn-view" data-topic="新兴市场进入策略分析与风险评估报告" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">团队效能提升方法与组织架构优化方案</div></td>
                                 <td>GPT-4</td>
                                 <td>5星</td>
                                 <td>2026-05-09<br>11:45:00</td>
+                                <td><button class="btn-view" data-topic="团队效能提升方法与组织架构优化方案" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">投资决策评估框架与财务分析模型构建</div></td>
                                 <td>Claude-3</td>
                                 <td>5星</td>
                                 <td>2026-05-10<br>08:20:15</td>
+                                <td><button class="btn-view" data-topic="投资决策评估框架与财务分析模型构建" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">供应链优化策略与成本控制方案设计</div></td>
                                 <td>文心一言</td>
                                 <td>4星</td>
                                 <td>2026-05-11<br>13:55:40</td>
+                                <td><button class="btn-view" data-topic="供应链优化策略与成本控制方案设计" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">品牌营销策略与用户增长运营方案</div></td>
                                 <td>通义千问</td>
                                 <td>5星</td>
                                 <td>2026-05-12<br>15:10:25</td>
+                                <td><button class="btn-view" data-topic="品牌营销策略与用户增长运营方案" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">产品创新方法论与敏捷开发流程优化</div></td>
                                 <td>GPT-4</td>
                                 <td>5星</td>
                                 <td>2026-05-13<br>10:35:50</td>
+                                <td><button class="btn-view" data-topic="产品创新方法论与敏捷开发流程优化" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                             <tr>
                                 <td><div class="topic-name">客户服务体验提升与满意度分析报告</div></td>
                                 <td>Claude-3</td>
                                 <td>4星</td>
                                 <td>2026-05-14<br>17:20:35</td>
+                                <td><button class="btn-view" data-topic="客户服务体验提升与满意度分析报告" onclick="viewTopic(this)">查看</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1431,7 +1493,7 @@
 
             <div class="card" id="chat-card" style="flex: 1; display: flex; flex-direction: column;">
                 <div class="section-header">
-                    <div class="section-title"><i class="fa fa-comment-o"></i> 聊天</div>
+                    <div class="section-title" id="chat-title"><i class="fa fa-comment-o"></i> 聊天</div>
                 </div>
                 <div class="section-content" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column;" id="chat-messages">
                     <div class="message ai-message">
@@ -1471,11 +1533,181 @@
     </main>
 
     <script>
+        function viewTopic(btn) {
+            const topic = btn.getAttribute('data-topic');
+            const chatTitle = document.getElementById('chat-title');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // 清空对话区
+            chatMessages.innerHTML = '';
+            
+            // 添加用户消息
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.innerHTML = `
+                <div class="message-content">
+                    <div class="message-text">${topic}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            chatMessages.appendChild(userMessage);
+            
+            // 添加AI回复（多轮模拟对话）
+            const rating1 = Math.floor(Math.random() * 3) + 3; // 3-5星
+            setTimeout(() => {
+                const aiMessage1 = document.createElement('div');
+                aiMessage1.className = 'message ai-message';
+                aiMessage1.innerHTML = `
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-name">全局顾问</div>
+                        <div class="message-text">好的，让我来为您详细分析这个问题。根据我的专业判断，这个问题需要从多个维度来考虑。</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                        <div class="rating-panel">
+                            <span class="rating-label">评价：</span>
+                            <div class="rating-stars">
+                                <span class="star disabled ${rating1 >= 1 ? 'active' : ''}">★</span>
+                                <span class="star disabled ${rating1 >= 2 ? 'active' : ''}">★</span>
+                                <span class="star disabled ${rating1 >= 3 ? 'active' : ''}">★</span>
+                                <span class="star disabled ${rating1 >= 4 ? 'active' : ''}">★</span>
+                                <span class="star disabled ${rating1 >= 5 ? 'active' : ''}">★</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chatMessages.appendChild(aiMessage1);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // 添加第二条AI回复
+                const rating2 = Math.floor(Math.random() * 3) + 3; // 3-5星
+                setTimeout(() => {
+                    const aiMessage2 = document.createElement('div');
+                    aiMessage2.className = 'message ai-message';
+                    aiMessage2.innerHTML = `
+                        <div class="message-avatar">AI</div>
+                        <div class="message-content">
+                            <div class="message-name">全局顾问</div>
+                            <div class="message-text">首先，我们需要明确核心目标和关键指标。其次，制定详细的实施计划和阶段性目标。最后，建立完善的评估机制和反馈体系。</div>
+                            <div class="message-time">${getCurrentTime()}</div>
+                            <div class="rating-panel">
+                                <span class="rating-label">评价：</span>
+                                <div class="rating-stars">
+                                    <span class="star disabled ${rating2 >= 1 ? 'active' : ''}">★</span>
+                                    <span class="star disabled ${rating2 >= 2 ? 'active' : ''}">★</span>
+                                    <span class="star disabled ${rating2 >= 3 ? 'active' : ''}">★</span>
+                                    <span class="star disabled ${rating2 >= 4 ? 'active' : ''}">★</span>
+                                    <span class="star disabled ${rating2 >= 5 ? 'active' : ''}">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    chatMessages.appendChild(aiMessage2);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1500);
+            }, 1000);
+            
+            // 更新聊天标题
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'chat-title-text';
+            titleSpan.textContent = topic;
+            titleSpan.style.whiteSpace = 'nowrap';
+            titleSpan.style.verticalAlign = 'middle';
+            titleSpan.style.display = 'inline-block';
+            
+            // 临时设置为无省略号，获取实际需要的宽度
+            document.body.appendChild(titleSpan);
+            const neededWidth = titleSpan.offsetWidth;
+            document.body.removeChild(titleSpan);
+            
+            // 计算可用宽度（留出图标和间距的空间）
+            const containerWidth = chatTitle.parentElement.offsetWidth - 50; // 减去图标和padding的空间
+            
+            chatTitle.innerHTML = '<i class="fa fa-comment-o"></i> ';
+            chatTitle.appendChild(titleSpan);
+            
+            // 只有当标题需要的宽度大于可用宽度时才添加省略号
+            if (neededWidth > containerWidth) {
+                titleSpan.style.maxWidth = containerWidth + 'px';
+                titleSpan.style.overflow = 'hidden';
+                titleSpan.style.textOverflow = 'ellipsis';
+            } else {
+                titleSpan.style.maxWidth = neededWidth + 'px';
+            }
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function getCurrentTime() {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${month}-${day} ${hours}:${minutes}`;
+        }
+        
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name) || '';
+        }
+
         function goBack() {
             window.location.href = 'ai-employee.html';
         }
         
+        function updateEmployeeDetail() {
+            const id = getUrlParameter('id');
+            const name = decodeURIComponent(getUrlParameter('name')) || 'AI员工';
+            const avatar = decodeURIComponent(getUrlParameter('avatar')) || 'images/AI-1.png';
+            const typeLabel = decodeURIComponent(getUrlParameter('typeLabel')) || '通用型';
+            const desc = decodeURIComponent(getUrlParameter('desc')) || '暂无描述';
+            const tagsStr = decodeURIComponent(getUrlParameter('tags'));
+            const tags = tagsStr ? JSON.parse(tagsStr) : [];
+            const industry = decodeURIComponent(getUrlParameter('industry')) || '通用';
+            const matchRate = getUrlParameter('matchRate') || '0';
+            const tasks = getUrlParameter('tasks') || '0';
+            const rating = getUrlParameter('rating') || '0.0';
+            const price = getUrlParameter('price') || '0';
+
+            const nameEl = document.getElementById('emp-name');
+            if (nameEl) nameEl.textContent = name;
+
+            const idEl = document.getElementById('emp-id');
+            if (idEl) idEl.textContent = String(id).padStart(8, '0');
+
+            const avatarEl = document.getElementById('emp-avatar');
+            if (avatarEl) avatarEl.src = avatar;
+
+            const typeEl = document.getElementById('emp-type');
+            if (typeEl) typeEl.textContent = typeLabel;
+
+            const descEl = document.getElementById('emp-desc');
+            if (descEl) descEl.textContent = desc;
+
+            const tagsContainer = document.getElementById('emp-tags');
+            if (tagsContainer && tags.length > 0) {
+                tagsContainer.innerHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            }
+
+            const industryEl = document.getElementById('emp-industry');
+            if (industryEl) industryEl.textContent = industry;
+
+            const matchRateEl = document.getElementById('emp-match-rate');
+            if (matchRateEl) matchRateEl.textContent = matchRate + '%';
+
+            const tasksEl = document.getElementById('emp-tasks');
+            if (tasksEl) tasksEl.textContent = parseInt(tasks).toLocaleString();
+
+            const ratingEl = document.getElementById('emp-rating');
+            if (ratingEl) ratingEl.textContent = rating;
+
+            const priceEl = document.getElementById('emp-price');
+            if (priceEl) priceEl.textContent = '¥' + price;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            updateEmployeeDetail();
             var stepItems = document.querySelectorAll('.step-item');
             var stepPanels = document.querySelectorAll('.step-panel');
             
@@ -1702,6 +1934,50 @@
             isResizing = false;
             document.body.style.cursor = '';
             document.body.style.userSelect = '';
+        });
+
+        const verticalResizer = document.getElementById('vertical-resizer');
+        const leftPanel = document.querySelector('.left-panel');
+        const mainContent = document.querySelector('.main-content');
+
+        let isVerticalResizing = false;
+
+        verticalResizer.addEventListener('mousedown', (e) => {
+            isVerticalResizing = true;
+            verticalResizer.classList.add('active');
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isVerticalResizing) return;
+
+            const containerRect = mainContent.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const mouseX = e.clientX - containerRect.left;
+
+            const minLeftWidth = 400;
+            const minRightWidth = 300;
+            const resizerWidth = 8;
+
+            let leftWidth = mouseX - resizerWidth / 2;
+            leftWidth = Math.max(minLeftWidth, Math.min(leftWidth, containerWidth - minRightWidth - resizerWidth));
+
+            const leftFlex = leftWidth / containerWidth;
+            const rightFlex = 1 - leftFlex - (resizerWidth / containerWidth);
+
+            leftPanel.style.flex = `0 0 ${leftWidth}px`;
+            rightPanel.style.flex = `0 0 ${containerWidth - leftWidth - resizerWidth}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isVerticalResizing) {
+                isVerticalResizing = false;
+                verticalResizer.classList.remove('active');
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
         });
     </script>
 </body>

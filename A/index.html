@@ -1044,7 +1044,7 @@
                     </div> -->
                 </div>
                 
-                <div class="nav-item active" data-module="ai-employee" onclick="showModule('ai-employee')">
+                <div class="nav-item" data-module="ai-employee" onclick="showModule('ai-employee')">
                     <i class="fa fa-user-circle"></i>
                     <span>AI员工管理</span>
                 </div>
@@ -1095,7 +1095,7 @@
         <main class="main-content">
             <div class="tab-bar-wrapper">
                 <div id="tabs-container" class="tabs-container">
-                    <div class="tab active" data-module="workbench" onclick="selectTabFromTab('workbench')">
+                    <div class="tab active" data-module="workbench" onclick="selectTab('workbench')">
                         <i class="fa fa-desktop"></i>
                         <span>工作台</span>
                         <i class="fa fa-times tab-close" onclick="closeTab('workbench'); event.stopPropagation()"></i>
@@ -1438,7 +1438,7 @@
                 targetTab.classList.add('active');
             }
             
-            const actualNavItem = navItem.closest('.submenu-item') || navItem;
+            const actualNavItem = navItem.closest('.submenu-item') || navItem.closest('.nav-item') || navItem;
             actualNavItem.classList.add('active');
             
             document.getElementById(moduleName + '-module').classList.remove('hidden');
@@ -1761,8 +1761,27 @@
             }
         })();
 
+        function selectTab(moduleName) {
+            const moduleEl = document.getElementById(moduleName + '-module');
+            if (!moduleEl) {
+                return;
+            }
+            
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.submenu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.module').forEach(module => module.classList.add('hidden'));
+            
+            const targetTab = document.querySelector(`.tab[data-module="${moduleName}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
+            moduleEl.classList.remove('hidden');
+        }
+
         window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'openOrgDetail') {
+            if (event.data && (event.data.type === 'openOrgDetail' || event.data.type === 'openAIEmployeeDetail')) {
                 const { moduleName, moduleTitle, icon, src } = event.data;
                 
                 const tabsContainer = document.querySelector('.tabs-container');

@@ -687,7 +687,41 @@
         }
 
         function hireEmployee(name) {
-            window.location.href = 'ai-employee-detail.html';
+            const emp = employees.find(e => e.name === name);
+            if (emp) {
+                showEmployeeDetail(emp.id);
+            }
+        }
+
+        function showEmployeeDetail(empId) {
+            const emp = employees.find(e => e.id === empId);
+            if (emp) {
+                const params = new URLSearchParams();
+                params.append('id', emp.id);
+                params.append('name', encodeURIComponent(emp.name));
+                params.append('avatar', encodeURIComponent(emp.avatar));
+                params.append('type', encodeURIComponent(emp.type));
+                params.append('typeLabel', encodeURIComponent(emp.typeLabel));
+                params.append('desc', encodeURIComponent(emp.desc));
+                params.append('tags', encodeURIComponent(JSON.stringify(emp.tags)));
+                params.append('industry', encodeURIComponent(emp.industry));
+                params.append('matchRate', emp.matchRate);
+                params.append('tasks', emp.tasks);
+                params.append('rating', emp.rating);
+                params.append('price', emp.price);
+
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'openAIEmployeeDetail',
+                        moduleName: 'ai-employee-detail',
+                        moduleTitle: 'AI员工详情',
+                        icon: 'fa-user-circle-o',
+                        src: 'ai-employee-detail.html?' + params.toString()
+                    }, '*');
+                } else {
+                    window.location.href = 'ai-employee-detail.html?' + params.toString();
+                }
+            }
         }
 
         function addAIEmployee() {
