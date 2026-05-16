@@ -38,6 +38,32 @@
             }
         }
 
+        // 更新侧边栏登录栏显示
+        function updateSidebarLoginBar() {
+            const loginBar = document.getElementById('sidebarLoginBar');
+            if (!loginBar) return;
+
+            if (isLoggedIn) {
+                loginBar.classList.remove('login-bar-logged-out');
+                loginBar.innerHTML = `
+                    <div class="login-avatar">林</div>
+                    <div class="login-info">
+                        <div class="login-name">林工</div>
+                    </div>
+                    <div class="login-arrow">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                `;
+            } else {
+                loginBar.classList.add('login-bar-logged-out');
+                loginBar.innerHTML = `
+                    <button class="login-btn" onclick="openLoginModal()">登录</button>
+                `;
+            }
+        }
+
         // 加载公共头部
         function loadHeader() {
             try {
@@ -45,6 +71,8 @@
                 checkLoginStatus();
                 // 更新全能顾问文本
                 updateAdvisorText();
+                // 更新侧边栏登录栏
+                updateSidebarLoginBar();
                 
                 // 获取现有的头部iframe
                 const headerIframe = document.querySelector('iframe[src="header.html"]');
@@ -131,13 +159,17 @@
             if (event.data.type === 'LOGIN_SUCCESS') {
                 // 设置登录状态
                 localStorage.setItem('isLoggedIn', 'true');
+                // 重新检查登录状态
+                checkLoginStatus();
                 // 发送登录成功消息
                 const headerIframe = document.querySelector('iframe[src="header.html"]');
                 if (headerIframe) {
                     headerIframe.contentWindow.postMessage({ type: 'LOGIN_SUCCESS' }, '*');
                 }
-                // 刷新头部
-                loadHeader();
+                // 更新全能顾问文本
+                updateAdvisorText();
+                // 更新侧边栏登录栏
+                updateSidebarLoginBar();
                 // 关闭登录弹窗
                 const modalOverlay = document.querySelector('.modal-overlay');
                 if (modalOverlay) {
@@ -326,6 +358,8 @@
                     logoutConfirmBtn.addEventListener('click', function() {
                         // 清除登录状态
                         localStorage.removeItem('isLoggedIn');
+                        // 重新检查登录状态
+                        checkLoginStatus();
                         
                         // 隐藏对话框
                         logoutModal.classList.remove('show');
@@ -337,8 +371,10 @@
                             headerIframe.contentWindow.postMessage({ type: 'LOGOUT_SUCCESS' }, '*');
                         }
                         
-                        // 重新加载头部，显示未登录的头部
-                        loadHeader();
+                        // 更新全能顾问文本
+                        updateAdvisorText();
+                        // 更新侧边栏登录栏
+                        updateSidebarLoginBar();
                     });
                 }
 
@@ -859,11 +895,110 @@
             border-right: 0.0625rem solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            padding: 0.75rem 0.5rem;
+            padding: 0.75rem 0.75rem 0 0.75rem;
             overflow-y: auto;
             flex-shrink: 0;
             margin-right: 0;
             height: 100%;
+            scrollbar-width: none;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar:hover::-webkit-scrollbar {
+            display: block;
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border-gray);
+            border-radius: 3px;
+        }
+
+        .sidebar-login-bar {
+            position: sticky;
+            bottom: 0;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            padding: 12px;
+            background-color: var(--white);
+            border-top: 1px solid var(--border-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: -0.75rem;
+            margin-right: -0.75rem;
+        }
+
+        .sidebar-login-bar .login-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--classic-gray);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .sidebar-login-bar .login-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sidebar-login-bar .login-name {
+            font-size: 13px;
+            color: var(--deep-gray);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-login-bar .login-role {
+            font-size: 11px;
+            color: var(--classic-gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-login-bar .login-arrow {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--classic-gray);
+        }
+
+        .sidebar-login-bar.login-bar-logged-out {
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sidebar-login-bar.login-bar-logged-out .login-btn {
+            padding: 6px 16px;
+            background-color: transparent;
+            color: var(--klein-blue);
+            border: 1px solid var(--klein-blue);
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sidebar-login-bar.login-bar-logged-out .login-btn:hover {
+            background-color: rgba(0, 81, 217, 0.1);
         }
 
         .new-chat-btn {
@@ -4151,6 +4286,17 @@
                     </div>
                 </div>
             </div>
+            <div class="sidebar-login-bar" id="sidebarLoginBar">
+                <div class="login-avatar">林</div>
+                <div class="login-info">
+                    <div class="login-name">林工</div>
+                </div>
+                <div class="login-arrow">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+            </div>
         </div>
 
         <!-- 中间对话区 -->
@@ -4996,14 +5142,18 @@
             if (activeTab) {
                 activeTab.classList.add('active');
                 console.log('为对应的Tab添加active类成功');
+                // 滚动到激活的tab，使其可见
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
             } else if (currentTabIndex !== -1 && tabs.length > 0) {
                 // 如果没有找到对应的tab元素，但是找到了当前tab在previewTabs中的索引，为对应索引的tab添加active类
                 if (currentTabIndex < tabs.length) {
                     tabs[currentTabIndex].classList.add('active');
+                    tabs[currentTabIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
                     console.log('为索引为', currentTabIndex, '的Tab添加active类成功');
                 } else {
                     // 如果索引超出范围，为最后一个tab添加active类
                     tabs[tabs.length - 1].classList.add('active');
+                    tabs[tabs.length - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
                     console.log('为最后一个Tab添加active类成功');
                 }
             } else {
