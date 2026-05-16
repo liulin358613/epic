@@ -79,10 +79,30 @@
         .btn-edit {
             background: rgba(59, 130, 246, 0.1);
             color: #3b82f6;
+            width: auto;
+            padding: 6px 12px;
+            gap: 4px;
         }
         .btn-edit:hover {
             background: rgba(59, 130, 246, 0.2);
             transform: scale(1.1);
+        }
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            width: auto;
+            padding: 6px 12px;
+            gap: 4px;
+        }
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.1);
+        }
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
         }
         .page-header {
             display: flex;
@@ -179,7 +199,7 @@
         .section-header {
             display: flex;
             align-items: center;
-            padding: 14px 16px;
+            padding: 9px 16px;
             border-bottom: 1px solid #f1f5f9;
             background: #f8fafc;
         }
@@ -1035,9 +1055,16 @@
             <div class="card">
                 <div class="section-header" style="display: flex; justify-content: space-between;padding: 8px 16px;">
                     <div class="section-title"><i class="fa fa-info-circle"></i> 基本信息</div>
-                    <button class="btn btn-icon btn-edit" title="编辑信息">
-                        <i class="fa fa-pencil"></i>
-                    </button>
+                    <div class="action-buttons">
+                        <button class="btn btn-icon btn-edit" title="编辑信息" onclick="openEditModal()">
+                            <i class="fa fa-pencil"></i>
+                            <span>编辑</span>
+                        </button>
+                        <button class="btn btn-icon btn-delete" title="删除员工" onclick="showDeleteConfirm()">
+                            <i class="fa fa-trash"></i>
+                            <span>删除</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="employee-card">
                     <div id="emp-type" class="employee-badge">行业型</div>
@@ -1981,6 +2008,1197 @@
                 document.body.style.userSelect = '';
             }
         });
+
+        let currentEditStep = 0;
+        const editStepTitles = [
+            '职能配置', '普识配置', '专识配置', '工作流配置', '规则配置', '约束配置', '对齐配置', '检查配置', '反馈配置'
+        ];
+        const editStepData = {};
+        for (let i = 0; i < editStepTitles.length; i++) {
+            editStepData[i] = [{ project: '', content: '' }];
+        }
+
+        function openEditModal() {
+            const modal = document.getElementById('edit-employee-modal');
+            modal.classList.add('show');
+            currentEditStep = 0;
+            loadEmployeeData();
+            updateEditStepUI();
+            initAllStepData();
+            loadEditStepData(0);
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('edit-employee-modal');
+            modal.classList.remove('show');
+            resetEditForm();
+        }
+
+        function resetEditForm() {
+            document.getElementById('edit-avatar-upload').innerHTML = `
+                <i class="fa fa-upload upload-icon"></i>
+                <span class="upload-text">点击上传</span>
+                <input type="file" id="edit-avatar-input" accept="image/*" style="display: none;" onchange="handleEditAvatarUpload(event)">
+            `;
+            document.getElementById('edit-avatar-upload').classList.remove('has-image');
+            document.getElementById('edit-avatar-btn').style.display = 'none';
+            document.getElementById('edit-employee-type').value = '';
+            document.getElementById('edit-employee-name').value = '';
+            document.getElementById('edit-employee-skills').value = '';
+            document.getElementById('edit-employee-desc').value = '';
+            
+            for (let i = 0; i < editStepTitles.length; i++) {
+                editStepData[i] = [{ project: '', content: '' }];
+            }
+        }
+
+        function loadEmployeeData() {
+            const id = getUrlParameter('id');
+            const name = decodeURIComponent(getUrlParameter('name')) || 'AI员工';
+            const avatar = decodeURIComponent(getUrlParameter('avatar')) || 'images/AI-1.png';
+            const type = decodeURIComponent(getUrlParameter('type')) || 'general';
+            const typeLabel = decodeURIComponent(getUrlParameter('typeLabel')) || '通用型';
+            const desc = decodeURIComponent(getUrlParameter('desc')) || '暂无描述';
+            const tagsStr = decodeURIComponent(getUrlParameter('tags'));
+            const tags = tagsStr ? JSON.parse(tagsStr) : [];
+
+            document.getElementById('edit-employee-name').value = name;
+            document.getElementById('edit-employee-type').value = type;
+            document.getElementById('edit-employee-desc').value = desc;
+            document.getElementById('edit-employee-skills').value = tags.join('｜');
+
+            const uploader = document.getElementById('edit-avatar-upload');
+            uploader.innerHTML = `
+                <img src="${avatar}" alt="avatar">
+                <input type="file" id="edit-avatar-input" accept="image/*" style="display: none;" onchange="handleEditAvatarUpload(event)">
+            `;
+            uploader.classList.add('has-image');
+            document.getElementById('edit-avatar-btn').textContent = '重新上传';
+            document.getElementById('edit-avatar-btn').style.display = 'inline-flex';
+
+            const stepContents = [
+                [
+                    { project: '能力定位', content: '你战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。' },
+                    { project: '核心职能', content: '为你提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助你明确发展方向和业务策略。' },
+                    { project: '提示词', content: '作为一名资深的你战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。' }
+                ],
+                [
+                    { project: '知识范围', content: '经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、你管理' },
+                    { project: '使用条件', content: '适用于你日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景' },
+                    { project: '提示词', content: '作为一名专业的你管理知识顾问，请基于通用商业知识为我解答以下问题：' }
+                ],
+                [
+                    { project: '知识来源', content: '行业研究报告、专业数据库、学术论文、你内部文档、行业专家访谈、市场调研数据、竞品分析报告' },
+                    { project: '调用流程', content: '1. 用户提出专业领域问题\n2. 系统识别问题领域和意图\n3. 检索相关专业知识库\n4. 整合分析多源信息\n5. 生成结构化专业回答\n6. 返回详细分析报告' },
+                    { project: '提示词', content: '作为一名资深的行业专家，请结合专业知识和行业经验，深入分析以下问题并提供专业见解：' }
+                ],
+                [
+                    { project: '特定工作流', content: '• 市场调研流程：\n需求确认 → 数据收集 → 竞品分析 → 趋势研判 → 报告撰写 → 方案交付\n\n• 战略规划流程：\n现状评估 → 目标设定 → 路径分析 → 资源配置 → 风险评估 → 战略落地\n\n• 决策支持流程：\n问题定义 → 信息整合 → 方案推演 → 效果预测 → 方案比选 → 决策建议' },
+                    { project: '自主生成工作流', content: '• 根据用户问题自动识别任务类型\n• 智能规划执行路径和步骤顺序\n• 动态调整流程以适应需求变化\n• 自动分配资源和优先级\n• 实时追踪执行进度和状态\n• 根据反馈自动优化流程设计\n• 支持多任务并行处理\n• 提供流程可视化和进度展示' }
+                ],
+                [
+                    { project: '行为规则', content: '• 必须基于可靠数据和事实进行分析\n• 分析方法需科学严谨，遵循行业标准\n• 输出内容必须准确无误，可验证\n• 建议方案需切实可行，具有操作性\n• 严格遵守相关法律法规和政策要求\n• 保护用户隐私和数据安全\n• 避免提供未经证实的信息或猜测' },
+                    { project: '交互规则', content: '• 保持专业、友好的沟通态度\n• 及时响应用户的问题和需求\n• 使用清晰易懂的语言表达\n• 提供结构化、有条理的回答\n• 对于不确定的问题坦诚说明\n• 尊重用户意见，保持耐心\n• 避免使用专业术语过度，必要时解释' },
+                    { project: '提示词', content: '作为一名专业的你顾问，请严格遵循以下规则提供服务：\n\n• 确保信息来源可靠\n• 分析过程科学严谨\n• 建议方案切实可行\n• 遵守法律法规要求\n\n请针对我的问题提供专业、全面的分析和建议。' }
+                ],
+                [
+                    { project: '能力约束', content: '• 仅能基于已训练知识进行回答\n• 无法访问实时数据和外部链接\n• 不具备执行实际操作的能力\n• 复杂计算需借助计算器工具' },
+                    { project: '内容约束', content: '• 不生成违法违规内容\n• 不涉及敏感政治话题\n• 不提供医疗、法律等专业建议\n• 不参与恶意对话和攻击' },
+                    { project: '输出约束', content: '• 回答长度控制在合理范围\n• 避免过度展开和冗余内容\n• 保持回答结构清晰有序\n• 必要时提示信息局限性' }
+                ],
+                [
+                    { project: '战略目标对齐', content: '• 与你长期发展战略保持一致\n• 支持你核心价值创造\n• 助力实现战略目标和愿景\n• 确保建议与战略方向匹配' },
+                    { project: '业务目标对齐', content: '• 支持各业务单元目标达成\n• 优化业务流程和效率\n• 提升业务竞争力\n• 促进业务创新和发展' },
+                    { project: '资源配置对齐', content: '• 合理分配人力、财力资源\n• 优化资源利用效率\n• 确保资源投入产出比\n• 支持重点项目和任务' }
+                ],
+                [
+                    { project: '数据准确性检查', content: '• 验证数据来源的可靠性和权威性\n• 检查数据完整性和时效性\n• 核实关键数据点的准确性\n• 确保数据统计方法正确' },
+                    { project: '逻辑合理性检查', content: '• 验证分析逻辑的严密性\n• 检查论证过程的合理性\n• 确保结论与论据一致\n• 排查潜在逻辑漏洞' },
+                    { project: '建议可行性检查', content: '• 评估建议的可操作性\n• 分析实施所需资源\n• 预判可能的风险和障碍\n• 提供具体的执行建议' }
+                ],
+                [
+                    { project: '反馈收集渠道', content: '• 对话结束后即时评价\n• 定期用户满意度调查\n• 在线问卷调研\n• 客服反馈热线\n• 邮件反馈渠道\n• 社交媒体反馈' },
+                    { project: '反馈处理流程', content: '• 实时收集用户反馈信息\n• 分类整理反馈内容\n• 分析反馈问题根源\n• 制定改进措施方案\n• 跟踪改进执行进度\n• 定期反馈改进效果' },
+                    { project: '反馈应用策略', content: '• 将反馈纳入产品迭代\n• 优化服务流程和体验\n• 调整知识库内容\n• 改进算法模型\n• 提升响应速度\n• 增强用户满意度' }
+                ]
+            ];
+
+            for (let i = 0; i < stepContents.length; i++) {
+                editStepData[i] = stepContents[i];
+            }
+        }
+
+        function handleEditAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploader = document.getElementById('edit-avatar-upload');
+                    uploader.innerHTML = `
+                        <img src="${e.target.result}" alt="avatar">
+                        <input type="file" id="edit-avatar-input" accept="image/*" style="display: none;" onchange="handleEditAvatarUpload(event)">
+                    `;
+                    uploader.classList.add('has-image');
+                    document.getElementById('edit-avatar-error').classList.remove('show');
+                    document.getElementById('edit-avatar-btn').textContent = '重新上传';
+                    document.getElementById('edit-avatar-btn').style.display = 'inline-flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveEditCurrentStepData() {
+            const tableBody = document.querySelector(`.step-table-body[data-step="${currentEditStep}"]`);
+            const dataRows = tableBody.querySelectorAll('.edit-data-row');
+            const data = [];
+            
+            dataRows.forEach(row => {
+                const projectInput = row.querySelector('.edit-project-input');
+                const contentInput = row.querySelector('.edit-content-input');
+                
+                data.push({
+                    project: projectInput ? projectInput.value : '',
+                    content: contentInput ? contentInput.value : ''
+                });
+            });
+            
+            editStepData[currentEditStep] = data;
+        }
+
+        function initAllStepData() {
+            for (let stepIndex = 0; stepIndex < 9; stepIndex++) {
+                const tableBody = document.querySelector(`.step-table-body[data-step="${stepIndex}"]`);
+                const data = editStepData[stepIndex];
+                
+                let html = '';
+                data.forEach((item, index) => {
+                    html += `
+                        <tr class="edit-data-row">
+                            <td class="input-cell">
+                                <textarea class="edit-project-input" placeholder="请输入项目" oninput="editAutoResize(this)">${item.project}</textarea>
+                            </td>
+                            <td class="input-cell">
+                                <textarea class="edit-content-input" placeholder="请输入内容" oninput="editAutoResize(this)">${item.content}</textarea>
+                            </td>
+                            <td class="input-cell" style="text-align: center;">
+                                ${data.length > 1 ? `
+                                    <button class="btn-delete-row" onclick="editDeleteTableRow(this, ${stepIndex})">
+                                        <i class="fa fa-trash"></i> 删除
+                                    </button>
+                                ` : '<span style="color: #94a3b8;">-</span>'}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                    <tr>
+                        <td colspan="3" class="add-row-cell">
+                            <button class="btn-add-row" onclick="editAddTableRow(${stepIndex})">
+                                <i class="fa fa-plus"></i> 添加行
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                
+                tableBody.innerHTML = html;
+            }
+            
+            setTimeout(() => {
+                document.querySelectorAll('.edit-project-input, .edit-content-input').forEach(el => editAutoResize(el));
+            }, 50);
+        }
+
+        function loadEditStepData(stepIndex) {
+            document.querySelectorAll('.step-content-wrapper').forEach((wrapper, index) => {
+                wrapper.classList.toggle('active', index === stepIndex);
+            });
+        }
+
+        function editAutoResize(textarea) {
+            if (!textarea.value.trim()) {
+                textarea.style.height = '42px';
+            } else {
+                textarea.style.height = '42px';
+                if (textarea.scrollHeight > 42) {
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                }
+            }
+        }
+
+        function editSwitchStep(stepIndex) {
+            saveEditCurrentStepData();
+            currentEditStep = stepIndex;
+            updateEditStepUI();
+            loadEditStepData(stepIndex);
+        }
+
+        function updateEditStepUI() {
+            const steps = document.querySelectorAll('.edit-step-item');
+            steps.forEach((step, index) => {
+                step.classList.toggle('active', index === currentEditStep);
+            });
+            
+            document.getElementById('edit-step-title').textContent = editStepTitles[currentEditStep];
+            
+            const prevBtn = document.getElementById('edit-prev-btn');
+            const nextBtn = document.getElementById('edit-next-btn');
+            
+            if (currentEditStep > 0 && currentEditStep < 8) {
+                prevBtn.style.display = 'inline-flex';
+                nextBtn.style.display = 'inline-flex';
+            } else if (currentEditStep === 0) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-flex';
+            } else {
+                prevBtn.style.display = 'inline-flex';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        function editPrevStep() {
+            if (currentEditStep > 0) {
+                saveEditCurrentStepData();
+                currentEditStep--;
+                updateEditStepUI();
+                loadEditStepData(currentEditStep);
+            }
+        }
+
+        function editNextStep() {
+            if (currentEditStep < 8) {
+                saveEditCurrentStepData();
+                currentEditStep++;
+                updateEditStepUI();
+                loadEditStepData(currentEditStep);
+            }
+        }
+
+        function editAddTableRow(stepIndex) {
+            const tableBody = document.querySelector(`.step-table-body[data-step="${stepIndex}"]`);
+            const addRow = tableBody.querySelector('.add-row-cell').parentElement;
+            const dataRows = tableBody.querySelectorAll('.edit-data-row');
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'edit-data-row';
+            newRow.innerHTML = `
+                <td class="input-cell">
+                    <textarea class="edit-project-input" placeholder="请输入项目" oninput="editAutoResize(this)"></textarea>
+                </td>
+                <td class="input-cell">
+                    <textarea class="edit-content-input" placeholder="请输入内容" oninput="editAutoResize(this)"></textarea>
+                </td>
+                <td class="input-cell" style="text-align: center;">
+                    <button class="btn-delete-row" onclick="editDeleteTableRow(this, ${stepIndex})">
+                        <i class="fa fa-trash"></i> 删除
+                    </button>
+                </td>
+            `;
+            
+            tableBody.insertBefore(newRow, addRow);
+            editStepData[stepIndex].push({ project: '', content: '' });
+            
+            editUpdateDeleteButtons(stepIndex);
+            
+            setTimeout(() => {
+                newRow.querySelectorAll('.edit-project-input, .edit-content-input').forEach(el => editAutoResize(el));
+            }, 0);
+        }
+
+        function editUpdateDeleteButtons(stepIndex) {
+            const tableBody = document.querySelector(`.step-table-body[data-step="${stepIndex}"]`);
+            const dataRows = tableBody.querySelectorAll('.edit-data-row');
+            dataRows.forEach((row, index) => {
+                const actionCell = row.querySelector('td:last-child');
+                if (dataRows.length > 1) {
+                    actionCell.innerHTML = `
+                        <button class="btn-delete-row" onclick="editDeleteTableRow(this, ${stepIndex})">
+                            <i class="fa fa-trash"></i> 删除
+                        </button>
+                    `;
+                } else {
+                    actionCell.innerHTML = '<span style="color: #94a3b8;">-</span>';
+                }
+            });
+        }
+
+        function editDeleteTableRow(btn, stepIndex) {
+            const row = btn.parentElement.parentElement;
+            const tableBody = document.querySelector(`.step-table-body[data-step="${stepIndex}"]`);
+            const dataRows = tableBody.querySelectorAll('.edit-data-row');
+            const index = Array.from(dataRows).indexOf(row);
+            
+            if (dataRows.length > 1) {
+                row.remove();
+                editStepData[stepIndex].splice(index, 1);
+                editUpdateDeleteButtons(stepIndex);
+            }
+        }
+
+        function saveEditEmployee() {
+            closeEditModal();
+            showToast('AI员工信息已更新！', 'success');
+        }
+
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 2500);
+        }
     </script>
+
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            width: 900px;
+            max-height: 85vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fafafa;
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            gap: 10px;
+            background: #fafafa;
+        }
+        .form-section {
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-item {
+            flex: 1;
+            min-width: 0;
+        }
+        .form-item-inline {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .form-item-inline .form-label {
+            margin-bottom: 0;
+            padding-top: 6px;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .modal .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .modal .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .textarea-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .avatar-upload {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-upload:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .avatar-upload.has-image {
+            border-style: solid;
+            border-color: #3b82f6;
+        }
+        .avatar-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .avatar-upload .upload-icon {
+            font-size: 24px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .avatar-upload .upload-text {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .btn-upload {
+            padding: 6px 16px;
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0;
+        }
+        .btn-upload:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .basic-info-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .avatar-section {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .avatar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .type-name-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .input-wrapper {
+            flex: 1;
+            max-width: none;
+        }
+        .input-wrapper .form-control {
+            width: 100%;
+        }
+        .steps-wrapper {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+        }
+        .edit-step-item {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            min-width: 70px;
+        }
+        .edit-step-item:hover {
+            background: #f1f5f9;
+        }
+        .edit-step-item.active {
+            background: #eff6ff;
+        }
+        .edit-step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            transition: all 0.2s ease;
+        }
+        .edit-step-item.active .edit-step-number {
+            background: #3b82f6;
+            color: white;
+        }
+        .edit-step-label {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .edit-step-item.active .edit-step-label {
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .step-divider {
+            flex: 1;
+            height: 2px;
+            background: #e2e8f0;
+            margin: 0 4px;
+        }
+        .step-divider.active {
+            background: #3b82f6;
+        }
+        .dynamic-content {
+            margin-top: 16px;
+            min-height: 200px;
+        }
+        .dynamic-content-inner {
+            position: relative;
+            min-height: 200px;
+        }
+        .step-content-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+        .step-content-wrapper.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .dynamic-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+        .dynamic-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dynamic-table tbody {
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+        .dynamic-table th,
+        .dynamic-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .dynamic-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            font-size: 13px;
+        }
+        .dynamic-table tr:last-child td {
+            border-bottom: none;
+        }
+        .dynamic-table .input-cell {
+            padding: 6px 12px;
+            vertical-align: top;
+        }
+        .dynamic-table .input-cell textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: none;
+            overflow: hidden;
+            height: 42px;
+            min-height: 42px;
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .dynamic-table .input-cell textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .dynamic-table .add-row-cell {
+            text-align: center;
+        }
+        .btn-add-row {
+            padding: 8px 20px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-add-row:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .btn-delete-row {
+            padding: 4px 12px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            color: #64748b;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-delete-row:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .error-text {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 4px;
+            display: none;
+            width: 100%;
+        }
+        .error-text.show {
+            display: block;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <div class="modal-overlay" id="edit-employee-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑AI员工</h2>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-section">
+                    <div class="basic-info-row">
+                        <div class="avatar-section">
+                            <label class="form-label">头像<span class="required">*</span></label>
+                            <div class="avatar-col">
+                                <div class="avatar-upload" id="edit-avatar-upload" onclick="document.getElementById('edit-avatar-input').click()">
+                                    <i class="fa fa-upload upload-icon"></i>
+                                    <span class="upload-text">点击上传</span>
+                                    <input type="file" id="edit-avatar-input" accept="image/*" style="display: none;" onchange="handleEditAvatarUpload(event)">
+                                </div>
+                                <div class="error-text" id="edit-avatar-error">请上传头像</div>
+                                <button class="btn-upload" id="edit-avatar-btn" onclick="document.getElementById('edit-avatar-input').click()" style="display: none;">重新上传</button>
+                            </div>
+                        </div>
+                        
+                        <div class="type-name-section">
+                            <div class="form-item-inline">
+                                <label class="form-label">类型<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <select class="form-control" id="edit-employee-type">
+                                        <option value="">请选择类型</option>
+                                        <option value="general">通用型</option>
+                                        <option value="expert">专家型</option>
+                                        <option value="industry">行业型</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">名称<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control" id="edit-employee-name" placeholder="请输入AI员工名称">
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">技能<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control" id="edit-employee-skills" placeholder="多个技能用｜分隔">
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">描述<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <textarea class="form-control textarea-control" id="edit-employee-desc" placeholder="请输入AI员工描述"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="steps-wrapper" id="edit-steps-wrapper">
+                        <div class="edit-step-item active" data-step="0" onclick="editSwitchStep(0)">
+                            <div class="edit-step-number">1</div>
+                            <div class="edit-step-label">职能</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="1" onclick="editSwitchStep(1)">
+                            <div class="edit-step-number">2</div>
+                            <div class="edit-step-label">普识</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="2" onclick="editSwitchStep(2)">
+                            <div class="edit-step-number">3</div>
+                            <div class="edit-step-label">专识</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="3" onclick="editSwitchStep(3)">
+                            <div class="edit-step-number">4</div>
+                            <div class="edit-step-label">工作流</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="4" onclick="editSwitchStep(4)">
+                            <div class="edit-step-number">5</div>
+                            <div class="edit-step-label">规则</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="5" onclick="editSwitchStep(5)">
+                            <div class="edit-step-number">6</div>
+                            <div class="edit-step-label">约束</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="6" onclick="editSwitchStep(6)">
+                            <div class="edit-step-number">7</div>
+                            <div class="edit-step-label">对齐</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="7" onclick="editSwitchStep(7)">
+                            <div class="edit-step-number">8</div>
+                            <div class="edit-step-label">检查</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="8" onclick="editSwitchStep(8)">
+                            <div class="edit-step-number">9</div>
+                            <div class="edit-step-label">反馈</div>
+                        </div>
+                    </div>
+
+                    <div class="dynamic-content">
+                        <h4 class="dynamic-title" id="edit-step-title">职能配置</h4>
+                        <div class="dynamic-content-inner" id="edit-dynamic-inner">
+                            <div class="step-content-wrapper active" id="step-content-0">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="0">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-1">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="1">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-2">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="2">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-3">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="3">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-4">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="4">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-5">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="5">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-6">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="6">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-7">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="7">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-8">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="8">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="edit-prev-btn" style="display: none;" onclick="editPrevStep()">
+                    <i class="fa fa-angle-left"></i> 上一步
+                </button>
+                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+                <button class="btn btn-primary" id="edit-next-btn" style="display: none;" onclick="editNextStep()">
+                    下一步 <i class="fa fa-angle-right"></i>
+                </button>
+                <button class="btn btn-primary" onclick="saveEditEmployee()">保存</button>
+            </div>
+        </div>
+    </div>
 </body>
+    <!-- 删除确认对话框 -->
+    <div class="modal-overlay" id="delete-confirm-modal">
+        <div class="modal confirm-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">确认删除</h2>
+                <button class="modal-close" onclick="closeDeleteConfirm()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="confirm-content">
+                    <div class="confirm-icon">
+                        <i class="fa fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="confirm-message">
+                        <p>确定要删除该AI员工吗？</p>
+                        <p class="confirm-hint">删除后将无法恢复，请谨慎操作。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteConfirm()">取消</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .confirm-modal {
+            width: 420px;
+            max-height: auto;
+        }
+        .confirm-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 0;
+        }
+        .confirm-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fef3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .confirm-icon i {
+            font-size: 24px;
+            color: #f59e0b;
+        }
+        .confirm-message {
+            flex: 1;
+        }
+        .confirm-message p {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .confirm-message .confirm-hint {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+    </style>
+
+    <script>
+        function showDeleteConfirm() {
+            const modal = document.getElementById('delete-confirm-modal');
+            modal.classList.add('show');
+        }
+
+        function closeDeleteConfirm() {
+            const modal = document.getElementById('delete-confirm-modal');
+            modal.classList.remove('show');
+        }
+
+        function confirmDelete() {
+            closeDeleteConfirm();
+            showToast('AI员工已删除！', 'success');
+            setTimeout(() => {
+                window.location.href = 'ai-employee.html';
+            }, 1500);
+        }
+    </script>
 </html>

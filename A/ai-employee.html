@@ -664,19 +664,26 @@
         }
         .dynamic-table .input-cell {
             padding: 6px 12px;
+            vertical-align: top;
         }
-        .dynamic-table .input-cell input {
+        .dynamic-table .input-cell textarea {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border: 1px solid #e5e7eb;
-            border-radius: 4px;
-            font-size: 13px;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: none;
+            overflow: hidden;
+            height: 42px;
+            min-height: 42px;
+            line-height: 1.5;
+            box-sizing: border-box;
         }
-        .dynamic-table .input-cell input:focus {
+        .dynamic-table .input-cell textarea:focus {
             outline: none;
             border-color: #3b82f6;
         }
-        .dynamic-table .input-cell input.error {
+        .dynamic-table .input-cell textarea.error {
             border-color: #ef4444;
         }
         .dynamic-table .add-row-cell {
@@ -1104,10 +1111,10 @@
                             <tbody id="table-body">
                                 <tr class="data-row">
                                     <td class="input-cell">
-                                        <input type="text" class="project-input" placeholder="请输入项目">
+                                        <textarea class="project-input" placeholder="请输入项目" oninput="autoResize(this)"></textarea>
                                     </td>
                                     <td class="input-cell">
-                                        <input type="text" class="content-input" placeholder="请输入内容">
+                                        <textarea class="content-input" placeholder="请输入内容" oninput="autoResize(this)"></textarea>
                                     </td>
                                     <td class="input-cell" style="text-align: center;">
                                         <span style="color: #94a3b8;">-</span>
@@ -1299,12 +1306,18 @@
             '检查配置',
             '反馈配置'
         ];
+        
+        const stepData = {};
+        for (let i = 0; i < stepTitles.length; i++) {
+            stepData[i] = [{ project: '', content: '' }];
+        }
 
         function addAIEmployee() {
             const modal = document.getElementById('add-employee-modal');
             modal.classList.add('show');
             currentStep = 0;
             updateStepUI();
+            loadStepData(0);
         }
 
         function closeModal() {
@@ -1326,14 +1339,18 @@
             document.getElementById('employee-skills').value = '';
             document.getElementById('employee-desc').value = '';
             
+            for (let i = 0; i < stepTitles.length; i++) {
+                stepData[i] = [{ project: '', content: '' }];
+            }
+            
             const tableBody = document.getElementById('table-body');
             tableBody.innerHTML = `
                 <tr class="data-row">
                     <td class="input-cell">
-                        <input type="text" class="project-input" placeholder="请输入项目">
+                        <textarea class="project-input" placeholder="请输入项目" oninput="autoResize(this)"></textarea>
                     </td>
                     <td class="input-cell">
-                        <input type="text" class="content-input" placeholder="请输入内容">
+                        <textarea class="content-input" placeholder="请输入内容" oninput="autoResize(this)"></textarea>
                     </td>
                     <td class="input-cell" style="text-align: center;">
                         <span style="color: #94a3b8;">-</span>
@@ -1350,7 +1367,7 @@
             
             document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
             document.querySelectorAll('.form-control').forEach(el => el.classList.remove('error'));
-            document.querySelectorAll('.dynamic-table input').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.dynamic-table textarea').forEach(el => el.classList.remove('error'));
         }
 
         function handleAvatarUpload(event) {
@@ -1372,9 +1389,82 @@
             }
         }
 
+        function saveCurrentStepData() {
+            const tableBody = document.getElementById('table-body');
+            const dataRows = tableBody.querySelectorAll('.data-row');
+            const data = [];
+            
+            dataRows.forEach(row => {
+                const projectInput = row.querySelector('.project-input');
+                const contentInput = row.querySelector('.content-input');
+                
+                data.push({
+                    project: projectInput ? projectInput.value : '',
+                    content: contentInput ? contentInput.value : ''
+                });
+            });
+            
+            stepData[currentStep] = data;
+        }
+        
+        function loadStepData(stepIndex) {
+            const tableBody = document.getElementById('table-body');
+            const data = stepData[stepIndex];
+            
+            let html = '';
+            data.forEach((item, index) => {
+                html += `
+                    <tr class="data-row">
+                        <td class="input-cell">
+                            <textarea class="project-input" placeholder="请输入项目" oninput="autoResize(this)">${item.project}</textarea>
+                        </td>
+                        <td class="input-cell">
+                            <textarea class="content-input" placeholder="请输入内容" oninput="autoResize(this)">${item.content}</textarea>
+                        </td>
+                        <td class="input-cell" style="text-align: center;">
+                            ${data.length > 1 ? `
+                                <button class="btn-delete-row" onclick="deleteTableRow(this)">
+                                    <i class="fa fa-trash"></i> 删除
+                                </button>
+                            ` : '<span style="color: #94a3b8;">-</span>'}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                <tr>
+                    <td colspan="3" class="add-row-cell">
+                        <button class="btn-add-row" onclick="addTableRow()">
+                            <i class="fa fa-plus"></i> 添加行
+                        </button>
+                    </td>
+                </tr>
+            `;
+            
+            tableBody.innerHTML = html;
+            
+            setTimeout(() => {
+                document.querySelectorAll('.project-input, .content-input').forEach(el => autoResize(el));
+            }, 0);
+        }
+        
+        function autoResize(textarea) {
+            if (!textarea.value.trim()) {
+                textarea.style.height = '42px';
+            } else {
+                textarea.style.height = '42px';
+                if (textarea.scrollHeight > 42) {
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                }
+            }
+        }
+        
         function switchStep(stepIndex) {
+            saveCurrentStepData();
             currentStep = stepIndex;
             updateStepUI();
+            loadStepData(stepIndex);
         }
 
         function updateStepUI() {
@@ -1402,15 +1492,19 @@
 
         function prevStep() {
             if (currentStep > 0) {
+                saveCurrentStepData();
                 currentStep--;
                 updateStepUI();
+                loadStepData(currentStep);
             }
         }
 
         function nextStep() {
             if (currentStep < 8) {
+                saveCurrentStepData();
                 currentStep++;
                 updateStepUI();
+                loadStepData(currentStep);
             }
         }
 
@@ -1422,10 +1516,10 @@
             newRow.className = 'data-row';
             newRow.innerHTML = `
                 <td class="input-cell">
-                    <input type="text" class="project-input" placeholder="请输入项目">
+                    <textarea class="project-input" placeholder="请输入项目" oninput="autoResize(this)"></textarea>
                 </td>
                 <td class="input-cell">
-                    <input type="text" class="content-input" placeholder="请输入内容">
+                    <textarea class="content-input" placeholder="请输入内容" oninput="autoResize(this)"></textarea>
                 </td>
                 <td class="input-cell" style="text-align: center;">
                     <button class="btn-delete-row" onclick="deleteTableRow(this)">
@@ -1436,12 +1530,23 @@
             
             tableBody.insertBefore(newRow, addRow);
             
+            stepData[currentStep].push({ project: '', content: '' });
+            
             updateDeleteButtons();
+            
+            setTimeout(() => {
+                newRow.querySelectorAll('.project-input, .content-input').forEach(el => autoResize(el));
+            }, 0);
         }
 
         function deleteTableRow(btn) {
             const row = btn.parentElement.parentElement;
+            const dataRows = document.querySelectorAll('.data-row');
+            const index = Array.from(dataRows).indexOf(row);
+            
             row.remove();
+            stepData[currentStep].splice(index, 1);
+            
             updateDeleteButtons();
         }
 
