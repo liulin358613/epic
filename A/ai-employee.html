@@ -336,8 +336,8 @@
             display: flex;
         }
         .modal {
-            width: 900px;
-            max-height: 85vh;
+            width: 1000px;
+            max-height: 100vh;
             background: white;
             border-radius: 12px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -424,6 +424,7 @@
             font-weight: 500;
             color: #374151;
             margin-bottom: 6px;
+            text-align: right;
         }
         .form-label .required {
             color: #ef4444;
@@ -546,6 +547,8 @@
         .form-item-inline .form-label {
             margin-bottom: 0;
             padding-top: 6px;
+            flex: 0 0 80px;
+            text-align: right;
         }
         .form-item-inline .form-control {
             flex: 1;
@@ -762,23 +765,16 @@
             </div>
 
             <div class="search-bar">
-                <input type="text" class="form-control" placeholder="搜索AI员工名称/技能" id="search-input" style="min-width: 200px;">
+                <input type="text" class="form-control" placeholder="搜索AI员工名称/业务能力" id="search-input" style="min-width: 200px;">
                 <select class="form-control" id="skill-filter">
-                    <option value="">全部技能</option>
+                    <option value="">全部业务能力</option>
                     <option value="python">Python开发</option>
                     <option value="javascript">JavaScript</option>
                     <option value="design">UI设计</option>
                     <option value="analysis">数据分析</option>
                     <option value="marketing">市场营销</option>
                 </select>
-                <select class="form-control" id="industry-filter">
-                    <option value="">全部行业</option>
-                    <option value="manufacturing">制造业</option>
-                    <option value="finance">金融</option>
-                    <option value="retail">零售</option>
-                    <option value="healthcare">医疗</option>
-                    <option value="education">教育</option>
-                </select>
+
                 <button class="btn btn-outline" onclick="searchEmployees()"><i class="fa fa-search"></i> 搜索</button>
                 <button class="btn btn-outline" onclick="resetSearch()"><i class="fa fa-refresh"></i> 重置</button>
                 <button class="btn btn-primary" onclick="addAIEmployee()"><i class="fa fa-plus"></i> 添加AI员工</button>
@@ -1032,10 +1028,10 @@
                             </div>
                             
                             <div class="form-item-inline">
-                                <label class="form-label">技能<span class="required">*</span></label>
+                                <label class="form-label">业务能力<span class="required">*</span></label>
                                 <div class="input-wrapper">
-                                    <input type="text" class="form-control" id="employee-skills" placeholder="多个技能用"｜"分隔">
-                                    <div class="error-text" id="skills-error">请输入技能</div>
+                                    <input type="text" class="form-control" id="employee-skills" placeholder="多个业务能力用'｜'分隔,例如: Python开发｜JavaScript｜数据分析｜市场营销">
+                                    <div class="error-text" id="skills-error">请输入业务能力</div>
                                 </div>
                             </div>
                             
@@ -1069,31 +1065,36 @@
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="3" onclick="switchStep(3)">
                             <div class="step-number">4</div>
-                            <div class="step-label">工作流</div>
+                            <div class="step-label">技能</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="4" onclick="switchStep(4)">
                             <div class="step-number">5</div>
-                            <div class="step-label">规则</div>
+                            <div class="step-label">工作流</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="5" onclick="switchStep(5)">
                             <div class="step-number">6</div>
-                            <div class="step-label">约束</div>
+                            <div class="step-label">规则</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="6" onclick="switchStep(6)">
                             <div class="step-number">7</div>
-                            <div class="step-label">对齐</div>
+                            <div class="step-label">约束</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="7" onclick="switchStep(7)">
                             <div class="step-number">8</div>
-                            <div class="step-label">检查</div>
+                            <div class="step-label">对齐</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="8" onclick="switchStep(8)">
                             <div class="step-number">9</div>
+                            <div class="step-label">检查</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="9" onclick="switchStep(9)">
+                            <div class="step-number">10</div>
                             <div class="step-label">反馈</div>
                         </div>
                     </div>
@@ -1151,10 +1152,10 @@
             { id: 1, name: '全局顾问', avatar: 'images/tx-1.png', type: 'expert', typeLabel: '专家型', desc: '提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。', tags: ['战略规划', '商业分析', '决策支持'], industry: '你服务', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
             { id: 2, name: '我的秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
             { id: 3, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
-            { id: 4, name: '销售工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
+            { id: 4, name: '销售工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
             { id: 5, name: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '专家型', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
             { id: 6, name: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119 },
-            { id: 7, name: '售后工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
+            { id: 7, name: '售后工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
             { id: 8, name: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业型', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89 }
         ];
 
@@ -1299,6 +1300,7 @@
             '职能配置',
             '普识配置',
             '专识配置',
+            '技能配置',
             '工作流配置',
             '规则配置',
             '约束配置',
@@ -1478,7 +1480,7 @@
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             
-            if (currentStep > 0 && currentStep < 8) {
+            if (currentStep > 0 && currentStep < 9) {
                 prevBtn.style.display = 'inline-flex';
                 nextBtn.style.display = 'inline-flex';
             } else if (currentStep === 0) {
@@ -1500,7 +1502,7 @@
         }
 
         function nextStep() {
-            if (currentStep < 8) {
+            if (currentStep < 9) {
                 saveCurrentStepData();
                 currentStep++;
                 updateStepUI();

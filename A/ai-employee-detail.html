@@ -248,6 +248,32 @@
             object-fit: cover;
             flex-shrink: 0;
         }
+        .employee-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .stat-value.price {
+            color: #f59e0b;
+        }
         .employee-info {
             flex: 1;
             min-width: 0;
@@ -653,7 +679,6 @@
         .message-name {
             font-size: 12px;
             font-weight: 600;
-            color: #10b981;
             margin-bottom: 4px;
         }
         .message-time {
@@ -1081,7 +1106,7 @@
                             <div id="emp-desc" class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
                     <div class="employee-footer">
                         <div style="display: flex; align-items: center; gap: 20px;">
-                            <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
+                            <div class="usage-count"><i class="fa fa-bar-chart"></i><span id="emp-usage-count">1.5万次</span>使用</div>
                             <div style="font-size: 12px; color: #94a3b8;">创建日期：2024-01-15 | 最后更新：2024-06-20</div>
                         </div>
                     </div>
@@ -1109,31 +1134,36 @@
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="3">
                             <span class="step-number">4</span>
-                            <span class="step-label">工作流</span>
+                            <span class="step-label">技能</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="4">
                             <span class="step-number">5</span>
-                            <span class="step-label">规则</span>
+                            <span class="step-label">工作流</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="5">
                             <span class="step-number">6</span>
-                            <span class="step-label">约束</span>
+                            <span class="step-label">规则</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="6">
                             <span class="step-number">7</span>
-                            <span class="step-label">对齐</span>
+                            <span class="step-label">约束</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="7">
                             <span class="step-number">8</span>
-                            <span class="step-label">检查</span>
+                            <span class="step-label">对齐</span>
                         </div>
                         <div class="step-divider"></div>
                         <div class="step-item" data-step="8">
                             <span class="step-number">9</span>
+                            <span class="step-label">检查</span>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="step-item" data-step="9">
+                            <span class="step-number">10</span>
                             <span class="step-label">反馈</span>
                         </div>
                     </div>
@@ -1227,6 +1257,35 @@
                         </div>
                         <div class="step-panel" id="step-3">
                             <div class="section-header">
+                                <div class="section-title"><i class="fa fa-cogs"></i> 技能</div>
+                            </div>
+                            <div class="section-content">
+                                <table class="function-table">
+                                    <thead>
+                                        <tr>
+                                            <th>项目</th>
+                                            <th>内容</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>核心技能</td>
+                                            <td>战略规划、商业分析、决策支持、市场研究、竞争分析、投资评估、业务咨询</td>
+                                        </tr>
+                                        <tr>
+                                            <td>技能等级</td>
+                                            <td>• 战略规划：专家级<br>• 商业分析：专家级<br>• 决策支持：高级<br>• 市场研究：高级<br>• 竞争分析：专家级</td>
+                                        </tr>
+                                        <tr>
+                                            <td>应用场景</td>
+                                            <td>• 企业战略制定与规划<br>• 商业模式创新与优化<br>• 投资决策分析与评估<br>• 市场竞争态势分析<br>• 业务发展方向研判</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="step-panel" id="step-4">
+                            <div class="section-header">
                                 <div class="section-title"><i class="fa fa-tasks"></i> 工作流</div>
                             </div>
                             <div class="section-content">
@@ -1264,7 +1323,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-4">
+                        <div class="step-panel" id="step-5">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-list-ol"></i> 规则</div>
                             </div>
@@ -1295,7 +1354,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-5">
+                        <div class="step-panel" id="step-6">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-ban"></i> 约束</div>
                             </div>
@@ -1326,7 +1385,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-6">
+                        <div class="step-panel" id="step-7">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-align-center"></i> 对齐</div>
                             </div>
@@ -1357,7 +1416,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-7">
+                        <div class="step-panel" id="step-8">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-check-circle"></i> 检查</div>
                             </div>
@@ -1388,7 +1447,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="step-panel" id="step-8">
+                        <div class="step-panel" id="step-9">
                             <div class="section-header">
                                 <div class="section-title"><i class="fa fa-comments"></i> 反馈</div>
                             </div>
@@ -1525,11 +1584,11 @@
                     <div class="section-title" id="chat-title"><i class="fa fa-comment-o"></i> 聊天</div>
                 </div>
                 <div class="section-content" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column;" id="chat-messages">
-                    <div class="message ai-message">
-                        <div class="message-avatar">AI</div>
+                    <div class="message ai-message" id="initial-ai-message">
+                        <img id="initial-avatar" class="message-avatar" src="images/AI-1.png" alt="头像">
                         <div class="message-content">
-                            <div class="message-name">全局顾问</div>
-                            <div class="message-text">您好！我是您的全局顾问，请问有什么可以帮您的？</div>
+                            <div class="message-name" id="initial-name">全局顾问</div>
+                            <div class="message-text">您好！我是您的AI员工，请问有什么可以帮您的？</div>
                             <div class="message-time">05-15 10:40</div>
                         </div>
                     </div>
@@ -1562,6 +1621,9 @@
     </main>
 
     <script>
+        let employeeName = 'AI员工';
+        let employeeAvatar = 'images/AI-1.png';
+        
         function viewTopic(btn) {
             const topic = btn.getAttribute('data-topic');
             const chatTitle = document.getElementById('chat-title');
@@ -1587,9 +1649,9 @@
                 const aiMessage1 = document.createElement('div');
                 aiMessage1.className = 'message ai-message';
                 aiMessage1.innerHTML = `
-                    <div class="message-avatar">AI</div>
+                    <img class="message-avatar" src="${employeeAvatar}" alt="头像">
                     <div class="message-content">
-                        <div class="message-name">全局顾问</div>
+                        <div class="message-name">${employeeName}</div>
                         <div class="message-text">好的，让我来为您详细分析这个问题。根据我的专业判断，这个问题需要从多个维度来考虑。</div>
                         <div class="message-time">${getCurrentTime()}</div>
                         <div class="rating-panel">
@@ -1613,9 +1675,9 @@
                     const aiMessage2 = document.createElement('div');
                     aiMessage2.className = 'message ai-message';
                     aiMessage2.innerHTML = `
-                        <div class="message-avatar">AI</div>
+                        <img class="message-avatar" src="${employeeAvatar}" alt="头像">
                         <div class="message-content">
-                            <div class="message-name">全局顾问</div>
+                            <div class="message-name">${employeeName}</div>
                             <div class="message-text">首先，我们需要明确核心目标和关键指标。其次，制定详细的实施计划和阶段性目标。最后，建立完善的评估机制和反馈体系。</div>
                             <div class="message-time">${getCurrentTime()}</div>
                             <div class="rating-panel">
@@ -1688,7 +1750,9 @@
         function updateEmployeeDetail() {
             const id = getUrlParameter('id');
             const name = decodeURIComponent(getUrlParameter('name')) || 'AI员工';
+            employeeName = name;
             const avatar = decodeURIComponent(getUrlParameter('avatar')) || 'images/AI-1.png';
+            employeeAvatar = avatar;
             const typeLabel = decodeURIComponent(getUrlParameter('typeLabel')) || '通用型';
             const desc = decodeURIComponent(getUrlParameter('desc')) || '暂无描述';
             const tagsStr = decodeURIComponent(getUrlParameter('tags'));
@@ -1706,7 +1770,9 @@
             if (idEl) idEl.textContent = String(id).padStart(8, '0');
 
             const avatarEl = document.getElementById('emp-avatar');
-            if (avatarEl) avatarEl.src = avatar;
+            if (avatarEl) {
+                avatarEl.src = avatar + '?' + Date.now();
+            }
 
             const typeEl = document.getElementById('emp-type');
             if (typeEl) typeEl.textContent = typeLabel;
@@ -1726,13 +1792,32 @@
             if (matchRateEl) matchRateEl.textContent = matchRate + '%';
 
             const tasksEl = document.getElementById('emp-tasks');
-            if (tasksEl) tasksEl.textContent = parseInt(tasks).toLocaleString();
+            if (tasksEl) {
+                const taskCount = parseInt(tasks);
+                tasksEl.textContent = taskCount >= 10000 ? (taskCount / 10000).toFixed(1) + '万次' : taskCount.toLocaleString() + '次';
+            }
+
+            const usageCountEl = document.getElementById('emp-usage-count');
+            if (usageCountEl) {
+                const taskCount = parseInt(tasks);
+                usageCountEl.textContent = taskCount >= 10000 ? (taskCount / 10000).toFixed(1) + '万' : taskCount.toLocaleString();
+            }
 
             const ratingEl = document.getElementById('emp-rating');
             if (ratingEl) ratingEl.textContent = rating;
 
             const priceEl = document.getElementById('emp-price');
             if (priceEl) priceEl.textContent = '¥' + price;
+
+            const initialAvatar = document.getElementById('initial-avatar');
+            if (initialAvatar) {
+                initialAvatar.src = avatar + '?' + Date.now();
+            }
+
+            const initialName = document.getElementById('initial-name');
+            if (initialName) {
+                initialName.textContent = name;
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1786,9 +1871,14 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
             
-            const avatar = document.createElement('div');
+            const avatar = document.createElement(isUser ? 'div' : 'img');
             avatar.className = 'message-avatar';
-            avatar.textContent = isUser ? 'Me' : 'AI';
+            if (isUser) {
+                avatar.textContent = 'Me';
+            } else {
+                avatar.src = employeeAvatar;
+                avatar.alt = '头像';
+            }
             
             const content = document.createElement('div');
             content.className = 'message-content';
@@ -1796,7 +1886,7 @@
             if (!isUser) {
                 const nameDiv = document.createElement('div');
                 nameDiv.className = 'message-name';
-                nameDiv.textContent = '全局顾问';
+                nameDiv.textContent = employeeName;
                 content.appendChild(nameDiv);
             }
             
@@ -1827,7 +1917,7 @@
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message ai-message';
             typingDiv.innerHTML = `
-                <div class="message-avatar">AI</div>
+                <img class="message-avatar" src="${employeeAvatar}" alt="头像">
                 <div class="message-content">
                     <div class="typing-indicator">
                         <div class="typing-dot"></div>
@@ -2011,7 +2101,7 @@
 
         let currentEditStep = 0;
         const editStepTitles = [
-            '职能配置', '普识配置', '专识配置', '工作流配置', '规则配置', '约束配置', '对齐配置', '检查配置', '反馈配置'
+            '职能配置', '普识配置', '专识配置', '业务能力配置', '工作流配置', '规则配置', '约束配置', '对齐配置', '检查配置', '反馈配置'
         ];
         const editStepData = {};
         for (let i = 0; i < editStepTitles.length; i++) {
@@ -2093,6 +2183,11 @@
                     { project: '提示词', content: '作为一名资深的行业专家，请结合专业知识和行业经验，深入分析以下问题并提供专业见解：' }
                 ],
                 [
+                    { project: '核心业务能力', content: '战略规划、商业分析、决策支持、市场研究、竞争分析、投资评估、业务咨询' },
+                    { project: '能力等级', content: '• 战略规划：专家级\n• 商业分析：专家级\n• 决策支持：高级\n• 市场研究：高级\n• 竞争分析：专家级' },
+                    { project: '应用场景', content: '• 企业战略制定与规划\n• 商业模式创新与优化\n• 投资决策分析与评估\n• 市场竞争态势分析\n• 业务发展方向研判' }
+                ],
+                [
                     { project: '特定工作流', content: '• 市场调研流程：\n需求确认 → 数据收集 → 竞品分析 → 趋势研判 → 报告撰写 → 方案交付\n\n• 战略规划流程：\n现状评估 → 目标设定 → 路径分析 → 资源配置 → 风险评估 → 战略落地\n\n• 决策支持流程：\n问题定义 → 信息整合 → 方案推演 → 效果预测 → 方案比选 → 决策建议' },
                     { project: '自主生成工作流', content: '• 根据用户问题自动识别任务类型\n• 智能规划执行路径和步骤顺序\n• 动态调整流程以适应需求变化\n• 自动分配资源和优先级\n• 实时追踪执行进度和状态\n• 根据反馈自动优化流程设计\n• 支持多任务并行处理\n• 提供流程可视化和进度展示' }
                 ],
@@ -2166,7 +2261,7 @@
         }
 
         function initAllStepData() {
-            for (let stepIndex = 0; stepIndex < 9; stepIndex++) {
+            for (let stepIndex = 0; stepIndex < 10; stepIndex++) {
                 const tableBody = document.querySelector(`.step-table-body[data-step="${stepIndex}"]`);
                 const data = editStepData[stepIndex];
                 
@@ -2244,7 +2339,7 @@
             const prevBtn = document.getElementById('edit-prev-btn');
             const nextBtn = document.getElementById('edit-next-btn');
             
-            if (currentEditStep > 0 && currentEditStep < 8) {
+            if (currentEditStep > 0 && currentEditStep < 9) {
                 prevBtn.style.display = 'inline-flex';
                 nextBtn.style.display = 'inline-flex';
             } else if (currentEditStep === 0) {
@@ -2266,7 +2361,7 @@
         }
 
         function editNextStep() {
-            if (currentEditStep < 8) {
+            if (currentEditStep < 9) {
                 saveEditCurrentStepData();
                 currentEditStep++;
                 updateEditStepUI();
@@ -2395,8 +2490,8 @@
             display: flex;
         }
         .modal {
-            width: 900px;
-            max-height: 85vh;
+            width: 1000px;
+            max-height: 100vh;
             background: white;
             border-radius: 12px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -2476,6 +2571,8 @@
         .form-item-inline .form-label {
             margin-bottom: 0;
             padding-top: 6px;
+            flex: 0 0 80px;
+            text-align: right;
         }
         .form-label {
             display: block;
@@ -2483,6 +2580,7 @@
             font-weight: 500;
             color: #374151;
             margin-bottom: 6px;
+            text-align: right;
         }
         .form-label .required {
             color: #ef4444;
@@ -2902,9 +3000,9 @@
                             </div>
                             
                             <div class="form-item-inline">
-                                <label class="form-label">技能<span class="required">*</span></label>
+                                <label class="form-label">业务能力<span class="required">*</span></label>
                                 <div class="input-wrapper">
-                                    <input type="text" class="form-control" id="edit-employee-skills" placeholder="多个技能用｜分隔">
+                                    <input type="text" class="form-control" id="edit-employee-skills" placeholder="多个业务能力用｜分隔">
                                 </div>
                             </div>
                             
@@ -2937,31 +3035,36 @@
                         <div class="step-divider"></div>
                         <div class="edit-step-item" data-step="3" onclick="editSwitchStep(3)">
                             <div class="edit-step-number">4</div>
-                            <div class="edit-step-label">工作流</div>
+                            <div class="edit-step-label">技能</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="edit-step-item" data-step="4" onclick="editSwitchStep(4)">
                             <div class="edit-step-number">5</div>
-                            <div class="edit-step-label">规则</div>
+                            <div class="edit-step-label">工作流</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="edit-step-item" data-step="5" onclick="editSwitchStep(5)">
                             <div class="edit-step-number">6</div>
-                            <div class="edit-step-label">约束</div>
+                            <div class="edit-step-label">规则</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="edit-step-item" data-step="6" onclick="editSwitchStep(6)">
                             <div class="edit-step-number">7</div>
-                            <div class="edit-step-label">对齐</div>
+                            <div class="edit-step-label">约束</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="edit-step-item" data-step="7" onclick="editSwitchStep(7)">
                             <div class="edit-step-number">8</div>
-                            <div class="edit-step-label">检查</div>
+                            <div class="edit-step-label">对齐</div>
                         </div>
                         <div class="step-divider"></div>
                         <div class="edit-step-item" data-step="8" onclick="editSwitchStep(8)">
                             <div class="edit-step-number">9</div>
+                            <div class="edit-step-label">检查</div>
+                        </div>
+                        <div class="step-divider"></div>
+                        <div class="edit-step-item" data-step="9" onclick="editSwitchStep(9)">
+                            <div class="edit-step-number">10</div>
                             <div class="edit-step-label">反馈</div>
                         </div>
                     </div>
@@ -3083,6 +3186,19 @@
                                         </tr>
                                     </thead>
                                     <tbody class="step-table-body" data-step="8">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="step-content-wrapper" id="step-content-9">
+                                <table class="dynamic-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%;">项目<span class="required">*</span></th>
+                                            <th style="width: 55%;">内容<span class="required">*</span></th>
+                                            <th style="width: 15%;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="step-table-body" data-step="9">
                                     </tbody>
                                 </table>
                             </div>
