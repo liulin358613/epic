@@ -781,33 +781,12 @@
             </div>
 
             <div class="employee-grid" id="employee-grid">
-                <div class="employee-card" data-name="全局顾问">
-                    <div class="employee-badge">通用型</div>
-                    <div class="employee-header">
-                        <img src="images/tx-1.png" class="employee-avatar" alt="全局顾问">
-                        <div class="employee-info">
-                            <div class="employee-name">全局顾问<span class="employee-id">(00000001)</span></div>
-                            <div class="employee-tags">
-                                <span class="tag skill">战略规划</span>
-                                <span class="tag skill">商业分析</span>
-                                <span class="tag skill">决策支持</span>
-                                <span class="tag industry">你服务</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="employee-desc">提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。</div>
-                    <div class="employee-footer">
-                        <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
-                        <div class="btn-hire">查看</div>
-                    </div>
-                </div>
-
                 <div class="employee-card" data-name="我的秘书">
                     <div class="employee-badge">通用型</div>
                     <div class="employee-header">
                         <img src="images/AI-2.png" class="employee-avatar" alt="我的秘书">
                         <div class="employee-info">
-                            <div class="employee-name">我的秘书<span class="employee-id">(00000002)</span></div>
+                            <div class="employee-name">我的秘书<span class="employee-id">(00000001)</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">日程管理</span>
                                 <span class="tag skill">邮件处理</span>
@@ -828,7 +807,7 @@
                     <div class="employee-header">
                         <img src="images/AI-1.png" class="employee-avatar" alt="项目经理">
                         <div class="employee-info">
-                            <div class="employee-name">项目经理<span class="employee-id">(00000003)</span></div>
+                            <div class="employee-name">项目经理<span class="employee-id">(00000002)</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">项目规划</span>
                                 <span class="tag skill">进度管理</span>
@@ -840,6 +819,27 @@
                     <div class="employee-desc">负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。</div>
                     <div class="employee-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>1.2万次使用</div>
+                        <div class="btn-hire">查看</div>
+                    </div>
+                </div>
+
+                <div class="employee-card" data-name="会议纪要员">
+                    <div class="employee-badge">通用型</div>
+                    <div class="employee-header">
+                        <img src="images/tx-1.png" class="employee-avatar" alt="会议纪要员">
+                        <div class="employee-info">
+                            <div class="employee-name">会议纪要员<span class="employee-id">(00000003)</span></div>
+                            <div class="employee-tags">
+                                <span class="tag skill">会议记录</span>
+                                <span class="tag skill">纪要整理</span>
+                                <span class="tag skill">要点提炼</span>
+                                <span class="tag industry">办公</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="employee-desc">负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。</div>
+                    <div class="employee-footer">
+                        <div class="usage-count"><i class="fa fa-bar-chart"></i>1.5万次使用</div>
                         <div class="btn-hire">查看</div>
                     </div>
                 </div>
@@ -1149,9 +1149,9 @@
 
     <script>
         const employees = [
-            { id: 1, name: '全局顾问', avatar: 'images/tx-1.png', type: 'expert', typeLabel: '专家型', desc: '提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。', tags: ['战略规划', '商业分析', '决策支持'], industry: '你服务', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
-            { id: 2, name: '我的秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
-            { id: 3, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
+            { id: 1, name: '我的秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
+            { id: 2, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
+            { id: 3, name: '会议纪要员', avatar: 'images/tx-1.png', type: 'general', typeLabel: '通用型', desc: '负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。', tags: ['会议记录', '纪要整理', '要点提炼'], industry: '办公', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
             { id: 4, name: '销售工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
             { id: 5, name: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '专家型', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
             { id: 6, name: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119 },
