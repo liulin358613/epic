@@ -1696,23 +1696,53 @@
         }
 
         function auditOrg() {
-            document.getElementById('audit-modal').style.display = 'flex';
-            document.getElementById('audit-comment-input').value = '';
-            document.getElementById('audit-comment-input').focus();
+            showAuditModal();
         }
 
         function showAuditModal() {
+            resetAuditModal();
             document.getElementById('audit-modal').style.display = 'flex';
-            document.getElementById('audit-comment-input').value = '';
-            document.getElementById('audit-comment-input').focus();
-            document.querySelector('input[name="audit-result"][value="approve"]').checked = true;
+            
+            const orgId = getUrlParameter('id') || 'ORG001';
+            const orgName = decodeURIComponent(getUrlParameter('name')) || '东莞长安训练基地';
+            const leader = decodeURIComponent(getUrlParameter('leader')) || '张经理';
+            const phone = getUrlParameter('phone') || '13800138000';
+            const address = decodeURIComponent(getUrlParameter('address')) || '-';
+            const companyName = decodeURIComponent(getUrlParameter('companyName')) || '-';
+            const legalPerson = decodeURIComponent(getUrlParameter('legalPerson')) || '-';
+            const creditCode = getUrlParameter('creditCode') || '-';
+            const type = getUrlParameter('type') || 'training';
+            
+            const typeMap = {
+                'training': '训练基地',
+                'parts': '配件商',
+                'robot': '机器人商',
+                'equipment': '设备商'
+            };
+            
+            document.getElementById('audit-org-id').textContent = orgId;
+            document.getElementById('audit-org-name').textContent = orgName;
+            document.getElementById('audit-leader').textContent = leader;
+            document.getElementById('audit-phone').textContent = phone;
+            document.getElementById('audit-address').textContent = address;
+            document.getElementById('audit-company-name').textContent = companyName;
+            document.getElementById('audit-legal-person').textContent = legalPerson;
+            document.getElementById('audit-credit-code').textContent = creditCode;
+            document.getElementById('audit-org-type').textContent = typeMap[type] || type;
         }
 
-        function showRejectModal() {
-            document.getElementById('audit-modal').style.display = 'flex';
-            document.getElementById('audit-comment-input').value = '';
-            document.getElementById('audit-comment-input').focus();
-            document.querySelector('input[name="audit-result"][value="reject"]').checked = true;
+        function closeAuditModal() {
+            document.getElementById('audit-modal').style.display = 'none';
+            resetAuditModal();
+        }
+
+        function resetAuditModal() {
+            document.getElementById('reject-reason-section').style.display = 'none';
+            document.getElementById('reject-reason').value = '';
+            document.getElementById('btn-reject').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-reject').style.display = 'none';
+            document.getElementById('btn-cancel-reject').style.display = 'none';
+            document.getElementById('btn-approve').style.display = 'inline-flex';
         }
 
         function enableOrg() {
@@ -1721,30 +1751,36 @@
             updateActionButtons('approved');
         }
 
-        function hideAuditModal() {
-            document.getElementById('audit-modal').style.display = 'none';
+        function approveOrg() {
+            showToast('审核通过', 'success');
+            updateOrgStatusBadge('approved', '');
+            updateActionButtons('approved');
+            closeAuditModal();
         }
 
-        function confirmAudit() {
-            const result = document.querySelector('input[name="audit-result"]:checked').value;
-            const comment = document.getElementById('audit-comment-input').value.trim();
-            
-            if (result === 'reject' && !comment) {
-                showToast('驳回申请需要填写审核意见', 'error');
+        function showRejectReason() {
+            document.getElementById('reject-reason-section').style.display = 'block';
+            document.getElementById('btn-reject').style.display = 'none';
+            document.getElementById('btn-confirm-reject').style.display = 'inline-flex';
+            document.getElementById('btn-cancel-reject').style.display = 'inline-flex';
+            document.getElementById('btn-approve').style.display = 'none';
+            document.getElementById('reject-reason').focus();
+        }
+
+        function cancelReject() {
+            resetAuditModal();
+        }
+
+        function confirmReject() {
+            const reason = document.getElementById('reject-reason').value.trim();
+            if (!reason) {
+                showToast('请输入驳回原因', 'warning');
                 return;
             }
-            
-            if (result === 'approve') {
-                showToast('审核通过', 'success');
-                updateOrgStatusBadge('approved', '');
-                updateActionButtons('approved');
-            } else {
-                showToast('已驳回申请', 'warning');
-                updateOrgStatusBadge('rejected', encodeURIComponent(comment));
-                updateActionButtons('rejected');
-            }
-            
-            hideAuditModal();
+            showToast('审核驳回', 'success');
+            updateOrgStatusBadge('rejected', encodeURIComponent(reason));
+            updateActionButtons('rejected');
+            closeAuditModal();
         }
 
         function searchMembers() {
@@ -1824,36 +1860,86 @@
         }
     </script>
 
-    <div id="audit-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10002; justify-content: center; align-items: center;" onclick="hideAuditModal()">
-        <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 480px; overflow: hidden;" onclick="event.stopPropagation()">
-            <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
-                <div style="font-size: 16px; font-weight: 600; color: #1e293b;">组织审核</div>
-                <button onclick="hideAuditModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">
-                    <i class="fa fa-times"></i>
-                </button>
+    <div id="audit-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10002; justify-content: center; align-items: center;">
+        <div style="position: relative; background: white; border-radius: 6px; width: 90%; max-width: 600px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column;" onclick="event.stopPropagation()">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b;">组织审核</h3>
+                <button style="background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 4px;" onclick="closeAuditModal()">&times;</button>
             </div>
-            <div style="padding: 20px;">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 8px;">审核结果：</label>
-                    <div style="display: flex; gap: 16px;">
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="radio" name="audit-result" value="approve" checked style="width: 18px; height: 18px; accent-color: #3b82f6;">
-                            <span style="font-size: 14px; color: #374151;">审核通过</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="radio" name="audit-result" value="reject" style="width: 18px; height: 18px; accent-color: #3b82f6;">
-                            <span style="font-size: 14px; color: #374151;">驳回申请</span>
-                        </label>
+            <div style="padding: 0; overflow-y: auto; flex: 1;">
+                <div style="display: flex; gap: 16px; padding: 16px; border-bottom: 1px solid #f1f5f9;">
+                    <div id="audit-org-logo" style="width: 80px; height: 80px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa fa-building" style="font-size: 32px; color: #94a3b8;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+                            <span id="audit-org-name">-</span>
+                            <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 8px;">(#<span id="audit-org-id">-</span>)</span>
+                        </div>
+                        <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">组织类型</div>
+                            <span id="audit-org-type" style="padding: 4px 10px; font-size: 12px; font-weight: 500; border-radius: 4px; display: inline-block; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); color: #475569;">-</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">地址</div>
+                            <div id="audit-address" style="font-size: 13px; color: #64748b;">-</div>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 8px;">审核意见：</label>
-                    <textarea id="audit-comment-input" style="width: 100%; min-height: 100px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; resize: vertical; font-family: inherit;" placeholder="请输入审核意见..."></textarea>
+                <div style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">联系人</div>
+                            <div id="audit-leader" style="font-size: 14px; color: #1e293b; font-weight: 500;">-</div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">手机号</div>
+                            <div id="audit-phone" style="font-size: 14px; color: #1e293b; font-weight: 500;">-</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div style="padding: 12px 20px; border-top: 1px solid #f1f5f9; background: #fafafa; display: flex; justify-content: flex-end; gap: 8px;">
-                <button class="btn btn-outline" onclick="hideAuditModal()" style="padding: 6px 16px;">取消</button>
-                <button class="btn btn-primary" onclick="confirmAudit()" style="padding: 6px 16px;">确认审核</button>
+                <div style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9;">
+                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">企业信息</div>
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;">
+                            <span style="color: #64748b; font-size: 13px;">企业名称</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span id="audit-company-name" style="color: #1e293b; font-size: 13px;">-</span>
+                                <button onclick="showLicense()" style="background: none; border: none; color: #3b82f6; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 2px;">
+                                    <i class="fa fa-file-image-o"></i> 查看营业执照
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #64748b; font-size: 13px;">统一社会信用代码</span>
+                            <span id="audit-credit-code" style="color: #1e293b; font-size: 13px;">-</span>
+                        </div>
+                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: #64748b; font-size: 13px;">法人</span>
+                            <span id="audit-legal-person" style="color: #1e293b; font-size: 13px;">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-top: 1px solid #f1f5f9;">
+                    <div id="reject-reason-section" style="padding: 16px; border-bottom: 1px solid #f1f5f9; display: none; background: #fef2f2;">
+                        <div style="font-size: 14px; font-weight: 500; color: #dc2626; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa fa-exclamation-circle"></i> 驳回原因
+                        </div>
+                        <textarea id="reject-reason" style="width: 100%; min-height: 80px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #fecaca; border-radius: 6px; background: white;" placeholder="请输入驳回原因..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; padding: 16px;">
+                        <button id="btn-cancel-reject" class="btn btn-outline" style="display: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 4px; line-height: 1.4; background: white; color: #64748b; border: 1px solid #e2e8f0;" onclick="cancelReject()">取消</button>
+                        <button id="btn-reject" class="btn" style="padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 4px; line-height: 1.4; background: white; color: #dc2626; border: 1px solid #fecaca;" onclick="showRejectReason()">
+                            <i class="fa fa-times"></i> 驳回
+                        </button>
+                        <button id="btn-confirm-reject" class="btn" style="display: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 4px; line-height: 1.4; background: white; color: #dc2626; border: 1px solid #fecaca;" onclick="confirmReject()">
+                            <i class="fa fa-check"></i> 确认驳回
+                        </button>
+                        <button id="btn-approve" class="btn" style="padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 4px; line-height: 1.4; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);" onclick="approveOrg()">
+                            <i class="fa fa-check"></i> 通过
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
