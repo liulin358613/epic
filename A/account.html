@@ -160,7 +160,9 @@
             color: white;
         }
         .form-control {
-            padding: 8px 12px;
+            flex: 1;
+            width: 100%;
+            padding: 10px 14px;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
             font-size: 14px;
@@ -170,8 +172,11 @@
         }
         .form-control:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: #6366f1;
             background: white;
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
         }
         .page-header {
             display: flex;
@@ -296,14 +301,14 @@
             padding: 10px 16px;
             border-top: 1px solid #f1f5f9;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             gap: 8px;
         }
         .modal {
             background: white;
             border-radius: 6px;
-            width: 700px;
-            max-height: 90vh;
+            width: 580px;
+            max-height: 95vh;
             overflow: hidden;
             animation: modalFadeIn 0.3s ease;
             line-height: 1.4;
@@ -322,7 +327,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
+            padding: 10px 16px;
             border-bottom: 1px solid #f1f5f9;
             line-height: 1.4;
         }
@@ -333,24 +338,19 @@
             line-height: 1.4;
         }
         .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
+            background: none;
             border: none;
-            background: #f1f5f9;
+            font-size: 20px;
+            color: #94a3b8;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            transition: all 0.2s ease;
+            padding: 4px;
         }
         .modal-close:hover {
-            background: #e2e8f0;
+            color: #64748b;
         }
         .modal-body {
             padding: 16px;
-            max-height: 60vh;
+            max-height: 600px;
             overflow-y: auto;
             line-height: 1.4;
         }
@@ -380,14 +380,21 @@
         }
         .form-group {
             margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
         .form-label {
-            display: block;
+            display: inline-block;
+            width: 70px;
+            text-align: right;
             font-size: 14px;
             font-weight: 500;
             color: #475569;
-            margin-bottom: 6px;
-            line-height: 1.4;
+            margin-right: 12px;
+            line-height: 1.2;
+            flex-shrink: 0;
+            padding-top: 6px;
         }
         .form-label.required::before {
             content: '*';
@@ -617,10 +624,16 @@
         }
         .password-input-wrapper {
             position: relative;
-            display: inline-block;
+            display: block;
+            width: 100%;
+            min-width: 0;
+            flex: 1;
         }
         .password-input-wrapper .form-control {
+            width: 100% !important;
+            flex: 1 !important;
             padding-right: 44px;
+            min-width: 0;
         }
         .password-toggle {
             position: absolute;
@@ -774,7 +787,8 @@
         /* 多选下拉框样式 */
         .multi-select-container {
             position: relative;
-            width: 500px;
+            flex: 1;
+            width: 100%;
         }
         .multi-select-trigger {
             padding: 8px 12px;
@@ -1405,22 +1419,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="avatar-upload-group">
-                    <div class="avatar-preview" id="addAvatarPreview">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="avatar-info">
-                        <button class="avatar-upload-btn" onclick="document.getElementById('addAvatarInput').click()">
-                            <i class="fa fa-upload"></i>
-                            上传头像
-                        </button>
-                        <input type="file" id="addAvatarInput" style="display: none;" accept="image/*" onchange="previewAvatar(this, 'addAvatarPreview')">
-                        <p class="avatar-hint">支持JPG、PNG格式，建议尺寸80×80像素</p>
+                <div class="form-group">
+                    <label class="form-label">头像</label>
+                    <div class="avatar-upload-group">
+                        <div class="avatar-preview" id="addAvatarPreview">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <div class="avatar-info">
+                            <button class="avatar-upload-btn" onclick="document.getElementById('addAvatarInput').click()">
+                                <i class="fa fa-upload"></i>
+                                上传头像
+                            </button>
+                            <input type="file" id="addAvatarInput" style="display: none;" accept="image/*" onchange="previewAvatar(this, 'addAvatarPreview')">
+                            <p class="avatar-hint">支持JPG、PNG格式，建议尺寸80×80像素</p>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label required">姓名</label>
-                    <input type="text" class="form-control" style="width: 500px;" placeholder="请输入">
+                    <input type="text" class="form-control" placeholder="请输入">
                 </div>
                 <div class="form-group">
                     <label class="form-label required">角色</label>
@@ -1474,25 +1491,27 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">联系电话</label>
-                    <input type="text" class="form-control" style="width: 500px;" placeholder="请输入">
+                    <input type="text" class="form-control" placeholder="请输入">
                 </div>
                 <div class="form-group">
                     <label class="form-label required">账号</label>
-                    <input type="text" class="form-control" style="width: 500px;" placeholder="请输入">
+                    <input type="text" class="form-control" placeholder="请输入">
                 </div>
                 <div class="form-group">
                     <label class="form-label required">密码</label>
-                    <div class="password-input-wrapper">
-                        <input type="password" class="form-control" id="add-password" style="width: 500px;" placeholder="请输入">
-                        <button type="button" class="password-toggle" onclick="toggleAddPassword()">
-                            <i class="fa fa-eye"></i>
-                        </button>
+                    <div style="flex: 1; min-width: 0;">
+                        <div class="password-input-wrapper" style="width: 100%; min-width: 0;">
+                            <input type="password" class="form-control" id="add-password" placeholder="请输入" style="width: 100% !important; flex: 1 !important; min-width: 0; padding-right: 44px;">
+                            <button type="button" class="password-toggle" onclick="toggleAddPassword()">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">首次登录请修改密码</div>
                     </div>
-                    <div style="font-size: 14px; color: #64748b; margin-top: 2px;">首次登录请修改密码</div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">备注</label>
-                    <textarea class="form-textarea" style="width: 500px;" placeholder="请输入"></textarea>
+                    <textarea class="form-textarea" placeholder="请输入"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1511,22 +1530,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="avatar-upload-group">
-                    <div class="avatar-preview" id="editAvatarPreview">
-                        <img src="images/tx-1.png" alt="头像">
-                    </div>
-                    <div class="avatar-info">
-                        <button class="avatar-upload-btn" onclick="document.getElementById('editAvatarInput').click()">
-                            <i class="fa fa-upload"></i>
-                            更换头像
-                        </button>
-                        <input type="file" id="editAvatarInput" style="display: none;" accept="image/*" onchange="previewAvatar(this, 'editAvatarPreview')">
-                        <p class="avatar-hint">支持JPG、PNG格式，建议尺寸80×80像素</p>
+                <div class="form-group">
+                    <label class="form-label">头像</label>
+                    <div class="avatar-upload-group">
+                        <div class="avatar-preview" id="editAvatarPreview">
+                            <img src="images/tx-1.png" alt="头像">
+                        </div>
+                        <div class="avatar-info">
+                            <button class="avatar-upload-btn" onclick="document.getElementById('editAvatarInput').click()">
+                                <i class="fa fa-upload"></i>
+                                更换头像
+                            </button>
+                            <input type="file" id="editAvatarInput" style="display: none;" accept="image/*" onchange="previewAvatar(this, 'editAvatarPreview')">
+                            <p class="avatar-hint">支持JPG、PNG格式，建议尺寸80×80像素</p>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label required">姓名</label>
-                    <input type="text" class="form-control" style="width: 500px;" placeholder="请输入" value="张三">
+                    <input type="text" class="form-control" placeholder="请输入" value="张三">
                 </div>
                 <div class="form-group">
                     <label class="form-label required">角色</label>
@@ -1580,21 +1602,23 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">联系电话</label>
-                    <input type="text" class="form-control" style="width: 500px;" placeholder="请输入">
+                    <input type="text" class="form-control" placeholder="请输入">
                 </div>
                 <div class="form-group">
                     <label class="form-label required">账号</label>
-                    <input type="text" class="form-control" style="width: 500px;" placeholder="请输入" value="zhangsan">
+                    <input type="text" class="form-control" placeholder="请输入" value="zhangsan">
                 </div>
                 <div class="form-group">
                     <label class="form-label">密码</label>
-                    <div class="password-input-wrapper">
-                        <input type="password" class="form-control" id="edit-password" style="width: 500px;" placeholder="请输入">
-                        <button type="button" class="password-toggle" onclick="toggleEditPassword()">
-                            <i class="fa fa-eye"></i>
-                        </button>
+                    <div style="flex: 1; min-width: 0;">
+                        <div class="password-input-wrapper" style="width: 100%; min-width: 0;">
+                            <input type="password" class="form-control" id="edit-password" placeholder="请输入" style="width: 100% !important; flex: 1 !important; min-width: 0; padding-right: 44px;">
+                            <button type="button" class="password-toggle" onclick="toggleEditPassword()">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">首次登录请修改密码</div>
                     </div>
-                    <div style="font-size: 14px; color: #64748b; margin-top: 2px;">修改后，首次登录请修改密码</div>
                 </div>
                 <div class="form-group">
                     <label class="form-label required">状态</label>
@@ -1610,7 +1634,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">备注</label>
-                    <textarea class="form-textarea" style="width: 500px;" placeholder="请输入"></textarea>
+                    <textarea class="form-textarea" placeholder="请输入"></textarea>
                 </div>
             </div><div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelEditBtn">取消</button>

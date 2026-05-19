@@ -247,12 +247,12 @@
             background: white;
             border-radius: 6px;
             width: 90%;
-            max-width: 700px;
+            max-width: 580px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         .modal-header {
-            padding: 12px 16px;
+            padding: 10px 16px;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
@@ -273,20 +273,31 @@
             cursor: pointer;
             padding: 4px;
         }
+        .modal-close:hover {
+            color: #64748b;
+        }
         .modal-body {
             padding: 16px;
             line-height: 1.4;
+            max-height: 600px;
+            overflow-y: auto;
         }
         .form-group {
             margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
         }
         .form-group label {
-            display: block;
+            display: inline-block;
+            width: 100px;
+            text-align: right;
             font-size: 14px;
             font-weight: 500;
             color: #475569;
-            margin-bottom: 4px;
+            margin-right: 12px;
             line-height: 1.2;
+            flex-shrink: 0;
+            padding-top: 6px;
         }
         .form-group label .required {
             color: #ef4444;
@@ -312,23 +323,37 @@
             color: #94a3b8;
         }
         .form-radio-group {
+            flex: 1;
             display: flex;
-            gap: 10px;
+            gap: 0;
+            align-items: center;
+            width: auto !important;
         }
         .form-radio-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
             cursor: pointer;
+            margin-right: 8px;
+            width: auto !important;
+        }
+        .form-radio-item:last-child {
+            margin-right: 0;
         }
         .form-radio-item input[type="radio"] {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             accent-color: #6366f1;
+            margin: 0;
+            padding: 0;
+            vertical-align: middle;
+            position: static;
+            display: inline-block;
         }
         .form-radio-item span {
             font-size: 14px;
             color: #475569;
+            line-height: 1.4;
         }
         .form-textarea {
             min-height: 80px;
@@ -448,8 +473,8 @@
             padding: 10px 14px;
             border-top: 1px solid #f1f5f9;
             display: flex;
-            justify-content: center;
-            gap: 4px;
+            justify-content: flex-end;
+            gap: 8px;
         }
         .tabs-wrapper {
             background: white;
@@ -503,17 +528,31 @@
             font-size: 14px;
             font-weight: 500;
         }
+        .isolation-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
         .isolation-dimensions {
-            margin-bottom: 12px;
+            /* margin-bottom: 12px; */
         }
         .isolation-row {
             display: flex;
-            gap: 4px;
-            align-items: flex-end;
+            gap: 10px;
+            align-items: flex-start;
             margin-bottom: 12px;
+            padding-top: 6px;
         }
         .isolation-item {
             flex: 1;
+        }
+        .isolation-item label {
+            display: block;
+            width: auto;
+            text-align: left;
+            margin-right: 0;
+            padding-top: 0;
+            margin-bottom: 4px;
         }
         .btn-delete {
             padding: 12px 16px;
@@ -525,7 +564,7 @@
             align-self: flex-end;
         }
         .btn-add-isolation {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
             padding: 10px 20px;
@@ -536,17 +575,23 @@
             border-radius: 6px;
             font-size: 14px;
             transition: all 0.3s ease;
+            align-self: flex-start;
         }
         .btn-add-isolation:hover {
             border-color: #6366f1;
             color: #6366f1;
         }
-        .toggle-switch {
+        .form-group .toggle-switch {
             position: relative;
             display: inline-block;
-            width: 48px;
-            height: 26px;
+            width: 34px !important;
+            height: 18px;
             cursor: pointer;
+            flex-shrink: 0;
+            margin-right: 0;
+            text-align: left;
+            align-self: center;
+            margin-top: 6px;
         }
         .toggle-switch input {
             opacity: 0;
@@ -561,15 +606,15 @@
             bottom: 0;
             background-color: #cbd5e1;
             transition: 0.3s;
-            border-radius: 26px;
+            border-radius: 18px;
         }
         .toggle-switch .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
             background-color: white;
             transition: 0.3s;
             border-radius: 50%;
@@ -579,7 +624,7 @@
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         }
         .toggle-switch input:checked + .slider:before {
-            transform: translateX(22px);
+            transform: translateX(14px);
         }
 
         ::-webkit-scrollbar {
@@ -1455,7 +1500,7 @@
     </div>
 
     <div id="data-perm-modal" class="modal-overlay hidden" onclick="closeDataPermModal()">
-        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 580px;">
             <div class="modal-header">
                 <span class="modal-title">添加数据隔离维度</span>
                 <button class="modal-close" onclick="closeDataPermModal()">
@@ -1479,47 +1524,31 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>隔离维度：</label>
-                    <div class="isolation-dimensions">
-                        <div class="isolation-row">
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离维度名称：</label>
-                                <input type="text" class="form-control" placeholder="请输入">
+                    <label><span class="required">*</span>隔离维度：</label>
+                    <div class="isolation-wrapper">
+                        <div class="isolation-dimensions">
+                            <div class="isolation-row">
+                                <div class="isolation-item">
+                                    <label><span class="required">*</span>隔离维度名称：</label>
+                                    <input type="text" class="form-control" placeholder="请输入">
+                                </div>
+                                <div class="isolation-item">
+                                    <label><span class="required">*</span>隔离表字段：</label>
+                                    <select class="form-control">
+                                        <option>请选择</option>
+                                        <option>user_id</option>
+                                        <option>dept_id</option>
+                                        <option>area_id</option>
+                                        <option>type_id</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离表字段：</label>
-                                <select class="form-control">
-                                    <option>请选择</option>
-                                    <option>user_id</option>
-                                    <option>dept_id</option>
-                                    <option>area_id</option>
-                                    <option>type_id</option>
-                                </select>
-                            </div>
-                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
                         </div>
-                        <div class="isolation-row">
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离维度名称：</label>
-                                <input type="text" class="form-control" placeholder="请输入">
-                            </div>
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离表字段：</label>
-                                <select class="form-control">
-                                    <option>请选择</option>
-                                    <option>user_id</option>
-                                    <option>dept_id</option>
-                                    <option>area_id</option>
-                                    <option>type_id</option>
-                                </select>
-                            </div>
-                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
-                        </div>
+                        <button class="btn-add-isolation" onclick="addIsolationRow(this)">
+                            <i class="fa fa-plus"></i>
+                            添加更多
+                        </button>
                     </div>
-                    <button class="btn-add-isolation" onclick="addIsolationRow()">
-                        <i class="fa fa-plus"></i>
-                        添加
-                    </button>
                 </div>
                 <div class="form-group">
                     <label>备注说明：</label>
@@ -1534,7 +1563,7 @@
     </div>
 
     <div id="edit-data-perm-modal" class="modal-overlay hidden" onclick="closeEditDataPermModal()">
-        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 580px;">
             <div class="modal-header">
                 <span class="modal-title">编辑数据隔离维度</span>
                 <button class="modal-close" onclick="closeEditDataPermModal()">
@@ -1558,47 +1587,49 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>隔离维度：</label>
-                    <div class="isolation-dimensions">
-                        <div class="isolation-row">
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离维度名称：</label>
-                                <input type="text" class="form-control" value="业务员">
+                    <label><span class="required">*</span>隔离维度：</label>
+                    <div class="isolation-wrapper">
+                        <div class="isolation-dimensions">
+                            <div class="isolation-row">
+                                <div class="isolation-item">
+                                    <label><span class="required">*</span>隔离维度名称：</label>
+                                    <input type="text" class="form-control" value="业务员">
+                                </div>
+                                <div class="isolation-item">
+                                    <label><span class="required">*</span>隔离表字段：</label>
+                                    <select class="form-control">
+                                        <option>请选择</option>
+                                        <option selected>user_id</option>
+                                        <option>dept_id</option>
+                                        <option>area_id</option>
+                                        <option>type_id</option>
+                                    </select>
+                                </div>
+                                <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
                             </div>
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离表字段：</label>
-                                <select class="form-control">
-                                    <option>请选择</option>
-                                    <option selected>user_id</option>
-                                    <option>dept_id</option>
-                                    <option>area_id</option>
-                                    <option>type_id</option>
-                                </select>
+                            <div class="isolation-row">
+                                <div class="isolation-item">
+                                    <label><span class="required">*</span>隔离维度名称：</label>
+                                    <input type="text" class="form-control" value="部门">
+                                </div>
+                                <div class="isolation-item">
+                                    <label><span class="required">*</span>隔离表字段：</label>
+                                    <select class="form-control">
+                                        <option>请选择</option>
+                                        <option>user_id</option>
+                                        <option selected>dept_id</option>
+                                        <option>area_id</option>
+                                        <option>type_id</option>
+                                    </select>
+                                </div>
+                                <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
                             </div>
-                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
                         </div>
-                        <div class="isolation-row">
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离维度名称：</label>
-                                <input type="text" class="form-control" value="部门">
-                            </div>
-                            <div class="isolation-item">
-                                <label><span class="required">*</span>隔离表字段：</label>
-                                <select class="form-control">
-                                    <option>请选择</option>
-                                    <option>user_id</option>
-                                    <option selected>dept_id</option>
-                                    <option>area_id</option>
-                                    <option>type_id</option>
-                                </select>
-                            </div>
-                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
-                        </div>
+                        <button class="btn-add-isolation" onclick="addIsolationRow(this)">
+                            <i class="fa fa-plus"></i>
+                            添加更多
+                        </button>
                     </div>
-                    <button class="btn-add-isolation" onclick="addIsolationRow()">
-                        <i class="fa fa-plus"></i>
-                        添加
-                    </button>
                 </div>
                 <div class="form-group">
                     <label>状态：</label>
@@ -1636,7 +1667,7 @@
     </div>
 
     <div id="field-perm-modal" class="modal-overlay hidden" onclick="closeFieldPermModal()">
-        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 580px;">
             <div class="modal-header">
                 <span class="modal-title">添加字段</span>
                 <button class="modal-close" onclick="closeFieldPermModal()">
@@ -1679,7 +1710,7 @@
     </div>
 
     <div id="edit-field-perm-modal" class="modal-overlay hidden" onclick="closeEditFieldPermModal()">
-        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 580px;">
             <div class="modal-header">
                 <span class="modal-title">编辑字段</span>
                 <button class="modal-close" onclick="closeEditFieldPermModal()">
@@ -1787,6 +1818,7 @@
 
         function openAddModal() {
             document.getElementById('add-modal').classList.remove('hidden');
+            hideAllChildRows();
         }
 
         function closeAddModal() {
@@ -1795,14 +1827,27 @@
 
         function openEditModal() {
             document.getElementById('edit-modal').classList.remove('hidden');
+            hideAllChildRows();
         }
 
         function closeEditModal() {
             document.getElementById('edit-modal').classList.add('hidden');
         }
 
+        function hideAllChildRows() {
+            const childRows = document.querySelectorAll('.child-row');
+            childRows.forEach(row => {
+                row.classList.add('hidden');
+            });
+            const expandIcons = document.querySelectorAll('.expand-icon');
+            expandIcons.forEach(icon => {
+                icon.classList.add('collapsed');
+            });
+        }
+
         function openDeleteDialog() {
             document.getElementById('delete-dialog').classList.remove('hidden');
+            hideAllChildRows();
         }
 
         function closeDeleteDialog() {
@@ -1829,8 +1874,11 @@
             document.getElementById('data-perm-modal').classList.add('hidden');
         }
 
-        function addIsolationRow() {
-            const container = document.querySelector('.isolation-dimensions');
+        function addIsolationRow(btn) {
+            const isolationWrapper = btn.closest('.isolation-wrapper');
+            const container = isolationWrapper.querySelector('.isolation-dimensions');
+            const rows = container.querySelectorAll('.isolation-row');
+            
             const newRow = document.createElement('div');
             newRow.className = 'isolation-row';
             newRow.innerHTML = `
@@ -1851,11 +1899,33 @@
                 <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
             `;
             container.appendChild(newRow);
+            
+            if (rows.length === 1) {
+                const firstRow = rows[0];
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.onclick = function() { removeIsolationRow(this); };
+                deleteBtn.innerHTML = '删除';
+                firstRow.appendChild(deleteBtn);
+            }
         }
 
         function removeIsolationRow(btn) {
             const row = btn.parentElement;
-            row.remove();
+            const container = row.parentElement;
+            const rows = container.querySelectorAll('.isolation-row');
+            
+            if (rows.length > 1) {
+                row.remove();
+                
+                if (rows.length === 2) {
+                    const remainingRow = container.querySelector('.isolation-row');
+                    const deleteBtn = remainingRow.querySelector('.btn-delete');
+                    if (deleteBtn) {
+                        deleteBtn.remove();
+                    }
+                }
+            }
         }
 
         function openEditDataPermModal() {

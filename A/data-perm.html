@@ -688,49 +688,67 @@
             background: white;
             border-radius: 6px;
             width: 400px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
         .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 20px;
-            border-bottom: 1px solid #e5e7eb;
-            background: #f9fafb;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .modal-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
         }
         .modal-title {
             font-size: 14px;
             font-weight: 600;
-            color: #1f2937;
+            color: #1e293b;
         }
         .modal-close {
-            width: 28px;
-            height: 28px;
-            border: none;
             background: none;
-            border-radius: 6px;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            transition: all 0.2s;
+            padding: 4px;
         }
         .modal-close:hover {
-            background: #f3f4f6;
-            color: #374151;
+            color: #64748b;
         }
         .modal-body {
             padding: 20px;
         }
+        .dept-form-group {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .dept-form-label {
+            display: inline-block;
+            width: 70px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            flex-shrink: 0;
+            padding-top: 6px;
+        }
+        .dept-form-label.required::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 4px;
+        }
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 4px;
-            padding: 16px 20px;
-            border-top: 1px solid #e5e7eb;
-            background: #f9fafb;
+            gap: 12px;
+            padding: 16px;
+            border-top: 1px solid #f1f5f9;
         }
         .content-footer {
             padding: 10px 14px;
@@ -739,6 +757,70 @@
             justify-content: center;
             gap: 4px;
             background: #fafafa;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 6px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 10px 14px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
         }
         .btn {
             padding: 8px 24px;
@@ -3070,11 +3152,11 @@
             event.stopPropagation();
             currentDeleteOrgId = orgId;
             document.getElementById('delete-org-name').textContent = orgName;
-            document.getElementById('delete-org-modal').style.display = 'flex';
+            document.getElementById('delete-org-modal').classList.remove('hidden');
         }
 
         function closeDeleteModal() {
-            document.getElementById('delete-org-modal').style.display = 'none';
+            document.getElementById('delete-org-modal').classList.add('hidden');
             currentDeleteOrgId = null;
         }
 
@@ -3123,11 +3205,11 @@
         
         function deleteDept(id) {
             // 打开删除部门模态框
-            document.getElementById('delete-dept-modal').style.display = 'flex';
+            document.getElementById('delete-dept-modal').classList.remove('hidden');
         }
         
         function closeDeleteDeptModal() {
-            document.getElementById('delete-dept-modal').style.display = 'none';
+            document.getElementById('delete-dept-modal').classList.add('hidden');
         }
         
         function confirmDeleteDept() {
@@ -3198,6 +3280,7 @@
 
         // 打开添加角色弹窗
         function openAddRoleModal() {
+            closeAllRoleSettingsMenus();
             currentRoleId = null;
             document.getElementById('role-modal-title').textContent = '添加角色';
             document.getElementById('role-name').value = '';
@@ -3207,6 +3290,7 @@
 
         // 打开编辑角色弹窗
         function openEditRoleModal(roleId) {
+            closeAllRoleSettingsMenus();
             currentRoleId = roleId;
             document.getElementById('role-modal-title').textContent = '编辑角色';
             // 这里可以根据角色ID获取角色信息并填充表单
@@ -3256,13 +3340,14 @@
 
         // 打开删除角色确认对话框
         function openDeleteRoleConfirm(roleId) {
+            closeAllRoleSettingsMenus();
             currentRoleId = roleId;
-            document.getElementById('delete-role-modal').style.display = 'flex';
+            document.getElementById('delete-role-modal').classList.remove('hidden');
         }
 
         // 关闭删除角色确认对话框
         function closeDeleteRoleConfirm() {
-            document.getElementById('delete-role-modal').style.display = 'none';
+            document.getElementById('delete-role-modal').classList.add('hidden');
         }
 
         // 确认删除角色
@@ -3462,46 +3547,45 @@
         }
     </script>
 
-    <div id="delete-org-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 400px; max-width: 90%;">
-            <div class="modal-header">
-                <h3>删除组织类型</h3>
-                <span class="close" onclick="closeDeleteModal()">&times;</span>
+    <div id="delete-org-modal" class="dialog-overlay hidden" onclick="closeDeleteModal()">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除组织类型「<span id="delete-org-name"></span>」吗？删除后不可恢复</div>
             </div>
-            <div class="modal-body">
-                <p>确定要删除组织类型「<span id="delete-org-name"></span>」吗？</p>
-                <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该组织类型将无法恢复，请谨慎操作！</p>
-            </div>
-            <div class="modal-footer">
+            <div class="dialog-footer">
                 <button class="btn btn-outline" onclick="closeDeleteModal()">取消</button>
-                <button class="btn btn-primary" onclick="confirmDeleteOrg()">确定</button>
+                <button class="btn btn-danger">删除</button>
             </div>
         </div>
     </div>
     
     <!-- 部门添加模态框 -->
     <div id="add-dept-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 400px; max-width: 90%;">
+        <div class="modal-content" style="width: 500px; max-width: 90%;">
             <div class="modal-header">
                 <h3>添加部门</h3>
-                <span class="close" onclick="closeAddDeptModal()">&times;</span>
+                <button class="modal-close" onclick="closeAddDeptModal()"><i class="fa fa-times"></i></button>
             </div>
             <div class="modal-body">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">部门名称</label>
-                    <input type="text" id="dept-name" class="form-control" placeholder="请输入部门名称">
+                <div class="dept-form-group">
+                    <label class="dept-form-label required">部门名称</label>
+                    <input type="text" id="dept-name" class="form-control" style="flex: 1;" placeholder="请输入部门名称">
                 </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">上级部门</label>
-                    <select id="dept-parent" class="form-control">
+                <div class="dept-form-group">
+                    <label class="dept-form-label">上级部门</label>
+                    <select id="dept-parent" class="form-control" style="flex: 1;">
                         <option value="0">无</option>
                         <option value="1">总经办</option>
                         <option value="4">人力资源部</option>
                     </select>
                 </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">备注</label>
-                    <textarea id="dept-remark" class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                <div class="dept-form-group">
+                    <label class="dept-form-label">备注</label>
+                    <textarea id="dept-remark" class="form-control form-textarea" style="flex: 1;" placeholder="请输入备注"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -3513,28 +3597,28 @@
     
     <!-- 部门编辑模态框 -->
     <div id="edit-dept-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 400px; max-width: 90%;">
+        <div class="modal-content" style="width: 500px; max-width: 90%;">
             <div class="modal-header">
                 <h3>编辑部门</h3>
-                <span class="close" onclick="closeEditDeptModal()">&times;</span>
+                <button class="modal-close" onclick="closeEditDeptModal()"><i class="fa fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="dept-id">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">部门名称</label>
-                    <input type="text" id="edit-dept-name" class="form-control" placeholder="请输入部门名称">
+                <div class="dept-form-group">
+                    <label class="dept-form-label required">部门名称</label>
+                    <input type="text" id="edit-dept-name" class="form-control" style="flex: 1;" placeholder="请输入部门名称">
                 </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">上级部门</label>
-                    <select id="edit-dept-parent" class="form-control">
+                <div class="dept-form-group">
+                    <label class="dept-form-label">上级部门</label>
+                    <select id="edit-dept-parent" class="form-control" style="flex: 1;">
                         <option value="0">无</option>
                         <option value="1">总经办</option>
                         <option value="4">人力资源部</option>
                     </select>
                 </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #4b5563;">备注</label>
-                    <textarea id="edit-dept-remark" class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                <div class="dept-form-group">
+                    <label class="dept-form-label">备注</label>
+                    <textarea id="edit-dept-remark" class="form-control form-textarea" style="flex: 1;" placeholder="请输入备注"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -3545,19 +3629,18 @@
     </div>
     
     <!-- 部门删除模态框 -->
-    <div id="delete-dept-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 400px; max-width: 90%;">
-            <div class="modal-header">
-                <h3>删除部门</h3>
-                <span class="close" onclick="closeDeleteDeptModal()">&times;</span>
+    <div id="delete-dept-modal" class="dialog-overlay hidden" onclick="closeDeleteDeptModal()">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除部门吗？删除后不可恢复</div>
             </div>
-            <div class="modal-body">
-                <p>确定要删除部门吗？</p>
-                <p style="color: #ef4444; font-size: 12px; margin-top: 8px;">删除后该部门将无法恢复，请谨慎操作！</p>
-            </div>
-            <div class="modal-footer">
+            <div class="dialog-footer">
                 <button class="btn btn-outline" onclick="closeDeleteDeptModal()">取消</button>
-                <button class="btn btn-primary" onclick="confirmDeleteDept()">确定</button>
+                <button class="btn btn-danger">删除</button>
             </div>
         </div>
     </div>
@@ -3589,7 +3672,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
+            padding: 10px 16px;
             border-bottom: 1px solid #e5e7eb;
         }
         .modal-header h3 {
@@ -3624,8 +3707,9 @@
             border-top: 1px solid #e5e7eb;
         }
         .modal-footer .btn {
-            padding: 8px 16px;
+            padding: 6px 20px;
             font-size: 14px;
+            justify-content: center;
         }
     </style>
 
@@ -3633,19 +3717,19 @@
 
     <!-- 角色添加/编辑弹窗 -->
     <div id="role-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 400px; max-width: 90%;">
+        <div class="modal-content" style="width: 500px; max-width: 90%;">
             <div class="modal-header">
                 <h3 id="role-modal-title" class="modal-title">添加角色</h3>
-                <button class="modal-close" onclick="closeRoleModal()">&times;</button>
+                <button class="modal-close" onclick="closeRoleModal()"><i class="fa fa-times"></i></button>
             </div>
             <div class="modal-body">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #374151;">角色名称</label>
-                    <input type="text" id="role-name" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px;" placeholder="请输入角色名称">
+                <div class="dept-form-group">
+                    <label class="dept-form-label required">角色名称</label>
+                    <input type="text" id="role-name" class="form-control" style="flex: 1;" placeholder="请输入角色名称">
                 </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #374151;">角色备注</label>
-                    <textarea id="role-remark" style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; resize: vertical; min-height: 80px;" placeholder="请输入角色备注"></textarea>
+                <div class="dept-form-group">
+                    <label class="dept-form-label">角色备注</label>
+                    <textarea id="role-remark" class="form-control form-textarea" style="flex: 1;" placeholder="请输入角色备注"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -3656,16 +3740,16 @@
     </div>
 
     <!-- 角色删除确认对话框 -->
-    <div id="delete-role-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 400px; max-width: 90%;">
-            <div class="modal-header">
-                <h3 class="modal-title">确认删除</h3>
-                <button class="modal-close" onclick="closeDeleteRoleConfirm()">&times;</button>
+    <div id="delete-role-modal" class="dialog-overlay hidden" onclick="closeDeleteRoleConfirm()">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除这个角色吗？删除后不可恢复</div>
             </div>
-            <div class="modal-body">
-                <p>确定要删除这个角色吗？此操作不可撤销。</p>
-            </div>
-            <div class="modal-footer">
+            <div class="dialog-footer">
                 <button class="btn btn-outline" onclick="closeDeleteRoleConfirm()">取消</button>
                 <button class="btn btn-danger" onclick="confirmDeleteRole()">删除</button>
             </div>

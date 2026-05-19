@@ -179,13 +179,33 @@
             gap: 8px;
             background: #fafafa;
         }
+        .form-group {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .form-label {
+            display: inline-block;
+            width: 70px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            flex-shrink: 0;
+            padding-top: 6px;
+        }
+        .form-label.required::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 4px;
+        }
         .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
-            border-bottom: 1px solid #e5e7eb;
-            background: #f9fafb;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
         }
         .modal-header h3 {
             font-size: 14px;
@@ -194,24 +214,15 @@
             margin: 0;
         }
         .modal-close {
-            width: 28px;
-            height: 28px;
-            background: #f1f5f9;
+            background: none;
             border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            color: #64748b;
+            font-size: 20px;
+            color: #94a3b8;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            padding: 0;
-            line-height: 1;
+            padding: 4px;
         }
         .modal-close:hover {
-            color: #374151;
-            background: #e2e8f0;
+            color: #64748b;
         }
         .btn-outline {
             background: white;
@@ -423,19 +434,21 @@
             </div>
             <div class="dialog-body" style="text-align: left; padding: 16px;">
                 
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
-                    <input type="text" class="form-control" style="width: 100%;" placeholder="请输入协议名称">
+                <div class="form-group">
+                    <label class="form-label required">协议名称</label>
+                    <input type="text" class="form-control" style="flex: 1;" placeholder="请输入协议名称">
                 </div>
                 
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
-                    <textarea id="addAgreementContent" class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容"></textarea>
+                <div class="form-group">
+                    <label class="form-label required">协议内容</label>
+                    <div style="flex: 1; min-width: 0;">
+                        <textarea id="addAgreementContent" class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容"></textarea>
+                    </div>
                 </div>
                 
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;">状态</label>
-                    <select class="form-control" style="width: 100%;">
+                <div class="form-group">
+                    <label class="form-label">状态</label>
+                    <select class="form-control" style="flex: 1;">
                         <option>生效中</option>
                         <option>已失效</option>
                     </select>
@@ -458,23 +471,25 @@
             </div>
             <div class="dialog-body" style="text-align: left; padding: 16px;">
                 
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
-                    <input type="text" class="form-control" style="width: 100%;" placeholder="请输入协议名称" value="用户服务协议">
+                <div class="form-group">
+                    <label class="form-label required">协议名称</label>
+                    <input type="text" class="form-control" style="flex: 1;" placeholder="请输入协议名称" value="用户服务协议">
                 </div>
                 
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议内容</label>
-                    <textarea id="agreementContent" class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容">欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。
+                <div class="form-group">
+                    <label class="form-label required">协议内容</label>
+                    <div style="flex: 1; min-width: 0;">
+                        <textarea id="agreementContent" class="form-control" style="width: 100%; min-height: 200px;" placeholder="请输入协议内容">欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。
 
 一、服务内容：本平台提供DAO组织管理、用户管理、权限管理等服务。
 二、用户注册：用户在使用本平台服务前，需要完成注册流程并提供真实有效的信息。
 三、用户行为规范：用户在使用本平台服务时，应当遵守法律法规，不得从事任何违法活动。</textarea>
+                    </div>
                 </div>
                 
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;">状态</label>
-                    <select class="form-control" style="width: 100%;">
+                <div class="form-group">
+                    <label class="form-label">状态</label>
+                    <select class="form-control" style="flex: 1;">
                         <option>生效中</option>
                         <option>已失效</option>
                     </select>
@@ -535,6 +550,7 @@
         tinymce.init({
             selector: '#agreementContent, #addAgreementContent',
             height: 300,
+            width: '100%',
             plugins: 'advlist autolink lists link image charmap print preview anchor',
             toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
             menubar: false,
@@ -542,6 +558,9 @@
             setup: function(editor) {
                 editor.on('init', function() {
                     // 编辑器初始化完成后的处理
+                    var container = editor.getContainer();
+                    container.style.width = '100%';
+                    container.style.minWidth = '0';
                 });
             }
         });
