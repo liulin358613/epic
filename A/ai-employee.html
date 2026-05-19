@@ -174,6 +174,40 @@
             border-radius: 3px;
             font-weight: 500;
         }
+        .employee-badge.status.draft {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .employee-badge.status.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .employee-badge.status.approved {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .employee-badge.status.published {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .employee-badge.status.offline {
+            background: #fce7f3;
+            color: #db2777;
+        }
+        .employee-badge.status.invalid {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+        .employee-type {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6366f1;
+            margin-left: 6px;
+            padding: 2px 8px;
+            background: #eef2ff;
+            border-radius: 4px;
+            border: 1px solid #ddd6fe;
+        }
         .employee-header {
             display: flex;
             align-items: flex-start;
@@ -255,16 +289,18 @@
         }
         .btn-hire {
             padding: 3px 12px;
-            background: #3b82f6;
-            color: white;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
             border-radius: 3px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: normal;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .btn-hire:hover {
-            background: #2563eb;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
         .pagination {
             display: flex;
@@ -759,13 +795,22 @@
         <div class="card">
             <div class="tabs-wrapper">
                 <div class="tab-item active" data-tab="all" onclick="switchTab('all')">全部</div>
-                <div class="tab-item" data-tab="general" onclick="switchTab('general')">通用型</div>
-                <div class="tab-item" data-tab="expert" onclick="switchTab('expert')">专家型</div>
-                <div class="tab-item" data-tab="industry" onclick="switchTab('industry')">行业型</div>
+                <div class="tab-item" data-tab="draft" onclick="switchTab('draft')">草稿</div>
+                <div class="tab-item" data-tab="pending" onclick="switchTab('pending')">待审核</div>
+                <div class="tab-item" data-tab="approved" onclick="switchTab('approved')">审核通过</div>
+                <div class="tab-item" data-tab="published" onclick="switchTab('published')">已发布</div>
+                <div class="tab-item" data-tab="offline" onclick="switchTab('offline')">已下架</div>
+                <div class="tab-item" data-tab="invalid" onclick="switchTab('invalid')">已作废</div>
             </div>
 
             <div class="search-bar">
                 <input type="text" class="form-control" placeholder="搜索AI员工名称/业务能力" id="search-input" style="min-width: 200px;">
+                <select class="form-control" id="type-filter">
+                    <option value="">全部类型</option>
+                    <option value="general">通用型</option>
+                    <option value="expert">专家型</option>
+                    <option value="industry">行业型</option>
+                </select>
                 <select class="form-control" id="skill-filter">
                     <option value="">全部业务能力</option>
                     <option value="python">Python开发</option>
@@ -782,11 +827,11 @@
 
             <div class="employee-grid" id="employee-grid">
                 <div class="employee-card" data-name="我的秘书">
-                    <div class="employee-badge">通用型</div>
+                    <div class="employee-badge status published">已发布</div>
                     <div class="employee-header">
                         <img src="images/AI-2.png" class="employee-avatar" alt="我的秘书">
                         <div class="employee-info">
-                            <div class="employee-name">我的秘书<span class="employee-id">(00000001)</span></div>
+                            <div class="employee-name">我的秘书<span class="employee-id">(00000001)</span><span class="employee-type">通用型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">日程管理</span>
                                 <span class="tag skill">邮件处理</span>
@@ -803,11 +848,11 @@
                 </div>
 
                 <div class="employee-card" data-name="项目经理">
-                    <div class="employee-badge">行业型</div>
+                    <div class="employee-badge status approved">审核通过</div>
                     <div class="employee-header">
                         <img src="images/AI-1.png" class="employee-avatar" alt="项目经理">
                         <div class="employee-info">
-                            <div class="employee-name">项目经理<span class="employee-id">(00000002)</span></div>
+                            <div class="employee-name">项目经理<span class="employee-id">(00000002)</span><span class="employee-type">行业型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">项目规划</span>
                                 <span class="tag skill">进度管理</span>
@@ -824,11 +869,11 @@
                 </div>
 
                 <div class="employee-card" data-name="会议纪要员">
-                    <div class="employee-badge">通用型</div>
+                    <div class="employee-badge status pending">待审核</div>
                     <div class="employee-header">
                         <img src="images/tx-1.png" class="employee-avatar" alt="会议纪要员">
                         <div class="employee-info">
-                            <div class="employee-name">会议纪要员<span class="employee-id">(00000003)</span></div>
+                            <div class="employee-name">会议纪要员<span class="employee-id">(00000003)</span><span class="employee-type">通用型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">会议记录</span>
                                 <span class="tag skill">纪要整理</span>
@@ -845,11 +890,11 @@
                 </div>
 
                 <div class="employee-card" data-name="销售工程师">
-                    <div class="employee-badge">行业型</div>
+                    <div class="employee-badge status offline">已下架</div>
                     <div class="employee-header">
                         <img src="images/AI-3.png" class="employee-avatar" alt="销售工程师">
                         <div class="employee-info">
-                            <div class="employee-name">销售工程师<span class="employee-id">(00000004)</span></div>
+                            <div class="employee-name">销售工程师<span class="employee-id">(00000004)</span><span class="employee-type">行业型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">产品演示</span>
                                 <span class="tag skill">技术支持</span>
@@ -866,11 +911,11 @@
                 </div>
 
                 <div class="employee-card" data-name="方案工程师">
-                    <div class="employee-badge">专家型</div>
+                    <div class="employee-badge status draft">草稿</div>
                     <div class="employee-header">
                         <img src="images/AI-1.png" class="employee-avatar" alt="方案工程师">
                         <div class="employee-info">
-                            <div class="employee-name">方案工程师<span class="employee-id">(00000005)</span></div>
+                            <div class="employee-name">方案工程师<span class="employee-id">(00000005)</span><span class="employee-type">专家型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">需求分析</span>
                                 <span class="tag skill">方案设计</span>
@@ -887,11 +932,11 @@
                 </div>
 
                 <div class="employee-card" data-name="产品经理">
-                    <div class="employee-badge">专家型</div>
+                    <div class="employee-badge status published">已发布</div>
                     <div class="employee-header">
                         <img src="images/AI-2.png" class="employee-avatar" alt="产品经理">
                         <div class="employee-info">
-                            <div class="employee-name">产品经理<span class="employee-id">(00000006)</span></div>
+                            <div class="employee-name">产品经理<span class="employee-id">(00000006)</span><span class="employee-type">通用型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">需求分析</span>
                                 <span class="tag skill">产品规划</span>
@@ -908,11 +953,11 @@
                 </div>
 
                 <div class="employee-card" data-name="售后工程师">
-                    <div class="employee-badge">专家型</div>
+                    <div class="employee-badge status invalid">已作废</div>
                     <div class="employee-header">
                         <img src="images/tx-2.png" class="employee-avatar" alt="售后工程师">
                         <div class="employee-info">
-                            <div class="employee-name">售后工程师<span class="employee-id">(00000007)</span></div>
+                            <div class="employee-name">售后工程师<span class="employee-id">(00000007)</span><span class="employee-type">行业型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">技术支持</span>
                                 <span class="tag skill">故障排查</span>
@@ -929,11 +974,11 @@
                 </div>
 
                 <div class="employee-card" data-name="文件管理员">
-                    <div class="employee-badge">行业型</div>
+                    <div class="employee-badge status published">已发布</div>
                     <div class="employee-header">
                         <img src="images/AI-4.png" class="employee-avatar" alt="文件管理员">
                         <div class="employee-info">
-                            <div class="employee-name">文件管理员<span class="employee-id">(00000008)</span></div>
+                            <div class="employee-name">文件管理员<span class="employee-id">(00000008)</span><span class="employee-type">行业型</span></div>
                             <div class="employee-tags">
                                 <span class="tag skill">文件分类</span>
                                 <span class="tag skill">存储管理</span>
@@ -1149,14 +1194,14 @@
 
     <script>
         const employees = [
-            { id: 1, name: '我的秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
-            { id: 2, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
-            { id: 3, name: '会议纪要员', avatar: 'images/tx-1.png', type: 'general', typeLabel: '通用型', desc: '负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。', tags: ['会议记录', '纪要整理', '要点提炼'], industry: '办公', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
-            { id: 4, name: '销售工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
-            { id: 5, name: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '专家型', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
-            { id: 6, name: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119 },
-            { id: 7, name: '售后工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
-            { id: 8, name: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业型', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89 }
+            { id: 1, name: '我的秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', status: 'published', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
+            { id: 2, name: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', status: 'approved', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
+            { id: 3, name: '会议纪要员', avatar: 'images/tx-1.png', type: 'general', typeLabel: '通用型', status: 'pending', desc: '负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。', tags: ['会议记录', '纪要整理', '要点提炼'], industry: '办公', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
+            { id: 4, name: '销售工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', status: 'offline', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
+            { id: 5, name: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '专家型', status: 'draft', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
+            { id: 6, name: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', status: 'published', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119 },
+            { id: 7, name: '售后工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', status: 'invalid', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
+            { id: 8, name: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业型', status: 'published', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89 }
         ];
 
         function switchTab(tab) {
@@ -1172,8 +1217,8 @@
 
         function resetSearch() {
             document.getElementById('search-input').value = '';
+            document.getElementById('type-filter').value = '';
             document.getElementById('skill-filter').value = '';
-            document.getElementById('industry-filter').value = '';
             const tabs = document.querySelectorAll('.tab-item');
             tabs.forEach(t => t.classList.remove('active'));
             document.querySelector('[data-tab="all"]').classList.add('active');
@@ -1183,16 +1228,16 @@
         function filterEmployees() {
             const activeTab = document.querySelector('.tab-item.active').getAttribute('data-tab');
             const searchText = document.getElementById('search-input').value.toLowerCase();
+            const typeFilter = document.getElementById('type-filter').value;
             const skillFilter = document.getElementById('skill-filter').value;
-            const industryFilter = document.getElementById('industry-filter').value;
 
             const filtered = employees.filter(emp => {
-                const matchesTab = activeTab === 'all' || emp.type === activeTab;
+                const matchesTab = activeTab === 'all' || emp.status === activeTab;
                 const matchesSearch = emp.name.toLowerCase().includes(searchText) || 
                                       emp.tags.some(tag => tag.toLowerCase().includes(searchText));
+                const matchesType = !typeFilter || emp.type === typeFilter;
                 const matchesSkill = !skillFilter || emp.tags.some(tag => tag.toLowerCase().includes(skillFilter.toLowerCase()));
-                const matchesIndustry = !industryFilter || emp.industry.toLowerCase().includes(industryFilter.toLowerCase());
-                return matchesTab && matchesSearch && matchesSkill && matchesIndustry;
+                return matchesTab && matchesSearch && matchesType && matchesSkill;
             });
 
             renderEmployees(filtered);
@@ -1205,15 +1250,25 @@
                 return;
             }
 
+            const statusLabels = {
+                draft: '草稿',
+                pending: '待审核',
+                approved: '审核通过',
+                published: '已发布',
+                offline: '已下架',
+                invalid: '已作废'
+            };
+
             grid.innerHTML = empList.map(emp => {
                 const usageCount = emp.tasks >= 1000 ? (emp.tasks / 1000).toFixed(1) + '万' : emp.tasks;
+                const statusLabel = statusLabels[emp.status] || '未知';
                 return `
                     <div class="employee-card" data-name="${emp.name}">
-                        <div class="employee-badge">${emp.typeLabel}</div>
+                        <div class="employee-badge status ${emp.status}">${statusLabel}</div>
                         <div class="employee-header">
                             <img src="${emp.avatar}" class="employee-avatar" alt="${emp.name}">
                             <div class="employee-info">
-                                <div class="employee-name">${emp.name}<span class="employee-id">(${String(emp.id).padStart(8, '0')})</span></div>
+                                <div class="employee-name">${emp.name}<span class="employee-id">(${String(emp.id).padStart(8, '0')})</span><span class="employee-type">${emp.typeLabel}</span></div>
                                 <div class="employee-tags">
                                     ${emp.tags.map(tag => `<span class="tag skill">${tag}</span>`).join('')}
                                     <span class="tag industry">${emp.industry}</span>
@@ -1273,6 +1328,7 @@
                 params.append('avatar', encodeURIComponent(emp.avatar));
                 params.append('type', encodeURIComponent(emp.type));
                 params.append('typeLabel', encodeURIComponent(emp.typeLabel));
+                params.append('status', encodeURIComponent(emp.status));
                 params.append('desc', encodeURIComponent(emp.desc));
                 params.append('tags', encodeURIComponent(JSON.stringify(emp.tags)));
                 params.append('industry', encodeURIComponent(emp.industry));

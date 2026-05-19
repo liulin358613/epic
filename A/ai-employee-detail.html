@@ -28,7 +28,7 @@
         }
         .card {
             background: white;
-            border-radius: 8px;
+            /* border-radius: 8px; */
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow: hidden;
             border: 1px solid #e5e7eb;
@@ -67,7 +67,7 @@
             color: #3b82f6;
             background: #eff6ff;
         }
-        .btn-icon {
+        .btn-icon-only {
             width: 32px;
             height: 32px;
             padding: 0;
@@ -76,27 +76,37 @@
             align-items: center;
             justify-content: center;
         }
-        .btn-edit {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
+        .btn-with-text {
             width: auto;
             padding: 6px 12px;
             gap: 4px;
         }
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
         .btn-edit:hover {
             background: rgba(59, 130, 246, 0.2);
-            transform: scale(1.1);
+            border-color: rgba(59, 130, 246, 0.4);
         }
         .btn-delete {
             background: rgba(239, 68, 68, 0.1);
             color: #ef4444;
-            width: auto;
-            padding: 6px 12px;
-            gap: 4px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
         .btn-delete:hover {
             background: rgba(239, 68, 68, 0.2);
-            transform: scale(1.1);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
         }
         .action-buttons {
             display: flex;
@@ -135,7 +145,7 @@
             flex: 5;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            /* gap: 12px; */
             min-width: 0;
             overflow: hidden;
         }
@@ -215,7 +225,7 @@
             color: #3b82f6;
         }
         .section-content {
-            padding: 16px;
+            padding: 8px;
         }
         .employee-card {
             background: white;
@@ -315,6 +325,40 @@
         .badge-status {
             background: #dcfce7;
             color: #16a34a;
+        }
+        .employee-badge.status.draft {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .employee-badge.status.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .employee-badge.status.approved {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .employee-badge.status.published {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .employee-badge.status.offline {
+            background: #fce7f3;
+            color: #db2777;
+        }
+        .employee-badge.status.invalid {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+        .type-badge {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6366f1;
+            margin-left: 8px;
+            padding: 2px 8px;
+            background: #eef2ff;
+            border-radius: 4px;
+            border: 1px solid #ddd6fe;
         }
         .employee-desc {
             font-size: 13px;
@@ -1065,6 +1109,20 @@
             border-color: #3b82f6;
             background: rgba(59, 130, 246, 0.05);
         }
+        .bottom-actions {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+            z-index: 100;
+        }
     </style>
 </head>
 <body>
@@ -1078,25 +1136,15 @@
     <main class="main-content">
         <div class="left-panel">
             <div class="card">
-                <div class="section-header" style="display: flex; justify-content: space-between;padding: 8px 16px;">
+                <div class="section-header">
                     <div class="section-title"><i class="fa fa-info-circle"></i> 基本信息</div>
-                    <div class="action-buttons">
-                        <button class="btn btn-icon btn-edit" title="编辑信息" onclick="openEditModal()">
-                            <i class="fa fa-pencil"></i>
-                            <span>编辑</span>
-                        </button>
-                        <button class="btn btn-icon btn-delete" title="删除员工" onclick="showDeleteConfirm()">
-                            <i class="fa fa-trash"></i>
-                            <span>删除</span>
-                        </button>
-                    </div>
                 </div>
                 <div class="employee-card">
-                    <div id="emp-type" class="employee-badge">行业型</div>
+                    <div id="emp-status" class="employee-badge status published">已发布</div>
                     <div class="employee-header">
                         <img id="emp-avatar" src="images/tx-1.png" class="employee-avatar" alt="员工头像">
                         <div class="employee-info">
-                            <div class="employee-name"><span id="emp-name">全能顾问</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="emp-id">00000001</span>)</span></div>
+                            <div class="employee-name"><span id="emp-name">全能顾问</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="emp-id">00000001</span>)</span><span id="emp-type" class="type-badge">行业型</span></div>
                             <div id="emp-tags" class="employee-tags">
                                 <span class="tag skill">战略规划</span>
                                 <span class="tag skill">商业分析</span>
@@ -1481,6 +1529,9 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="bottom-actions" id="bottom-actions">
+            </div>
         </div>
 
         <div class="vertical-resizer" id="vertical-resizer"></div>
@@ -1623,6 +1674,11 @@
     <script>
         let employeeName = 'AI员工';
         let employeeAvatar = 'images/AI-1.png';
+        let currentEmpId = '';
+        let currentEmpType = '';
+        let currentEmpSkills = [];
+        let currentEmpDesc = '';
+        let currentEmpStatus = '';
         
         function viewTopic(btn) {
             const topic = btn.getAttribute('data-topic');
@@ -1754,14 +1810,29 @@
             const avatar = decodeURIComponent(getUrlParameter('avatar')) || 'images/AI-1.png';
             employeeAvatar = avatar;
             const typeLabel = decodeURIComponent(getUrlParameter('typeLabel')) || '通用型';
+            currentEmpType = typeLabel;
+            const status = decodeURIComponent(getUrlParameter('status')) || 'published';
+            currentEmpStatus = status;
             const desc = decodeURIComponent(getUrlParameter('desc')) || '暂无描述';
+            currentEmpDesc = desc;
             const tagsStr = decodeURIComponent(getUrlParameter('tags'));
             const tags = tagsStr ? JSON.parse(tagsStr) : [];
+            currentEmpId = String(id).padStart(8, '0');
+            currentEmpSkills = tags;
             const industry = decodeURIComponent(getUrlParameter('industry')) || '通用';
             const matchRate = getUrlParameter('matchRate') || '0';
             const tasks = getUrlParameter('tasks') || '0';
             const rating = getUrlParameter('rating') || '0.0';
             const price = getUrlParameter('price') || '0';
+
+            const statusLabels = {
+                draft: '草稿',
+                pending: '待审核',
+                approved: '审核通过',
+                published: '已发布',
+                offline: '已下架',
+                invalid: '已作废'
+            };
 
             const nameEl = document.getElementById('emp-name');
             if (nameEl) nameEl.textContent = name;
@@ -1776,6 +1847,14 @@
 
             const typeEl = document.getElementById('emp-type');
             if (typeEl) typeEl.textContent = typeLabel;
+
+            const statusEl = document.getElementById('emp-status');
+            if (statusEl) {
+                statusEl.textContent = statusLabels[status] || '未知';
+                statusEl.className = 'employee-badge status ' + status;
+            }
+
+            renderBottomActions(status);
 
             const descEl = document.getElementById('emp-desc');
             if (descEl) descEl.textContent = desc;
@@ -1818,6 +1897,430 @@
             if (initialName) {
                 initialName.textContent = name;
             }
+        }
+
+        function renderBottomActions(status) {
+            const actionsContainer = document.getElementById('bottom-actions');
+            if (!actionsContainer) return;
+
+            const actionConfigs = {
+                draft: [
+                    { icon: 'fa-pencil', text: '编辑', onClick: 'openEditModal()', className: 'btn-edit' },
+                    { icon: 'fa-upload', text: '提交审核', onClick: 'submitForReview()', className: 'btn-primary' },
+                    { icon: 'fa-ban', text: '作废', onClick: 'markAsInvalid()', className: 'btn-danger' }
+                ],
+                pending: [
+                    { icon: 'fa-undo', text: '撤回审核', onClick: 'withdrawReview()', className: 'btn-outline' },
+                    { icon: 'fa-check', text: '审核', onClick: 'approveReview()', className: 'btn-primary' }
+                ],
+                approved: [
+                    { icon: 'fa-rocket', text: '发布上架', onClick: 'publishEmployee()', className: 'btn-primary' },
+                    { icon: 'fa-undo', text: '退回重调', onClick: 'rejectEmployee()', className: 'btn-danger' }
+                ],
+                published: [
+                    { icon: 'fa-arrow-down', text: '下架', onClick: 'takeDownEmployee()', className: 'btn-outline' }
+                ],
+                offline: [
+                    { icon: 'fa-rocket', text: '发布上架', onClick: 'publishEmployee()', className: 'btn-primary' },
+                    { icon: 'fa-undo', text: '退回重调', onClick: 'rejectEmployee()', className: 'btn-danger' }
+                ],
+                invalid: [
+                    { icon: 'fa-trash', text: '删除', onClick: 'showDeleteConfirm()', className: 'btn-delete' }
+                ]
+            };
+
+            const actions = actionConfigs[status] || [];
+            
+            actionsContainer.innerHTML = actions.map(action => `
+                <button class="btn btn-with-text ${action.className}" onclick="${action.onClick}">
+                    <i class="fa ${action.icon}"></i>
+                    <span>${action.text}</span>
+                </button>
+            `).join('');
+        }
+
+        function submitForReview() {
+            const modal = document.getElementById('submit-review-modal');
+            modal.classList.add('show');
+        }
+
+        function closeSubmitReview() {
+            const modal = document.getElementById('submit-review-modal');
+            modal.classList.remove('show');
+        }
+
+        function confirmSubmitReview() {
+            closeSubmitReview();
+            updateStatus('pending');
+            showToast('提交审核成功，等待审核');
+        }
+
+        function updateStatus(newStatus) {
+            const statusLabels = {
+                draft: '草稿',
+                pending: '待审核',
+                approved: '审核通过',
+                published: '已发布',
+                offline: '已下架',
+                invalid: '已作废'
+            };
+            
+            const statusEl = document.getElementById('emp-status');
+            if (statusEl) {
+                statusEl.textContent = statusLabels[newStatus] || '未知';
+                statusEl.className = 'employee-badge status ' + newStatus;
+            }
+            
+            renderBottomActions(newStatus);
+        }
+
+        function markAsInvalid() {
+            const modal = document.getElementById('invalid-confirm-modal');
+            document.getElementById('invalid-reason').value = '';
+            
+            document.getElementById('invalid-emp-name').textContent = employeeName || '-';
+            document.getElementById('invalid-emp-id').textContent = currentEmpId || '-';
+            document.getElementById('invalid-emp-type').textContent = currentEmpType || '-';
+            document.getElementById('invalid-emp-desc').textContent = currentEmpDesc || '-';
+            
+            const avatarEl = document.getElementById('invalid-emp-avatar');
+            if (avatarEl) {
+                avatarEl.src = employeeAvatar + '?' + Date.now();
+            }
+            
+            const tagsContainer = document.getElementById('invalid-emp-tags');
+            if (tagsContainer) {
+                if (currentEmpSkills && currentEmpSkills.length > 0) {
+                    tagsContainer.innerHTML = currentEmpSkills.map(tag => {
+                        const isIndustry = ['企业服务', '金融', '医疗', '教育', '制造业', '零售', '通用'].includes(tag);
+                        return `<span class="tag ${isIndustry ? 'industry' : 'skill'}">${tag}</span>`;
+                    }).join('');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeInvalidConfirm() {
+            const modal = document.getElementById('invalid-confirm-modal');
+            modal.classList.remove('show');
+            document.getElementById('invalid-reason').value = '';
+        }
+
+        function confirmMarkAsInvalid() {
+            const reason = document.getElementById('invalid-reason').value.trim();
+            if (!reason) {
+                showToast('请输入作废原因', 'error');
+                return;
+            }
+            
+            closeInvalidConfirm();
+            updateStatus('invalid');
+            showToast('已作废', 'warning');
+        }
+
+        function withdrawReview() {
+            const modal = document.getElementById('withdraw-review-modal');
+            modal.classList.add('show');
+        }
+
+        function closeWithdrawReview() {
+            const modal = document.getElementById('withdraw-review-modal');
+            modal.classList.remove('show');
+        }
+
+        function confirmWithdrawReview() {
+            closeWithdrawReview();
+            updateStatus('draft');
+            showToast('已撤回审核', 'info');
+        }
+
+        function approveReview() {
+            const modal = document.getElementById('review-modal');
+            
+            document.getElementById('reject-reason').value = '';
+            document.getElementById('publish-version').value = '';
+            document.getElementById('publish-remark').value = '';
+            
+            document.getElementById('reject-reason-section').style.display = 'none';
+            document.getElementById('publish-section').style.display = 'none';
+            document.getElementById('btn-reject').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-reject').style.display = 'none';
+            document.getElementById('btn-cancel-reject').style.display = 'none';
+            document.getElementById('btn-publish').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-publish').style.display = 'none';
+            document.getElementById('btn-cancel-publish').style.display = 'none';
+            
+            document.getElementById('audit-emp-name').textContent = employeeName || '-';
+            document.getElementById('audit-emp-id').textContent = currentEmpId || '-';
+            document.getElementById('audit-emp-type').textContent = currentEmpType || '-';
+            document.getElementById('audit-emp-desc').textContent = currentEmpDesc || '-';
+            
+            const avatarEl = document.getElementById('audit-emp-avatar');
+            if (avatarEl) {
+                avatarEl.src = employeeAvatar + '?' + Date.now();
+            }
+            
+            const tagsContainer = document.getElementById('audit-emp-tags');
+            if (tagsContainer) {
+                if (currentEmpSkills && currentEmpSkills.length > 0) {
+                    tagsContainer.innerHTML = currentEmpSkills.map(tag => {
+                        const isIndustry = ['企业服务', '金融', '医疗', '教育', '制造业', '零售', '通用'].includes(tag);
+                        return `<span class="tag ${isIndustry ? 'industry' : 'skill'}">${tag}</span>`;
+                    }).join('');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('review-modal');
+            modal.classList.remove('show');
+            document.getElementById('reject-reason').value = '';
+            document.getElementById('publish-version').value = '';
+            document.getElementById('publish-remark').value = '';
+            document.getElementById('reject-reason-section').style.display = 'none';
+            document.getElementById('publish-section').style.display = 'none';
+            document.getElementById('btn-reject').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-reject').style.display = 'none';
+            document.getElementById('btn-cancel-reject').style.display = 'none';
+            document.getElementById('btn-publish').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-publish').style.display = 'none';
+            document.getElementById('btn-cancel-publish').style.display = 'none';
+        }
+
+        function showRejectReason() {
+            document.getElementById('reject-reason-section').style.display = 'block';
+            document.getElementById('publish-section').style.display = 'none';
+            document.getElementById('btn-reject').style.display = 'none';
+            document.getElementById('btn-confirm-reject').style.display = 'inline-flex';
+            document.getElementById('btn-cancel-reject').style.display = 'inline-flex';
+            document.getElementById('btn-publish').style.display = 'none';
+            document.getElementById('btn-confirm-publish').style.display = 'none';
+            document.getElementById('btn-cancel-publish').style.display = 'none';
+            document.getElementById('btn-approve').style.display = 'none';
+        }
+
+        function cancelReject() {
+            document.getElementById('reject-reason').value = '';
+            document.getElementById('reject-reason-section').style.display = 'none';
+            document.getElementById('btn-reject').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-reject').style.display = 'none';
+            document.getElementById('btn-cancel-reject').style.display = 'none';
+            document.getElementById('btn-publish').style.display = 'inline-flex';
+            document.getElementById('btn-approve').style.display = 'inline-flex';
+        }
+
+        function confirmReject() {
+            const reason = document.getElementById('reject-reason').value.trim();
+            if (!reason) {
+                showToast('请输入驳回原因', 'error');
+                return;
+            }
+            closeReviewModal();
+            updateStatus('draft');
+            showToast('已驳回，退回重调', 'warning');
+        }
+
+        function confirmApprove() {
+            closeReviewModal();
+            updateStatus('approved');
+            showToast('审核通过', 'success');
+        }
+
+        function showPublishInfo() {
+            document.getElementById('publish-section').style.display = 'block';
+            document.getElementById('reject-reason-section').style.display = 'none';
+            document.getElementById('btn-publish').style.display = 'none';
+            document.getElementById('btn-confirm-publish').style.display = 'inline-flex';
+            document.getElementById('btn-cancel-publish').style.display = 'inline-flex';
+            document.getElementById('btn-reject').style.display = 'none';
+            document.getElementById('btn-confirm-reject').style.display = 'none';
+            document.getElementById('btn-cancel-reject').style.display = 'none';
+            document.getElementById('btn-approve').style.display = 'none';
+        }
+
+        function cancelPublish() {
+            document.getElementById('publish-version').value = '';
+            document.getElementById('publish-remark').value = '';
+            document.getElementById('publish-section').style.display = 'none';
+            document.getElementById('btn-publish').style.display = 'inline-flex';
+            document.getElementById('btn-confirm-publish').style.display = 'none';
+            document.getElementById('btn-cancel-publish').style.display = 'none';
+            document.getElementById('btn-reject').style.display = 'inline-flex';
+            document.getElementById('btn-approve').style.display = 'inline-flex';
+        }
+
+        function confirmApproveAndPublish() {
+            const version = document.getElementById('publish-version').value.trim();
+            if (!version) {
+                showToast('请输入版本号', 'error');
+                return;
+            }
+            
+            const versionPattern = /^\d+\.\d+\.\d+$/;
+            if (!versionPattern.test(version)) {
+                showToast('版本号格式不正确，请输入如 1.0.0 的格式', 'error');
+                return;
+            }
+            
+            closeReviewModal();
+            updateStatus('published');
+            showToast('审核通过并发布成功', 'success');
+        }
+
+        function publishEmployee() {
+            const modal = document.getElementById('publish-modal');
+            document.getElementById('publish-modal-version').value = '';
+            document.getElementById('publish-modal-remark').value = '';
+            
+            document.getElementById('publish-emp-name').textContent = employeeName || '-';
+            document.getElementById('publish-emp-id').textContent = currentEmpId || '-';
+            document.getElementById('publish-emp-type').textContent = currentEmpType || '-';
+            document.getElementById('publish-emp-desc').textContent = currentEmpDesc || '-';
+            
+            const avatarEl = document.getElementById('publish-emp-avatar');
+            if (avatarEl) {
+                avatarEl.src = employeeAvatar + '?' + Date.now();
+            }
+            
+            const tagsContainer = document.getElementById('publish-emp-tags');
+            if (tagsContainer) {
+                if (currentEmpSkills && currentEmpSkills.length > 0) {
+                    tagsContainer.innerHTML = currentEmpSkills.map(tag => {
+                        const isIndustry = ['企业服务', '金融', '医疗', '教育', '制造业', '零售', '通用'].includes(tag);
+                        return `<span class="tag ${isIndustry ? 'industry' : 'skill'}">${tag}</span>`;
+                    }).join('');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closePublishModal() {
+            const modal = document.getElementById('publish-modal');
+            modal.classList.remove('show');
+            document.getElementById('publish-modal-version').value = '';
+            document.getElementById('publish-modal-remark').value = '';
+        }
+
+        function confirmPublish() {
+            const version = document.getElementById('publish-modal-version').value.trim();
+            if (!version) {
+                showToast('请输入版本号', 'error');
+                return;
+            }
+            
+            const versionPattern = /^\d+\.\d+\.\d+$/;
+            if (!versionPattern.test(version)) {
+                showToast('版本号格式不正确，请输入如 1.0.0 的格式', 'error');
+                return;
+            }
+            
+            closePublishModal();
+            updateStatus('published');
+            showToast('已发布上架', 'success');
+        }
+
+        function rejectEmployee() {
+            const modal = document.getElementById('reject-modal');
+            document.getElementById('reject-modal-reason').value = '';
+            
+            document.getElementById('reject-emp-name').textContent = employeeName || '-';
+            document.getElementById('reject-emp-id').textContent = currentEmpId || '-';
+            document.getElementById('reject-emp-type').textContent = currentEmpType || '-';
+            document.getElementById('reject-emp-desc').textContent = currentEmpDesc || '-';
+            
+            const avatarEl = document.getElementById('reject-emp-avatar');
+            if (avatarEl) {
+                avatarEl.src = employeeAvatar + '?' + Date.now();
+            }
+            
+            const tagsContainer = document.getElementById('reject-emp-tags');
+            if (tagsContainer) {
+                if (currentEmpSkills && currentEmpSkills.length > 0) {
+                    tagsContainer.innerHTML = currentEmpSkills.map(tag => {
+                        const isIndustry = ['企业服务', '金融', '医疗', '教育', '制造业', '零售', '通用'].includes(tag);
+                        return `<span class="tag ${isIndustry ? 'industry' : 'skill'}">${tag}</span>`;
+                    }).join('');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeRejectModal() {
+            const modal = document.getElementById('reject-modal');
+            modal.classList.remove('show');
+            document.getElementById('reject-modal-reason').value = '';
+        }
+
+        function confirmRejectModal() {
+            const reason = document.getElementById('reject-modal-reason').value.trim();
+            if (!reason) {
+                showToast('请输入退回原因', 'error');
+                return;
+            }
+            
+            closeRejectModal();
+            updateStatus('draft');
+            showToast('已退回重调', 'warning');
+        }
+
+        function takeDownEmployee() {
+            const modal = document.getElementById('take-down-modal');
+            document.getElementById('take-down-reason').value = '';
+            
+            document.getElementById('takedown-emp-name').textContent = employeeName || '-';
+            document.getElementById('takedown-emp-id').textContent = currentEmpId || '-';
+            document.getElementById('takedown-emp-type').textContent = currentEmpType || '-';
+            document.getElementById('takedown-emp-desc').textContent = currentEmpDesc || '-';
+            
+            const avatarEl = document.getElementById('takedown-emp-avatar');
+            if (avatarEl) {
+                avatarEl.src = employeeAvatar + '?' + Date.now();
+            }
+            
+            const tagsContainer = document.getElementById('takedown-emp-tags');
+            if (tagsContainer) {
+                if (currentEmpSkills && currentEmpSkills.length > 0) {
+                    tagsContainer.innerHTML = currentEmpSkills.map(tag => {
+                        const isIndustry = ['企业服务', '金融', '医疗', '教育', '制造业', '零售', '通用'].includes(tag);
+                        return `<span class="tag ${isIndustry ? 'industry' : 'skill'}">${tag}</span>`;
+                    }).join('');
+                } else {
+                    tagsContainer.innerHTML = '';
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeTakeDownModal() {
+            const modal = document.getElementById('take-down-modal');
+            modal.classList.remove('show');
+            document.getElementById('take-down-reason').value = '';
+        }
+
+        function confirmTakeDown() {
+            const reason = document.getElementById('take-down-reason').value.trim();
+            if (!reason) {
+                showToast('请输入下架原因', 'error');
+                return;
+            }
+            
+            closeTakeDownModal();
+            updateStatus('offline');
+            showToast('已下架', 'info');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -3219,7 +3722,309 @@
             </div>
         </div>
     </div>
-</body>
+
+    <!-- 作废确认对话框 -->
+    <div class="modal-overlay" id="invalid-confirm-modal">
+        <div class="modal confirm-modal" style="max-width: 720px; width: 90%;">
+            <div class="modal-header">
+                <h2 class="modal-title">作废确认</h2>
+                <button class="modal-close" onclick="closeInvalidConfirm()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" style="padding: 0;">
+                <div class="employee-card" style="border-radius: 0; border-bottom: none;">
+                    <div class="employee-header">
+                        <img id="invalid-emp-avatar" class="employee-avatar" alt="员工头像">
+                        <div class="employee-info">
+                            <div class="employee-name">
+                                <span id="invalid-emp-name">-</span> 
+                                <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(#<span id="invalid-emp-id">-</span>)</span>
+                                <span id="invalid-emp-type" class="type-badge">-</span>
+                            </div>
+                            <div id="invalid-emp-tags" class="employee-tags"></div>
+                            <div class="employee-desc" id="invalid-emp-desc" style="margin-top: 8px;">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding: 16px; border-top: 1px solid #f1f5f9; background: #fef3c7;">
+                    <div style="font-size: 14px; font-weight: 500; color: #d97706; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-exclamation-triangle"></i> 作废原因
+                    </div>
+                    <textarea id="invalid-reason" rows="4" placeholder="请输入作废原因..." style="width: 100%; min-height: 100px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #fcd34d; border-radius: 6px; background: white;"></textarea>
+                    <div style="font-size: 12px; color: #d97706; margin-top: 8px;">
+                        <i class="fa fa-info-circle"></i> 作废后将无法恢复，请谨慎操作。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeInvalidConfirm()">取消</button>
+                <button class="btn btn-danger" onclick="confirmMarkAsInvalid()">确认作废</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核确认对话框 -->
+    <div class="modal-overlay" id="review-modal">
+        <div class="modal confirm-modal" style="max-width: 720px; width: 90%;">
+            <div class="modal-header">
+                <h2 class="modal-title">AI员工审核</h2>
+                <button class="modal-close" onclick="closeReviewModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" style="padding: 0;">
+                <div class="employee-card" style="border-radius: 0; border-bottom: none;">
+                    <div class="employee-header">
+                        <img id="audit-emp-avatar" class="employee-avatar" alt="员工头像">
+                        <div class="employee-info">
+                            <div class="employee-name">
+                                <span id="audit-emp-name">-</span> 
+                                <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="audit-emp-id">-</span>)</span>
+                                <span id="audit-emp-type" class="type-badge">-</span>
+                            </div>
+                            <div id="audit-emp-tags" class="employee-tags"></div>
+                            <div class="employee-desc" id="audit-emp-desc" style="margin-top: 8px;">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="reject-reason-section" style="padding: 16px; border-bottom: 1px solid #f1f5f9; display: none; background: #fef2f2;">
+                    <div style="font-size: 14px; font-weight: 500; color: #dc2626; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-exclamation-circle"></i> 驳回原因
+                    </div>
+                    <textarea id="reject-reason" class="form-control" placeholder="请输入驳回原因..." style="width: 100%; min-height: 80px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #fecaca; border-radius: 6px; background: white;"></textarea>
+                </div>
+                
+                <div id="publish-section" style="padding: 16px; border-bottom: 1px solid #f1f5f9; display: none;">
+                    <div style="font-size: 14px; font-weight: 500; color: #3b82f6; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-rocket"></i> 发布信息
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 6px;">版本号 <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="publish-version" placeholder="如：1.0.0" style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 6px;">备注</label>
+                        <textarea id="publish-remark" rows="2" placeholder="请输入备注信息..." style="width: 100%; min-height: 60px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 6px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-footer" style="border-top: 1px solid #f1f5f9;">
+                    <button id="btn-cancel-reject" class="btn btn-outline" style="display: none;" onclick="cancelReject()">取消驳回</button>
+                    <button id="btn-cancel-publish" class="btn btn-outline" style="display: none;" onclick="cancelPublish()">取消发布</button>
+                    <button id="btn-reject" class="btn btn-danger" onclick="showRejectReason()">
+                        <i class="fa fa-times"></i> 驳回
+                    </button>
+                    <button id="btn-confirm-reject" class="btn btn-danger" style="display: none;" onclick="confirmReject()">
+                        <i class="fa fa-check"></i> 确认驳回
+                    </button>
+                    <button id="btn-approve" class="btn btn-outline" onclick="confirmApprove()">
+                        <i class="fa fa-check"></i> 审核通过
+                    </button>
+                    <button id="btn-publish" class="btn btn-primary" onclick="showPublishInfo()">
+                        <i class="fa fa-rocket"></i> 审核通过并发布
+                    </button>
+                    <button id="btn-confirm-publish" class="btn btn-primary" style="display: none;" onclick="confirmApproveAndPublish()">
+                        <i class="fa fa-check"></i> 确认发布
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 退回重调确认对话框 -->
+    <div class="modal-overlay" id="reject-modal">
+        <div class="modal confirm-modal" style="max-width: 720px; width: 90%;">
+            <div class="modal-header">
+                <h2 class="modal-title">退回重调</h2>
+                <button class="modal-close" onclick="closeRejectModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" style="padding: 0;">
+                <div class="employee-card" style="border-radius: 0; border-bottom: none;">
+                    <div class="employee-header">
+                        <img id="reject-emp-avatar" class="employee-avatar" alt="员工头像">
+                        <div class="employee-info">
+                            <div class="employee-name">
+                                <span id="reject-emp-name">-</span> 
+                                <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(#<span id="reject-emp-id">-</span>)</span>
+                                <span id="reject-emp-type" class="type-badge">-</span>
+                            </div>
+                            <div id="reject-emp-tags" class="employee-tags"></div>
+                            <div class="employee-desc" id="reject-emp-desc" style="margin-top: 8px;">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding: 16px; border-top: 1px solid #f1f5f9; background: #fef2f2;">
+                    <div style="font-size: 14px; font-weight: 500; color: #dc2626; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-exclamation-circle"></i> 退回原因
+                    </div>
+                    <textarea id="reject-modal-reason" rows="4" placeholder="请输入退回原因..." style="width: 100%; min-height: 100px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #fecaca; border-radius: 6px; background: white;"></textarea>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeRejectModal()">取消</button>
+                <button class="btn btn-danger" onclick="confirmRejectModal()">确认退回</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发布上架确认对话框 -->
+    <div class="modal-overlay" id="publish-modal">
+        <div class="modal confirm-modal" style="max-width: 720px; width: 90%;">
+            <div class="modal-header">
+                <h2 class="modal-title">发布上架</h2>
+                <button class="modal-close" onclick="closePublishModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" style="padding: 0;">
+                <div class="employee-card" style="border-radius: 0; border-bottom: none;">
+                    <div class="employee-header">
+                        <img id="publish-emp-avatar" class="employee-avatar" alt="员工头像">
+                        <div class="employee-info">
+                            <div class="employee-name">
+                                <span id="publish-emp-name">-</span> 
+                                <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(#<span id="publish-emp-id">-</span>)</span>
+                                <span id="publish-emp-type" class="type-badge">-</span>
+                            </div>
+                            <div id="publish-emp-tags" class="employee-tags"></div>
+                            <div class="employee-desc" id="publish-emp-desc" style="margin-top: 8px;">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding: 16px; border-top: 1px solid #f1f5f9;">
+                    <div style="font-size: 14px; font-weight: 500; color: #3b82f6; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-rocket"></i> 发布信息
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 6px;">版本号 <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="publish-modal-version" placeholder="如：1.0.0" style="width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 6px;">备注</label>
+                        <textarea id="publish-modal-remark" rows="3" placeholder="请输入备注信息..." style="width: 100%; min-height: 80px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 6px;"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closePublishModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmPublish()">确认发布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 下架确认对话框 -->
+    <div class="modal-overlay" id="take-down-modal">
+        <div class="modal confirm-modal" style="max-width: 720px; width: 90%;">
+            <div class="modal-header">
+                <h2 class="modal-title">下架确认</h2>
+                <button class="modal-close" onclick="closeTakeDownModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" style="padding: 0;">
+                <div class="employee-card" style="border-radius: 0; border-bottom: none;">
+                    <div class="employee-header">
+                        <img id="takedown-emp-avatar" class="employee-avatar" alt="员工头像">
+                        <div class="employee-info">
+                            <div class="employee-name">
+                                <span id="takedown-emp-name">-</span> 
+                                <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(#<span id="takedown-emp-id">-</span>)</span>
+                                <span id="takedown-emp-type" class="type-badge">-</span>
+                            </div>
+                            <div id="takedown-emp-tags" class="employee-tags"></div>
+                            <div class="employee-desc" id="takedown-emp-desc" style="margin-top: 8px;">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding: 16px; border-top: 1px solid #f1f5f9; background: #fce7f3;">
+                    <div style="font-size: 14px; font-weight: 500; color: #db2777; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa fa-arrow-down"></i> 下架原因
+                    </div>
+                    <textarea id="take-down-reason" rows="4" placeholder="请输入下架原因..." style="width: 100%; min-height: 100px; resize: vertical; padding: 10px 12px; font-size: 14px; border: 1px solid #fbcfe8; border-radius: 6px; background: white;"></textarea>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeTakeDownModal()">取消</button>
+                <button class="btn btn-danger" onclick="confirmTakeDown()">确认下架</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 撤回审核确认对话框 -->
+    <div class="modal-overlay" id="withdraw-review-modal">
+        <div class="modal confirm-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">撤回审核</h2>
+                <button class="modal-close" onclick="closeWithdrawReview()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="confirm-content">
+                    <div class="confirm-icon info">
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                    <div class="confirm-message">
+                        <p>确定要撤回审核吗？</p>
+                        <p class="confirm-hint">撤回后将回到草稿状态，可以继续编辑修改。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeWithdrawReview()">取消</button>
+                <button class="btn btn-primary" onclick="confirmWithdrawReview()">确认撤回</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交审核确认对话框 -->
+    <div class="modal-overlay" id="submit-review-modal">
+        <div class="modal confirm-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">提交审核</h2>
+                <button class="modal-close" onclick="closeSubmitReview()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="confirm-content">
+                    <div class="confirm-icon submit">
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                    <div class="confirm-message">
+                        <p>确定要提交审核吗？</p>
+                        <p class="confirm-hint">提交后将进入审核流程，请确保信息填写完整。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeSubmitReview()">取消</button>
+                <button class="btn btn-primary" onclick="confirmSubmitReview()">确认提交</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 删除确认对话框 -->
     <div class="modal-overlay" id="delete-confirm-modal">
         <div class="modal confirm-modal">
@@ -3274,6 +4079,110 @@
             font-size: 24px;
             color: #f59e0b;
         }
+        .confirm-icon.submit {
+            background: #dbeafe;
+        }
+        .confirm-icon.submit i {
+            color: #3b82f6;
+        }
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .toast.info {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toast.error .toast-icon {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toast.warning .toast-icon {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .toast.info .toast-icon {
+            background: #3b82f6;
+            color: white;
+        }
+
+        @keyframes toastIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
         .confirm-message {
             flex: 1;
         }
@@ -3296,9 +4205,41 @@
         .btn-danger:hover {
             background: #dc2626;
         }
-    </style>
+    </style></div>
+
+    <div class="toast-container" id="toast-container"></div>
 
     <script>
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fa ${icons[type]}"></i>
+                </div>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
         function showDeleteConfirm() {
             const modal = document.getElementById('delete-confirm-modal');
             modal.classList.add('show');
