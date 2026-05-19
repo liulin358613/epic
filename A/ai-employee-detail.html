@@ -57,6 +57,14 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
+        .btn-primary.disabled,
+        .btn-primary:disabled {
+            background: #e2e8f0 !important;
+            color: #94a3b8 !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
         .btn-outline {
             background: white;
             color: #64748b;
@@ -1136,15 +1144,19 @@
     <main class="main-content">
         <div class="left-panel">
             <div class="card">
-                <div class="section-header">
+                <div class="section-header" style="justify-content: space-between;">
                     <div class="section-title"><i class="fa fa-info-circle"></i> 基本信息</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline btn-with-text" onclick="showVersionModal()"><i class="fa fa-history"></i>版本管理</button>
+                        <button class="btn btn-outline btn-with-text"><i class="fa fa-list"></i>操作记录</button>
+                    </div>
                 </div>
                 <div class="employee-card">
                     <div id="emp-status" class="employee-badge status published">已发布</div>
                     <div class="employee-header">
                         <img id="emp-avatar" src="images/tx-1.png" class="employee-avatar" alt="员工头像">
                         <div class="employee-info">
-                            <div class="employee-name"><span id="emp-name">全能顾问</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="emp-id">00000001</span>)</span><span id="emp-type" class="type-badge">行业型</span></div>
+                            <div class="employee-name"><span id="emp-name">我的秘书</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="emp-id">00000001</span>)</span><span id="emp-type" class="type-badge">行业型</span></div>
                             <div id="emp-tags" class="employee-tags">
                                 <span class="tag skill">战略规划</span>
                                 <span class="tag skill">商业分析</span>
@@ -1638,7 +1650,7 @@
                     <div class="message ai-message" id="initial-ai-message">
                         <img id="initial-avatar" class="message-avatar" src="images/AI-1.png" alt="头像">
                         <div class="message-content">
-                            <div class="message-name" id="initial-name">全能顾问</div>
+                            <div class="message-name" id="initial-name">我的秘书</div>
                             <div class="message-text">您好！我是您的AI员工，请问有什么可以帮您的？</div>
                             <div class="message-time">05-15 10:40</div>
                         </div>
@@ -3996,6 +4008,410 @@
         </div>
     </div>
 
+    <!-- 版本管理弹窗 -->
+    <div class="modal-overlay" id="version-modal">
+        <div class="modal version-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">版本管理</h2>
+                <button class="modal-close" onclick="closeVersionModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body version-modal-body">
+                <div class="version-left-panel">
+                    <div class="version-list-header">
+                        <h3>版本列表</h3>
+                    </div>
+                    <div class="version-list">
+                        <div class="version-card active" data-version="v1.0.0" data-current="true" onclick="selectVersion(this)">
+                            <div class="version-header">
+                                <div class="version-main">
+                                    <span class="version-number">v1.0.0</span>
+                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 78万 使用</span>
+                                </div>
+                                <span class="version-status current">当前版本</span>
+                            </div>
+                            <div class="version-desc">首次发布版本</div>
+                            <div class="version-info">
+                                <p class="version-time">发布时间：2024-06-20 14:30:00 | 发布人：张三</p>
+                            </div>
+                        </div>
+                        <div class="version-card" data-version="v0.9.0" data-current="false" onclick="selectVersion(this)">
+                            <div class="version-header">
+                                <div class="version-main">
+                                    <span class="version-number">v0.9.0</span>
+                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 56万 使用</span>
+                                </div>
+                            </div>
+                            <div class="version-desc">测试版本</div>
+                            <div class="version-info">
+                                <p class="version-time">发布时间：2024-06-15 10:20:00 | 发布人：李四</p>
+                            </div>
+                        </div>
+                        <div class="version-card" data-version="v0.8.0" data-current="false" onclick="selectVersion(this)">
+                            <div class="version-header">
+                                <div class="version-main">
+                                    <span class="version-number">v0.8.0</span>
+                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 32万 使用</span>
+                                </div>
+                            </div>
+                            <div class="version-desc">内部测试版</div>
+                            <div class="version-info">
+                                <p class="version-time">发布时间：2024-06-10 09:15:00 | 发布人：王五</p>
+                            </div>
+                        </div>
+                        <div class="version-card" data-version="v0.5.0" data-current="false" onclick="selectVersion(this)">
+                            <div class="version-header">
+                                <div class="version-main">
+                                    <span class="version-number">v0.5.0</span>
+                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 15万 使用</span>
+                                </div>
+                            </div>
+                            <div class="version-desc">-</div>
+                            <div class="version-info">
+                                <p class="version-time">发布时间：2024-06-01 16:45:00 | 发布人：赵六</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="version-right-panel">
+                    <div class="preview-header">
+                        <h3>版本预览</h3>
+                    </div>
+                    <div class="preview-content" style="background: white;">
+                        <div class="employee-card" style="border-radius: 0; border-bottom: 1px solid #e5e7eb;">
+                            <div class="employee-header">
+                                <img id="version-preview-avatar" src="images/tx-1.png" class="employee-avatar" alt="员工头像">
+                                <div class="employee-info">
+                                    <div class="employee-name"><span id="version-preview-name">我的秘书</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="version-preview-id">00000001</span>)</span><span id="version-preview-type" class="type-badge">行业型</span></div>
+                                    <div id="version-preview-tags" class="employee-tags">
+                                        <span class="tag skill">战略规划</span>
+                                        <span class="tag skill">商业分析</span>
+                                        <span class="tag skill">决策支持</span>
+                                        <span class="tag skill">企业服务</span>
+                                    </div>
+                                    <div id="version-preview-desc" class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
+                                    <div class="employee-footer">
+                                        <div style="display: flex; align-items: center; gap: 20px;">
+                                            <div class="usage-count"><i class="fa fa-bar-chart"></i>78万次使用</div>
+                                        </div>
+                                        <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">发布时间：2024-06-20 14:30:00 | 发布人：张三</div>
+                                    </div>
+                                    <div style="margin-top: 8px; font-size: 12px; color: #64748b;">备注：首次发布版本</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="empty-container" style="flex: 1; display: flex; flex-direction: column;">
+                            <div class="steps-nav" id="version-preview-steps-nav">
+                                <div class="version-step-item active" data-step="0" onclick="versionPreviewSwitchStep(0)">
+                                    <span class="version-step-number">1</span>
+                                    <span class="version-step-label">职能</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="1" onclick="versionPreviewSwitchStep(1)">
+                                    <span class="version-step-number">2</span>
+                                    <span class="version-step-label">普识</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="2" onclick="versionPreviewSwitchStep(2)">
+                                    <span class="version-step-number">3</span>
+                                    <span class="version-step-label">专识</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="3" onclick="versionPreviewSwitchStep(3)">
+                                    <span class="version-step-number">4</span>
+                                    <span class="version-step-label">技能</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="4" onclick="versionPreviewSwitchStep(4)">
+                                    <span class="version-step-number">5</span>
+                                    <span class="version-step-label">工作流</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="5" onclick="versionPreviewSwitchStep(5)">
+                                    <span class="version-step-number">6</span>
+                                    <span class="version-step-label">规则</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="6" onclick="versionPreviewSwitchStep(6)">
+                                    <span class="version-step-number">7</span>
+                                    <span class="version-step-label">约束</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="7" onclick="versionPreviewSwitchStep(7)">
+                                    <span class="version-step-number">8</span>
+                                    <span class="version-step-label">对齐</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="8" onclick="versionPreviewSwitchStep(8)">
+                                    <span class="version-step-number">9</span>
+                                    <span class="version-step-label">检查</span>
+                                </div>
+                                <div class="version-step-divider"></div>
+                                <div class="version-step-item" data-step="9" onclick="versionPreviewSwitchStep(9)">
+                                    <span class="version-step-number">10</span>
+                                    <span class="version-step-label">反馈</span>
+                                </div>
+                            </div>
+                            <div class="steps-content" id="version-preview-steps-content">
+                                <div class="step-panel active" id="version-preview-step-0">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-briefcase"></i> 职能</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>能力定位</td>
+                                                    <td>你战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>核心职能</td>
+                                                    <td>为你提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助你明确发展方向和业务策略。</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>提示词</td>
+                                                    <td>作为一名资深的你战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-1">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-book"></i> 普识</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>知识范围</td>
+                                                    <td>经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、你管理</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>使用条件</td>
+                                                    <td>适用于你日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>提示词</td>
+                                                    <td>作为一名专业的你管理知识顾问，请基于通用商业知识为我解答以下问题：</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-2">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-graduation-cap"></i> 专识</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>知识来源</td>
+                                                    <td>行业研究报告、专业数据库、学术论文、你内部文档、行业专家访谈、市场调研数据、竞品分析报告</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>调用流程</td>
+                                                    <td>1. 用户提出专业领域问题 2. 系统识别问题领域和意图 3. 检索相关专业知识库 4. 整合分析多源信息 5. 生成结构化专业回答 6. 返回详细分析报告</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>提示词</td>
+                                                    <td>作为一名资深的行业专家，请结合专业知识和行业经验，深入分析以下问题并提供专业见解：</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-3">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-cogs"></i> 技能</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>核心技能</td>
+                                                    <td>战略规划、商业分析、决策支持、市场研究、竞争分析、投资评估、业务咨询</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>技能等级</td>
+                                                    <td>• 战略规划：专家级 • 商业分析：专家级 • 决策支持：高级 • 市场研究：高级 • 竞争分析：专家级</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>应用场景</td>
+                                                    <td>• 企业战略制定与规划 • 商业模式创新与优化 • 投资决策分析与评估 • 市场竞争态势分析 • 业务发展方向研判</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-4">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-tasks"></i> 工作流</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>特定工作流</td>
+                                                    <td>• 市场调研流程：需求确认 → 数据收集 → 竞品分析 → 趋势研判 → 报告撰写 → 方案交付</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-5">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-list-ol"></i> 规则</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>行为规则</td>
+                                                    <td>• 必须基于可靠数据和事实进行分析 • 分析方法需科学严谨，遵循行业标准 • 输出内容必须准确无误，可验证 • 建议方案需切实可行，具有操作性</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-6">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-ban"></i> 约束</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>使用约束</td>
+                                                    <td>• 禁止泄露敏感信息 • 遵守数据安全规范 • 保护用户隐私 • 遵守法律法规</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-7">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-align-center"></i> 对齐</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>对齐目标</td>
+                                                    <td>• 与公司战略目标保持一致 • 遵循行业最佳实践 • 满足用户需求期望</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-8">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-check-square"></i> 检查</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>检查项</td>
+                                                    <td>• 内容准确性检查 • 合规性审查 • 安全性评估 • 质量保证</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="step-panel" id="version-preview-step-9">
+                                    <div class="section-header">
+                                        <div class="section-title"><i class="fa fa-comments"></i> 反馈</div>
+                                    </div>
+                                    <div class="section-content">
+                                        <table class="function-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目</th>
+                                                    <th>内容</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>反馈机制</td>
+                                                    <td>• 用户评价收集 • 满意度调查 • 问题反馈渠道 • 持续改进流程</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeVersionModal()">关闭</button>
+                <button class="btn btn-primary disabled" id="restore-version-btn" disabled onclick="restoreVersion()">恢复此版本</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 提交审核确认对话框 -->
     <div class="modal-overlay" id="submit-review-modal">
         <div class="modal confirm-modal">
@@ -4205,6 +4621,238 @@
         .btn-danger:hover {
             background: #dc2626;
         }
+
+        .version-modal {
+            width: 1200px;
+            max-width: 90vw;
+            height: 960px;
+        }
+
+        .version-modal-body {
+            display: flex;
+            padding: 0;
+            overflow: hidden;
+            height: 650px;
+        }
+
+        .version-left-panel {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e5e7eb;
+            min-width: 320px;
+        }
+
+        .version-list-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .version-list-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .version-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .version-card {
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+        }
+
+        .version-card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .version-card.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .version-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .version-number {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .version-usage {
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .version-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .version-status.current {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .version-info {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .version-time {
+            margin: 0 0 4px 0;
+        }
+
+        .version-desc {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .version-right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .preview-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .preview-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .preview-content {
+            flex: 1;
+            overflow-y: auto;
+            background: #fafafa;
+            height: 590px;
+        }
+
+        .preview-content .empty-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-content .steps-content {
+            flex: 1;
+            overflow-y: auto;
+            height: 400px;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 300px;
+            color: #94a3b8;
+        }
+
+        .preview-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .preview-placeholder p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .version-step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            min-width: 56px;
+            flex-shrink: 0;
+        }
+        .version-step-item:hover {
+            background: #f8fafc;
+        }
+        .version-step-item.active {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .version-step-item.active .version-step-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        .version-step-item.active .version-step-label {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .version-step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .version-step-label {
+            font-size: 11px;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .version-step-divider {
+            width: 16px;
+            height: 2px;
+            background: #e2e8f0;
+            margin: 0 2px;
+            flex-shrink: 0;
+        }
     </style></div>
 
     <div class="toast-container" id="toast-container"></div>
@@ -4256,6 +4904,161 @@
             setTimeout(() => {
                 window.location.href = 'ai-employee.html';
             }, 1500);
+        }
+
+        function showVersionModal() {
+            const modal = document.getElementById('version-modal');
+            modal.classList.add('show');
+            
+            const empName = document.getElementById('emp-name')?.textContent || '我的秘书';
+            const empId = document.getElementById('emp-id')?.textContent || '00000001';
+            const empType = document.getElementById('emp-type')?.textContent || '行业型';
+            
+            document.getElementById('version-preview-name').textContent = empName;
+            document.getElementById('version-preview-id').textContent = empId;
+            document.getElementById('version-preview-type').textContent = empType;
+        }
+
+        function closeVersionModal() {
+            const modal = document.getElementById('version-modal');
+            modal.classList.remove('show');
+        }
+
+        function selectVersion(card) {
+            const cards = document.querySelectorAll('.version-card');
+            const restoreBtn = document.getElementById('restore-version-btn');
+            const isCurrent = card.dataset.current === 'true';
+            const version = card.dataset.version;
+            
+            cards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            
+            if (isCurrent) {
+                restoreBtn.classList.add('disabled');
+                restoreBtn.disabled = true;
+            } else {
+                restoreBtn.classList.remove('disabled');
+                restoreBtn.disabled = false;
+            }
+            
+            updatePreviewContent(version);
+        }
+
+        function restoreVersion() {
+            const activeCard = document.querySelector('.version-card.active');
+            if (!activeCard) return;
+            
+            const version = activeCard.dataset.version;
+            
+            const cards = document.querySelectorAll('.version-card');
+            cards.forEach(card => {
+                card.dataset.current = 'false';
+                const statusEl = card.querySelector('.version-status.current');
+                if (statusEl) {
+                    statusEl.remove();
+                }
+            });
+            
+            activeCard.dataset.current = 'true';
+            const headerEl = activeCard.querySelector('.version-header');
+            if (headerEl) {
+                const statusEl = document.createElement('span');
+                statusEl.className = 'version-status current';
+                statusEl.textContent = '当前版本';
+                headerEl.appendChild(statusEl);
+            }
+            
+            const restoreBtn = document.getElementById('restore-version-btn');
+            restoreBtn.classList.add('disabled');
+            restoreBtn.disabled = true;
+            
+            showToast(`已恢复到版本 ${version}`, 'success');
+        }
+
+        function updatePreviewContent(version) {
+            const versionData = {
+                'v1.0.0': {
+                    name: '我的秘书',
+                    id: '00000001',
+                    type: '行业型',
+                    tags: ['战略规划', '商业分析', '决策支持', '企业服务'],
+                    desc: '具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。',
+                    usage: '78万次',
+                    publishTime: '2024-06-20 14:30:00',
+                    publisher: '张三',
+                    remark: '首次发布版本'
+                },
+                'v0.9.0': {
+                    name: '我的秘书',
+                    id: '00000001',
+                    type: '行业型',
+                    tags: ['战略规划', '商业分析'],
+                    desc: '测试版本描述内容',
+                    usage: '56万次',
+                    publishTime: '2024-06-15 10:20:00',
+                    publisher: '李四',
+                    remark: '测试版本'
+                },
+                'v0.8.0': {
+                    name: '我的秘书',
+                    id: '00000001',
+                    type: '行业型',
+                    tags: ['战略规划'],
+                    desc: '内部测试版描述内容',
+                    usage: '32万次',
+                    publishTime: '2024-06-10 09:15:00',
+                    publisher: '王五',
+                    remark: '内部测试版'
+                },
+                'v0.5.0': {
+                    name: '我的秘书',
+                    id: '00000001',
+                    type: '行业型',
+                    tags: ['战略规划'],
+                    desc: '初始版本描述内容',
+                    usage: '15万次',
+                    publishTime: '2024-06-01 16:45:00',
+                    publisher: '赵六',
+                    remark: '-'
+                }
+            };
+            
+            const data = versionData[version] || versionData['v1.0.0'];
+            
+            document.getElementById('version-preview-name').textContent = data.name;
+            document.getElementById('version-preview-type').textContent = data.type;
+            
+            const tagsContainer = document.getElementById('version-preview-tags');
+            tagsContainer.innerHTML = data.tags.map(tag => `<span class="tag skill">${tag}</span>`).join('');
+            
+            document.getElementById('version-preview-desc').textContent = data.desc;
+            
+            const usageElements = document.querySelectorAll('.preview-content .usage-count');
+            usageElements.forEach(el => {
+                el.innerHTML = `<i class="fa fa-bar-chart"></i>${data.usage}使用`;
+            });
+            
+            const publishInfoElements = document.querySelectorAll('.preview-content .employee-footer div:nth-child(2)');
+            if (publishInfoElements.length > 0) {
+                publishInfoElements[0].textContent = `发布时间：${data.publishTime} | 发布人：${data.publisher}`;
+            }
+            
+            const remarkElements = document.querySelectorAll('.preview-content .employee-info > div:last-child');
+            if (remarkElements.length > 0) {
+                remarkElements[0].textContent = `备注：${data.remark}`;
+            }
+        }
+
+        function versionPreviewSwitchStep(stepIndex) {
+            const navItems = document.querySelectorAll('#version-preview-steps-nav .version-step-item');
+            const contentPanels = document.querySelectorAll('#version-preview-steps-content .step-panel');
+            
+            navItems.forEach((item, index) => {
+                item.classList.toggle('active', index === stepIndex);
+            });
+            contentPanels.forEach((panel, index) => {
+                panel.classList.toggle('active', index === stepIndex);
+            });
         }
     </script>
 </html>
