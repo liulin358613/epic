@@ -175,9 +175,43 @@
             padding: 12px 16px;
             border-top: 1px solid #e5e7eb;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             gap: 8px;
             background: #fafafa;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .modal-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        .modal-close {
+            width: 28px;
+            height: 28px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            padding: 0;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #374151;
+            background: #e2e8f0;
         }
         .btn-outline {
             background: white;
@@ -381,8 +415,13 @@
 
     <div id="addAgreementModal" class="dialog-overlay hidden">
         <div class="dialog-content" style="max-width: 600px;" onclick="event.stopPropagation()">
-            <div class="dialog-body" style="text-align: left;">
-                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">添加协议</h3>
+            <div class="modal-header">
+                <h3>添加协议</h3>
+                <button class="modal-close" onclick="closeAddModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="dialog-body" style="text-align: left; padding: 16px;">
                 
                 <div style="margin-bottom: 12px;">
                     <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
@@ -411,8 +450,13 @@
 
     <div id="editAgreementModal" class="dialog-overlay hidden">
         <div class="dialog-content" style="max-width: 600px;" onclick="event.stopPropagation()">
-            <div class="dialog-body" style="text-align: left;">
-                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">编辑协议</h3>
+            <div class="modal-header">
+                <h3>编辑协议</h3>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="dialog-body" style="text-align: left; padding: 16px;">
                 
                 <div style="margin-bottom: 12px;">
                     <label style="display: block; font-size: 14px; font-weight: 500; color: #475569; margin-bottom: 6px;"><span style="color: #ef4444; margin-right: 4px;">*</span>协议名称</label>
@@ -445,8 +489,13 @@
 
     <div id="previewModal" class="dialog-overlay hidden">
         <div class="dialog-content" style="max-width: 700px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>用户服务协议</h3>
+                <button class="modal-close" onclick="closePreviewModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
             <div class="dialog-body" style="text-align: left; max-height: 60vh; overflow-y: auto;">
-                <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">用户服务协议</h3>
                 <div style="font-size: 14px; color: #475569; line-height: 1.6;">
                     <p>欢迎使用RaaS.Dao平台！在使用本平台服务前，请您仔细阅读以下用户服务协议。</p>
                     <p style="margin-top: 16px;"><strong>一、服务内容</strong></p>
