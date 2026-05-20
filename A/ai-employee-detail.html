@@ -217,7 +217,8 @@
         .section-header {
             display: flex;
             align-items: center;
-            padding: 9px 16px;
+            height: 50px;
+            padding: 10px 16px;
             border-bottom: 1px solid #f1f5f9;
             background: #f8fafc;
         }
@@ -1147,7 +1148,7 @@
                     <div class="section-title"><i class="fa fa-info-circle"></i> 基本信息</div>
                     <div class="action-buttons">
                         <button class="btn btn-outline btn-with-text" onclick="showVersionModal()"><i class="fa fa-history"></i>版本管理</button>
-                        <button class="btn btn-outline btn-with-text"><i class="fa fa-list"></i>操作记录</button>
+                        <button class="btn btn-outline btn-with-text" onclick="showOperationLogModal()"><i class="fa fa-list"></i>操作记录</button>
                     </div>
                 </div>
                 <div class="employee-card">
@@ -1242,7 +1243,12 @@
                                     <tbody>
                                         <tr>
                                             <td>能力定位</td>
-                                            <td>你战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。</td>
+                                            <td>通过模型上下文协议（Model Context Protocol，MCP），你可以将外部工具和服务连接至 TRAE 进行使用。
+什么是 MCP？
+Model Context Protocol (MCP) 是一种协议，它允许大型语言模型（LLMs）访问自定义的工具和服务。TRAE 中的智能体作为 MCP 客户端可以选择向 MCP Server 发起请求，以使用它们提供的工具。你可以自行添加 MCP Server，并添加到自定义的智能体中来使用。更多信息参阅 MCP 官方文档。
+免责声明
+MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器，并且不对其行为、任何 MCP Server 调用失败或它们返回的数据承担任何责任。部分 MCP Server 也可能因相关法律法规、网络限制、或服务器自身的访问策略，在你所在的国家或地区无法访问或使用。TRAE 无法控制这些因素，亦无法保证你所在国家或地区对这些服务器的可用性或功能性。你在尝试使用这些服务器时，应自行确保遵守当地法律法规。
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>核心职能</td>
@@ -2682,7 +2688,7 @@
 
             const stepContents = [
                 [
-                    { project: '能力定位', content: '你战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。' },
+                    { project: '能力定位', content: '通过模型上下文协议（Model Context Protocol，MCP），你可以将外部工具和服务连接至 TRAE 进行使用。什么是 MCP？Model Context Protocol (MCP) 是一种协议，它允许大型语言模型（LLMs）访问自定义的工具和服务。TRAE 中的智能体作为 MCP 客户端可以选择向 MCP Server 发起请求，以使用它们提供的工具。你可以自行添加 MCP Server，并添加到自定义的智能体中来使用。更多信息参阅 MCP 官方文档。免责声明MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器，并且不对其行为、任何 MCP Server 调用失败或它们返回的数据承担任何责任。部分 MCP Server 也可能因相关法律法规、网络限制、或服务器自身的访问策略，在你所在的国家或地区无法访问或使用。TRAE 无法控制这些因素，亦无法保证你所在国家或地区对这些服务器的可用性或功能性。你在尝试使用这些服务器时，应自行确保遵守当地法律法规。' },
                     { project: '核心职能', content: '为你提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助你明确发展方向和业务策略。' },
                     { project: '提示词', content: '作为一名资深的你战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。' }
                 ],
@@ -3077,7 +3083,6 @@
         }
         .form-item-inline .form-label {
             margin-bottom: 0;
-            padding-top: 6px;
             flex: 0 0 80px;
             text-align: right;
         }
@@ -3087,13 +3092,15 @@
             font-weight: 500;
             color: #374151;
             margin-bottom: 6px;
-            text-align: right;
+            padding-top: 6px;
+            text-align: left;
         }
         .form-label .required {
             color: #ef4444;
             margin-left: 4px;
         }
-        .modal .form-control {
+        .modal .form-control,
+        .drawer .form-control {
             width: 100%;
             padding: 10px 14px;
             border: 1px solid #e5e7eb;
@@ -3103,7 +3110,8 @@
             background: white;
             transition: all 0.2s ease;
         }
-        .modal .form-control:focus {
+        .modal .form-control:focus,
+        .drawer .form-control:focus {
             outline: none;
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -3172,6 +3180,8 @@
             gap: 24px;
             margin-bottom: 20px;
             align-items: flex-start;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
         }
         .avatar-section {
             display: flex;
@@ -3189,7 +3199,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
         .input-wrapper {
             flex: 1;
@@ -3290,6 +3300,7 @@
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             overflow: hidden;
+            table-layout: auto;
         }
         .dynamic-table tbody {
             transition: opacity 0.15s ease, transform 0.15s ease;
@@ -3461,16 +3472,16 @@
         }
     </style>
 
-    <div class="modal-overlay" id="edit-employee-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">编辑AI员工</h2>
-                <button class="modal-close" onclick="closeEditModal()">
+    <div class="drawer-overlay" id="edit-employee-modal" onclick="closeEditModal()">
+        <div class="drawer" style="width: 1000px;" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <h2 class="drawer-title">编辑AI员工</h2>
+                <button class="drawer-close" onclick="closeEditModal()">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             
-            <div class="modal-body">
+            <div class="drawer-body" style="overflow: auto; padding: 20px;">
                 <div class="form-section">
                     <div class="basic-info-row">
                         <div class="avatar-section">
@@ -3714,7 +3725,7 @@
                 </div>
             </div>
             
-            <div class="modal-footer">
+            <div class="drawer-footer">
                 <button class="btn btn-outline" id="edit-prev-btn" style="display: none;" onclick="editPrevStep()">
                     <i class="fa fa-angle-left"></i> 上一步
                 </button>
@@ -4000,395 +4011,402 @@
         </div>
     </div>
 
-    <!-- 版本管理弹窗 -->
-    <div class="modal-overlay" id="version-modal">
-        <div class="modal version-modal">
-            <div class="modal-header">
-                <h2 class="modal-title">版本管理</h2>
-                <button class="modal-close" onclick="closeVersionModal()">
+    <!-- 版本管理抽屉 -->
+    <div class="drawer-overlay" id="version-modal" onclick="closeVersionModal()">
+        <div class="drawer" style="width: 1100px;" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <h2 class="drawer-title">版本管理</h2>
+                <button class="drawer-close" onclick="closeVersionModal()">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             
-            <div class="modal-body version-modal-body">
-                <div class="version-left-panel">
-                    <div class="version-list-header">
-                        <h3>版本列表</h3>
-                    </div>
-                    <div class="version-list">
-                        <div class="version-card active" data-version="v1.0.0" data-current="true" onclick="selectVersion(this)">
-                            <div class="version-header">
-                                <div class="version-main">
-                                    <span class="version-number">v1.0.0</span>
-                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 78万 使用</span>
-                                </div>
-                                <span class="version-status current">当前版本</span>
-                            </div>
-                            <div class="version-desc">首次发布版本</div>
-                            <div class="version-info">
-                                <p class="version-time">发布时间：2024-06-20 14:30:00 | 发布人：张三</p>
-                            </div>
+            <div class="drawer-body" style="padding: 0;">
+                <div class="version-modal-body">
+                    <div class="version-left-panel">
+                        <div class="version-list-header">
+                            <h3>版本列表</h3>
                         </div>
-                        <div class="version-card" data-version="v0.9.0" data-current="false" onclick="selectVersion(this)">
-                            <div class="version-header">
-                                <div class="version-main">
-                                    <span class="version-number">v0.9.0</span>
-                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 1.2万 使用</span>
-                                </div>
-                            </div>
-                            <div class="version-desc">测试版本</div>
-                            <div class="version-info">
-                                <p class="version-time">发布时间：2024-06-15 10:20:00 | 发布人：李四</p>
-                            </div>
-                        </div>
-                        <div class="version-card" data-version="v0.8.0" data-current="false" onclick="selectVersion(this)">
-                            <div class="version-header">
-                                <div class="version-main">
-                                    <span class="version-number">v0.8.0</span>
-                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 8888 使用</span>
-                                </div>
-                            </div>
-                            <div class="version-desc">内部测试版</div>
-                            <div class="version-info">
-                                <p class="version-time">发布时间：2024-06-10 09:15:00 | 发布人：王五</p>
-                            </div>
-                        </div>
-                        <div class="version-card" data-version="v0.5.0" data-current="false" onclick="selectVersion(this)">
-                            <div class="version-header">
-                                <div class="version-main">
-                                    <span class="version-number">v0.5.0</span>
-                                    <span class="version-usage"><i class="fa fa-bar-chart"></i> 15万 使用</span>
-                                </div>
-                            </div>
-                            <div class="version-desc">-</div>
-                            <div class="version-info">
-                                <p class="version-time">发布时间：2024-06-01 16:45:00 | 发布人：赵六</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="version-right-panel">
-                    <div class="preview-header">
-                        <h3>版本预览</h3>
-                    </div>
-                    <div class="preview-content" style="background: white;">
-                        <div class="employee-card" style="border-radius: 0; border-bottom: 1px solid #e5e7eb;">
-                            <div class="employee-header">
-                                <img id="version-preview-avatar" src="images/tx-1.png" class="employee-avatar" alt="员工头像">
-                                <div class="employee-info">
-                                    <div class="employee-name"><span id="version-preview-name">我的秘书</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="version-preview-id">00000001</span>)</span><span id="version-preview-type" class="type-badge">行业型</span></div>
-                                    <div id="version-preview-tags" class="employee-tags">
-                                        <span class="tag skill">战略规划</span>
-                                        <span class="tag skill">商业分析</span>
-                                        <span class="tag skill">决策支持</span>
-                                        <span class="tag skill">企业服务</span>
+                        <div class="version-list">
+                            <div class="version-card active" data-version="v1.0.0" data-current="true" onclick="selectVersion(this)">
+                                <div class="version-header">
+                                    <div class="version-main">
+                                        <span class="version-number">v1.0.0</span>
+                                        <span class="version-usage"><i class="fa fa-bar-chart"></i> 78万 使用</span>
                                     </div>
-                                    <div id="version-preview-desc" class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
-                                    <div class="employee-footer">
-                                        <div style="display: flex; align-items: center; gap: 20px;">
-                                            <div class="usage-count"><i class="fa fa-bar-chart"></i>78万次使用</div>
+                                    <span class="version-status current">当前版本</span>
+                                </div>
+                                <div class="version-desc">首次发布版本</div>
+                                <div class="version-info">
+                                    <p class="version-time">发布时间：2024-06-20 14:30:00 | 发布人：张三</p>
+                                </div>
+                            </div>
+                            <div class="version-card" data-version="v0.9.0" data-current="false" onclick="selectVersion(this)">
+                                <div class="version-header">
+                                    <div class="version-main">
+                                        <span class="version-number">v0.9.0</span>
+                                        <span class="version-usage"><i class="fa fa-bar-chart"></i> 1.2万 使用</span>
+                                    </div>
+                                </div>
+                                <div class="version-desc">测试版本</div>
+                                <div class="version-info">
+                                    <p class="version-time">发布时间：2024-06-15 10:20:00 | 发布人：李四</p>
+                                </div>
+                            </div>
+                            <div class="version-card" data-version="v0.8.0" data-current="false" onclick="selectVersion(this)">
+                                <div class="version-header">
+                                    <div class="version-main">
+                                        <span class="version-number">v0.8.0</span>
+                                        <span class="version-usage"><i class="fa fa-bar-chart"></i> 8888 使用</span>
+                                    </div>
+                                </div>
+                                <div class="version-desc">内部测试版</div>
+                                <div class="version-info">
+                                    <p class="version-time">发布时间：2024-06-10 09:15:00 | 发布人：王五</p>
+                                </div>
+                            </div>
+                            <div class="version-card" data-version="v0.5.0" data-current="false" onclick="selectVersion(this)">
+                                <div class="version-header">
+                                    <div class="version-main">
+                                        <span class="version-number">v0.5.0</span>
+                                        <span class="version-usage"><i class="fa fa-bar-chart"></i> 15万 使用</span>
+                                    </div>
+                                </div>
+                                <div class="version-desc">-</div>
+                                <div class="version-info">
+                                    <p class="version-time">发布时间：2024-06-01 16:45:00 | 发布人：赵六</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="version-right-panel">
+                        <div class="preview-header">
+                            <h3>版本预览</h3>
+                        </div>
+                        <div class="preview-content" style="background: white;">
+                            <div class="employee-card" style="border-radius: 0; border-bottom: 1px solid #e5e7eb;">
+                                <div class="employee-header">
+                                    <img id="version-preview-avatar" src="images/tx-1.png" class="employee-avatar" alt="员工头像">
+                                    <div class="employee-info">
+                                        <div class="employee-name"><span id="version-preview-name">我的秘书</span> <span style="font-size: 16px; font-weight: 400; color: #94a3b8;">(<span id="version-preview-id">00000001</span>)</span><span id="version-preview-type" class="type-badge">行业型</span></div>
+                                        <div id="version-preview-tags" class="employee-tags">
+                                            <span class="tag skill">战略规划</span>
+                                            <span class="tag skill">商业分析</span>
+                                            <span class="tag skill">决策支持</span>
+                                            <span class="tag skill">企业服务</span>
                                         </div>
-                                        <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">发布时间：2024-06-20 14:30:00 | 发布人：张三</div>
+                                        <div id="version-preview-desc" class="employee-desc">具备丰富的行业经验和专业知识，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。提供全面的战略咨询和业务建议，帮助你制定发展规划和决策方案。具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的见解。</div>
+                                        <div class="employee-footer">
+                                            <div style="display: flex; align-items: center; gap: 20px;">
+                                                <div class="usage-count"><i class="fa fa-bar-chart"></i>78万次使用</div>
+                                            </div>
+                                            <div style="margin-top: 8px; font-size: 12px; color: #94a3b8;">发布时间：2024-06-20 14:30:00 | 发布人：张三</div>
+                                        </div>
+                                        <div style="margin-top: 8px; font-size: 12px; color: #64748b;">备注：首次发布版本</div>
                                     </div>
-                                    <div style="margin-top: 8px; font-size: 12px; color: #64748b;">备注：首次发布版本</div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="empty-container" style="flex: 1; display: flex; flex-direction: column;">
-                            <div class="steps-nav" id="version-preview-steps-nav">
-                                <div class="version-step-item active" data-step="0" onclick="versionPreviewSwitchStep(0)">
-                                    <span class="version-step-number">1</span>
-                                    <span class="version-step-label">职能</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="1" onclick="versionPreviewSwitchStep(1)">
-                                    <span class="version-step-number">2</span>
-                                    <span class="version-step-label">普识</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="2" onclick="versionPreviewSwitchStep(2)">
-                                    <span class="version-step-number">3</span>
-                                    <span class="version-step-label">专识</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="3" onclick="versionPreviewSwitchStep(3)">
-                                    <span class="version-step-number">4</span>
-                                    <span class="version-step-label">技能</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="4" onclick="versionPreviewSwitchStep(4)">
-                                    <span class="version-step-number">5</span>
-                                    <span class="version-step-label">工作流</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="5" onclick="versionPreviewSwitchStep(5)">
-                                    <span class="version-step-number">6</span>
-                                    <span class="version-step-label">规则</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="6" onclick="versionPreviewSwitchStep(6)">
-                                    <span class="version-step-number">7</span>
-                                    <span class="version-step-label">约束</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="7" onclick="versionPreviewSwitchStep(7)">
-                                    <span class="version-step-number">8</span>
-                                    <span class="version-step-label">对齐</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="8" onclick="versionPreviewSwitchStep(8)">
-                                    <span class="version-step-number">9</span>
-                                    <span class="version-step-label">检查</span>
-                                </div>
-                                <div class="version-step-divider"></div>
-                                <div class="version-step-item" data-step="9" onclick="versionPreviewSwitchStep(9)">
-                                    <span class="version-step-number">10</span>
-                                    <span class="version-step-label">反馈</span>
-                                </div>
-                            </div>
-                            <div class="steps-content" id="version-preview-steps-content">
-                                <div class="step-panel active" id="version-preview-step-0">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-briefcase"></i> 职能</div>
+                            
+                            <div class="empty-container" style="flex: 1; display: flex; flex-direction: column;">
+                                <div class="steps-nav" id="version-preview-steps-nav">
+                                    <div class="version-step-item active" data-step="0" onclick="versionPreviewSwitchStep(0)">
+                                        <span class="version-step-number">1</span>
+                                        <span class="version-step-label">职能</span>
                                     </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>能力定位</td>
-                                                    <td>你战略规划与决策支持专家，具备丰富的行业经验和专业知识，能够快速理解业务需求并提供有价值的战略见解和决策建议。</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>核心职能</td>
-                                                    <td>为你提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助你明确发展方向和业务策略。</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>提示词</td>
-                                                    <td>作为一名资深的你战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="1" onclick="versionPreviewSwitchStep(1)">
+                                        <span class="version-step-number">2</span>
+                                        <span class="version-step-label">普识</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="2" onclick="versionPreviewSwitchStep(2)">
+                                        <span class="version-step-number">3</span>
+                                        <span class="version-step-label">专识</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="3" onclick="versionPreviewSwitchStep(3)">
+                                        <span class="version-step-number">4</span>
+                                        <span class="version-step-label">技能</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="4" onclick="versionPreviewSwitchStep(4)">
+                                        <span class="version-step-number">5</span>
+                                        <span class="version-step-label">工作流</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="5" onclick="versionPreviewSwitchStep(5)">
+                                        <span class="version-step-number">6</span>
+                                        <span class="version-step-label">规则</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="6" onclick="versionPreviewSwitchStep(6)">
+                                        <span class="version-step-number">7</span>
+                                        <span class="version-step-label">约束</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="7" onclick="versionPreviewSwitchStep(7)">
+                                        <span class="version-step-number">8</span>
+                                        <span class="version-step-label">对齐</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="8" onclick="versionPreviewSwitchStep(8)">
+                                        <span class="version-step-number">9</span>
+                                        <span class="version-step-label">检查</span>
+                                    </div>
+                                    <div class="version-step-divider"></div>
+                                    <div class="version-step-item" data-step="9" onclick="versionPreviewSwitchStep(9)">
+                                        <span class="version-step-number">10</span>
+                                        <span class="version-step-label">反馈</span>
                                     </div>
                                 </div>
-                                <div class="step-panel" id="version-preview-step-1">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-book"></i> 普识</div>
+                                <div class="steps-content" id="version-preview-steps-content">
+                                    <div class="step-panel active" id="version-preview-step-0">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-briefcase"></i> 职能</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>能力定位</td>
+                                                        <td>通过模型上下文协议（Model Context Protocol，MCP），你可以将外部工具和服务连接至 TRAE 进行使用。
+什么是 MCP？
+Model Context Protocol (MCP) 是一种协议，它允许大型语言模型（LLMs）访问自定义的工具和服务。TRAE 中的智能体作为 MCP 客户端可以选择向 MCP Server 发起请求，以使用它们提供的工具。你可以自行添加 MCP Server，并添加到自定义的智能体中来使用。更多信息参阅 MCP 官方文档。
+免责声明
+MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器，并且不对其行为、任何 MCP Server 调用失败或它们返回的数据承担任何责任。部分 MCP Server 也可能因相关法律法规、网络限制、或服务器自身的访问策略，在你所在的国家或地区无法访问或使用。TRAE 无法控制这些因素，亦无法保证你所在国家或地区对这些服务器的可用性或功能性。你在尝试使用这些服务器时，应自行确保遵守当地法律法规。
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>核心职能</td>
+                                                        <td>为你提供全面的战略咨询服务，包括制定发展规划、商业分析、市场研究、竞争分析、投资决策评估等，帮助你明确发展方向和业务策略。</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>提示词</td>
+                                                        <td>作为一名资深的你战略顾问，请基于我的业务情况，提供专业的战略分析和决策建议。</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>知识范围</td>
-                                                    <td>经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、你管理</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>使用条件</td>
-                                                    <td>适用于你日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>提示词</td>
-                                                    <td>作为一名专业的你管理知识顾问，请基于通用商业知识为我解答以下问题：</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="step-panel" id="version-preview-step-1">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-book"></i> 普识</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>知识范围</td>
+                                                        <td>经济学基础、管理学原理、市场营销、财务管理、人力资源、法律法规、战略管理、运营管理、组织行为学、你管理</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>使用条件</td>
+                                                        <td>适用于你日常经营管理咨询、基础商业知识问答、通用业务流程指导、政策法规解读等场景</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>提示词</td>
+                                                        <td>作为一名专业的你管理知识顾问，请基于通用商业知识为我解答以下问题：</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-2">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-graduation-cap"></i> 专识</div>
+                                    <div class="step-panel" id="version-preview-step-2">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-graduation-cap"></i> 专识</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>知识来源</td>
+                                                        <td>行业研究报告、专业数据库、学术论文、你内部文档、行业专家访谈、市场调研数据、竞品分析报告</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>调用流程</td>
+                                                        <td>1. 用户提出专业领域问题 2. 系统识别问题领域和意图 3. 检索相关专业知识库 4. 整合分析多源信息 5. 生成结构化专业回答 6. 返回详细分析报告</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>提示词</td>
+                                                        <td>作为一名资深的行业专家，请结合专业知识和行业经验，深入分析以下问题并提供专业见解：</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>知识来源</td>
-                                                    <td>行业研究报告、专业数据库、学术论文、你内部文档、行业专家访谈、市场调研数据、竞品分析报告</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>调用流程</td>
-                                                    <td>1. 用户提出专业领域问题 2. 系统识别问题领域和意图 3. 检索相关专业知识库 4. 整合分析多源信息 5. 生成结构化专业回答 6. 返回详细分析报告</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>提示词</td>
-                                                    <td>作为一名资深的行业专家，请结合专业知识和行业经验，深入分析以下问题并提供专业见解：</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="step-panel" id="version-preview-step-3">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-cogs"></i> 技能</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>核心技能</td>
+                                                        <td>战略规划、商业分析、决策支持、市场研究、竞争分析、投资评估、业务咨询</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>技能等级</td>
+                                                        <td>• 战略规划：专家级 • 商业分析：专家级 • 决策支持：高级 • 市场研究：高级 • 竞争分析：专家级</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>应用场景</td>
+                                                        <td>• 企业战略制定与规划 • 商业模式创新与优化 • 投资决策分析与评估 • 市场竞争态势分析 • 业务发展方向研判</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-3">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-cogs"></i> 技能</div>
+                                    <div class="step-panel" id="version-preview-step-4">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-tasks"></i> 工作流</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>特定工作流</td>
+                                                        <td>• 市场调研流程：需求确认 → 数据收集 → 竞品分析 → 趋势研判 → 报告撰写 → 方案交付</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>核心技能</td>
-                                                    <td>战略规划、商业分析、决策支持、市场研究、竞争分析、投资评估、业务咨询</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>技能等级</td>
-                                                    <td>• 战略规划：专家级 • 商业分析：专家级 • 决策支持：高级 • 市场研究：高级 • 竞争分析：专家级</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>应用场景</td>
-                                                    <td>• 企业战略制定与规划 • 商业模式创新与优化 • 投资决策分析与评估 • 市场竞争态势分析 • 业务发展方向研判</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="step-panel" id="version-preview-step-5">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-list-ol"></i> 规则</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>行为规则</td>
+                                                        <td>• 必须基于可靠数据和事实进行分析 • 分析方法需科学严谨，遵循行业标准 • 输出内容必须准确无误，可验证 • 建议方案需切实可行，具有操作性</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-4">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-tasks"></i> 工作流</div>
+                                    <div class="step-panel" id="version-preview-step-6">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-ban"></i> 约束</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>使用约束</td>
+                                                        <td>• 禁止泄露敏感信息 • 遵守数据安全规范 • 保护用户隐私 • 遵守法律法规</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>特定工作流</td>
-                                                    <td>• 市场调研流程：需求确认 → 数据收集 → 竞品分析 → 趋势研判 → 报告撰写 → 方案交付</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="step-panel" id="version-preview-step-7">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-align-center"></i> 对齐</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>对齐目标</td>
+                                                        <td>• 与公司战略目标保持一致 • 遵循行业最佳实践 • 满足用户需求期望</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-5">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-list-ol"></i> 规则</div>
+                                    <div class="step-panel" id="version-preview-step-8">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-check-square"></i> 检查</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>检查项</td>
+                                                        <td>• 内容准确性检查 • 合规性审查 • 安全性评估 • 质量保证</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>行为规则</td>
-                                                    <td>• 必须基于可靠数据和事实进行分析 • 分析方法需科学严谨，遵循行业标准 • 输出内容必须准确无误，可验证 • 建议方案需切实可行，具有操作性</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-6">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-ban"></i> 约束</div>
-                                    </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>使用约束</td>
-                                                    <td>• 禁止泄露敏感信息 • 遵守数据安全规范 • 保护用户隐私 • 遵守法律法规</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-7">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-align-center"></i> 对齐</div>
-                                    </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>对齐目标</td>
-                                                    <td>• 与公司战略目标保持一致 • 遵循行业最佳实践 • 满足用户需求期望</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-8">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-check-square"></i> 检查</div>
-                                    </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>检查项</td>
-                                                    <td>• 内容准确性检查 • 合规性审查 • 安全性评估 • 质量保证</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="step-panel" id="version-preview-step-9">
-                                    <div class="section-header">
-                                        <div class="section-title"><i class="fa fa-comments"></i> 反馈</div>
-                                    </div>
-                                    <div class="section-content">
-                                        <table class="function-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>项目</th>
-                                                    <th>内容</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>反馈机制</td>
-                                                    <td>• 用户评价收集 • 满意度调查 • 问题反馈渠道 • 持续改进流程</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="step-panel" id="version-preview-step-9">
+                                        <div class="section-header">
+                                            <div class="section-title"><i class="fa fa-comments"></i> 反馈</div>
+                                        </div>
+                                        <div class="section-content">
+                                            <table class="function-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>内容</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>反馈机制</td>
+                                                        <td>• 用户评价收集 • 满意度调查 • 问题反馈渠道 • 持续改进流程</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -4397,7 +4415,7 @@
                 </div>
             </div>
             
-            <div class="modal-footer">
+            <div class="drawer-footer">
                 <button class="btn btn-outline" onclick="closeVersionModal()">关闭</button>
                 <button class="btn btn-primary disabled" id="restore-version-btn" disabled onclick="restoreVersion()">恢复此版本</button>
             </div>
@@ -4624,7 +4642,7 @@
             display: flex;
             padding: 0;
             overflow: hidden;
-            height: 650px;
+            height: 100%;
         }
 
         .version-left-panel {
@@ -4750,9 +4768,9 @@
 
         .preview-content {
             flex: 1;
-            overflow-y: auto;
+            /* overflow-y: auto; */
             background: #fafafa;
-            height: 590px;
+            /* height: 590px; */
         }
 
         .preview-content .empty-container {
@@ -4845,7 +4863,356 @@
             margin: 0 2px;
             flex-shrink: 0;
         }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .drawer-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+        .drawer-overlay.show .drawer {
+            transform: translateX(0);
+        }
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 420px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .drawer-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .drawer-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .drawer-close:hover {
+            color: #64748b;
+        }
+        .drawer-body {
+            flex: 1;
+            overflow: hidden;
+            padding: 0;
+        }
+        .drawer-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            background: #fafafa;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .timeline-container {
+            padding: 0;
+            height: 100%;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15.5px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-node {
+            position: absolute;
+            left: -26px;
+            top: 4px;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .node-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 3px solid #eff6ff;
+            z-index: 1;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+        }
+
+        .timeline-content {
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .timeline-content:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        .timeline-action {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .timeline-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .timeline-divider {
+            color: #cbd5e1;
+        }
+
+        .timeline-time {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .timeline-time::before {
+            content: '';
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center;
+            background-size: 11px;
+        }
+
+        .timeline-operator {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .timeline-operator::before {
+            content: '';
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='12' cy='7' r='4'%3E%3C/circle%3E%3C/svg%3E") no-repeat center;
+            background-size: 11px;
+        }
     </style></div>
+
+    <!-- 操作记录抽屉 -->
+    <div class="drawer-overlay" id="operation-log-modal" onclick="closeOperationLogModal()">
+        <div class="drawer" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <h2 class="drawer-title">操作记录</h2>
+                <button class="drawer-close" onclick="closeOperationLogModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="drawer-body" style="overflow: auto; padding: 20px;">
+                <div class="timeline-container">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">删除AI员工</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-20 15:30:45</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">张三</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">下架AI员工</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-20 10:15:20</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">李四</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">退回重调</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-19 16:40:30</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">王五</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">发布上架</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-19 14:20:00</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">李四</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">审核通过</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-19 11:30:55</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">王五</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">提交审核</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-19 09:45:10</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">赵六</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">编辑AI员工信息</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-18 15:20:33</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">赵六</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">撤回审核</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-18 10:05:40</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">赵六</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">提交审核</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-17 16:30:00</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">赵六</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">作废AI员工</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-17 09:15:25</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">张三</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">
+                                <div class="node-dot"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-action">创建AI员工</div>
+                                <div class="timeline-meta">
+                                    <span class="timeline-time">2026-05-14 10:00:00</span>
+                                    <span class="timeline-divider">|</span>
+                                    <span class="timeline-operator">赵六</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="drawer-footer">
+                <button class="btn btn-outline" onclick="closeOperationLogModal()">关闭</button>
+            </div>
+        </div>
+    </div>
 
     <div class="toast-container" id="toast-container"></div>
 
@@ -5051,6 +5418,16 @@
             contentPanels.forEach((panel, index) => {
                 panel.classList.toggle('active', index === stepIndex);
             });
+        }
+
+        function showOperationLogModal() {
+            const modal = document.getElementById('operation-log-modal');
+            modal.classList.add('show');
+        }
+
+        function closeOperationLogModal() {
+            const modal = document.getElementById('operation-log-modal');
+            modal.classList.remove('show');
         }
     </script>
 </html>
