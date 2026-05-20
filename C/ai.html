@@ -8171,7 +8171,21 @@
         }
 
         usernameInput.addEventListener('blur', function() {
-            validateUsername(this.value);
+            const activeTab = document.querySelector('.login-tab.active');
+            const isPasswordLogin = activeTab.textContent === '密码登录';
+            
+            if (isPasswordLogin) {
+                validateUsername(this.value);
+            } else {
+                hideError(usernameError);
+                usernameInput.classList.remove('error');
+                
+                const value = this.value.trim();
+                if (value && !phoneRegex.test(value)) {
+                    showError(usernameError, '请输入正确的手机号');
+                    usernameInput.classList.add('error');
+                }
+            }
         });
 
         usernameInput.addEventListener('input', function() {
@@ -8222,6 +8236,16 @@
             tab.addEventListener('click', () => {
                 loginTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+                
+                usernameInput.value = '';
+                passwordInputEl.value = '';
+                codeInputEl.value = '';
+                hideError(usernameError);
+                hideError(passwordError);
+                hideError(codeError);
+                usernameInput.classList.remove('error');
+                passwordInputEl.classList.remove('error');
+                codeInputEl.classList.remove('error');
                 
                 if (index === 0) {
                     // 密码登录
