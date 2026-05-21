@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>工业智能生产力平台</title>
     <style>
+        .ai-page .nav-container {
+            width: 94% !important;
+            max-width: none !important;
+        }
+
         /* 响应式基础字体设置 */
         html {
             font-size: 16px;
@@ -343,6 +348,16 @@
                 }
             }, 100);
         });
+    </script>
+    <script>
+        if (window.location.search.includes('page=ai')) {
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.classList.add('ai-page');
+            });
+            if (document.body) {
+                document.body.classList.add('ai-page');
+            }
+        }
     </script>
 </head>
 <body>
