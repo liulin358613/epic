@@ -138,6 +138,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-lg);
+            position: relative;
         }
 
         .stats-cards {
@@ -351,14 +352,36 @@
             color: #FFFFFF;
         }
 
+        .gantt-table td.date-cell.delayed-completed {
+            background-color: rgba(255, 77, 79, 0.5);
+            color: #FFFFFF;
+        }
+
         .gantt-table td.date-cell.warning {
             background-color: #FAAD14;
             color: #FFFFFF;
         }
 
-        .gantt-table th.date-header.today,
-        .gantt-table td.date-cell.today {
-            border: 2px dashed #1890ff;
+        .gantt-table td.date-cell.completed-gantt {
+            background-color: rgba(24, 144, 255, 0.5);
+            color: #FFFFFF;
+        }
+
+        .today-column-overlay {
+            position: absolute;
+            top: 0;
+            pointer-events: none;
+            border: 3px dashed #1890ff;
+            border-radius: 3px;
+            z-index: 9999;
+        }
+
+        #gantt-table-body tr {
+            transition: background-color 0.15s ease;
+        }
+
+        #gantt-table-body tr:hover {
+            background-color: rgba(24, 144, 255, 0.04);
         }
 
         .gantt-table th.project-col {
@@ -376,7 +399,54 @@
             color: var(--text-color);
             text-align: left;
             background-color: var(--bg-white);
+            cursor: pointer;
+            position: relative;
         }
+
+        .gantt-tooltip {
+            position: absolute;
+            z-index: 10000;
+            background: #FFFFFF;
+            border: 1px solid #D9D9D9;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 0.8125rem;
+            color: var(--text-color);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            pointer-events: none;
+            white-space: nowrap;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .gantt-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gantt-tooltip .tt-label {
+            color: var(--text-secondary);
+            margin-right: 4px;
+        }
+
+        .gantt-tooltip .tt-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .gantt-tooltip .tt-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .gantt-tooltip .tt-dot.active { background-color: #52C41A; }
+        .gantt-tooltip .tt-dot.delayed { background-color: #FF4D4F; }
+        .gantt-tooltip .tt-dot.warning { background-color: #FAAD14; }
 
         .gantt-table td.date-cell {
             background-color: #FAFAFA;
@@ -715,6 +785,9 @@
 </head>
 <body>
     <div class="dashboard-container">
+        <!-- 甘特图 hover 提示 -->
+        <div class="gantt-tooltip" id="gantt-tooltip"></div>
+
         <div class="gantt-section">
             <div class="section-header">
                 <div class="section-title">项目进度</div>
@@ -737,7 +810,7 @@
                     </div>
                     <div class="stat-card warning">
                         <div class="stat-value">3</div>
-                        <div class="stat-label">即将延期</div>
+                        <div class="stat-label">可能延期</div>
                     </div>
                     <div class="stat-card completed">
                         <div class="stat-value">8</div>
@@ -779,11 +852,15 @@
                     </div>
                     <div class="legend-item">
                         <span class="legend-color" style="background-color: #FF4D4F;"></span>
-                        <span class="legend-text">已延期</span>
+                        <span class="legend-text">已延期天数</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-color" style="background-color: #FAAD14;"></span>
-                        <span class="legend-text">可能延期</span>
+                        <span class="legend-text">可能延期天数</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: rgba(24, 144, 255, 0.5);"></span>
+                        <span class="legend-text">已完成</span>
                     </div>
                 </div>
 
@@ -831,6 +908,21 @@
                             </tr>
                             <tr>
                                 <td class="project-col">客户服务系统</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="project-col">智能仓储系统</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="project-col">数据安全合规项目</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="project-col">API开放平台建设</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
@@ -898,7 +990,7 @@
                 <div class="list-item">
                     <div class="project-name">移动端App开发</div>
                     <div class="project-status">
-                        <span class="status-tag pending">待开始</span>
+                        <span class="status-tag pending">未开始</span>
                     </div>
                     <div class="project-info">王五</div>
                     <div class="progress-bar-container">
@@ -936,6 +1028,48 @@
                         <span class="progress-text">80%</span>
                     </div>
                     <div class="project-info">2026-06-15</div>
+                </div>
+                <div class="list-item">
+                    <div class="project-name">智能仓储系统</div>
+                    <div class="project-status">
+                        <span class="status-tag completed">已完成</span>
+                    </div>
+                    <div class="project-info">周八</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill completed" style="width: 100%"></div>
+                        </div>
+                        <span class="progress-text">100%</span>
+                    </div>
+                    <div class="project-info">2026-05-25</div>
+                </div>
+                <div class="list-item">
+                    <div class="project-name">数据安全合规项目</div>
+                    <div class="project-status">
+                        <span class="status-tag completed">已完成</span>
+                    </div>
+                    <div class="project-info">吴九</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill completed" style="width: 100%"></div>
+                        </div>
+                        <span class="progress-text">100%</span>
+                    </div>
+                    <div class="project-info">2026-05-20</div>
+                </div>
+                <div class="list-item">
+                    <div class="project-name">API开放平台建设</div>
+                    <div class="project-status">
+                        <span class="status-tag completed">已完成</span>
+                    </div>
+                    <div class="project-info">郑十</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill completed" style="width: 100%"></div>
+                        </div>
+                        <span class="progress-text">100%</span>
+                    </div>
+                    <div class="project-info">2026-05-10</div>
                 </div>
             </div>
         </div>
@@ -982,50 +1116,94 @@
                 projectEnd: { month: 6, day: 15 },
                 actualStart: { month: 5, day: 12 },
                 delayDays: 0
+            },
+            {
+                name: '智能仓储系统',
+                projectStart: { month: 5, day: 1 },
+                projectEnd: { month: 5, day: 25 },
+                actualStart: { month: 5, day: 1 },
+                completed: 'early',
+                completedDate: { month: 5, day: 21 }
+            },
+            {
+                name: '数据安全合规项目',
+                projectStart: { month: 5, day: 1 },
+                projectEnd: { month: 5, day: 20 },
+                actualStart: { month: 5, day: 1 },
+                completed: 'onTime',
+                completedDate: { month: 5, day: 20 }
+            },
+            {
+                name: 'API开放平台建设',
+                projectStart: { month: 5, day: 1 },
+                projectEnd: { month: 5, day: 10 },
+                actualStart: { month: 5, day: 2 },
+                completed: 'delayed',
+                completedDate: { month: 5, day: 15 },
+                isDelayed: true
             }
         ];
 
         function getDateStatus(projectIndex, date) {
-            const project = projectData[projectIndex];
+            var project = projectData[projectIndex];
             if (!project) return '';
 
-            const today = new Date(2026, 4, 21);
-            const dateStr = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            
-            const isInProjectRange = 
-                (date >= new Date(2026, project.projectStart.month - 1, project.projectStart.day)) &&
-                (date <= new Date(2026, project.projectEnd.month - 1, project.projectEnd.day));
+            var today = new Date(2026, 4, 21);
+            var projectStart = new Date(2026, project.projectStart.month - 1, project.projectStart.day);
+            var projectEnd = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
+            var isInGray = date >= projectStart && date <= projectEnd;
 
-            if (!isInProjectRange) {
-                if (project.isDelayed) {
-                    const endDate = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
-                    if (date > endDate && date <= today) {
-                        return 'delayed';
-                    }
+            // 已完成项目
+            if (project.completed) {
+                var completedDate = new Date(2026, project.completedDate.month - 1, project.completedDate.day);
+                var actualStart = new Date(2026, project.actualStart.month - 1, project.actualStart.day);
+
+                // 暗红色：结束日期+1 ～ 完成日期
+                var redStart = new Date(projectEnd.getTime() + 24 * 60 * 60 * 1000);
+                if (date >= redStart && date <= completedDate) {
+                    return 'delayed-completed';
                 }
-                
-                if (project.delayDays > 0) {
-                    const projectEndDate = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
-                    const warningEndDate = new Date(projectEndDate.getTime() + project.delayDays * 24 * 60 * 60 * 1000);
-                    if (date > projectEndDate && date <= warningEndDate) {
-                        return 'warning';
-                    }
+
+                // 暗蓝色：开始日期 ～ min(完成日期, 结束日期)
+                var blueEnd = completedDate < projectEnd ? completedDate : projectEnd;
+                if (date >= actualStart && date <= blueEnd) {
+                    return 'completed-gantt';
                 }
-                
+
+                if (isInGray) return 'project';
                 return '';
             }
 
+            // 非完成项目
+            // 红色：结束日期+1 ～ 今日
+            var redStart = new Date(projectEnd.getTime() + 24 * 60 * 60 * 1000);
+            if (date >= redStart && date <= today) {
+                return 'delayed';
+            }
+
             if (project.actualStart) {
-                const actualStartDate = new Date(2026, project.actualStart.month - 1, project.actualStart.day);
-                const projectEndDate = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
-                const activeEndDate = project.isDelayed ? projectEndDate : today;
-                
-                if (date >= actualStartDate && date <= activeEndDate && date <= today) {
+                var actualStart = new Date(2026, project.actualStart.month - 1, project.actualStart.day);
+
+                // 绿色：开始日期 ～ min(今日, 结束日期)
+                var greenEnd = today < projectEnd ? today : projectEnd;
+                if (date >= actualStart && date <= greenEnd) {
                     return 'active';
+                }
+
+                // 黄色：结束日期+1 开始，展示天数 = 实际开始 - 项目开始
+                var delayStartDays = Math.round((actualStart.getTime() - projectStart.getTime()) / (24 * 60 * 60 * 1000));
+                if (delayStartDays > 0) {
+                    var yellowStart = new Date(projectEnd.getTime() + 24 * 60 * 60 * 1000);
+                    var yellowEnd = new Date(yellowStart.getTime() + (delayStartDays - 1) * 24 * 60 * 60 * 1000);
+                    if (date >= yellowStart && date <= yellowEnd) {
+                        return 'warning';
+                    }
                 }
             }
 
-            return 'project';
+            // 灰色：项目开始 ～ 结束日期
+            if (isInGray) return 'project';
+            return '';
         }
 
         function renderGanttTable() {
@@ -1053,6 +1231,8 @@
                 }
             });
 
+            let todayTh = null;
+
             for (let i = 0; i < dateCount; i++) {
                 const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
                 const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1066,19 +1246,50 @@
                                date.getFullYear() === today.getFullYear();
 
                 const th = document.createElement('th');
-                th.className = 'date-header' + (isWeekend ? ' weekend' : '') + (isToday ? ' today' : '');
+                th.className = 'date-header' + (isWeekend ? ' weekend' : '');
                 th.textContent = dateStr;
                 th.style.width = DATE_CELL_WIDTH + 'px';
                 navRightCol.parentElement.insertBefore(th, navRightCol);
+
+                if (isToday) todayTh = th;
 
                 rows.forEach((row, rowIndex) => {
                     const navCols = row.querySelectorAll('.nav-col');
                     const rightNavCol = navCols[navCols.length - 1];
                     const td = document.createElement('td');
                     const status = getDateStatus(rowIndex, date);
-                    td.className = 'date-cell' + (isWeekend ? ' weekend' : '') + (status ? ' ' + status : '') + (isToday ? ' today' : '');
+                    td.className = 'date-cell' + (isWeekend ? ' weekend' : '') + (status ? ' ' + status : '');
                     td.style.width = DATE_CELL_WIDTH + 'px';
                     rightNavCol.parentElement.insertBefore(td, rightNavCol);
+                });
+            }
+
+            // 移除旧的今日列 overlay
+            const ganttContent = container.parentElement;
+            const oldOverlay = ganttContent.querySelector('.today-column-overlay');
+            if (oldOverlay) oldOverlay.remove();
+
+            // 绘制今日列整列 overlay
+            if (todayTh) {
+                requestAnimationFrame(function() {
+                    const table = container.querySelector('.gantt-table');
+                    const ganttContentRect = ganttContent.getBoundingClientRect();
+                    const thRect = todayTh.getBoundingClientRect();
+                    const tableRect = table.getBoundingClientRect();
+
+                    const pad = 6;
+                    const width = thRect.width + pad * 2;
+                    const height = tableRect.height + pad * 2;
+                    const left = thRect.left - ganttContentRect.left + ganttContent.scrollLeft - pad;
+                    const top = tableRect.top - ganttContentRect.top + ganttContent.scrollTop - pad;
+
+                    const overlay = document.createElement('div');
+                    overlay.className = 'today-column-overlay';
+                    overlay.style.left = left + 'px';
+                    overlay.style.top = top + 'px';
+                    overlay.style.width = width + 'px';
+                    overlay.style.height = height + 'px';
+                    ganttContent.appendChild(overlay);
                 });
             }
         }
@@ -1103,7 +1314,150 @@
             console.log('搜索条件:', { projectName, startDate, endDate });
         }
 
-        document.addEventListener('DOMContentLoaded', renderGanttTable);
+        // ===== 甘特图 hover 提示 =====
+        function formatDate(m, d) {
+            return `2026-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        }
+
+        function getProjectTooltip(project) {
+            const today = new Date(2026, 4, 21);
+            const todayTime = today.getTime();
+            const startDate = new Date(2026, project.projectStart.month - 1, project.projectStart.day);
+            const endDate = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
+            const actualStart = project.actualStart
+                ? new Date(2026, project.actualStart.month - 1, project.actualStart.day)
+                : null;
+
+            const projectRange = `${formatDate(project.projectStart.month, project.projectStart.day)} ～ ${formatDate(project.projectEnd.month, project.projectEnd.day)}`;
+            const actualStartStr = actualStart ? formatDate(project.actualStart.month, project.actualStart.day) : '未开始';
+
+            let statusText = '';
+            let statusClass = '';
+
+            if (project.completed) {
+                // 已完成项目：用实际完成日期计算
+                const completedDate = new Date(2026, project.completedDate.month - 1, project.completedDate.day);
+                const delayFinishDays = Math.ceil((completedDate.getTime() - endDate.getTime()) / (24 * 60 * 60 * 1000));
+
+                if (delayFinishDays > 0) {
+                    statusText = '已完成，延期 ' + delayFinishDays + ' 天';
+                    statusClass = 'delayed';
+                } else if (delayFinishDays === 0) {
+                    statusText = '已完成，按时交付';
+                    statusClass = 'active';
+                } else {
+                    const earlyFinishDays = Math.ceil((endDate.getTime() - completedDate.getTime()) / (24 * 60 * 60 * 1000));
+                    statusText = '已完成，提前 ' + earlyFinishDays + ' 天';
+                    statusClass = 'active';
+                }
+            } else if (todayTime < startDate.getTime()) {
+                statusText = '未开始';
+                statusClass = '';
+            } else {
+                // 进行中
+                // 已延期天数 = 今日日期 - 项目结束日期
+                var overdueDays = Math.max(0, Math.ceil((todayTime - endDate.getTime()) / (24 * 60 * 60 * 1000)));
+                // 可能延期天数 = 实际开始日期 - 项目开始日期 - 已延期天数
+                var possibleDelay = actualStart
+                    ? Math.max(0, Math.round((actualStart.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)) - overdueDays)
+                    : 0;
+
+                if (possibleDelay > 0 && overdueDays > 0) {
+                    statusText = '进行中，已延期 ' + overdueDays + ' 天，还可能延期 ' + possibleDelay + ' 天';
+                    statusClass = 'delayed';
+                } else if (possibleDelay > 0 && overdueDays <= 0) {
+                    statusText = '进行中，可能延期 ' + possibleDelay + ' 天';
+                    statusClass = 'warning';
+                } else if (overdueDays > 0) {
+                    statusText = '进行中，已延期 ' + overdueDays + ' 天';
+                    statusClass = 'delayed';
+                } else if (actualStart) {
+                    statusText = '进行中';
+                    statusClass = 'active';
+                } else {
+                    statusText = '未开始';
+                    statusClass = '';
+                }
+            }
+
+            return { projectName: project.name, projectRange, actualStartStr, statusText, statusClass, completed: project.completed, completedDate: project.completedDate };
+        }
+
+        let tooltipTimer = null;
+
+        function showTooltip(e, project) {
+            const tooltip = document.getElementById('gantt-tooltip');
+            if (!tooltip) return;
+
+            const info = getProjectTooltip(project);
+            const dotColor = info.statusClass === 'delayed' ? '#FF4D4F'
+                : info.statusClass === 'warning' ? '#FAAD14'
+                : info.statusClass === 'active' ? '#52C41A'
+                : '#909399';
+
+            var completedDateStr = '';
+            if (info.completed && info.completedDate) {
+                completedDateStr = '<div><span class="tt-label">完成日期：</span>' + formatDate(info.completedDate.month, info.completedDate.day) + '</div>';
+            }
+
+            tooltip.innerHTML = [
+                '<div style="font-weight:600;margin-bottom:4px;color:#1D2129;">' + info.projectName + '</div>',
+                '<div><span class="tt-label">项目日期：</span>' + info.projectRange + '</div>',
+                '<div><span class="tt-label">开始日期：</span>' + info.actualStartStr + '</div>',
+                completedDateStr,
+                '<div class="tt-status"><span class="tt-label">项目状态：</span><span class="tt-dot" style="background-color:' + dotColor + '"></span>' + info.statusText + '</div>'
+            ].join('');
+
+            const ganttContent = document.querySelector('.gantt-content');
+            const contentRect = ganttContent.getBoundingClientRect();
+            tooltip.style.left = (e.clientX - contentRect.left + 16) + 'px';
+            tooltip.style.top = (e.clientY - contentRect.top + 12) + 'px';
+            tooltip.classList.add('show');
+        }
+
+        function moveTooltip(e) {
+            const tooltip = document.getElementById('gantt-tooltip');
+            if (!tooltip || !tooltip.classList.contains('show')) return;
+            const contentRect = document.querySelector('.gantt-content').getBoundingClientRect();
+            tooltip.style.left = (e.clientX - contentRect.left + 16) + 'px';
+            tooltip.style.top = (e.clientY - contentRect.top + 12) + 'px';
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('gantt-tooltip');
+            if (!tooltip) return;
+            if (tooltipTimer) clearTimeout(tooltipTimer);
+            tooltipTimer = setTimeout(function() {
+                tooltip.classList.remove('show');
+            }, 150);
+        }
+
+        function bindProjectHover() {
+            var rows = document.querySelectorAll('#gantt-table-body tr');
+            rows.forEach(function(row, index) {
+                if (!projectData[index]) return;
+
+                row.removeEventListener('mouseenter', row._hoverEnter);
+                row.removeEventListener('mouseleave', row._hoverLeave);
+                row.removeEventListener('mousemove', row._hoverMove);
+
+                row._hoverEnter = function(e) {
+                    if (tooltipTimer) clearTimeout(tooltipTimer);
+                    showTooltip(e, projectData[index]);
+                };
+                row._hoverLeave = function() { hideTooltip(); };
+                row._hoverMove = function(e) { moveTooltip(e); };
+
+                row.addEventListener('mouseenter', row._hoverEnter);
+                row.addEventListener('mouseleave', row._hoverLeave);
+                row.addEventListener('mousemove', row._hoverMove);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGanttTable();
+            bindProjectHover();
+        });
         window.addEventListener('resize', renderGanttTable);
     </script>
 </body>
