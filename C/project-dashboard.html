@@ -306,19 +306,21 @@
 
         .gantt-table-container {
             overflow-x: auto;
-            overflow-y: visible;
-            height: auto;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
         }
 
         .gantt-table {
             width: 100%;
             table-layout: fixed;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         .gantt-table th,
         .gantt-table td {
-            padding: 8px 2px;
+            padding: 0.5rem 0.125rem;
             text-align: center;
             border: 1px solid var(--border-color);
             font-size: 0.8125rem;
@@ -329,6 +331,12 @@
             background-color: #FAFAFA;
             font-weight: 600;
             color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 
+                0 -1px 0 0 var(--border-color),
+                0 1px 0 0 var(--border-color);
         }
 
         .gantt-table th.date-header.weekend,
@@ -368,12 +376,11 @@
         }
 
         .today-column-overlay {
-            position: absolute;
-            top: 0;
+            position: fixed;
             pointer-events: none;
-            border: 3px dashed #1890ff;
+            border: 3px dashed #1890FF;
             border-radius: 3px;
-            z-index: 9999;
+            z-index: 99999;
         }
 
         #gantt-table-body tr {
@@ -385,17 +392,16 @@
         }
 
         .gantt-table th.project-col {
-            min-width: 200px;
+            min-width: 12.5rem;
+            width: 12.5rem;
             background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         }
 
-        .gantt-table th.date-header {
-            position: relative;
-        }
+        .gantt-table th.date-header { }
 
         .gantt-table td.project-col {
             font-weight: 500;
-            padding-left: 12px;
+            padding-left: 0.75rem;
             color: var(--text-color);
             text-align: left;
             background-color: var(--bg-white);
@@ -453,8 +459,8 @@
         }
 
         .gantt-table .nav-col {
-            width: 40px;
-            min-width: 40px;
+            width: 2.5rem;
+            min-width: 2.5rem;
             padding: 0;
             background-color: #F5F7FA;
             border-left: 1px solid var(--border-color);
@@ -1076,9 +1082,6 @@
     </div>
 
     <script>
-        const PROJECT_COL_WIDTH = 200;
-        const NAV_COL_WIDTH = 40;
-        const DATE_CELL_WIDTH = 50;
         let startDate = new Date(2026, 4, 1);
 
         const projectData = [
@@ -1148,7 +1151,8 @@
             var project = projectData[projectIndex];
             if (!project) return '';
 
-            var today = new Date(2026, 4, 21);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
             var projectStart = new Date(2026, project.projectStart.month - 1, project.projectStart.day);
             var projectEnd = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
             var isInGray = date >= projectStart && date <= projectEnd;
@@ -1213,6 +1217,13 @@
             
             if (!container || !navRightCol) return;
 
+            const ROOT_FS = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            const SCALE = ROOT_FS / 16;
+            const PROJECT_COL_WIDTH = Math.round(200 * SCALE);
+            const NAV_COL_WIDTH = Math.round(40 * SCALE);
+            const DATE_CELL_WIDTH = 50 * SCALE;
+            const DATE_CELL_WIDTH_REM = (50 / 16);
+
             const containerWidth = container.offsetWidth;
             const availableWidth = containerWidth - PROJECT_COL_WIDTH - NAV_COL_WIDTH - NAV_COL_WIDTH;
             const dateCount = Math.max(1, Math.floor(availableWidth / DATE_CELL_WIDTH));
@@ -1240,7 +1251,7 @@
                 const dateStr = `${month}-${day}`;
                 const dayOfWeek = date.getDay();
                 const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-                const today = new Date(2026, 4, 21);
+                const today = new Date();
                 const isToday = date.getDate() === today.getDate() && 
                                date.getMonth() === today.getMonth() && 
                                date.getFullYear() === today.getFullYear();
@@ -1248,7 +1259,7 @@
                 const th = document.createElement('th');
                 th.className = 'date-header' + (isWeekend ? ' weekend' : '');
                 th.textContent = dateStr;
-                th.style.width = DATE_CELL_WIDTH + 'px';
+                th.style.width = DATE_CELL_WIDTH_REM + 'rem';
                 navRightCol.parentElement.insertBefore(th, navRightCol);
 
                 if (isToday) todayTh = th;
@@ -1259,38 +1270,45 @@
                     const td = document.createElement('td');
                     const status = getDateStatus(rowIndex, date);
                     td.className = 'date-cell' + (isWeekend ? ' weekend' : '') + (status ? ' ' + status : '');
-                    td.style.width = DATE_CELL_WIDTH + 'px';
+                    td.style.width = DATE_CELL_WIDTH_REM + 'rem';
                     rightNavCol.parentElement.insertBefore(td, rightNavCol);
                 });
             }
 
             // 移除旧的今日列 overlay
-            const ganttContent = container.parentElement;
-            const oldOverlay = ganttContent.querySelector('.today-column-overlay');
+            let oldOverlay = document.querySelector('.today-column-overlay');
             if (oldOverlay) oldOverlay.remove();
 
-            // 绘制今日列整列 overlay
+            // 绘制今日列整列 overlay — position:fixed，直接用视口坐标
             if (todayTh) {
-                requestAnimationFrame(function() {
-                    const table = container.querySelector('.gantt-table');
-                    const ganttContentRect = ganttContent.getBoundingClientRect();
+                function updateOverlay() {
                     const thRect = todayTh.getBoundingClientRect();
-                    const tableRect = table.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+                    const pad = Math.round(6 * SCALE);
+                    const overlayTop = containerRect.top;
+                    const overlayBottom = containerRect.bottom;
+                    const overlayHeight = overlayBottom - overlayTop + pad * 2;
 
-                    const pad = 6;
-                    const width = thRect.width + pad * 2;
-                    const height = tableRect.height + pad * 2;
-                    const left = thRect.left - ganttContentRect.left + ganttContent.scrollLeft - pad;
-                    const top = tableRect.top - ganttContentRect.top + ganttContent.scrollTop - pad;
+                    let overlay = document.querySelector('.today-column-overlay');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.className = 'today-column-overlay';
+                        document.body.appendChild(overlay);
+                    }
+                    overlay.style.left = (thRect.left - pad) + 'px';
+                    overlay.style.width = (thRect.width + pad * 2) + 'px';
+                    overlay.style.top = (overlayTop - pad) + 'px';
+                    overlay.style.height = overlayHeight + 'px';
+                }
 
-                    const overlay = document.createElement('div');
-                    overlay.className = 'today-column-overlay';
-                    overlay.style.left = left + 'px';
-                    overlay.style.top = top + 'px';
-                    overlay.style.width = width + 'px';
-                    overlay.style.height = height + 'px';
-                    ganttContent.appendChild(overlay);
-                });
+                requestAnimationFrame(updateOverlay);
+                // 滚动或缩放时更新位置
+                window.removeEventListener('scroll', window._ganttOverlayScroll);
+                window.removeEventListener('resize', window._ganttOverlayResize);
+                window._ganttOverlayScroll = updateOverlay;
+                window._ganttOverlayResize = updateOverlay;
+                window.addEventListener('scroll', window._ganttOverlayScroll, true);
+                window.addEventListener('resize', window._ganttOverlayResize);
             }
         }
 
@@ -1320,7 +1338,8 @@
         }
 
         function getProjectTooltip(project) {
-            const today = new Date(2026, 4, 21);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
             const todayTime = today.getTime();
             const startDate = new Date(2026, project.projectStart.month - 1, project.projectStart.day);
             const endDate = new Date(2026, project.projectEnd.month - 1, project.projectEnd.day);
