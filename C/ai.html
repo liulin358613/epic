@@ -5273,6 +5273,12 @@
                     document.querySelector('.preview-toolbar').style.display = 'none';
                     // 更新预览内容
                     updateFileManagementContent(tabId);
+                } else if (currentTab.title === '项目管理') {
+                    // 隐藏图片列表区域和工具栏
+                    document.querySelector('.preview-file-list').style.display = 'none';
+                    document.querySelector('.preview-toolbar').style.display = 'none';
+                    // 更新预览内容为项目管理页面
+                    updateProjectManagementContent(tabId);
                 } else if (currentTab.title === '方案详情') {
                     // 隐藏图片列表区域和工具栏
                     document.querySelector('.preview-file-list').style.display = 'none';
@@ -5291,7 +5297,7 @@
         function updatePreviewPadding(title) {
              const previewContent = document.getElementById('previewContent');
             // 检查是否需要移除内边距
-            if (title === '文件管理') {
+            if (title === '文件管理' || title === '项目管理') {
                 // 移除下内边距
                 previewContent.style.paddingBottom = '0';
                 // 移除上内边距
@@ -5923,6 +5929,71 @@
             activateTab(tabId);
         }
         
+        // 显示项目管理
+        function showProjectManagement() {
+            // 检查是否已经存在项目管理tab
+            const existingTab = previewTabs.find(tab => tab.title === '项目管理');
+            if (existingTab) {
+                // 激活已存在的tab
+                activateTab(existingTab.id);
+                return;
+            }
+            
+            // 切换到全屏布局
+            const mainContainer = document.querySelector('.main-container');
+            mainContainer.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-preview');
+            
+            // 显示预览区（不改变用户拖动的宽度）
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            
+            // 显示预览区标题栏（包含Tab栏）
+            const previewHeader = document.querySelector('.preview-header');
+            if (previewHeader) {
+                previewHeader.style.display = 'flex';
+            }
+            
+            // 隐藏图片列表区域和工具栏
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 显示分隔线
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            
+            // 创建新Tab
+            const tabId = 'tab_' + Date.now();
+            const tabTitle = '项目管理';
+            
+            // 添加到tabs数组
+            previewTabs.push({
+                id: tabId,
+                title: tabTitle
+            });
+            
+            // 更新Tab栏
+            updateTabs();
+            
+            // 激活当前Tab
+            activateTab(tabId);
+        }
+        
         // 显示文件管理
         function showFileManagement() {
             // 检查是否已经存在文件管理tab
@@ -5994,6 +6065,16 @@
             previewContent.innerHTML = `
                 <div style="width: 100%; height: 100%; box-sizing: border-box;">
                     <iframe src="file-management.html" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            `;
+        }
+        
+        // 更新项目管理内容
+        function updateProjectManagementContent(tabId) {
+            const previewContent = document.getElementById('previewContent');
+            previewContent.innerHTML = `
+                <div style="width: 100%; height: 100%; box-sizing: border-box;">
+                    <iframe src="project-dashboard.html" style="width: 100%; height: 100%; border: none;"></iframe>
                 </div>
             `;
         }
@@ -6367,6 +6448,11 @@
                 // 点击我的秘书时显示空白预览tab
                 if (memberId === 'secretary') {
                     showSecretaryBoard();
+                }
+                
+                // 点击项目经理时显示项目管理预览tab
+                if (memberId === 'pm') {
+                    showProjectManagement();
                 }
                 
                 // 生成聊天记录
