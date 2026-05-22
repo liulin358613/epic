@@ -83,6 +83,8 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .section-title::before {
@@ -96,6 +98,7 @@
         .section-actions {
             display: flex;
             gap: var(--spacing-sm);
+            flex-shrink: 0;
         }
 
         .btn {
@@ -110,6 +113,7 @@
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .btn:hover {
@@ -183,6 +187,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             cursor: pointer;
             user-select: none;
+            white-space: nowrap;
         }
 
         .stat-card:hover {
@@ -249,7 +254,6 @@
             gap: var(--spacing-lg);
             padding: 0.75rem;
             align-items: center;
-            border-top: 1px solid var(--border-color);
         }
 
         .search-group {
@@ -1000,6 +1004,12 @@
             flex-shrink: 0;
             font-size: 0.8125rem;
             color: var(--text-secondary);
+            flex-wrap: nowrap;
+        }
+
+        .pagination-bar > * {
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .pagination-total {
@@ -1143,20 +1153,8 @@
             font-size: 0.875rem;
         }
 
-        @media (max-width: 1440px) {
-            html { font-size: 15px !important; }
-        }
-
-        @media (max-width: 1366px) {
-            html { font-size: 14px !important; }
-        }
-
-        @media (max-width: 1280px) {
-            html { font-size: 13px !important; }
-        }
-
         @media (max-width: 1024px) {
-            html { font-size: 12px !important; }
+            html { font-size: 14px !important; }
             
             .list-table-wrapper {
                 column-gap: var(--spacing-sm);
@@ -1181,7 +1179,7 @@
         }
 
         @media (max-width: 768px) {
-            html { font-size: 11px !important; }
+            html { font-size: 13px !important; }
 
             .dashboard-container {
                 padding: var(--spacing-sm);
@@ -1189,20 +1187,12 @@
             }
 
             .section-header {
-                flex-direction: column;
-                align-items: flex-start;
+                padding: var(--spacing-sm) var(--spacing-md);
                 gap: var(--spacing-md);
             }
 
             .section-actions {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            .btn {
-                flex: 1;
-                min-width: calc(50% - 4px);
-                justify-content: center;
+                gap: var(--spacing-xs);
             }
 
             .gantt-content {
@@ -1234,19 +1224,6 @@
             .progress-text {
                 min-width: 2.5rem;
                 font-size: 0.6875rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            html { font-size: 10px !important; }
-
-            .list-table-wrapper {
-                column-gap: 4px;
-            }
-
-            .btn {
-                padding: 0.3125rem 0.75rem;
-                font-size: 0.8125rem;
             }
         }
 
@@ -1326,7 +1303,7 @@
                     </div>
                 </div>
 
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-top: 1px solid var(--border-color);">
                 <div class="gantt-search">
                     <div class="search-group">
                         <label>项目：</label>
