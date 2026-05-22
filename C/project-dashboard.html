@@ -428,7 +428,7 @@
             padding-left: 0.75rem;
             color: var(--text-color);
             text-align: left;
-            background-color: var(--bg-white);
+            background-color: #FAFAFA;
             cursor: pointer;
             position: relative;
         }
@@ -529,10 +529,10 @@
             grid-template-columns: 3fr 2fr 1.5fr 1.5fr;
             gap: var(--spacing-md);
             padding: var(--spacing-md) var(--spacing-xl);
-            background-color: #f0f0f0;
+            background-color: #FAFAFA;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.8125rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-secondary);
         }
 
@@ -549,6 +549,7 @@
             border-bottom: 1px solid var(--border-color);
             transition: background-color 0.2s ease;
             cursor: pointer;
+            background-color: #FAFAFA;
         }
 
         .list-item:hover {
@@ -1701,9 +1702,11 @@
                     const thRect = todayTh.getBoundingClientRect();
                     const tbody = document.getElementById('gantt-table-body');
                     const tbodyRect = tbody.getBoundingClientRect();
+                    const containerRect = document.querySelector('.gantt-table-container').getBoundingClientRect();
                     const pad = Math.round(6 * SCALE);
-                    const overlayTop = tbodyRect.top;
-                    const overlayBottom = tbodyRect.bottom;
+                    // 从表头单元格顶部开始，底部不超出容器可见区域
+                    const overlayTop = thRect.top;
+                    const overlayBottom = Math.min(tbodyRect.bottom, containerRect.bottom);
                     const overlayHeight = overlayBottom - overlayTop + pad * 2;
 
                     let overlay = document.querySelector('.today-column-overlay');
