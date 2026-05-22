@@ -181,10 +181,19 @@
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            user-select: none;
         }
 
         .stat-card:hover {
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-card.active {
+            outline: 2px solid #3B82F6;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 4px 16px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
         }
 
@@ -532,7 +541,7 @@
 
         .list-table-wrapper {
             display: grid;
-            grid-template-columns: auto auto auto auto auto auto;
+            grid-template-columns: auto auto auto auto auto auto auto;
             column-gap: var(--spacing-md);
             flex: 1 1 auto;
             overflow-y: auto;
@@ -625,6 +634,29 @@
             align-items: center;
             font-size: 0.8125rem;
             color: var(--text-secondary);
+        }
+
+        .list-item > .project-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .view-btn:hover {
+            color: #fff;
+            background-color: var(--primary-color);
         }
 
         .project-name {
@@ -1264,32 +1296,32 @@
             </div>
             <div class="gantt-content">
                 <div class="stats-cards">
-                    <div class="stat-card delayed">
-                        <div class="stat-value" data-stat="delayed">-</div>
+                    <div class="stat-card delayed" data-stat="delayed">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">已延期</div>
                     </div>
-                    <div class="stat-card warning">
-                        <div class="stat-value" data-stat="warning">-</div>
+                    <div class="stat-card warning" data-stat="warning">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">可能延期</div>
                     </div>
-                    <div class="stat-card not-started">
-                        <div class="stat-value" data-stat="not-started">-</div>
+                    <div class="stat-card not-started" data-stat="not-started">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">未开始</div>
                     </div>
-                    <div class="stat-card normal">
-                        <div class="stat-value" data-stat="normal">-</div>
+                    <div class="stat-card normal" data-stat="normal">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">正常</div>
                     </div>
-                    <div class="stat-card delayed-done">
-                        <div class="stat-value" data-stat="delayed-done">-</div>
+                    <div class="stat-card delayed-done" data-stat="delayed-done">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">延期完成</div>
                     </div>
-                    <div class="stat-card completed">
-                        <div class="stat-value" data-stat="completed">-</div>
+                    <div class="stat-card completed" data-stat="completed">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">按时完成</div>
                     </div>
-                    <div class="stat-card cancelled">
-                        <div class="stat-value" data-stat="cancelled">-</div>
+                    <div class="stat-card cancelled" data-stat="cancelled">
+                        <div class="stat-value">-</div>
                         <div class="stat-label">已取消</div>
                     </div>
                 </div>
@@ -1305,9 +1337,13 @@
                         <label>状态：</label>
                         <select class="status-select" id="search-status">
                             <option value="">全部</option>
-                            <option value="in-progress">进行中</option>
+                            <option value="delayed">已延期</option>
+                            <option value="warning">可能延期</option>
                             <option value="not-started">未开始</option>
-                            <option value="completed">已完成</option>
+                            <option value="normal">正常</option>
+                            <option value="in-progress">进行中</option>
+                            <option value="delayed-done">延期完成</option>
+                            <option value="completed">按时完成</option>
                             <option value="cancelled">已取消</option>
                         </select>
                     </div>
@@ -1439,6 +1475,7 @@
                         <div>状态</div>
                         <div>进度</div>
                         <div>项目时间</div>
+                        <div>操作</div>
                     </div>
                     <div class="list-content" id="project-list-content"></div>
                     </div>
@@ -1771,8 +1808,10 @@
                     cancelled++;
                     return;
                 }
+                var ps = offsetDay(project.projectStart.month, project.projectStart.day);
                 var pe = offsetDay(project.projectEnd.month, project.projectEnd.day);
-                var projectEnd = new Date(2026, pe.month - 1, pe.day);
+                var startTime = new Date(2026, ps.month - 1, ps.day).getTime();
+                var endTime = new Date(2026, pe.month - 1, pe.day).getTime();
 
                 if (project.completed) {
                     if (project.completed === 'delayed') {
@@ -1780,27 +1819,59 @@
                     } else {
                         completed++;
                     }
-                } else if (!project.actualStart) {
+                    return;
+                }
+                if (!project.actualStart) {
                     notStarted++;
-                } else if (todayTime > projectEnd.getTime()) {
+                    return;
+                }
+                var actualStartData = offsetDay(project.actualStart.month, project.actualStart.day);
+                var actualStartTime = new Date(2026, actualStartData.month - 1, actualStartData.day).getTime();
+                var overdueDays = Math.max(0, Math.ceil((todayTime - endTime) / (24 * 60 * 60 * 1000)));
+                var possibleDelay = Math.max(0, Math.round((actualStartTime - startTime) / (24 * 60 * 60 * 1000)) - overdueDays);
+
+                if (overdueDays > 0) {
                     delayed++;
-                } else if (project.delayDays > 0 || project.isDelayed) {
+                } else if (possibleDelay > 0) {
                     warning++;
                 } else {
                     normal++;
                 }
             });
 
-            var statValues = document.querySelectorAll('.stat-value');
-            statValues.forEach(function(el) {
-                var stat = el.getAttribute('data-stat');
-                if (stat === 'delayed') el.textContent = delayed;
-                if (stat === 'warning') el.textContent = warning;
-                if (stat === 'completed') el.textContent = completed;
-                if (stat === 'delayed-done') el.textContent = delayedDone;
-                if (stat === 'normal') el.textContent = normal;
-                if (stat === 'not-started') el.textContent = notStarted;
-                if (stat === 'cancelled') el.textContent = cancelled;
+            var statValues = document.querySelectorAll('.stat-card');
+            statValues.forEach(function(card) {
+                var stat = card.getAttribute('data-stat');
+                var valEl = card.querySelector('.stat-value');
+                if (stat === 'delayed') valEl.textContent = delayed;
+                if (stat === 'warning') valEl.textContent = warning;
+                if (stat === 'completed') valEl.textContent = completed;
+                if (stat === 'delayed-done') valEl.textContent = delayedDone;
+                if (stat === 'normal') valEl.textContent = normal;
+                if (stat === 'not-started') valEl.textContent = notStarted;
+                if (stat === 'cancelled') valEl.textContent = cancelled;
+
+                // 点击筛选
+                card.onclick = function() {
+                    var isActive = card.classList.contains('active');
+                    // 清除所有选中态
+                    document.querySelectorAll('.stat-card').forEach(function(c) { c.classList.remove('active'); });
+                    if (isActive) {
+                        // 再次点击取消筛选
+                        resetSearch();
+                        return;
+                    }
+                    // 激活当前卡片
+                    card.classList.add('active');
+                    // 同步下拉
+                    var dropdown = document.getElementById('search-status');
+                    if (dropdown) dropdown.value = stat;
+                    // 设置筛选
+                    searchFilter = { name: '', date: '', status: stat };
+                    currentPage = 1;
+                    applySearchFilter();
+                    renderProjectList();
+                };
             });
         }
 
@@ -1810,26 +1881,50 @@
             var todayTime = today.getTime();
             var result = [];
             projectData.forEach(function(project) {
+                // ps/pe 始终计算，status 筛选也需要用到
+                var ps = offsetDay(project.projectStart.month, project.projectStart.day);
+                var pe = offsetDay(project.projectEnd.month, project.projectEnd.day);
+                var startTime = new Date(2026, ps.month - 1, ps.day).getTime();
+                var endTime = new Date(2026, pe.month - 1, pe.day).getTime();
+                var overdueDays = Math.max(0, Math.ceil((todayTime - endTime) / (24 * 60 * 60 * 1000)));
+                var possibleDelay = 0;
+                if (project.actualStart) {
+                    var actualStartData = offsetDay(project.actualStart.month, project.actualStart.day);
+                    var actualStartTime = new Date(2026, actualStartData.month - 1, actualStartData.day).getTime();
+                    possibleDelay = Math.max(0, Math.round((actualStartTime - startTime) / (24 * 60 * 60 * 1000)) - overdueDays);
+                }
                 if (searchFilter) {
                     if (searchFilter.name) {
                         if (project.name.toLowerCase().indexOf(searchFilter.name.toLowerCase()) === -1) return;
                     }
                     if (searchFilter.date) {
-                        var ps = offsetDay(project.projectStart.month, project.projectStart.day);
-                        var pe = offsetDay(project.projectEnd.month, project.projectEnd.day);
-                        var pStart = new Date(2026, ps.month - 1, ps.day);
-                        var pEnd = new Date(2026, pe.month - 1, pe.day);
                         var parts = searchFilter.date.split('-');
                         var sDate = new Date(2026, parseInt(parts[1]) - 1, parseInt(parts[2]));
-                        if (sDate < pStart || sDate > pEnd) return;
+                        if (sDate.getTime() < startTime || sDate.getTime() > endTime) return;
                     }
                     if (searchFilter.status) {
                         if (searchFilter.status === 'cancelled') {
                             if (!project.cancelled) return;
+                        } else if (searchFilter.status === 'delayed') {
+                            if (project.cancelled || project.completed) return;
+                            if (!project.actualStart) return;
+                            if (overdueDays <= 0) return;
+                        } else if (searchFilter.status === 'warning') {
+                            if (project.cancelled || project.completed) return;
+                            if (!project.actualStart) return;
+                            if (overdueDays > 0) return;
+                            if (possibleDelay <= 0) return;
+                        } else if (searchFilter.status === 'normal') {
+                            if (project.cancelled || project.completed) return;
+                            if (!project.actualStart) return;
+                            if (overdueDays > 0) return;
+                            if (possibleDelay > 0) return;
+                        } else if (searchFilter.status === 'delayed-done') {
+                            if (project.completed !== 'delayed') return;
                         } else {
                             var tip = getProjectTooltip(project);
                             if (searchFilter.status === 'completed') {
-                                if (tip.statusText.indexOf('已完成') !== 0) return;
+                                if (!project.completed || project.completed === 'delayed') return;
                             } else if (searchFilter.status === 'not-started') {
                                 if (tip.statusText.indexOf('未开始') !== 0) return;
                             } else if (searchFilter.status === 'in-progress') {
@@ -1977,7 +2072,8 @@
                         '</div>' +
                     '</div>' +
                     progressHtml +
-                    '<div class="project-time">' + timeStr + '</div>';
+                    '<div class="project-time">' + timeStr + '</div>' +
+                    '<div class="project-action"><button class="view-btn" onclick="event.stopPropagation(); showOrgChart(projectData[' + globalIdx + '])">查看</button></div>';
 
                 container.appendChild(item);
             });
@@ -2259,6 +2355,7 @@
             document.getElementById('search-status').value = '';
             searchFilter = null;
             currentPage = 1;
+            document.querySelectorAll('.stat-card.active').forEach(function(c) { c.classList.remove('active'); });
             applySearchFilter();
             renderProjectList();
         }
@@ -2272,6 +2369,12 @@
                 searchFilter = null;
             } else {
                 searchFilter = { name: name, date: date, status: status };
+            }
+            // 同步卡片选中态
+            document.querySelectorAll('.stat-card.active').forEach(function(c) { c.classList.remove('active'); });
+            if (status) {
+                var card = document.querySelector('.stat-card[data-stat="' + status + '"]');
+                if (card) card.classList.add('active');
             }
             currentPage = 1;
             applySearchFilter();
