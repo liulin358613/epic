@@ -173,7 +173,8 @@
         }
 
         .stat-card {
-            width: 140px;
+            flex: 1 1 0;
+            min-width: 100px;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 0.5rem;
             padding: var(--spacing-lg);
@@ -188,33 +189,33 @@
         }
 
         .stat-card.delayed {
-            border-left: 3px solid #e74c3c;
-            background: linear-gradient(135deg, #fde8e8 0%, #f8c4c4 100%);
+            border-left: 3px solid #DC2626;
+            background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 100%);
         }
 
         .stat-card.warning {
-            border-left: 3px solid #f59e0b;
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 3px solid #F59E0B;
+            background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 100%);
         }
 
         .stat-card.not-started {
-            border-left: 3px solid #6366f1;
-            background: linear-gradient(135deg, #eef2ff 0%, #c7d2fe 100%);
+            border-left: 3px solid #64748B;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
         }
 
         .stat-card.normal {
-            border-left: 3px solid #3b82f6;
-            background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);
+            border-left: 3px solid #0EA5E9;
+            background: linear-gradient(135deg, #F0F9FF 0%, #BAE6FD 100%);
         }
 
         .stat-card.delayed-done {
-            border-left: 3px solid #8b5cf6;
-            background: linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%);
+            border-left: 3px solid #14B8A6;
+            background: linear-gradient(135deg, #F0FDFA 0%, #99F6E4 100%);
         }
 
         .stat-card.completed {
-            border-left: 3px solid #10b981;
-            background: linear-gradient(135deg, #ecfdf5 0%, #a7f3d0 100%);
+            border-left: 3px solid #10B981;
+            background: linear-gradient(135deg, #ECFDF5 0%, #A7F3D0 100%);
         }
 
         .stat-value {
@@ -524,27 +525,37 @@
             overflow: hidden;
         }
 
-        .list-header {
+        .list-table-wrapper {
             display: grid;
-            grid-template-columns: 3fr 2fr 1.5fr 1.5fr;
-            gap: var(--spacing-md);
-            padding: var(--spacing-md) var(--spacing-xl);
+            grid-template-columns: auto auto auto auto auto auto;
+            column-gap: var(--spacing-md);
+            flex: 1 1 auto;
+            overflow-y: auto;
+            align-content: start;
+        }
+
+        .list-header {
+            display: contents;
+        }
+
+        .list-header > div {
             background-color: #FAFAFA;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.8125rem;
             font-weight: 600;
             color: var(--text-secondary);
+            padding: var(--spacing-md) var(--spacing-xl);
         }
 
         .project-list-section .list-content {
-            flex: 1;
-            overflow-y: auto;
+            display: contents;
         }
 
         .list-item {
-            display: grid;
-            grid-template-columns: 3fr 2fr 1.5fr 1.5fr;
-            gap: var(--spacing-md);
+            display: contents;
+        }
+
+        .list-item > div {
             padding: var(--spacing-md) var(--spacing-xl);
             border-bottom: 1px solid var(--border-color);
             transition: background-color 0.2s ease;
@@ -552,12 +563,63 @@
             background-color: #FAFAFA;
         }
 
-        .list-item:hover {
+        .list-item:hover > div {
             background-color: #F9FAFB;
         }
 
-        .list-item:last-child {
+        .list-item:last-child > div {
             border-bottom: none;
+        }
+
+        .list-item > .project-name {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .list-item > .project-name::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+
+        .list-item > .project-owner {
+            display: flex;
+            align-items: center;
+            font-size: 0.8125rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .list-item > .project-members {
+            display: flex;
+            align-items: center;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            gap: 4px;
+        }
+
+        .list-item > .project-status {
+            display: flex;
+            align-items: center;
+        }
+
+        .list-item > .progress-bar-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .list-item > .project-time {
+            display: flex;
+            align-items: center;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
         }
 
         .project-name {
@@ -575,6 +637,200 @@
             height: 8px;
             border-radius: 50%;
             background-color: var(--primary-color);
+        }
+
+        .project-owner {
+            display: flex;
+            align-items: center;
+            font-size: 0.8125rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .project-members {
+            display: flex;
+            align-items: center;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            gap: 4px;
+        }
+
+        .member-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            padding: 0 0.375rem;
+            border-radius: 0.75rem;
+            background-color: #EFF6FF;
+            color: var(--primary-color);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .member-count:hover {
+            background-color: #DBEAFE;
+            transform: scale(1.08);
+        }
+
+        .member-unit {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        /* 组织架构弹窗 */
+        .org-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .org-modal {
+            background: #fff;
+            border-radius: 0.75rem;
+            padding: 1.75rem;
+            min-width: 420px;
+            max-width: 680px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+        }
+
+        .org-modal-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .org-modal-close {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            line-height: 1;
+            padding: 0;
+        }
+
+        .org-modal-close:hover {
+            color: var(--text-color);
+        }
+
+        /* 组织架构树 */
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* 头像图片 */
+        .org-avatar-img {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid #e5e7eb;
+        }
+
+        /* 节点卡片 */
+        .org-card {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.5rem 0.875rem;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .org-card.owner-card {
+            background: #EFF6FF;
+            border: 1.5px solid #93C5FD;
+        }
+
+        .org-card.lead-card {
+            background: #F5F3FF;
+            border: 1.5px solid #C4B5FD;
+        }
+
+        .org-card.member-card {
+            background: #ECFDF5;
+            border: 1.5px solid #6EE7B7;
+        }
+
+        .org-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .org-card-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .org-card-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* 垂直连接线 */
+        .org-vline {
+            width: 2px;
+            height: 14px;
+            background: #cbd5e1;
+            margin: 0 auto;
+        }
+        .org-vline.drop {
+            height: 8px;
+        }
+
+        /* 分支结构: vline → 子级行(含水平横线) */
+        .org-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 子级行：水平横线(::before) + 子列 */
+        .org-children-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            position: relative;
+        }
+        .org-children-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #cbd5e1;
+        }
+
+        /* 子列：垂直落线 + 节点(可能带子树) */
+        .org-child-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
         }
 
         .project-status {
@@ -854,15 +1110,15 @@
         @media (max-width: 1024px) {
             html { font-size: 12px !important; }
             
-            .list-header {
-                grid-template-columns: 2fr 1.5fr 1fr 1fr;
-                gap: var(--spacing-sm);
+            .list-table-wrapper {
+                column-gap: var(--spacing-sm);
+            }
+
+            .list-header > div {
                 padding: var(--spacing-sm) var(--spacing-md);
             }
 
-            .list-item {
-                grid-template-columns: 2fr 1.5fr 1fr 1fr;
-                gap: var(--spacing-sm);
+            .list-item > div {
                 padding: var(--spacing-sm) var(--spacing-md);
             }
 
@@ -905,14 +1161,16 @@
                 padding: var(--spacing-md);
             }
 
-            .list-header {
-                grid-template-columns: 1.5fr 1.2fr 0.8fr 0.8fr;
+            .list-table-wrapper {
+                column-gap: var(--spacing-xs);
+            }
+
+            .list-header > div {
                 padding: var(--spacing-xs) var(--spacing-sm);
                 font-size: 0.75rem;
             }
 
-            .list-item {
-                grid-template-columns: 1.5fr 1.2fr 0.8fr 0.8fr;
+            .list-item > div {
                 padding: var(--spacing-xs) var(--spacing-sm);
             }
 
@@ -934,14 +1192,8 @@
         @media (max-width: 600px) {
             html { font-size: 10px !important; }
 
-            .list-header {
-                grid-template-columns: 1.2fr 1fr 0.7fr 0.7fr;
-                gap: 4px;
-            }
-
-            .list-item {
-                grid-template-columns: 1.2fr 1fr 0.7fr 0.7fr;
-                gap: 4px;
+            .list-table-wrapper {
+                column-gap: 4px;
             }
 
             .btn {
@@ -1099,42 +1351,42 @@
                         </thead>
                         <tbody id="gantt-table-body">
                             <tr>
-                                <td class="project-col">智慧园区建设项目</td>
+                                <td class="project-col">工业机器人装配线项目</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">数据分析平台升级</td>
+                                <td class="project-col">自动化数据分析引擎</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">移动端App开发</td>
+                                <td class="project-col">机器人远程控制系统</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">ERP系统集成</td>
+                                <td class="project-col">AGV调度系统部署</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">客户服务系统</td>
+                                <td class="project-col">智能客服机器人平台</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">智能仓储系统</td>
+                                <td class="project-col">自动化立体仓库项目</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">数据安全合规项目</td>
+                                <td class="project-col">机器视觉检测系统</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
                             <tr>
-                                <td class="project-col">API开放平台建设</td>
+                                <td class="project-col">PLC自动化控制平台</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
@@ -1143,13 +1395,17 @@
                 </div>
 
                 <div class="project-list-section">
+                    <div class="list-table-wrapper">
                     <div class="list-header">
                         <div>项目名称</div>
+                        <div>负责人</div>
+                        <div>项目成员</div>
                         <div>状态</div>
                         <div>进度</div>
                         <div>项目时间</div>
                     </div>
                     <div class="list-content" id="project-list-content"></div>
+                    </div>
                     <div class="pagination-bar">
                         <span class="pagination-total">共 <b id="pagination-total">0</b> 条</span>
                         <button class="pagination-btn" onclick="goToPage(currentPage - 1)" title="上一页">&lt;</button>
@@ -1189,42 +1445,118 @@
 
         const projectData = [
             {
-                name: '智慧园区建设项目',
+                name: '工业机器人装配线项目',
+                owner: '张工',
+                team: [
+                    { name: '李明', role: '机械组组长', members: [
+                        { name: '王芳', role: '机械工程师' },
+                        { name: '赵强', role: '装配技师' },
+                        { name: '孙丽', role: '制图员' },
+                        { name: '马超', role: '质检员' }
+                    ]},
+                    { name: '周杰', role: '电气组组长', members: [
+                        { name: '吴强', role: '电气工程师' },
+                        { name: '郑娜', role: 'PLC编程' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 5 },
                 projectEnd: { month: 5, day: 30 },
                 actualStart: { month: 5, day: 7 },
                 delayDays: 2
             },
             {
-                name: '数据分析平台升级',
+                name: '自动化数据分析引擎',
+                owner: '陈博士',
+                team: [
+                    { name: '赵云', role: '算法组组长', members: [
+                        { name: '刘静', role: '数据工程师' },
+                        { name: '杨帆', role: 'ML工程师' },
+                        { name: '黄蕾', role: '数据标注' }
+                    ]},
+                    { name: '钱进', role: '平台组组长', members: [
+                        { name: '韩雪', role: '后端开发' },
+                        { name: '沈磊', role: '前端开发' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 5 },
                 projectEnd: { month: 5, day: 10 },
                 actualStart: { month: 5, day: 5 },
                 isDelayed: true
             },
             {
-                name: '移动端App开发',
+                name: '机器人远程控制系统',
+                owner: '王总工',
+                team: [
+                    { name: '孙涛', role: '控制系统组长', members: [
+                        { name: '周敏', role: '嵌入式开发' },
+                        { name: '冯刚', role: '通信协议' },
+                        { name: '蒋丽', role: 'UI界面' },
+                        { name: '吕峰', role: '测试工程师' }
+                    ]},
+                    { name: '施雨', role: '硬件组组长', members: [
+                        { name: '许婷', role: '电路设计' },
+                        { name: '郑娜', role: '传感器' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 3 },
                 projectEnd: { month: 5, day: 30 },
                 actualStart: null,
                 delayDays: 0
             },
             {
-                name: 'ERP系统集成',
+                name: 'AGV调度系统部署',
+                owner: '李经理',
+                team: [
+                    { name: '吴强', role: '调度算法组组长', members: [
+                        { name: '郑娜', role: '路径规划' },
+                        { name: '沈磊', role: '交通管制' },
+                        { name: '韩雪', role: '仿真测试' }
+                    ]},
+                    { name: '吕峰', role: '集成部署组组长', members: [
+                        { name: '施雨', role: '现场实施' },
+                        { name: '许婷', role: '系统联调' },
+                        { name: '马超', role: '运维工程师' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 2 },
                 projectEnd: { month: 5, day: 16 },
                 actualStart: { month: 5, day: 7 },
                 isDelayed: true
             },
             {
-                name: '客户服务系统',
+                name: '智能客服机器人平台',
+                owner: '赵总监',
+                team: [
+                    { name: '钱进', role: 'NLP组组长', members: [
+                        { name: '韩雪', role: '意图识别' },
+                        { name: '杨帆', role: '知识图谱' },
+                        { name: '黄蕾', role: '语料标注' }
+                    ]},
+                    { name: '冯刚', role: '对话组组长', members: [
+                        { name: '蒋丽', role: '对话管理' },
+                        { name: '周敏', role: '多轮对话' },
+                        { name: '王芳', role: '语音合成' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 10 },
                 projectEnd: { month: 6, day: 4 },
                 actualStart: { month: 5, day: 10 },
                 delayDays: 0
             },
             {
-                name: '智能仓储系统',
+                name: '自动化立体仓库项目',
+                owner: '周工',
+                team: [
+                    { name: '冯刚', role: '堆垛机组组长', members: [
+                        { name: '蒋丽', role: '机械设计' },
+                        { name: '孙丽', role: '伺服控制' }
+                    ]},
+                    { name: '马超', role: 'WMS组组长', members: [
+                        { name: '赵强', role: '仓储软件' },
+                        { name: '吴强', role: '接口开发' },
+                        { name: '刘静', role: '库存算法' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 4 },
                 projectEnd: { month: 5, day: 25 },
                 actualStart: { month: 5, day: 5 },
@@ -1232,7 +1564,20 @@
                 completedDate: { month: 5, day: 18 }
             },
             {
-                name: '数据安全合规项目',
+                name: '机器视觉检测系统',
+                owner: '吴博士',
+                team: [
+                    { name: '沈磊', role: '图像算法组组长', members: [
+                        { name: '许婷', role: '缺陷检测' },
+                        { name: '杨帆', role: '分类模型' },
+                        { name: '黄蕾', role: '数据标注' }
+                    ]},
+                    { name: '赵云', role: '系统集成组组长', members: [
+                        { name: '王芳', role: '光源设计' },
+                        { name: '孙丽', role: '相机标定' },
+                        { name: '冯刚', role: '工控对接' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 1 },
                 projectEnd: { month: 5, day: 20 },
                 actualStart: { month: 5, day: 3 },
@@ -1240,7 +1585,19 @@
                 completedDate: { month: 5, day: 20 }
             },
             {
-                name: 'API开放平台建设',
+                name: 'PLC自动化控制平台',
+                owner: '郑专家',
+                team: [
+                    { name: '吕峰', role: '控制逻辑组组长', members: [
+                        { name: '施雨', role: '梯形图编程' },
+                        { name: '许婷', role: 'ST编程' },
+                        { name: '马超', role: '调试工程师' }
+                    ]},
+                    { name: '周杰', role: 'SCADA组组长', members: [
+                        { name: '王芳', role: 'HMI开发' },
+                        { name: '赵强', role: '数据采集' }
+                    ]}
+                ],
                 projectStart: { month: 5, day: 2 },
                 projectEnd: { month: 5, day: 10 },
                 actualStart: { month: 5, day: 4 },
@@ -1427,6 +1784,17 @@
                 }
 
                 var timeStr = formatDate(ps.month, ps.day) + ' ~ ' + formatDate(pe.month, pe.day);
+                // 递归统计团队总人数
+                function countTeam(team) {
+                    if (!team || !team.length) return 0;
+                    var total = 0;
+                    team.forEach(function(t) {
+                        total += 1; // 组长自己
+                        if (t.members && t.members.length) total += t.members.length;
+                    });
+                    return total;
+                }
+                var memberCount = project.team ? countTeam(project.team) : 0;
 
                 var item = document.createElement('div');
                 item.className = 'list-item';
@@ -1434,6 +1802,8 @@
                 item.setAttribute('data-project-index', globalIdx);
                 item.innerHTML =
                     '<div class="project-name">' + project.name + '</div>' +
+                    '<div class="project-owner">' + (project.owner || '-') + '</div>' +
+                    '<div class="project-members"><span class="member-count" onclick="event.stopPropagation(); showOrgChart(projectData[' + globalIdx + '])">' + memberCount + '</span> <span class="member-unit">人</span></div>' +
                     '<div class="project-status">' +
                         '<div>' +
                             '<span class="status-tag ' + tagClass + '">' + statusLabel + '</span>' +
@@ -1922,6 +2292,85 @@
                     td.addEventListener('mousemove', td._hoverMove);
                 });
             });
+        }
+
+        // 组织架构弹窗
+        function showOrgChart(project) {
+            var overlay = document.createElement('div');
+            overlay.className = 'org-modal-overlay';
+            overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+
+            // 头像图片池（从 A/images 随机取）
+            var avatarPool = [
+                '../A/images/AI-1.png',
+                '../A/images/AI-2.png',
+                '../A/images/AI-3.png',
+                '../A/images/AI-4.png',
+                '../A/images/tx-1.png',
+                '../A/images/tx-2.png',
+                '../A/images/tx-3.png'
+            ];
+            function randomAvatar() {
+                return avatarPool[Math.floor(Math.random() * avatarPool.length)];
+            }
+
+            // 节点卡片
+            function card(name, role, cardStyle) {
+                return '<div class="org-card ' + cardStyle + '">' +
+                    '<img class="org-avatar-img" src="' + randomAvatar() + '" alt="" />' +
+                    '<div class="org-card-info">' +
+                        '<div class="org-card-name">' + name + '</div>' +
+                        '<div class="org-card-role">' + role + '</div>' +
+                    '</div>' +
+                '</div>';
+            }
+
+            // 分支: vline + 子级行（含水平横线）
+            function branch(childrenHtml) {
+                return '<div class="org-branch">' +
+                    '<div class="org-vline"></div>' +
+                    '<div class="org-children-row">' + childrenHtml + '</div>' +
+                '</div>';
+            }
+
+            // 子列: 垂直落线 + 节点 HTML（落线从上层横线连到本节点）
+            function leaf(innerHtml) {
+                return '<div class="org-child-col">' +
+                    '<div class="org-vline drop"></div>' +
+                    innerHtml +
+                '</div>';
+            }
+
+            // 成员节点
+            function member(m) {
+                return leaf(card(m.name, m.role, 'member-card'));
+            }
+
+            // 组长分组: 组长卡 + 下属分支
+            function leadGroup(lead) {
+                var inner = card(lead.name, lead.role, 'lead-card');
+                if (lead.members && lead.members.length) {
+                    inner += branch(lead.members.map(member).join(''));
+                }
+                return leaf(inner);
+            }
+
+            // 构建完整树
+            var html = card(project.owner || '负责人', '项目负责人', 'owner-card');
+            if (project.team && project.team.length) {
+                html += branch(project.team.map(leadGroup).join(''));
+            }
+
+            overlay.innerHTML =
+                '<div class="org-modal">' +
+                    '<div class="org-modal-title">' +
+                        project.name + ' - 组织架构' +
+                        '<button class="org-modal-close" onclick="this.closest(\'.org-modal-overlay\').remove()">&times;</button>' +
+                    '</div>' +
+                    '<div class="org-chart">' + html + '</div>' +
+                '</div>';
+
+            document.body.appendChild(overlay);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
