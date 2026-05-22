@@ -178,7 +178,7 @@
         }
 
         .stat-card {
-            flex: 0 0 auto;
+            flex: 1 1 0;
             min-width: 110px;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 0.5rem;
@@ -2284,14 +2284,18 @@
                 });
             }
 
-            // 移除旧的今日列 overlay
+            // 移除旧的今日列 overlay 并取消待执行的 RAF
             let oldOverlay = document.querySelector('.today-column-overlay');
             if (oldOverlay) oldOverlay.remove();
+            if (window._ganttOverlayRAF) { cancelAnimationFrame(window._ganttOverlayRAF); window._ganttOverlayRAF = null; }
 
             // 绘制今日列整列 overlay — position:fixed，直接用视口坐标
             if (todayTh) {
                 function updateOverlay() {
+                    // todayTh 可能已被后续 render 移出 DOM，防御检查
+                    if (!todayTh.isConnected) return;
                     const thRect = todayTh.getBoundingClientRect();
+                    if (thRect.width === 0) return;
                     const tbody = document.getElementById('gantt-table-body');
                     const tbodyRect = tbody.getBoundingClientRect();
                     const containerRect = document.querySelector('.gantt-table-container').getBoundingClientRect();
@@ -2313,7 +2317,8 @@
                     overlay.style.height = overlayHeight + 'px';
                 }
 
-                requestAnimationFrame(updateOverlay);
+                if (window._ganttOverlayRAF) cancelAnimationFrame(window._ganttOverlayRAF);
+                window._ganttOverlayRAF = requestAnimationFrame(updateOverlay);
                 // 滚动或缩放时更新位置
                 window.removeEventListener('scroll', window._ganttOverlayScroll);
                 window.removeEventListener('resize', window._ganttOverlayResize);
