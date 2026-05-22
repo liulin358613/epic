@@ -218,6 +218,11 @@
             background: linear-gradient(135deg, #ECFDF5 0%, #A7F3D0 100%);
         }
 
+        .stat-card.cancelled {
+            border-left: 3px solid #9CA3AF;
+            background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
+        }
+
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
@@ -700,9 +705,10 @@
             border-radius: 0.75rem;
             padding: 1.75rem;
             min-width: 420px;
-            max-width: 680px;
+            max-width: min(95vw, 1200px);
             max-height: 85vh;
             overflow-y: auto;
+            overflow-x: auto;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
         }
 
@@ -771,6 +777,11 @@
         .org-card.member-card {
             background: #ECFDF5;
             border: 1.5px solid #6EE7B7;
+        }
+
+        .org-card.sub-card {
+            background: #FFF7ED;
+            border: 1.5px solid #FDBA74;
         }
 
         .org-card-info {
@@ -874,6 +885,11 @@
         .status-tag.delayed-done-tag {
             background-color: #f5f3ff;
             color: #7c3aed;
+        }
+
+        .status-tag.cancelled-tag {
+            background-color: #f3f4f6;
+            color: #6b7280;
         }
 
         .status-desc {
@@ -1272,6 +1288,10 @@
                         <div class="stat-value" data-stat="completed">-</div>
                         <div class="stat-label">按时完成</div>
                     </div>
+                    <div class="stat-card cancelled">
+                        <div class="stat-value" data-stat="cancelled">-</div>
+                        <div class="stat-label">已取消</div>
+                    </div>
                 </div>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
@@ -1288,6 +1308,7 @@
                             <option value="in-progress">进行中</option>
                             <option value="not-started">未开始</option>
                             <option value="completed">已完成</option>
+                            <option value="cancelled">已取消</option>
                         </select>
                     </div>
                     <div class="search-divider"></div>
@@ -1387,6 +1408,21 @@
                             </tr>
                             <tr>
                                 <td class="project-col">PLC自动化控制平台</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="project-col">智能工厂全栈解决方案</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="project-col">机器人视觉检测平台</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="project-col">AGV集群调度系统（已取消）</td>
                                 <td class="nav-col"></td>
                                 <td class="nav-col"></td>
                             </tr>
@@ -1604,6 +1640,112 @@
                 completed: 'delayed',
                 completedDate: { month: 5, day: 15 },
                 isDelayed: true
+            },
+            {
+                name: '智能工厂全栈解决方案',
+                owner: '张总工',
+                team: [
+                    {
+                        name: '李博士', role: '技术总监', members: [
+                            {
+                                name: '王工', role: '研发经理', members: [
+                                    {
+                                        name: '赵明', role: '高级工程师', members: [
+                                            { name: '小刘', role: '研发组长', members: [
+                                                { name: '小王', role: '助理工程师' },
+                                                { name: '小吴', role: '助理工程师' }
+                                            ]}
+                                        ]
+                                    },
+                                    {
+                                        name: '钱伟', role: '高级工程师', members: [
+                                            { name: '小李', role: '研发组长', members: [
+                                                { name: '小周', role: '助理工程师' }
+                                            ]}
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                name: '韩工', role: '测试经理', members: [
+                                    {
+                                        name: '沈刚', role: '测试工程师', members: [
+                                            { name: '小冯', role: '汇总协调', members: [
+                                                { name: '小朱', role: '实习生' },
+                                                { name: '小邓', role: '实习生' }
+                                            ]}
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '陈总', role: '集成总监', members: [
+                            {
+                                name: '吕工', role: '集成经理', members: [
+                                    {
+                                        name: '小曾', role: '系统集成', members: [
+                                            { name: '程工', role: '汇总组长', members: [
+                                                { name: '小宋', role: '集成工程师' }
+                                            ]}
+                                        ]
+                                    },
+                                    { name: '小崔', role: '联调测试' }
+                                ]
+                            }
+                        ]
+                    },
+                    { name: '余工', role: '运维总监' }
+                ],
+                projectStart: { month: 5, day: 2 },
+                projectEnd: { month: 6, day: 5 },
+                actualStart: { month: 5, day: 3 },
+                delayDays: 0
+            },
+            {
+                name: '机器人视觉检测平台',
+                owner: '周总',
+                team: [
+                    {
+                        name: '郑专家', role: '技术顾问'
+                    },
+                    {
+                        name: '吴博士', role: '研发总监', members: [
+                            {
+                                name: '赵云', role: '算法组长', members: [
+                                    { name: '小黄', role: '算法工程师' },
+                                    { name: '小杨', role: '数据工程师' }
+                                ]
+                            },
+                            {
+                                name: '孙工', role: '工程组长', members: [
+                                    { name: '小马', role: '机械工程师' },
+                                    {
+                                        name: '小胡', role: '电气工程师', members: [
+                                            { name: '小林', role: '实习生' },
+                                            { name: '小罗', role: '实习生' }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                projectStart: { month: 5, day: 10 },
+                projectEnd: { month: 5, day: 28 },
+                actualStart: { month: 5, day: 10 },
+                delayDays: 0
+            },
+            {
+                name: 'AGV集群调度系统（已取消）',
+                owner: '黄总',
+                team: [],
+                projectStart: { month: 5, day: 1 },
+                projectEnd: { month: 5, day: 1 },
+                actualStart: null,
+                delayDays: 0,
+                cancelled: true
             }
         ];
 
@@ -1622,8 +1764,13 @@
             var delayedDone = 0;
             var normal = 0;
             var notStarted = 0;
+            var cancelled = 0;
 
             projectData.forEach(function(project) {
+                if (project.cancelled) {
+                    cancelled++;
+                    return;
+                }
                 var pe = offsetDay(project.projectEnd.month, project.projectEnd.day);
                 var projectEnd = new Date(2026, pe.month - 1, pe.day);
 
@@ -1653,6 +1800,7 @@
                 if (stat === 'delayed-done') el.textContent = delayedDone;
                 if (stat === 'normal') el.textContent = normal;
                 if (stat === 'not-started') el.textContent = notStarted;
+                if (stat === 'cancelled') el.textContent = cancelled;
             });
         }
 
@@ -1676,13 +1824,17 @@
                         if (sDate < pStart || sDate > pEnd) return;
                     }
                     if (searchFilter.status) {
-                        var tip = getProjectTooltip(project);
-                        if (searchFilter.status === 'completed') {
-                            if (tip.statusText.indexOf('已完成') !== 0) return;
-                        } else if (searchFilter.status === 'not-started') {
-                            if (tip.statusText.indexOf('未开始') !== 0) return;
-                        } else if (searchFilter.status === 'in-progress') {
-                            if (tip.statusText.indexOf('进行中') !== 0) return;
+                        if (searchFilter.status === 'cancelled') {
+                            if (!project.cancelled) return;
+                        } else {
+                            var tip = getProjectTooltip(project);
+                            if (searchFilter.status === 'completed') {
+                                if (tip.statusText.indexOf('已完成') !== 0) return;
+                            } else if (searchFilter.status === 'not-started') {
+                                if (tip.statusText.indexOf('未开始') !== 0) return;
+                            } else if (searchFilter.status === 'in-progress') {
+                                if (tip.statusText.indexOf('进行中') !== 0) return;
+                            }
                         }
                     }
                 }
@@ -1729,7 +1881,11 @@
                 var tagClass = '';
                 var progressClass = '';
 
-                if (tip.statusText.indexOf('已完成') === 0) {
+                if (project.cancelled) {
+                    statusLabel = '已取消';
+                    tagClass = 'cancelled-tag';
+                    statusDesc = '';
+                } else if (tip.statusText.indexOf('已完成') === 0) {
                     statusLabel = '已完成';
                     statusDesc = tip.statusText.replace(/^已完成，?/, '');
                     if (tip.statusClass === 'delayed') {
@@ -1766,7 +1922,9 @@
                 // 进度百分比
                 // 公式：实际天数 ≤ 预计天数 → 实际/预计；实际天数 > 预计天数 → 预计/实际
                 var progressPercent = 0;
-                if (project.completed) {
+                if (project.cancelled) {
+                    progressPercent = 0;
+                } else if (project.completed) {
                     progressPercent = 100;
                 } else if (project.actualStart) {
                     var as = offsetDay(project.actualStart.month, project.actualStart.day);
@@ -1783,23 +1941,31 @@
                     }
                 }
 
-                var timeStr = formatDate(ps.month, ps.day) + ' ~ ' + formatDate(pe.month, pe.day);
-                // 递归统计团队总人数
+                var timeStr = project.cancelled ? '-' : (formatDate(ps.month, ps.day) + ' ~ ' + formatDate(pe.month, pe.day));
+                // 递归统计团队总人数（已取消项目只有负责人1人）
                 function countTeam(team) {
                     if (!team || !team.length) return 0;
                     var total = 0;
                     team.forEach(function(t) {
-                        total += 1; // 组长自己
-                        if (t.members && t.members.length) total += t.members.length;
+                        total += 1;
+                        if (t.members && t.members.length) total += countTeam(t.members);
                     });
                     return total;
                 }
-                var memberCount = project.team ? countTeam(project.team) : 0;
+                var memberCount = project.cancelled ? 1 : (project.team ? countTeam(project.team) : 0);
 
                 var item = document.createElement('div');
                 item.className = 'list-item';
                 var globalIdx = projectData.indexOf(project);
                 item.setAttribute('data-project-index', globalIdx);
+                var progressHtml = project.cancelled
+                    ? '<div class="progress-bar-container"><span class="progress-text">-</span></div>'
+                    : ('<div class="progress-bar-container">' +
+                        '<div class="progress-bar">' +
+                            '<div class="progress-fill ' + progressClass + '" style="width:' + progressPercent + '%"></div>' +
+                        '</div>' +
+                        '<span class="progress-text">' + progressPercent + '%</span>' +
+                    '</div>');
                 item.innerHTML =
                     '<div class="project-name">' + project.name + '</div>' +
                     '<div class="project-owner">' + (project.owner || '-') + '</div>' +
@@ -1810,12 +1976,7 @@
                             (statusDesc ? '<div class="status-desc">' + statusDesc + '</div>' : '') +
                         '</div>' +
                     '</div>' +
-                    '<div class="progress-bar-container">' +
-                        '<div class="progress-bar">' +
-                            '<div class="progress-fill ' + progressClass + '" style="width:' + progressPercent + '%"></div>' +
-                        '</div>' +
-                        '<span class="progress-text">' + progressPercent + '%</span>' +
-                    '</div>' +
+                    progressHtml +
                     '<div class="project-time">' + timeStr + '</div>';
 
                 container.appendChild(item);
@@ -1867,18 +2028,15 @@
         }
 
         function goToPage(page) {
-            var filteredData = getFilteredProjects();
-            var total = filteredData.length;
-            var totalPages = Math.ceil(total / pageSize) || 1;
-            if (page < 1) page = 1;
-            if (page > totalPages) page = totalPages;
             currentPage = page;
+            applySearchFilter();
             renderProjectList();
         }
 
         function changePageSize(val) {
             pageSize = parseInt(val);
             currentPage = 1;
+            applySearchFilter();
             renderProjectList();
         }
 
@@ -1891,44 +2049,22 @@
 
         function applySearchFilter() {
             var rows = document.querySelectorAll('#gantt-table-body tr');
-            if (!searchFilter) {
-                rows.forEach(function(row) { row.style.display = ''; });
-                if (window._ganttOverlayResize) window._ganttOverlayResize();
-                return;
-            }
+            var filtered = getFilteredProjects();
+            var total = filtered.length;
+            var totalPages = Math.ceil(total / pageSize) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+            var startIdx = (currentPage - 1) * pageSize;
+            var endIdx = Math.min(startIdx + pageSize, total);
+            var pageData = filtered.slice(startIdx, endIdx);
 
-            var searchName = (searchFilter.name || '').toLowerCase();
-            var searchDate = searchFilter.date || '';
-            var searchStatus = searchFilter.status || '';
+            var visibleSet = {};
+            pageData.forEach(function(p) {
+                visibleSet[projectData.indexOf(p)] = true;
+            });
 
             rows.forEach(function(row, index) {
-                if (!projectData[index]) { row.style.display = ''; return; }
-                var project = projectData[index];
-
-                var nameMatch = !searchName || project.name.toLowerCase().indexOf(searchName) !== -1;
-                var dateMatch = true;
-                if (searchDate) {
-                    var ps = offsetDay(project.projectStart.month, project.projectStart.day);
-                    var pe = offsetDay(project.projectEnd.month, project.projectEnd.day);
-                    var pStart = new Date(2026, ps.month - 1, ps.day);
-                    var pEnd = new Date(2026, pe.month - 1, pe.day);
-                    var parts = searchDate.split('-');
-                    var sDate = new Date(2026, parseInt(parts[1]) - 1, parseInt(parts[2]));
-                    dateMatch = sDate >= pStart && sDate <= pEnd;
-                }
-                var statusMatch = true;
-                if (searchStatus) {
-                    var tip = getProjectTooltip(project);
-                    if (searchStatus === 'completed') {
-                        statusMatch = tip.statusText.indexOf('已完成') === 0;
-                    } else if (searchStatus === 'not-started') {
-                        statusMatch = tip.statusText.indexOf('未开始') === 0;
-                    } else if (searchStatus === 'in-progress') {
-                        statusMatch = tip.statusText.indexOf('进行中') === 0;
-                    }
-                }
-
-                row.style.display = (nameMatch && dateMatch && statusMatch) ? '' : 'none';
+                row.style.display = visibleSet[index] ? '' : 'none';
             });
 
             if (window._ganttOverlayResize) window._ganttOverlayResize();
@@ -1937,6 +2073,7 @@
         function getDateStatus(projectIndex, date) {
             var project = projectData[projectIndex];
             if (!project) return '';
+            if (project.cancelled) return '';
 
             var today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -2163,6 +2300,10 @@
             let statusText = '';
             let statusClass = '';
 
+            if (project.cancelled) {
+                return { projectName: project.name, projectRange: '-', actualStartStr: '-', statusText: '已取消', statusClass: '' };
+            }
+
             if (project.completed) {
                 // 已完成项目：用实际完成日期计算
                 var cd = offsetDay(project.completedDate.month, project.completedDate.day);
@@ -2341,25 +2482,30 @@
                 '</div>';
             }
 
-            // 成员节点
-            function member(m) {
-                return leaf(card(m.name, m.role, 'member-card'));
-            }
-
-            // 组长分组: 组长卡 + 下属分支
-            function leadGroup(lead) {
-                var inner = card(lead.name, lead.role, 'lead-card');
-                if (lead.members && lead.members.length) {
-                    inner += branch(lead.members.map(member).join(''));
+            // 递归渲染节点（depth: 0=Owner, 1=L2, ...）
+            function renderNode(node, depth) {
+                var cardClass;
+                if (depth === 0) {
+                    cardClass = 'owner-card';
+                } else if (node.members && node.members.length) {
+                    cardClass = depth <= 2 ? 'lead-card' : 'sub-card';
+                } else {
+                    cardClass = 'member-card';
                 }
-                return leaf(inner);
+
+                var html = card(node.name, node.role, cardClass);
+                if (node.members && node.members.length) {
+                    html += branch(node.members.map(function(m) {
+                        return renderNode(m, depth + 1);
+                    }).join(''));
+                }
+
+                // Owner 不加 leaf 包裹（不需要落线），其他节点需要
+                return depth === 0 ? html : leaf(html);
             }
 
             // 构建完整树
-            var html = card(project.owner || '负责人', '项目负责人', 'owner-card');
-            if (project.team && project.team.length) {
-                html += branch(project.team.map(leadGroup).join(''));
-            }
+            var html = renderNode({ name: project.owner || '负责人', role: '项目负责人', members: project.team }, 0);
 
             overlay.innerHTML =
                 '<div class="org-modal">' +
@@ -2376,6 +2522,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderGanttTable();
             updateStatsCards();
+            applySearchFilter();
             renderProjectList();
         });
         window.addEventListener('resize', renderGanttTable);
