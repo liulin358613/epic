@@ -2397,14 +2397,14 @@
                 const delayFinishDays = Math.ceil((completedDate.getTime() - endDate.getTime()) / (24 * 60 * 60 * 1000));
 
                 if (delayFinishDays > 0) {
-                    statusText = '已完成，延期 ' + delayFinishDays + ' 天';
+                    statusText = '已完成，延期 ' + delayFinishDays + ' 天完成';
                     statusClass = 'delayed';
                 } else if (delayFinishDays === 0) {
-                    statusText = '已完成，按时交付';
+                    statusText = '已完成，按时完成';
                     statusClass = 'active';
                 } else {
                     const earlyFinishDays = Math.ceil((endDate.getTime() - completedDate.getTime()) / (24 * 60 * 60 * 1000));
-                    statusText = '已完成，提前 ' + earlyFinishDays + ' 天';
+                    statusText = '已完成，提前 ' + earlyFinishDays + ' 天完成';
                     statusClass = 'active';
                 }
                 return { projectName: project.name, projectRange, actualStartStr, statusText, statusClass, completed: project.completed, completedDate: cd };

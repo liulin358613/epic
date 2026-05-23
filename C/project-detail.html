@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>项目详情 - 爱沛柯尔</title>
+    <style>
+        /* ========== 响应式基础字体 ========== */
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        @media (max-width: 1440px) { html { font-size: 15px; } }
+        @media (max-width: 1366px) { html { font-size: 14px; } }
+        @media (max-width: 1280px) { html { font-size: 13px; } }
+        @media (max-width: 1024px) { html { font-size: 12px; } }
+        @media (max-width: 768px) { html { font-size: 11px; } }
+        @media (max-width: 600px) { html { font-size: 10px; } }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft Yahei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+
+        :root {
+            --primary: #0051D9;
+            --primary-light: #E8F0FE;
+            --success: #52C41A;
+            --warning: #FAAD14;
+            --danger: #FF4D4F;
+            --text: #1D2129;
+            --text-secondary: #666;
+            --text-light: #999;
+            --bg: #F2F3F5;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+            --radius: 0.75rem;
+            --shadow: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        body { background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* ========== 主容器 ========== */
+        .page-container {
+            margin: 0 auto;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* ========== 卡片通用 ========== */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.875rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            min-height: 3rem;
+            box-sizing: border-box;
+        }
+        .card-header .title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-header .title::before {
+            content: '';
+            width: 4px;
+            height: 1rem;
+            align-self: stretch;
+            background: var(--primary);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .card-body { padding: 1.25rem; }
+
+        /* ========== 项目概述 ========== */
+        .overview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .overview-table tr { border-bottom: 1px solid #F0F0F0; }
+        .overview-table tr:last-child { border-bottom: none; }
+        .overview-table td {
+            padding: 0.625rem 0.75rem;
+            vertical-align: top;
+        }
+        .overview-table .ov-label {
+            color: var(--text-light);
+            white-space: nowrap;
+            width: 5rem;
+            font-size: 0.8125rem;
+        }
+        .overview-table .ov-value {
+            color: var(--text);
+            font-weight: 500;
+        }
+        .overview-table .ov-value.primary { color: var(--primary); font-weight: 600; }
+        .overview-desc {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ========== 统计数字卡片 ========== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #3377EE 100%);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .stat-card.orange { background: linear-gradient(135deg, var(--warning) 0%, #F59E0B 100%); }
+        .stat-card.green { background: linear-gradient(135deg, var(--success) 0%, #34D058 100%); }
+        .stat-card.red { background: linear-gradient(135deg, var(--danger) 0%, #EE5A5A 100%); }
+        .stat-card.warn-alert {
+            background: linear-gradient(135deg, #FFF1F0 0%, #FFEDED 100%) !important;
+            border: 1px solid #FF4D4F !important;
+            animation: warn-glow 1.2s ease-in-out infinite;
+            color: #FF4D4F !important;
+        }
+        @keyframes warn-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,77,79,0.4); }
+            50% { box-shadow: 0 0 8px 2px rgba(255,77,79,0.5); }
+        }
+        .stat-card.warn-alert .stat-num { color: #FF4D4F !important; font-weight: 700; }
+        .stat-card.warn-alert .stat-label { color: #FF4D4F !important; }
+        .stat-card .stat-num { font-size: 1.5rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.8125rem; opacity: 0.85; }
+
+        /* ========== 甘特图 ========== */
+        .gantt-wrapper {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 28rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+        .gantt-table {
+            width: 100%;
+            min-width: 50rem;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+        .gantt-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: #F7F8FA;
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+        .gantt-table tbody td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #F0F0F0;
+            white-space: nowrap;
+        }
+        .gantt-table tbody tr:hover { background: var(--primary-light); }
+
+        /* 甘特进度条 */
+        .gantt-bar-cell { position: relative; height: 2rem; }
+        .gantt-bar-bg {
+            position: absolute;
+            top: 50%;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 0.5rem;
+            background: #EEF0F4;
+            border-radius: 0.25rem;
+            transform: translateY(-50%);
+        }
+        .gantt-bar-fill {
+            height: 100%;
+            border-radius: 0.25rem;
+            transition: width 0.4s ease;
+        }
+        .gantt-bar-fill.blue { background: linear-gradient(90deg, #0051D9, #3377EE); }
+        .gantt-bar-fill.green { background: linear-gradient(90deg, #52C41A, #73D13D); }
+        .gantt-bar-fill.orange { background: linear-gradient(90deg, #FAAD14, #F59E0B); }
+        .gantt-bar-fill.red { background: linear-gradient(90deg, #FF4D4F, #EE5A5A); }
+        .gantt-pct {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* 状态标签 */
+        .status-tag {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-tag.blue { background: #E8F0FE; color: #0051D9; }
+        .status-tag.green { background: #F0F9EB; color: #52C41A; }
+        .status-tag.orange { background: #FFF7E6; color: #FA8C16; }
+        .status-tag.red { background: #FFF1F0; color: #FF4D4F; }
+        .status-tag.gray { background: #F5F5F5; color: #999; }
+        .status-tag.yellow { background: #FFFBE6; color: #FAAD14; }
+        .warn-text { font-size: 0.75rem; margin-left: 0.375rem; }
+        .warn-text.red-warn { color: #CF1322; }
+        .warn-text.yellow-warn { color: #D48806; }
+        .warn-text.green-warn { color: #389E0D; }
+
+        /* ========== SOP流程 ========== */
+        /* ========== 底部两列 ========== */
+        .bottom-grid { display: flex; gap: 1.25rem; align-items: flex-start; }
+        .bottom-grid > .card { flex: 1; min-width: 0; }
+        /* ========== 反馈按节点分组 ========== */
+        .feedback-by-node { display: flex; flex-direction: column; gap: 1rem; }
+        .feedback-node-group {
+            background: var(--bg);
+            border-radius: 0.5rem;
+            padding: 0.875rem 1rem;
+        }
+        .fbg-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+        .fbg-step {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 1.25rem; height: 1.25rem; border-radius: 50%;
+            background: var(--primary); color: white;
+            font-size: 0.6875rem; font-weight: 700; flex-shrink: 0;
+        }
+        .fbg-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+        .feedback-node-group .feedback-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        /* ========== SOP流程（支持并行节点） ========== */
+        .sop-timeline {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        /* 贯穿所有节点的横向连线 */
+        .sop-timeline::before {
+            content: '';
+            position: absolute;
+            top: calc(0.5rem + 1rem - 1px);
+            left: calc(0.125rem + 0.75rem + 1rem);
+            right: calc(0.125rem + 0.75rem + 1rem);
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+        /* 主节点列容器 */
+        .sop-column {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0 0.125rem;
+            z-index: 1;
+        }
+        /* 主节点圆圈 */
+        .sop-column .node-dot {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: var(--white);
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            margin-left: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .sop-column.completed .node-dot { color: #fff; }
+        .sop-column.completed.completed-green .node-dot { color: #fff; }
+        .sop-column.completed.completed-red .node-dot { color: #fff; }
+        .sop-column.pending .node-dot { color: #999; }
+        .sop-column.cancelled .node-dot { color: #999; }
+        /* 圆圈颜色状态 */
+        .sop-column.completed .node-dot { background: var(--primary); border-color: var(--primary); }
+        .sop-column.completed.completed-green .node-dot { background: #52C41A; border-color: #52C41A; }
+        .sop-column.completed.completed-red .node-dot { background: #FF4D4F; border-color: #FF4D4F; }
+        .sop-column.active .node-dot { background: var(--white); border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,81,217,0.15); }
+        .sop-column.active.active-green .node-dot { background: #fff; border-color: #52C41A; box-shadow: 0 0 0 4px rgba(82,196,26,0.15); }
+        .sop-column.active.active-yellow .node-dot { background: #fff; border-color: #FAAD14; box-shadow: 0 0 0 4px rgba(250,173,20,0.15); }
+        .sop-column.pending .node-dot { background: #F5F5F5; border-color: #D9D9D9; }
+        .sop-column.cancelled { opacity: 0.5; }
+        .sop-column.cancelled .node-dot { background: #E5E7EB; border-color: #E5E7EB; }
+        /* 主节点卡片 */
+        .sop-column .node-card {
+            background: var(--bg);
+            border-radius: 0 0.5rem 0.5rem 0.5rem;
+            padding: 0.75rem;
+            text-align: left;
+            width: calc(100% - 2.5rem);
+            box-sizing: border-box;
+            transition: box-shadow 0.2s;
+            margin-top: 0;
+            margin-left: 2.5rem;
+            position: relative;
+        }
+        /* 圆圈到卡片的竖折连线（L型折线） */
+        .sop-column .node-card::before {
+            content: '';
+            position: absolute;
+            top: calc(1rem - 1px);
+            left: calc(-0.625rem - 1px);
+            width: calc(0.625rem + 2px);
+            height: calc(1rem + 2px);
+            border-left: 2px solid var(--border);
+            border-bottom: 2px solid var(--border);
+            border-bottom-left-radius: 0.25rem;
+            background: transparent;
+            box-sizing: border-box;
+        }
+        /* 从圆圈底部到卡片折线起点的垂直线（无缝衔接::before） */
+        .sop-column .node-card::after {
+            content: '';
+            position: absolute;
+            top: -1rem;
+            left: calc(-0.625rem - 1px);
+            width: 2px;
+            height: calc(2rem - 1px);
+            background: var(--border);
+        }
+        .sop-column .node-card:hover { box-shadow: var(--shadow-md); }
+        /* 同级第二个卡片 */
+        .sop-column .node-card-sibling {
+            margin-top: 0.5rem;
+        }
+        .sop-column .node-card-sibling::after {
+            display: none;
+        }
+        .sop-column .node-card-sibling::before {
+            top: calc(1rem - 1px);
+            height: calc(1rem + 2px);
+        }
+        /* 贯穿竖线：从圆圈底部到第二卡片折线处（高度由JS动态计算） */
+        .sop-column .node-connector {
+            position: absolute;
+            top: calc(0.5rem + 2rem);
+            left: calc(0.125rem + 0.75rem + 1rem - 1px);
+            width: 2px;
+            height: 0;
+            background: var(--border);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .sop-column .node-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+            text-align: left;
+        }
+        .sop-column .node-title .status-tag { font-size: 0.6875rem; padding: 0.0625rem 0.375rem; }
+        .sop-column .node-title .warn-text { font-size: 0.6875rem; margin-left: 0; }
+        .sop-column .node-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.375rem;
+        }
+        .sop-column .node-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            font-size: 0.6875rem;
+            color: var(--text-light);
+            text-align: left;
+        }
+        .sop-column .node-meta span { display: flex; align-items: center; gap: 0.25rem; justify-content: flex-start; }
+        .sop-column.cancelled .node-title { text-decoration: line-through; }
+
+        /* ========== 项目反馈 ========== */
+        .feedback-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .feedback-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            background: var(--bg);
+            border-radius: 0.5rem;
+            align-items: flex-start;
+        }
+        .feedback-avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .feedback-content { flex: 1; }
+        .feedback-content .fb-name {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .feedback-content .fb-time {
+            font-size: 0.6875rem;
+            color: var(--text-light);
+            margin-left: 0.5rem;
+        }
+        .feedback-content .fb-text {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            line-height: 1.6;
+        }
+
+        /* ========== 现场图片/视频 ========== */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+            gap: 0.75rem;
+        }
+        .media-item {
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: var(--bg);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .media-item:hover { transform: scale(1.02); box-shadow: var(--shadow-md); }
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .media-item .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+            color: white;
+            font-size: 0.6875rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .media-item .video-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* ========== 成员组织架构 ========== */
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            padding: 1rem 0;
+        }
+        .org-level { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .org-connector {
+            width: 2px;
+            height: 1.5rem;
+            background: var(--border);
+            margin: 0 auto;
+        }
+        .org-connector-h {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 1.5rem;
+        }
+        .org-connector-h .line {
+            width: 4rem;
+            height: 2px;
+            background: var(--border);
+        }
+        .org-connector-h .line-center {
+            width: 2px;
+            height: 100%;
+            background: var(--border);
+        }
+        .org-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .org-node .avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: white;
+        }
+        .org-node .avatar.blue { background: linear-gradient(135deg, #0051D9, #3377EE); }
+        .org-node .avatar.green { background: linear-gradient(135deg, #52C41A, #73D13D); }
+        .org-node .avatar.orange { background: linear-gradient(135deg, #FAAD14, #F59E0B); }
+        .org-node .avatar.purple { background: linear-gradient(135deg, #722ED1, #9254DE); }
+        .org-node .name { font-size: 0.8125rem; font-weight: 600; color: var(--text); }
+        .org-node .role { font-size: 0.6875rem; color: var(--text-light); }
+
+        /* ========== 其他信息（风险/文档/里程碑） ========== */
+        .risk-list { display: flex; flex-direction: column; gap: 0.625rem; }
+        .risk-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 0.5rem;
+            font-size: 0.8125rem;
+        }
+        .risk-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .risk-dot.high { background: var(--danger); }
+        .risk-dot.medium { background: var(--warning); }
+        .risk-dot.low { background: var(--primary); }
+
+        .doc-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem 0.875rem;
+            background: var(--bg);
+            border-radius: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .doc-item:hover { background: var(--primary-light); color: var(--primary); }
+
+        .milestone-list { display: flex; flex-direction: column; gap: 0; }
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 0.8125rem;
+        }
+        .milestone-item:last-child { border-bottom: none; }
+        .milestone-dot {
+            width: 0.625rem;
+            height: 0.625rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .milestone-dot.done { background: var(--success); }
+        .milestone-dot.current { background: var(--primary); box-shadow: 0 0 0 3px rgba(0,81,217,0.15); }
+        .milestone-dot.pending { background: var(--border); }
+
+        /* ========== 按钮 ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.4375rem 0.875rem;
+            border-radius: 0.375rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .btn-primary:hover { background: #003CB3; color: white; }
+
+        /* ========== 两栏布局 ========== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+            .overview-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* ========== 列表甘特图（与dashboard一致） ========== */
+        .gantt-detail-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+        .gantt-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+        #gantt-detail-table.gantt-table th,
+        #gantt-detail-table.gantt-table td {
+            padding: 0;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid var(--border);
+            font-size: 0.8125rem;
+            white-space: nowrap;
+            height: 1.375rem;
+            line-height: 1.375rem;
+            box-sizing: border-box;
+        }
+        #gantt-detail-table.gantt-table th {
+            background-color: #FAFAFA;
+            font-weight: 600;
+            color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 -1px 0 0 var(--border), 0 1px 0 0 var(--border);
+            height: 1.375rem;
+        }
+        #gantt-detail-table.gantt-table th.date-header.weekend,
+        #gantt-detail-table.gantt-table td.date-cell.weekend {
+            background-color: #FFF5F5;
+            color: #FF4D4F;
+        }
+        #gantt-detail-table.gantt-table th.date-header {
+            text-align: center;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        #gantt-detail-table.gantt-table tbody tr { height: 1.375rem; }
+        #gantt-detail-table.gantt-table td.date-cell.project { background-color: #909399; color: #FFFFFF; }
+        #gantt-detail-table.gantt-table td.date-cell.active { background-color: #52C41A; color: #FFFFFF; }
+        #gantt-detail-table.gantt-table td.date-cell.delayed { background-color: #FF4D4F; color: #FFFFFF; }
+        #gantt-detail-table.gantt-table td.date-cell.warning { background-color: #FAAD14; color: #FFFFFF; }
+        #gantt-detail-table.gantt-table td.date-cell.completed-gantt { background-color: rgba(24, 144, 255, 0.5); color: #FFFFFF; }
+        #gantt-detail-table.gantt-table .nav-col {
+            width: 2.5rem;
+            min-width: 2.5rem;
+            padding: 0;
+            background-color: #F5F7FA;
+            height: 1.375rem;
+        }
+        #gantt-detail-table.gantt-table .nav-left-col { border-right: 1px solid var(--border); }
+        #gantt-detail-table.gantt-table .nav-right-col { border-left: 1px solid var(--border); }
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            padding: 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .today-column-overlay {
+            position: fixed;
+            pointer-events: none;
+            border: 3px dashed #1890FF;
+            border-radius: 3px;
+            z-index: 99999;
+        }
+        .legend-container { display: flex; align-items: center; gap: 0.75rem; padding: 0.25rem 0; }
+        .legend-item { display: flex; align-items: center; gap: 0.25rem; }
+        .legend-color { width: 12px; height: 12px; border-radius: 2px; }
+        .legend-text { font-size: 0.75rem; color: var(--text-secondary); }
+
+        .warning-info-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 0.5rem 1rem;
+            margin-top: 0.75rem;
+            background-color: #FAFAFA;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 0.8125rem;
+            flex-wrap: wrap;
+        }
+        .warning-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .warning-info-item .wi-label {
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+        .warning-info-item .wi-value {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .warning-info-item .wi-warn-yellow {
+            color: #FAAD14;
+            font-weight: 700;
+        }
+        .warning-info-item .wi-warn-red {
+            color: #FF4D4F;
+            font-weight: 700;
+        }
+        .warning-banner {
+            padding: 0.375rem 0.75rem;
+            background: linear-gradient(90deg, #FFF1F0, #FFEDED);
+            border: none;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #FF4D4F;
+            white-space: nowrap;
+            margin-left: 1.5rem;
+        }
+        .warning-icon { font-size: 1.1rem; }
+        .warning-msg { flex: 1; }
+
+        /* ========== 占位图 ========== */
+        .placeholder-img {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #E8F0FE 0%, #D6E4FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+
+    <!-- ===== 1. 项目概述 ===== -->
+    <div class="card">
+        <div class="card-body" style="padding:1.25rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+                <div style="font-size:1.25rem;font-weight:700;color:var(--text);">爱沛柯尔智能制造升级项目</div>
+                <span class="status-tag blue">进行中</span>
+            </div>
+            <div class="overview-desc" style="margin-top:0;margin-bottom:1rem;">
+                <strong>项目概述：</strong>本项目旨在对爱沛柯尔现有制造产线进行智能化升级，涵盖自动化设备引进、MES系统部署、数据采集平台建设及人员培训四大模块。项目完成后预计生产效率提升30%，人力成本降低20%，产品不良率降低至0.5%以下。
+            </div>
+            <table class="overview-table" style="margin-bottom:0;">
+                    <tr>
+                        <td class="ov-label">发起人</td>
+                        <td class="ov-value">张明远</td>
+                        <td class="ov-label" style="padding-left:0.75rem;">发起时间</td>
+                        <td class="ov-value">2026-05-04</td>
+                        <td class="ov-label" style="padding-left:0.75rem;">实际开始时间</td>
+                        <td class="ov-value">2026-05-01</td>
+                        <td class="ov-label" style="padding-left:0.75rem;">项目周期</td>
+                        <td class="ov-value">2026-05-01 ~ 2026-05-30</td>
+                        <td class="ov-label" style="padding-left:0.75rem;">项目成员</td>
+                        <td class="ov-value">18 人</td>
+                    </tr>
+                </table>
+            <!-- 统计数字 -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-num" id="stat-progress">--</span>
+                    <span class="stat-label">总体进度</span>
+                </div>
+                <div class="stat-card green">
+                    <span class="stat-num" id="stat-days">--</span>
+                    <span class="stat-label" id="stat-days-label">总天数 / 已进行天数</span>
+                </div>
+                <div class="stat-card orange">
+                    <span class="stat-num" id="stat-cost">¥128万</span>
+                    <span class="stat-label">项目成本（已使用）</span>
+                </div>
+                <div class="stat-card red">
+                    <span class="stat-num">12</span>
+                    <span class="stat-label">待处理风险</span>
+                </div>
+
+            
+
+
+        </div>
+
+    <!-- ===== 项目进度甘特图（与dashboard一致） ===== -->
+    <div class="card">
+        <div class="card-body" style="padding:1rem;position:relative;"><div class="legend-container" style="margin-bottom:0.5rem;">
+                        <div class="legend-item"><span class="legend-color" style="background-color:#909399;"></span><span class="legend-text">项目日期</span></div>
+                        <div class="legend-item"><span class="legend-color" style="background-color:#52C41A;"></span><span class="legend-text">开始日期</span></div>
+                        <div class="legend-item"><span class="legend-color" style="background-color:#FF4D4F;"></span><span class="legend-text">已延期天数</span></div>
+                        <div class="legend-item"><span class="legend-color" style="background-color:#FAAD14;"></span><span class="legend-text">可能延期天数</span></div>
+                    </div>
+                    <div class="gantt-detail-container">
+                        <table id="gantt-detail-table" class="gantt-table">
+                            <thead>
+                                <tr>
+                                    <th class="nav-col nav-left-col"><button class="nav-btn" onclick="scrollDetailDates(-1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></th>
+                                    <th class="nav-col nav-right-col"><button class="nav-btn" onclick="scrollDetailDates(1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></th>
+                                </tr>
+                            </thead>
+                            <tbody id="gantt-detail-body">
+                                <tr>
+                                    <td class="nav-col"></td>
+                                    <td class="nav-col"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    <!-- ===== 预警信息行 + 预警提醒条（同一行） ===== -->
+    <div class="warning-info-row">
+        <div class="warning-info-item">
+            <span class="wi-label">项目周期</span>
+            <span class="wi-value" id="wi-period">--</span>
+        </div>
+        <div class="warning-info-item">
+            <span class="wi-label">开始日期</span>
+            <span class="wi-value" id="wi-start">--</span>
+        </div>
+        <div class="warning-info-item">
+            <span class="wi-value wi-warn" id="wi-warn">--</span>
+        </div>
+        <div id="warning-banner" class="warning-banner" style="display:none;">
+            <span class="warning-icon">⚠️</span>
+            <span class="warning-msg" id="warning-msg"></span>
+        </div>
+    </div>
+
+
+    <!-- ===== 3. 项目SOP流程 ===== -->
+    <div class="card">
+        <div class="card-header">
+            <div class="title">项目SOP流程</div>
+        </div>
+        <div class="card-body">
+                <div class="sop-timeline">
+                    <!-- 节点1：需求确认 -->
+                    <div class="sop-column completed completed-green">
+                        <div class="node-dot">1</div>
+                        <div class="node-card">
+                            <div class="node-title">需求确认 <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已完成</span><span class="warn-text green-warn">提前 5 天</span></div>
+                            <div class="node-desc">与客户及内部团队确认项目需求，输出需求规格说明书，完成需求评审并签字确认。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：李婷</span>
+                                <span>👥 成员：3人</span>
+                                <span>📅 2026-05-01 ~ 2026-05-05</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点2：方案设计 + 市场调研（同级并行） -->
+                    <div class="sop-column completed completed-green has-sibling">
+                        <div class="node-dot">2</div>
+                        <div class="node-connector"></div>
+                        <div class="node-card">
+                            <div class="node-title">方案设计 <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已完成</span><span class="warn-text green-warn">按时完成</span></div>
+                            <div class="node-desc">基于确认需求进行技术方案设计，包括系统架构、设备选型、网络拓扑等，组织专家评审。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：王强</span>
+                                <span>👥 成员：5人</span>
+                                <span>📅 2026-05-04 ~ 2026-05-10</span>
+                            </div>
+                        </div>
+                        <div class="node-card node-card-sibling">
+                            <div class="node-title">市场调研 <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已完成</span></div>
+                            <div class="node-desc">调研行业竞品与市场趋势，收集用户反馈与需求优先级排序。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：李芳</span>
+                                <span>👥 成员：3人</span>
+                                <span>📅 2026-05-04 ~ 2026-05-09</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点3：采购与进场 -->
+                    <div class="sop-column completed completed-red">
+                        <div class="node-dot">3</div>
+                        <div class="node-card">
+                            <div class="node-title">采购与进场 <span class="status-tag red" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已完成</span><span class="warn-text red-warn">延期 1 天完成</span></div>
+                            <div class="node-desc">完成设备与软件采购流程，安排物流进场，核对设备清单并办理入库手续。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：赵敏</span>
+                                <span>👥 成员：4人</span>
+                                <span>📅 2026-05-08 ~ 2026-05-15</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点4：系统开发（含并行子节点） -->
+                    <div class="sop-column active active-green">
+                        <div class="node-dot">4</div>
+                        <div class="node-card">
+                            <div class="node-title">系统开发 <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">进行中</span></div>
+                            <div class="node-desc">MES系统模块开发、接口联调、单元测试，当前正在进行与ERP系统的接口对接开发。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：陈伟</span>
+                                <span>👥 成员：6人</span>
+                                <span>📅 2026-05-10 ~ 2026-05-25</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点5：安装实施 -->
+                    <div class="sop-column active active-yellow">
+                        <div class="node-dot">5</div>
+                        <div class="node-card">
+                            <div class="node-title">安装实施 <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">进行中</span></div>
+                            <div class="node-desc">现场设备安装、网络布线、硬件调试，当前正在生产车间A线进行设备安装。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：刘洋</span>
+                                <span>👥 成员：5人</span>
+                                <span>📅 2026-05-15 ~ 2026-05-28</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点6：数据平台部署 -->
+                    <div class="sop-column active active-yellow">
+                        <div class="node-dot">6</div>
+                        <div class="node-card">
+                            <div class="node-title">数据平台部署 <span class="status-tag yellow" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">进行中</span><span class="warn-text yellow-warn">可能延期 3 天</span></div>
+                            <div class="node-desc">数据采集网关部署、IoT平台搭建、可视化看板配置，当前因服务器到货延迟影响进度。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：孙磊</span>
+                                <span>👥 成员：4人</span>
+                                <span>📅 2026-05-18 ~ 2026-05-30</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点7：联调试运行 -->
+                    <div class="sop-column pending">
+                        <div class="node-dot">7</div>
+                        <div class="node-card">
+                            <div class="node-title">联调试运行 <span class="status-tag gray" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">未开始</span></div>
+                            <div class="node-desc">系统集成联调、UAT用户验收测试、试生产运行，收集反馈并优化。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：陈伟</span>
+                                <span>👥 成员：3人</span>
+                                <span>📅 2026-05-25 ~ 2026-05-30</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 节点8：培训与验收 -->
+                    <div class="sop-column cancelled">
+                        <div class="node-dot">8</div>
+                        <div class="node-card">
+                            <div class="node-title">培训与验收 <span class="status-tag gray" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已取消</span></div>
+                            <div class="node-desc">操作人员培训、维护手册交付、项目验收报告、资料归档及项目结案。</div>
+                            <div class="node-meta">
+                                <span>👤 负责人：张明远</span>
+                                <span>👥 成员：5人</span>
+                                <span>📅 2026-05-28 ~ 2026-05-30</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 4. 项目反馈（按SOP节点分组） ===== -->
+    <div class="card">
+        <div class="card-header">
+            <div class="title">项目反馈</div>
+        </div>
+        <div class="card-body">
+            <div class="feedback-by-node">
+
+                <div class="feedback-node-group">
+                    <div class="fbg-header">
+                        <span class="fbg-step">1</span>
+                        <span class="fbg-name">需求确认</span>
+                        <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已完成</span>
+                    </div>
+                    <div class="feedback-list" style="margin-top:0.5rem;">
+                        <div class="feedback-item">
+                            <div class="feedback-avatar">李</div>
+                            <div class="feedback-content">
+                                <div class="fb-name">李婷 <span class="fb-time">2026-05-18 14:30</span></div>
+                                <div class="fb-text">需求确认阶段提前完成，客户对需求文档认可度较高，建议后续各阶段保持高频沟通。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-node-group">
+                    <div class="fbg-header">
+                        <span class="fbg-step">2</span>
+                        <span class="fbg-name">方案设计</span>
+                        <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">已完成</span>
+                    </div>
+                    <div class="feedback-list" style="margin-top:0.5rem;">
+                        <div class="feedback-item">
+                            <div class="feedback-avatar">王</div>
+                            <div class="feedback-content">
+                                <div class="fb-name">王强 <span class="fb-time">2026-05-16 09:15</span></div>
+                                <div class="fb-text">方案设计中MES系统模块拆分合理，但数据平台架构需与IoT团队进一步对齐接口协议。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-node-group">
+                    <div class="fbg-header">
+                        <span class="fbg-step">4</span>
+                        <span class="fbg-name">系统开发</span>
+                        <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">进行中</span>
+                    </div>
+                    <div class="feedback-list" style="margin-top:0.5rem;">
+                        <div class="feedback-item">
+                            <div class="feedback-avatar">陈</div>
+                            <div class="feedback-content">
+                                <div class="fb-name">陈伟 <span class="fb-time">2026-05-20 16:45</span></div>
+                                <div class="fb-text">系统开发进度正常，ERP接口对接涉及字段较多，预计还需5个工作日完成联调。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-node-group">
+                    <div class="fbg-header">
+                        <span class="fbg-step">5</span>
+                        <span class="fbg-name">安装实施</span>
+                        <span class="status-tag green" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">进行中</span>
+                    </div>
+                    <div class="feedback-list" style="margin-top:0.5rem;">
+                        <div class="feedback-item">
+                            <div class="feedback-avatar">刘</div>
+                            <div class="feedback-content">
+                                <div class="fb-name">刘洋 <span class="fb-time">2026-05-21 11:00</span></div>
+                                <div class="fb-text">A线设备安装进度受机械臂清关影响略有延迟，B线可提前进场以降低整体影响。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-node-group">
+                    <div class="fbg-header">
+                        <span class="fbg-step">6</span>
+                        <span class="fbg-name">数据平台部署</span>
+                        <span class="status-tag yellow" style="font-size:0.6875rem;padding:0.0625rem 0.375rem;">进行中</span>
+                    </div>
+                    <div class="feedback-list" style="margin-top:0.5rem;">
+                        <div class="feedback-item">
+                            <div class="feedback-avatar">孙</div>
+                            <div class="feedback-content">
+                                <div class="fb-name">孙磊 <span class="fb-time">2026-05-22 10:20</span></div>
+                                <div class="fb-text">数据平台部署因服务器到货延迟暂缓，已协调采购部门加急处理，预计本周内到位。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 5. 底部信息（两列） ===== -->
+    <div class="bottom-grid">
+        <!-- 项目文档 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="title">项目文档</div>
+            </div>
+            <div class="card-body">
+                <div class="doc-list">
+                    <div class="doc-item">📄 需求规格说明书 v2.1.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-05</span></div>
+                    <div class="doc-item">📄 技术方案设计书 v1.3.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
+                    <div class="doc-item">📊 MES系统测试报告.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
+                    <div class="doc-item">📋 设备清单及验收标准.docx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-12</span></div>
+                    <div class="doc-item">📈 项目周报汇总.pptx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-17</span></div>
+                    <div class="doc-item">📝 试运行问题记录表.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-20</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 风险登记册 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="title">风险登记册</div>
+                <span class="status-tag red">12 项风险</span>
+            </div>
+            <div class="card-body">
+                <div class="risk-list">
+                    <div class="risk-item">
+                        <div class="risk-dot high"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">服务器到货延迟</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">影响数据平台部署进度，已升级至采购总监处理</div>
+                        </div>
+                        <span class="status-tag red">高</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot high"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">机械臂清关延迟</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">A线机器人工作站受影响，预计延迟5天</div>
+                        </div>
+                        <span class="status-tag red">高</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot medium"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">ERP接口变更</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">客户ERP系统升级可能导致接口重构</div>
+                        </div>
+                        <span class="status-tag orange">中</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot medium"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">关键人员请假</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">孙磊下月婚假7天，已安排备岗支持</div>
+                        </div>
+                        <span class="status-tag orange">中</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot low"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">预算结余</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">当前预算执行率68%，预计有节余，可申请追加培训预算</div>
+                        </div>
+                        <span class="status-tag blue">低</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 6. 现场图片/视频 ===== -->
+    <div class="card">
+        <div class="card-header">
+            <div class="title">现场图片 / 视频</div>
+            <button class="btn">+ 上传资料</button>
+        </div>
+        <div class="card-body">
+            <div class="media-grid">
+                <div class="media-item">
+                    <div class="placeholder-img">📷 车间A线实景</div>
+                    <div class="media-overlay">
+                        <span>IMG_001.jpg</span>
+                        <span>2026-05-18</span>
+                    </div>
+                </div>
+                <div class="media-item">
+                    <div class="placeholder-img">📷 控制柜布线</div>
+                    <div class="media-overlay">
+                        <span>IMG_002.jpg</span>
+                        <span>2026-05-15</span>
+                    </div>
+                </div>
+                <div class="media-item">
+                    <div class="placeholder-img" style="background:linear-gradient(135deg,#FFF7E6,#FFE58F);color:#FA8C16;">🎬 设备安装视频</div>
+                    <div class="video-badge">▶</div>
+                    <div class="media-overlay">
+                        <span>VID_001.mp4</span>
+                        <span>2026-05-12</span>
+                    </div>
+                </div>
+                <div class="media-item">
+                    <div class="placeholder-img">📷 MES界面截图</div>
+                    <div class="media-overlay">
+                        <span>IMG_003.png</span>
+                        <span>2026-05-08</span>
+                    </div>
+                </div>
+                <div class="media-item">
+                    <div class="placeholder-img">📷 培训现场</div>
+                    <div class="media-overlay">
+                        <span>IMG_004.jpg</span>
+                        <span>2026-05-05</span>
+                    </div>
+                </div>
+                <div class="media-item">
+                    <div class="placeholder-img" style="background:linear-gradient(135deg,#F9F0FF,#EFDBFF);color:#722ED1;">🎬 试运行记录</div>
+                    <div class="video-badge">▶</div>
+                    <div class="media-overlay">
+                        <span>VID_002.mp4</span>
+                        <span>2026-05-03</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 7. 成员组织架构 ===== -->
+    <div class="card">
+        <div class="card-header">
+            <div class="title">成员组织架构</div>
+        </div>
+        <div class="card-body">
+            <div class="org-chart">
+                <!-- 第一层：项目经理 -->
+                <div class="org-level">
+                    <div class="org-node">
+                        <div class="avatar blue">张</div>
+                        <div class="name">张明远</div>
+                        <div class="role">项目经理</div>
+                    </div>
+                </div>
+                <div class="org-connector"></div>
+                <!-- 第二层 -->
+                <div class="org-level">
+                    <div class="org-node">
+                        <div class="avatar green">李</div>
+                        <div class="name">李婷</div>
+                        <div class="role">需求分析师</div>
+                    </div>
+                    <div class="org-node">
+                        <div class="avatar orange">王</div>
+                        <div class="name">王强</div>
+                        <div class="role">解决方案架构师</div>
+                    </div>
+                    <div class="org-node">
+                        <div class="avatar purple">赵</div>
+                        <div class="name">赵敏</div>
+                        <div class="role">采购专员</div>
+                    </div>
+                </div>
+                <div class="org-connector"></div>
+                <!-- 第三层 -->
+                <div class="org-level">
+                    <div class="org-node">
+                        <div class="avatar blue">陈</div>
+                        <div class="name">陈伟</div>
+                        <div class="role">软件开发工程师</div>
+                    </div>
+                    <div class="org-node">
+                        <div class="avatar green">刘</div>
+                        <div class="name">刘洋</div>
+                        <div class="role">现场实施工程师</div>
+                    </div>
+                    <div class="org-node">
+                        <div class="avatar orange">孙</div>
+                        <div class="name">孙磊</div>
+                        <div class="role">数据工程师</div>
+                    </div>
+                    <div class="org-node">
+                        <div class="avatar purple">周</div>
+                        <div class="name">周静</div>
+                        <div class="role">测试工程师</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+(function() {
+    // ===== 项目数据（与dashboard格式一致） =====
+    var detailProject = {
+        name: '爱沛柯尔智能制造升级项目',
+        projectStart: { month: 5, day: 1 },
+        projectEnd: { month: 5, day: 30 },
+        actualStart: { month: 5, day: 4 },
+        completed: false,
+        cancelled: false,
+        cost: 128
+    };
+
+    var detailStartDate = new Date(2026, 4, 1); // 2026-05-01
+
+    function scrollDetailDates(direction) {
+        detailStartDate = new Date(detailStartDate.getFullYear(), detailStartDate.getMonth(), detailStartDate.getDate() + direction * 7);
+        renderDetailGantt();
+    }
+    window.scrollDetailDates = scrollDetailDates;
+
+    function renderDetailGantt() {
+        var container = document.querySelector('.gantt-detail-container');
+        var navRightCol = document.querySelector('#gantt-detail-table .nav-right-col');
+        var navLeftCol = document.querySelector('#gantt-detail-table .nav-left-col');
+        if (!container || !navRightCol) return;
+
+        var ROOT_FS = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        var SCALE = ROOT_FS / 16;
+        var NAV_COL_WIDTH = Math.round(40 * SCALE);
+        var DATE_CELL_WIDTH = 50 * SCALE;
+        var DATE_CELL_WIDTH_REM = (50 / 16);
+
+        var containerWidth = container.offsetWidth;
+        var availableWidth = containerWidth - NAV_COL_WIDTH - NAV_COL_WIDTH;
+        var dateCount = Math.max(1, Math.floor(availableWidth / DATE_CELL_WIDTH));
+
+        // 清除旧日期列
+        while (navLeftCol.nextElementSibling !== navRightCol) {
+            navLeftCol.parentElement.removeChild(navLeftCol.nextElementSibling);
+        }
+
+        var rows = document.querySelectorAll('#gantt-detail-body tr');
+        rows.forEach(function(row) {
+            var navCols = row.querySelectorAll('.nav-col');
+            var rightNavCol = navCols[navCols.length - 1];
+            var leftNavCol = navCols[0];
+            while (leftNavCol.nextElementSibling !== rightNavCol) {
+                leftNavCol.parentElement.removeChild(leftNavCol.nextElementSibling);
+            }
+        });
+
+        var todayTh = null;
+
+        for (var i = 0; i < dateCount; i++) {
+            var date = new Date(detailStartDate.getFullYear(), detailStartDate.getMonth(), detailStartDate.getDate() + i);
+            var month = String(date.getMonth() + 1).padStart(2, '0');
+            var day = String(date.getDate()).padStart(2, '0');
+            var dateStr = month + '-' + day;
+            var dayOfWeek = date.getDay();
+            var isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            var today = new Date();
+            var isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+
+            var th = document.createElement('th');
+            th.className = 'date-header' + (isWeekend ? ' weekend' : '');
+            th.textContent = dateStr;
+            th.style.width = DATE_CELL_WIDTH_REM + 'rem';
+            navRightCol.parentElement.insertBefore(th, navRightCol);
+            if (isToday) todayTh = th;
+
+            rows.forEach(function(row) {
+                var navCols = row.querySelectorAll('.nav-col');
+                var rightNavCol = navCols[navCols.length - 1];
+                var td = document.createElement('td');
+                var status = getDetailDateStatus(date);
+                td.className = 'date-cell' + (isWeekend ? ' weekend' : '') + (status ? ' ' + status : '');
+                td.style.width = DATE_CELL_WIDTH_REM + 'rem';
+                rightNavCol.parentElement.insertBefore(td, rightNavCol);
+            });
+        }
+
+        // 今日覆盖层
+        var oldOverlay = document.querySelector('.today-column-overlay');
+        if (oldOverlay) oldOverlay.remove();
+        if (window._detailOverlayRAF) { cancelAnimationFrame(window._detailOverlayRAF); window._detailOverlayRAF = null; }
+
+        if (todayTh) {
+            function updateOverlay() {
+                if (!todayTh.isConnected) return;
+                var thRect = todayTh.getBoundingClientRect();
+                if (thRect.width === 0) return;
+                var tbody = document.getElementById('gantt-detail-body');
+                var tbodyRect = tbody.getBoundingClientRect();
+                var containerRect = container.getBoundingClientRect();
+                var pad = Math.round(6 * SCALE);
+                var overlayTop = thRect.top;
+                var overlayBottom = Math.min(tbodyRect.bottom, containerRect.bottom);
+                var overlayHeight = overlayBottom - overlayTop + pad * 2;
+
+                var overlay = document.querySelector('.today-column-overlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.className = 'today-column-overlay';
+                    document.body.appendChild(overlay);
+                }
+                overlay.style.left = (thRect.left - pad) + 'px';
+                overlay.style.width = (thRect.width + pad * 2) + 'px';
+                overlay.style.top = (overlayTop - pad) + 'px';
+                overlay.style.height = overlayHeight + 'px';
+            }
+            if (window._detailOverlayRAF) cancelAnimationFrame(window._detailOverlayRAF);
+            window._detailOverlayRAF = requestAnimationFrame(updateOverlay);
+            window.removeEventListener('scroll', window._detailGanttScroll);
+            window.removeEventListener('resize', window._detailGanttResize);
+            window._detailGanttScroll = updateOverlay;
+            window._detailGanttResize = updateOverlay;
+            window.addEventListener('scroll', window._detailGanttScroll, true);
+            window.addEventListener('resize', window._detailGanttResize);
+        }
+
+        bindDetailHover();
+    }
+
+    function getDetailDateStatus(date) {
+        var p = detailProject;
+        if (p.cancelled) return '';
+
+        var today = new Date(); today.setHours(0,0,0,0);
+        var ps = new Date(2026, p.projectStart.month - 1, p.projectStart.day);
+        var pe = new Date(2026, p.projectEnd.month - 1, p.projectEnd.day);
+        var isInGray = date >= ps && date <= pe;
+
+        if (p.completed) {
+            var cd = new Date(2026, p.completedDate.month - 1, p.completedDate.day);
+            var redStart = new Date(pe.getTime() + 86400000);
+            if (date >= redStart && date <= cd) return 'delayed-completed';
+            var blueEnd = cd < pe ? cd : pe;
+            var actualStart = new Date(2026, p.actualStart.month - 1, p.actualStart.day);
+            if (date >= actualStart && date <= blueEnd) return 'completed-gantt';
+            if (isInGray) return 'project';
+            return '';
+        }
+
+        // 进行中
+        var redStart = new Date(pe.getTime() + 86400000);
+        if (date >= redStart && date <= today) return 'delayed';
+
+        if (p.actualStart) {
+            var actualStart = new Date(2026, p.actualStart.month - 1, p.actualStart.day);
+            var greenEnd = today < pe ? today : pe;
+            if (date >= actualStart && date <= greenEnd) return 'active';
+
+            var delayDays = Math.round((actualStart - ps) / 86400000);
+            if (delayDays > 0) {
+                var yellowStart = new Date(pe.getTime() + 86400000);
+                var yellowEnd = new Date(yellowStart.getTime() + (delayDays - 1) * 86400000);
+                if (date >= yellowStart && date <= yellowEnd) return 'warning';
+            }
+        }
+
+        if (isInGray) return 'project';
+        return '';
+    }
+
+    function bindDetailHover() { /* hover removed */ }
+
+    function getQueryParam(name) {
+        var params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+    function parseDateParam(s) {
+        if (!s) return null;
+        var parts = s.split('-');
+        if (parts.length >= 2) return { month: parseInt(parts[1], 10), day: parseInt(parts[2] || '1', 10) };
+        return null;
+    }
+    function loadProjectFromURL() {
+        var ps = parseDateParam(getQueryParam('projectStart'));
+        var pe = parseDateParam(getQueryParam('projectEnd'));
+        var as = parseDateParam(getQueryParam('actualStart'));
+        var cost = getQueryParam('cost');
+        if (ps) detailProject.projectStart = ps;
+        if (pe) detailProject.projectEnd = pe;
+        if (as) detailProject.actualStart = as;
+        if (cost) detailProject.cost = cost;
+    }
+    function calcDetailStats() {
+        var p = detailProject;
+        var today = new Date(); today.setHours(0,0,0,0);
+        var todayTime = today.getTime();
+        var ps = new Date(2026, p.projectStart.month - 1, p.projectStart.day);
+        var pe = new Date(2026, p.projectEnd.month - 1, p.projectEnd.day);
+        var as = p.actualStart ? new Date(2026, p.actualStart.month - 1, p.actualStart.day) : null;
+
+        var totalDays = Math.round((pe - ps) / 86400000) + 1;
+        var elapsedDays = 0;
+        if (as && today >= as) {
+            elapsedDays = Math.round((todayTime - as.getTime()) / 86400000) + 1;
+        }
+        if (elapsedDays < 0) elapsedDays = 0;
+
+        // 总体进度 —— 与 project-dashboard 公式一致
+        var progress = 0;
+        if (p.cancelled) {
+            progress = 0;
+        } else if (p.completed) {
+            progress = 100;
+        } else if (as && totalDays > 0) {
+            if (elapsedDays <= totalDays) {
+                progress = Math.round((elapsedDays / totalDays) * 100);
+            } else {
+                progress = Math.round((totalDays / elapsedDays) * 100);
+            }
+            progress = Math.max(0, Math.min(100, progress));
+        }
+
+        // 预警天数（与 dashboard 一致）
+        var delayedDays = 0;
+        var warnDays = 0;
+        if (!p.cancelled) {
+            if (today > pe) {
+                delayedDays = Math.ceil((today - pe) / 86400000);
+            }
+            if (as) {
+                warnDays = Math.max(0, Math.round((as.getTime() - ps.getTime()) / 86400000));
+            }
+        }
+
+        // 写入 DOM
+        var el = document.getElementById('stat-progress');
+        if (el) el.textContent = progress + '%';
+
+        el = document.getElementById('stat-days');
+        if (el) el.textContent = totalDays + ' 天（已进行 ' + elapsedDays + ' 天）';
+
+        el = document.getElementById('stat-cost');
+        if (el && p.cost !== undefined) el.textContent = '¥' + p.cost + '万';
+
+        // 预警信息行
+        var wiPeriod = document.getElementById('wi-period');
+        var wiStart = document.getElementById('wi-start');
+        var wiWarn = document.getElementById('wi-warn');
+        if (wiPeriod) wiPeriod.textContent = '2026-' + String(p.projectStart.month).padStart(2,'0') + '-' + String(p.projectStart.day).padStart(2,'0') + ' ~ 2026-' + String(p.projectEnd.month).padStart(2,'0') + '-' + String(p.projectEnd.day).padStart(2,'0');
+        if (wiStart) wiStart.textContent = p.actualStart ? ('2026-' + String(p.actualStart.month).padStart(2,'0') + '-' + String(p.actualStart.day).padStart(2,'0')) : '--';
+        if (wiWarn) {
+            wiWarn.classList.remove('wi-warn-yellow', 'wi-warn-red');
+            if (delayedDays > 0) {
+                wiWarn.textContent = '已延期 ' + delayedDays + ' 天';
+                wiWarn.classList.add('wi-warn-red');
+            } else if (warnDays > 0) {
+                wiWarn.textContent = '可能延期 ' + warnDays + ' 天';
+                wiWarn.classList.add('wi-warn-yellow');
+            } else {
+                wiWarn.textContent = '正常';
+            }
+        }
+
+        // 预警提醒条（红色=已延期，黄色=可能延期）
+        var banner = document.getElementById('warning-banner');
+        var warnMsg = document.getElementById('warning-msg');
+        if (banner && warnMsg) {
+            banner.classList.remove('yellow-banner');
+            if (delayedDays > 0) {
+                warnMsg.textContent = '项目已延期 ' + delayedDays + ' 天，请尽快处理！';
+                banner.style.display = 'flex';
+            } else if (warnDays > 0) {
+                warnMsg.textContent = '实际开始时间晚于计划 ' + warnDays + ' 天，存在延期风险！';
+                banner.classList.add('yellow-banner');
+                banner.style.display = 'flex';
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+    }
+
+    // ===== 动态计算SOP贯穿竖线高度 =====
+    function updateNodeConnectors() {
+        document.querySelectorAll('.sop-column.has-sibling').forEach(function(col) {
+            var connector = col.querySelector('.node-connector');
+            var lastCard = col.querySelector('.node-card-sibling');
+            if (!connector || !lastCard) return;
+            // 贯穿线终点 = 第二卡片L折线起点在column中的位置
+            // L折线 top = calc(1rem - 1px)，是相对于卡片的
+            var rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            var lLineTop = rootFs * 1 - 1; // 1rem - 1px
+            var cardPaddingTop = parseFloat(getComputedStyle(lastCard).paddingTop);
+            // 第二卡片L折线在column中的绝对Y位置
+            var targetY = lastCard.offsetTop + cardPaddingTop + lLineTop;
+            // 贯穿线起始Y（已由CSS设好 top: calc(0.5rem + 2rem)）
+            var startY = connector.offsetTop;
+            connector.style.height = Math.max(0, targetY - startY) + 'px';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProjectFromURL();
+        calcDetailStats();
+        renderDetailGantt();
+        // SOP连线需等布局完成后计算
+        requestAnimationFrame(updateNodeConnectors);
+    });
+    window.addEventListener('resize', renderDetailGantt);
+})();
+</script>
+
+</body>
+</html>
