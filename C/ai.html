@@ -873,7 +873,6 @@
         .main-container {
             margin-top: 6rem;
             display: flex;
-            justify-content: center;
             height: calc(100vh - 6rem);
             overflow: hidden;
             width: 100%;
@@ -900,37 +899,64 @@
             display: flex;
             flex-direction: column;
             padding: 0.75rem 0.75rem 0 0.75rem;
-            overflow-y: auto;
             flex-shrink: 0;
             margin-right: 0;
             height: 100%;
+            min-height: 0;
+            position: relative;
+        }
+
+        .sidebar-top {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
             scrollbar-width: none;
         }
 
-        .sidebar::-webkit-scrollbar {
+        .sidebar-top::-webkit-scrollbar {
             display: none;
         }
 
-        .sidebar:hover::-webkit-scrollbar {
+        .sidebar-top:hover::-webkit-scrollbar {
             display: block;
             width: 6px;
         }
 
-        .sidebar::-webkit-scrollbar-track {
+        .sidebar-top::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .sidebar::-webkit-scrollbar-thumb {
+        .sidebar-top::-webkit-scrollbar-thumb {
+            background: var(--border-gray);
+            border-radius: 3px;
+        }
+
+        .sidebar-fixed-top {
+            flex-shrink: 0;
+        }
+        .sidebar-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            scrollbar-width: none;
+        }
+        .sidebar-scroll-area::-webkit-scrollbar {
+            display: none;
+        }
+        .sidebar-scroll-area:hover::-webkit-scrollbar {
+            display: block;
+            width: 6px;
+        }
+        .sidebar-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-scroll-area::-webkit-scrollbar-thumb {
             background: var(--border-gray);
             border-radius: 3px;
         }
 
         .sidebar-login-bar {
-            position: sticky;
-            bottom: 0;
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-            padding: 12px;
+            padding: 12px 0.75rem;
             background-color: var(--white);
             border-top: 1px solid var(--border-gray);
             display: flex;
@@ -938,6 +964,7 @@
             gap: 8px;
             margin-left: -0.75rem;
             margin-right: -0.75rem;
+            flex-shrink: 0;
         }
 
         .sidebar-login-bar .login-avatar {
@@ -1032,6 +1059,16 @@
             flex-direction: column;
             gap: 0.25rem;
             /* margin-bottom: 0.625rem; */
+        }
+        /* 组织下属菜单缩进（用margin-left，hover背景不铺满） */
+        .org-submenu .menu-item {
+            margin-left: 1.5rem;
+        }
+        /* 我的人类伙伴 / 我的AI团队 / 我的项目 的子级成员再缩进一级 */
+        #teamMembers2 .team-member,
+        #teamMembers1 .team-member,
+        #projMembers .history-item {
+            margin-left: 2rem;
         }
 
         .menu-item {
@@ -3758,9 +3795,9 @@
     <!-- 主内容区 -->
     <div class="main-container">
         <div class="main-container-inner">
-            <!-- 左侧历史对话栏 -->
-            <div class="sidebar">
-            <div class="sidebar-top" >
+        <div class="sidebar">
+            <!-- 顶部固定：我的秘书、项目经理、组织菜单栏 -->
+            <div class="sidebar-fixed-top">
                 <button class="new-chat-btn" style="display: none;">
                     <div class="member-avatar" style="background-color: #9C27B0; width: 32px; height: 32px;">
                         <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3827,7 +3864,7 @@
                             </svg>
                         </div>
                         <div class="member-info">
-                            <div class="member-name" style="font-size: 0.9375rem; font-weight: 600;">项目经理</div>
+                            <div class="member-name" style="font-size: 1rem; font-weight: 600;">项目经理</div>
                             <div class="member-time" style="font-size: 0.75rem;">4分钟前</div>
                         </div>
                     </div>
@@ -3850,9 +3887,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
             <div style="border-top: 1px solid var(--border-gray); margin: 0.5rem 0;"></div>
-            <!-- 我的组织 -->
+            </div><!-- /sidebar-fixed-top -->
+            <!-- 可滚动区域：我的组织、我的项目、我的人类伙伴、我的AI团队 -->
+            <div class="sidebar-scroll-area">
             <div class="sidebar-menu">
                 <div class="menu-item" id="orgMenu">
                     <div class="menu-item-content">
@@ -3890,7 +3928,7 @@
                 </div>
             </div>
             <!-- 我的项目 -->
-            <div class="sidebar-menu">
+            <div class="sidebar-menu org-submenu">
                 <div class="menu-item" id="projMenu">
                     <div class="menu-item-content">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -3907,9 +3945,95 @@
                     </div>
                 </div>
                 <div class="team-members" id="projMembers">
+                    <!-- 历史对话作为我的项目子菜单 -->
+                    <div class="history-item">
+                        <div class="history-item-content">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>汽车零部件智能生产智能生产方案</span>
+                        </div>
+                        <div class="history-item-actions">
+                            <div class="history-item-menu" title="菜单">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-item-content">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>智能生产解决方案讨论</span>
+                        </div>
+                        <div class="history-item-actions">
+                            <div class="history-item-menu" title="菜单">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-item-content">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>工厂改造方案评估</span>
+                        </div>
+                        <div class="history-item-actions">
+                            <div class="history-item-menu" title="菜单">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-item-content">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>智能生产技术咨询</span>
+                        </div>
+                        <div class="history-item-actions">
+                            <div class="history-item-menu" title="菜单">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-item-content">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>生产效率提升方案</span>
+                        </div>
+                        <div class="history-item-actions">
+                            <div class="history-item-menu" title="菜单">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="sidebar-menu">
+            <div class="sidebar-menu org-submenu">
                 <div class="menu-item" id="teamMenu2">
                     <div class="menu-item-content">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -4021,7 +4145,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sidebar-menu">
+            <div class="sidebar-menu org-submenu">
                 <div class="menu-item" id="teamMenu1">
                     <div class="menu-item-content">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -4278,196 +4402,7 @@
                     </div>
                 </div>
             </div>
-            <div class="history-title">历史对话</div>
-            <div class="history-list">
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>汽车零部件智能生产智能生产方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>智能生产解决方案讨论</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>工厂改造方案评估</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>智能生产技术咨询</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>生产效率提升方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>次品率降低方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>设备预测性维护方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>生产线数据采集与分析方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>仓储物流自动化解决方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>工厂设备预测性维护方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>柔性生产线搭建实施方案</span>
-                    </div>
-                    <div class="history-item-actions">
-                        <div class="history-item-menu" title="菜单">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="19" cy="12" r="1"></circle>
-                                <circle cx="5" cy="12" r="1"></circle>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
+</div><!-- /sidebar-scroll-area -->
             <div class="sidebar-login-bar" id="sidebarLoginBar">
                 <div class="login-avatar">林</div>
                 <div class="login-info">
@@ -4981,9 +4916,7 @@
             </div>
         </div>
 
-
-        </div>
-        
+        </div><!-- /main-container-inner -->
 
         
         <script>
