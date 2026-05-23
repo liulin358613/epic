@@ -274,14 +274,14 @@
                         }
 
                         .logout-modal-title {
-                            font-size: 18px;
+                            font-size: 1.125rem;
                             font-weight: 600;
                             color: #1D2129;
                             margin-bottom: 16px;
                         }
 
                         .logout-modal-message {
-                            font-size: 14px;
+                            font-size: 0.875rem;
                             color: #86909C;
                             margin-bottom: 24px;
                             line-height: 1.5;
@@ -296,7 +296,7 @@
                         .logout-modal-btn {
                             padding: 10px 24px;
                             border-radius: 6px;
-                            font-size: 14px;
+                            font-size: 0.875rem;
                             font-weight: 500;
                             cursor: pointer;
                             transition: all 0.3s ease;
@@ -530,7 +530,7 @@
                         <img src="${image}" alt="${title}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">
                         <div>
                             <div style="font-weight: 600; color: #1D2129; margin-bottom: 6px;">${title}</div>
-                            <div style="font-size: 14px; color: #86909C; line-height: 1.6;">${description}</div>
+                            <div style="font-size: 0.875rem; color: #86909C; line-height: 1.6;">${description}</div>
                         </div>
                     </div>
                     <span class="message-time">${timeStr}</span>
@@ -739,7 +739,7 @@
     </script>
     <style>
         html {
-            font-size: 16px;
+            font-size: clamp(14px, calc(12px + 0.28vw), 18px);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -801,6 +801,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            line-height: 1.6;
         }
 
         .header-iframe {
@@ -949,7 +950,7 @@
             align-items: center;
             justify-content: center;
             color: var(--white);
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
         }
 
@@ -959,7 +960,7 @@
         }
 
         .sidebar-login-bar .login-name {
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--deep-gray);
             font-weight: 500;
             white-space: nowrap;
@@ -968,7 +969,7 @@
         }
 
         .sidebar-login-bar .login-role {
-            font-size: 11px;
+            font-size: 0.6875rem;
             color: var(--classic-gray);
             white-space: nowrap;
             overflow: hidden;
@@ -995,7 +996,7 @@
             color: var(--klein-blue);
             border: 1px solid var(--klein-blue);
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 0.8125rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -1203,7 +1204,7 @@
         }
 
         .member-name {
-            font-size: 13px; /* 进一步缩小字体 */
+            font-size: 0.8125rem; /* 进一步缩小字体 */
             color: var(--deep-gray);
             font-weight: 500;
             white-space: nowrap;
@@ -1213,7 +1214,7 @@
         }
 
         .member-time {
-            font-size: 10px; /* 进一步缩小字体 */
+            font-size: 0.625rem; /* 进一步缩小字体 */
             color: var(--classic-gray);
             white-space: nowrap;
             overflow: hidden;
@@ -1225,7 +1226,7 @@
         .unread-badge {
             background-color: var(--hermes-orange);
             color: white;
-            font-size: 10px;
+            font-size: 0.625rem;
             padding: 2px 6px;
             border-radius: 10px;
             font-weight: bold;
@@ -1241,7 +1242,7 @@
         .member-unread-icon {
             background-color: var(--hermes-orange);
             color: white;
-            font-size: 10px;
+            font-size: 0.625rem;
             font-weight: bold;
             width: 16px;
             height: 16px;
@@ -1325,7 +1326,7 @@
         }
 
         .history-title {
-            font-size: 12px;
+            font-size: 0.75rem;
             color: var(--classic-gray);
             margin-bottom: 8px;
             padding: 0 4px;
@@ -1342,7 +1343,7 @@
             padding: 8px 10px; /* 调整内边距 */
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--deep-gray);
             display: flex;
             align-items: center;
@@ -1486,7 +1487,7 @@
             padding: 8px 16px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--deep-gray);
         }
 
@@ -1531,7 +1532,7 @@
             color: white;
             padding: 8px 12px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 0.75rem;
             white-space: nowrap;
             z-index: 10000;
             opacity: 0;
@@ -1593,7 +1594,7 @@
 
         .rename-modal-header h3 {
             margin: 0;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
             color: #333;
         }
@@ -1601,7 +1602,7 @@
         .rename-modal-close {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 1.25rem;
             cursor: pointer;
             color: #999;
             padding: 0;
@@ -1626,7 +1627,7 @@
             padding: 8px 12px;
             border: 1px solid #d9d9d9;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 0.875rem;
             box-sizing: border-box;
         }
 
@@ -1650,7 +1651,7 @@
             border: 1px solid #d9d9d9;
             border-radius: 4px;
             background-color: white;
-            font-size: 14px;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -1666,7 +1667,7 @@
             border-radius: 4px;
             background-color: #3b7ef4;
             color: white;
-            font-size: 14px;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -1710,7 +1711,7 @@
 
         .delete-modal-header h3 {
             margin: 0;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
             color: #333;
         }
@@ -1721,7 +1722,7 @@
 
         .delete-modal-body p {
             margin: 0;
-            font-size: 14px;
+            font-size: 0.875rem;
             color: #666;
         }
 
@@ -1739,7 +1740,7 @@
             border: 1px solid #d9d9d9;
             border-radius: 4px;
             background-color: white;
-            font-size: 14px;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -1755,7 +1756,7 @@
             border-radius: 4px;
             background-color: #ff4d4f;
             color: white;
-            font-size: 14px;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -1818,7 +1819,7 @@
         }
 
         .user-name {
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--deep-gray);
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1891,7 +1892,7 @@
         }
         
         .chat-tab-title {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 600;
             color: var(--deep-gray);
         }
@@ -1942,7 +1943,7 @@
             background-color: white;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 12px;
+            font-size: 0.75rem;
             color: var(--deep-gray);
         }
         
@@ -2007,7 +2008,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 1.125rem;
             color: white;
         }
 
@@ -2020,7 +2021,7 @@
         }
 
         .ai-name {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             color: var(--deep-gray);
         }
@@ -2036,7 +2037,7 @@
             max-width: 100%;
             padding: 12px 14px 8px 14px;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 0.875rem;
             line-height: 1.6;
             word-wrap: break-word;
         }
@@ -2056,7 +2057,7 @@
 
         /* 消息时间戳样式 */
         .message-time {
-            font-size: 11px;
+            font-size: 0.6875rem;
             color: #666666;
             text-align: right;
             margin-top: 8px;
@@ -2078,7 +2079,7 @@
         }
 
         .empty-chat {
-            font-size: 28px;
+            font-size: 1.75rem;
             font-weight: bold;
             color: var(--deep-gray);
             opacity: 0.8;
@@ -2100,7 +2101,7 @@
             color: var(--deep-gray);
             padding: 8px 12px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 0.8125rem;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
@@ -2131,7 +2132,7 @@
             border: none;
             outline: none;
             color: var(--deep-gray);
-            font-size: 16px;
+            font-size: 1rem;
             resize: none;
             height: 24px;
             max-height: 160px;
@@ -2147,7 +2148,7 @@
 
         .input-box textarea::placeholder {
             color: var(--classic-gray);
-            font-size: 16px;
+            font-size: 1rem;
         }
 
         .input-tool-row {
@@ -2171,7 +2172,7 @@
 
         .upload-btn {
             color: var(--classic-gray);
-            font-size: 13px;
+            font-size: 0.8125rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -2204,7 +2205,7 @@
             color: var(--deep-gray);
             padding: 4px 10px;
             border-radius: 12px;
-            font-size: 13px;
+            font-size: 0.8125rem;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s;
@@ -2258,20 +2259,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 1rem;
             color: white;
             flex-shrink: 0;
             font-weight: bold;
         }
 
         .ai-member-info .member-name {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             color: var(--deep-gray);
         }
 
         .ai-member-info .welcome-text {
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--classic-gray);
             margin-left: 4px;
         }
@@ -2286,7 +2287,7 @@
             width: 36px;
             height: 36px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2332,7 +2333,7 @@
             top: 20px;
             right: 30px;
             color: white;
-            font-size: 40px;
+            font-size: 2.5rem;
             font-weight: bold;
             cursor: pointer;
             z-index: 100000;
@@ -2392,7 +2393,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 12px;
+            font-size: 0.75rem;
             color: #86909C;
         }
 
@@ -2431,7 +2432,7 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 14px;
+            font-size: 0.875rem;
         }
 
         .file-card-info {
@@ -2439,13 +2440,13 @@
         }
 
         .file-card-name {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: #1D2129;
             font-weight: 500;
         }
 
         .file-card-size {
-            font-size: 12px;
+            font-size: 0.75rem;
             color: #86909C;
         }
 
@@ -2508,7 +2509,7 @@
         }
 
         .preview-title {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 600;
             color: var(--deep-gray);
             margin: 0;
@@ -2608,7 +2609,7 @@
             padding: 10px 16px;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--deep-gray);
         }
 
@@ -2771,7 +2772,7 @@
             transition: all 0.3s ease;
             background-color: #ffffff;
             border: 1px dashed #0051BA;
-            font-size: 20px;
+            font-size: 1.25rem;
             font-weight: 300;
             color: #0051BA;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -2847,7 +2848,7 @@
             padding: 6px 10px;
             background-color: rgba(29, 33, 41, 0.9);
             color: white;
-            font-size: 12px;
+            font-size: 0.75rem;
             border-radius: 4px;
             white-space: nowrap;
             z-index: 1000;
@@ -2956,7 +2957,7 @@
             border: 1px solid var(--border-gray);
             border-radius: 6px;
             padding: 4px 12px;
-            font-size: 13px;
+            font-size: 0.8125rem;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-block;
@@ -3021,7 +3022,7 @@
         }
         
         .quick-access-item span {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             line-height: 1.2;
         }
@@ -3086,7 +3087,7 @@
         
         .modal-header h2 {
             margin: 0;
-            font-size: 18px;
+            font-size: 1.125rem;
             color: var(--deep-gray);
             font-weight: 600;
         }
@@ -3094,7 +3095,7 @@
         .close-btn {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 1.25rem;
             cursor: pointer;
             color: var(--classic-gray);
             transition: all 0.3s;
@@ -3120,7 +3121,7 @@
         .login-tab {
             padding: 8px 24px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 0.875rem;
             color: var(--classic-gray);
             border-bottom: 2px solid transparent;
             transition: all 0.3s;
@@ -3150,7 +3151,7 @@
             padding: 12px 16px;
             border: 1px solid var(--border-gray);
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 0.875rem;
             transition: all 0.3s;
             line-height: 1.4;
             color: var(--deep-gray);
@@ -3172,7 +3173,7 @@
         
         .error-message {
             color: var(--error-red);
-            font-size: 12px;
+            font-size: 0.75rem;
             margin-top: 6px;
             line-height: 1.4;
             display: none;
@@ -3233,7 +3234,7 @@
             border: 1px solid var(--border-gray);
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 0.875rem;
             transition: all 0.3s;
             white-space: nowrap;
             height: 44px;
@@ -3273,7 +3274,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 0.9375rem;
             font-weight: 600;
             margin-top: 8px;
             transition: all 0.3s;
@@ -3296,7 +3297,7 @@
         
         .login-links {
             text-align: center;
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--classic-gray);
             padding: 0 20px 20px;
         }
@@ -3339,7 +3340,7 @@
             background-color: var(--white);
             padding: 0 16px;
             z-index: 2;
-            font-size: 13px;
+            font-size: 0.8125rem;
             color: var(--classic-gray);
         }
         
@@ -3357,7 +3358,7 @@
             border: 1px solid var(--border-gray);
             background-color: var(--white);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 0.75rem;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -3401,7 +3402,7 @@
         
         /* 图标样式 */
         .other-login-btn::before {
-            font-size: 18px;
+            font-size: 1.125rem;
         }
         
         .other-login-btn:nth-child(1)::before {
@@ -3464,7 +3465,7 @@
             background-color: transparent;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 1.25rem;
             color: var(--classic-gray);
             display: flex;
             align-items: center;
@@ -3499,13 +3500,13 @@
         }
 
         .qrcode-title {
-            font-size: 18px;
+            font-size: 1.125rem;
             font-weight: 500;
             color: var(--deep-gray);
         }
 
         .qrcode-brand {
-            font-size: 24px;
+            font-size: 1.5rem;
             color: var(--deep-gray);
             margin-bottom: 25px;
             font-weight: 500;
@@ -3523,7 +3524,7 @@
         }
 
         .qrcode-tip {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: var(--classic-gray);
         }
 
@@ -3532,7 +3533,7 @@
             .sub-nav-inner,
             .main-container-inner {
                 width: 100%;
-                padding: 0 40px;
+                /* padding: 0 40px; */
                 box-sizing: border-box;
             }
             .input-container {
@@ -3545,19 +3546,19 @@
 
         @media (max-width: 1440px) {
             html {
-                font-size: 15px;
+                font-size: 0.9375rem;
             }
         }
 
         @media (max-width: 1366px) {
             html {
-                font-size: 14px;
+                font-size: 0.875rem;
             }
         }
 
         @media (max-width: 1280px) {
             html {
-                font-size: 13px;
+                font-size: 0.8125rem;
             }
             .sidebar {
                 width: 15rem;
@@ -3566,7 +3567,7 @@
 
         @media (max-width: 1024px) {
             html {
-                font-size: 12px;
+                font-size: 0.75rem;
             }
             .sidebar {
                 width: 12rem;
@@ -3575,7 +3576,7 @@
 
         @media (max-width: 768px) {
             html {
-                font-size: 11px;
+                font-size: 0.6875rem;
             }
             .sidebar {
                 width: 10rem;
@@ -3601,7 +3602,7 @@
 
         @media (max-width: 600px) {
             html {
-                font-size: 10px;
+                font-size: 0.625rem;
             }
             .sidebar {
                 width: 8rem;
@@ -3743,7 +3744,7 @@
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
                             <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
-                                <div class="member-name" style="font-size: 18px; font-weight: 600;">我的秘书</div>
+                                <div class="member-name" style="font-size: 1.125rem; font-weight: 600;">我的秘书</div>
                                 <div class="team-member-actions" style="display: flex; align-items: center; gap: 6px;">
                                     <div class="unread-badge" style="display: none;"></div>
                                     <div class="team-member-action" title="发起单聊">
@@ -3763,10 +3764,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="member-time" style="font-size: 12px; color: #86909C;">3分钟前</div>
+                            <div class="member-time" style="font-size: 0.75rem; color: #86909C;">3分钟前</div>
                         </div>
                     </div>
-                    <div class="member-desc" style="font-size: 12px; color: #212222; line-height: 1.4; padding-left: 12px;">专注于协助您处理日常事务，包括日程安排、邮件管理、会议协调等，让您的工作更加高效有序。</div>
+                    <div class="member-desc" style="font-size: 0.75rem; color: #212222; line-height: 1.4; padding-left: 12px;">专注于协助您处理日常事务，包括日程安排、邮件管理、会议协调等，让您的工作更加高效有序。</div>
                 </div>
                 <div class="team-member" data-member-id="pm" data-member-name="项目经理" data-avatar-color="#FF5722" data-avatar-svg='<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#FF5722"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>' style="height: 56px; padding: 6px 8px; margin-bottom: 8px;">
                     <div class="team-member-content">
@@ -3780,8 +3781,8 @@
                             </svg>
                         </div>
                         <div class="member-info">
-                            <div class="member-name" style="font-size: 15px; font-weight: 600;">项目经理</div>
-                            <div class="member-time" style="font-size: 12px;">4分钟前</div>
+                            <div class="member-name" style="font-size: 0.9375rem; font-weight: 600;">项目经理</div>
+                            <div class="member-time" style="font-size: 0.75rem;">4分钟前</div>
                         </div>
                     </div>
                     <div class="team-member-actions">
@@ -4764,13 +4765,13 @@
                                         <path d="M3 3v18h18"></path>
                                         <path d="M19 9l-5 5-4-4-3 3"></path>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
                                 </div>
                                 <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
                                 </div>
                                 <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -4780,14 +4781,14 @@
                                         <line x1="16" y1="17" x2="8" y2="17"></line>
                                         <polyline points="10 9 9 9 8 9"></polyline>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
                                 </div>
                                 <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文档编辑</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">文档编辑</span>
                                 </div>
                                 <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -4795,14 +4796,14 @@
                                         <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                         <polyline points="21 15 16 10 5 21"></polyline>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">图片设计</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">图片设计</span>
                                 </div>
                                 <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                         <polygon points="23 7 16 12 23 17 23 7"></polygon>
                                         <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
                                 </div>
                                 <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showFileManagement()">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -4810,7 +4811,7 @@
                                         <polyline points="7 10 12 15 17 10"></polyline>
                                         <line x1="12" y1="15" x2="12" y2="3"></line>
                                     </svg>
-                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
+                                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
                                 </div>
                             </div>
                         </div>
@@ -5324,21 +5325,21 @@
                 <div style="width: 100%; height: 100%;">
                     <!-- 总标题 -->
                     <div style="margin-bottom: 14px;">
-                        <h2 style="color: #333; font-size: 18px; margin: 0;">训练概览 - 任务进度情况</h2>
+                        <h2 style="color: #333; font-size: 1.125rem; margin: 0;">训练概览 - 任务进度情况</h2>
                     </div>
                     
                     <!-- 搜索栏 -->
                     <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
                         <div style="display: flex; align-items: center; gap: 5px;">
-                            <label style="font-size: 13px; color: #333;">开始日期：</label>
-                            <input type="date" id="startDate_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                            <label style="font-size: 0.8125rem; color: #333;">开始日期：</label>
+                            <input type="date" id="startDate_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem;">
                         </div>
                         <div style="display: flex; align-items: center; gap: 5px;">
-                            <label style="font-size: 13px; color: #333;">结束日期：</label>
-                            <input type="date" id="endDate_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                            <label style="font-size: 0.8125rem; color: #333;">结束日期：</label>
+                            <input type="date" id="endDate_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem;">
                         </div>
-                        <button style="padding: 6px 12px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">搜索</button>
-                        <button onclick="resetDateFilter('${tabId}')" style="padding: 6px 12px; background-color: #6C757D; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">重置</button>
+                        <button style="padding: 6px 12px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 0.8125rem; cursor: pointer;">搜索</button>
+                        <button onclick="resetDateFilter('${tabId}')" style="padding: 6px 12px; background-color: #6C757D; color: white; border: none; border-radius: 4px; font-size: 0.8125rem; cursor: pointer;">重置</button>
                     </div>
                     
                     <!-- 第一行：环形图和预警卡片 -->
@@ -5349,33 +5350,33 @@
                                 <div style="width: 200px; height: 200px; position: relative;">
                                     <canvas id="biChart_${tabId}"></canvas>
                                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                        <div style="font-size: 16px; font-weight: bold; color: #333;">训练任务</div>
+                                        <div style="font-size: 1rem; font-weight: bold; color: #333;">训练任务</div>
                                     </div>
                                 </div>
                                 <div style="margin-left: 30px; display: flex; flex-direction: column; gap: 10px;">
                                     <div style="display: flex; align-items: center;">
                                         <div style="width: 12px; height: 12px; background-color: #0051D9; border-radius: 2px; margin-right: 8px;"></div>
-                                        <span style="font-size: 13px; color: #333;">待处理：5</span>
+                                        <span style="font-size: 0.8125rem; color: #333;">待处理：5</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <div style="width: 12px; height: 12px; background-color: #06B6D4; border-radius: 2px; margin-right: 8px;"></div>
-                                        <span style="font-size: 13px; color: #333;">训练中：10</span>
+                                        <span style="font-size: 0.8125rem; color: #333;">训练中：10</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <div style="width: 12px; height: 12px; background-color: #4CAF50; border-radius: 2px; margin-right: 8px;"></div>
-                                        <span style="font-size: 13px; color: #333;">已完成：8</span>
+                                        <span style="font-size: 0.8125rem; color: #333;">已完成：8</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <div style="width: 12px; height: 12px; background-color: #FFC107; border-radius: 2px; margin-right: 8px;"></div>
-                                        <span style="font-size: 13px; color: #333;">已交付：2</span>
+                                        <span style="font-size: 0.8125rem; color: #333;">已交付：2</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <div style="width: 12px; height: 12px; background-color: #F37021; border-radius: 2px; margin-right: 8px;"></div>
-                                        <span style="font-size: 13px; color: #333;">运营中：5</span>
+                                        <span style="font-size: 0.8125rem; color: #333;">运营中：5</span>
                                     </div>
                                     <div style="display: flex; align-items: center;">
                                         <div style="width: 12px; height: 12px; background-color: #6C757D; border-radius: 2px; margin-right: 8px;"></div>
-                                        <span style="font-size: 13px; color: #333;">已取消：3</span>
+                                        <span style="font-size: 0.8125rem; color: #333;">已取消：3</span>
                                     </div>
                                 </div>
                             </div>
@@ -5383,23 +5384,23 @@
                         
                         <!-- 预警卡片模块 -->
                         <div style="flex: 0.7; padding: 20px; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px;">
-                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 10px;">交付预警状态</div>
+                            <div style="font-size: 0.875rem; font-weight: 600; color: #333; margin-bottom: 10px;">交付预警状态</div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                 <div style="padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6;">
-                                    <div style="font-size: 12px; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">已延期</div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #dc3545; line-height: 1.2;">2</div>
+                                    <div style="font-size: 0.75rem; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">已延期</div>
+                                    <div style="font-size: 1.25rem; font-weight: bold; color: #dc3545; line-height: 1.2;">2</div>
                                 </div>
                                 <div style="padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6;">
-                                    <div style="font-size: 12px; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">即将延期</div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #ffc107; line-height: 1.2;">3</div>
+                                    <div style="font-size: 0.75rem; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">即将延期</div>
+                                    <div style="font-size: 1.25rem; font-weight: bold; color: #ffc107; line-height: 1.2;">3</div>
                                 </div>
                                 <div style="padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6;">
-                                    <div style="font-size: 12px; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">按时完成</div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #28a745; line-height: 1.2;">18</div>
+                                    <div style="font-size: 0.75rem; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">按时完成</div>
+                                    <div style="font-size: 1.25rem; font-weight: bold; color: #28a745; line-height: 1.2;">18</div>
                                 </div>
                                 <div style="padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6;">
-                                    <div style="font-size: 12px; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">延期完成</div>
-                                    <div style="font-size: 20px; font-weight: bold; color: #fd7e14; line-height: 1.2;">10</div>
+                                    <div style="font-size: 0.75rem; font-weight: 600; color: #333; margin-bottom: 5px; line-height: 1.2;">延期完成</div>
+                                    <div style="font-size: 1.25rem; font-weight: bold; color: #fd7e14; line-height: 1.2;">10</div>
                                 </div>
                             </div>
                         </div>
@@ -5410,12 +5411,12 @@
                         <!-- 搜索和筛选区域 -->
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
                             <div style="display: flex; align-items: center; gap: 5px;">
-                                <label style="font-size: 13px; color: #333;">关键词：</label>
-                                <input type="text" id="keywordInput_${tabId}" placeholder="客户编号、方案名称" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px; width: 168px;">
+                                <label style="font-size: 0.8125rem; color: #333;">关键词：</label>
+                                <input type="text" id="keywordInput_${tabId}" placeholder="客户编号、方案名称" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem; width: 168px;">
                             </div>
                             <div style="display: flex; align-items: center; gap: 5px;">
-                                <label style="font-size: 13px; color: #333;">状态：</label>
-                                <select id="statusFilter_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                                <label style="font-size: 0.8125rem; color: #333;">状态：</label>
+                                <select id="statusFilter_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem;">
                                     <option value="">全部</option>
                                     <option value="待处理">待处理</option>
                                     <option value="训练中">训练中</option>
@@ -5426,8 +5427,8 @@
                                 </select>
                             </div>
                             <div style="display: flex; align-items: center; gap: 5px;">
-                                <label style="font-size: 13px; color: #333;">预警状态：</label>
-                                <select id="warningFilter_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                                <label style="font-size: 0.8125rem; color: #333;">预警状态：</label>
+                                <select id="warningFilter_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem;">
                                     <option value="">全部</option>
                                     <option value="已延期">已延期</option>
                                     <option value="即将延期">即将延期</option>
@@ -5436,12 +5437,12 @@
                                     <option value="-">已取消</option>
                                 </select>
                             </div>
-                            <button onclick="filterTable('${tabId}')" style="padding: 6px 12px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">搜索</button>
-                            <button onclick="resetFilter('${tabId}')" style="padding: 6px 12px; background-color: #6C757D; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">重置</button>
+                            <button onclick="filterTable('${tabId}')" style="padding: 6px 12px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 0.8125rem; cursor: pointer;">搜索</button>
+                            <button onclick="resetFilter('${tabId}')" style="padding: 6px 12px; background-color: #6C757D; color: white; border: none; border-radius: 4px; font-size: 0.8125rem; cursor: pointer;">重置</button>
                         </div>
                         
                         <div style="width: 100%; overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.8125rem;">
                                 <thead>
                                     <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
                                         <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">工位名称</th>
@@ -5459,10 +5460,10 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C001</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-06-30</div>
-                                            <div style="font-size: 11px; color: #666;">还剩2天</div>
+                                            <div style="font-size: 0.6875rem; color: #666;">还剩2天</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
-                                            <span style="display: inline-block; padding: 2px 8px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 12px; font-size: 12px;">即将延期</span>
+                                            <span style="display: inline-block; padding: 2px 8px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 12px; font-size: 0.75rem;">即将延期</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">训练中</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">张工</td>
@@ -5473,10 +5474,10 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C002</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-05-15</div>
-                                            <div style="font-size: 11px; color: #dc3545;">已延期2天</div>
+                                            <div style="font-size: 0.6875rem; color: #dc3545;">已延期2天</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
-                                            <span style="display: inline-block; padding: 2px 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 12px; font-size: 12px;">已延期</span>
+                                            <span style="display: inline-block; padding: 2px 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 12px; font-size: 0.75rem;">已延期</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">待处理</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">李工</td>
@@ -5487,10 +5488,10 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C003</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-04-30</div>
-                                            <div style="font-size: 11px; color: #dc3545;">已延期2天</div>
+                                            <div style="font-size: 0.6875rem; color: #dc3545;">已延期2天</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
-                                            <span style="display: inline-block; padding: 2px 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 12px; font-size: 12px;">已延期</span>
+                                            <span style="display: inline-block; padding: 2px 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 12px; font-size: 0.75rem;">已延期</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">待处理</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">王工</td>
@@ -5501,10 +5502,10 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C004</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-07-15</div>
-                                            <div style="font-size: 11px; color: #28a745;">按时完成</div>
+                                            <div style="font-size: 0.6875rem; color: #28a745;">按时完成</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
-                                            <span style="display: inline-block; padding: 2px 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 12px; font-size: 12px;">按时完成</span>
+                                            <span style="display: inline-block; padding: 2px 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 12px; font-size: 0.75rem;">按时完成</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">已完成</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">赵工</td>
@@ -5515,10 +5516,10 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C005</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-06-15</div>
-                                            <div style="font-size: 11px; color: #fd7e14;">延期3天完成</div>
+                                            <div style="font-size: 0.6875rem; color: #fd7e14;">延期3天完成</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
-                                            <span style="display: inline-block; padding: 2px 8px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 12px; font-size: 12px;">延期完成</span>
+                                            <span style="display: inline-block; padding: 2px 8px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 12px; font-size: 0.75rem;">延期完成</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">运营中</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">钱工</td>
@@ -5529,10 +5530,10 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C006</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-08-10</div>
-                                            <div style="font-size: 11px; color: #28a745;">提前3天完成</div>
+                                            <div style="font-size: 0.6875rem; color: #28a745;">提前3天完成</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
-                                            <span style="display: inline-block; padding: 2px 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 12px; font-size: 12px;">按时完成</span>
+                                            <span style="display: inline-block; padding: 2px 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 12px; font-size: 0.75rem;">按时完成</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">已完成</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">孙工</td>
@@ -5543,7 +5544,7 @@
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C007</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <div>2026-09-01</div>
-                                            <div style="font-size: 11px; color: #666;">已取消</div>
+                                            <div style="font-size: 0.6875rem; color: #666;">已取消</div>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">-</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">已取消</td>
@@ -5719,13 +5720,13 @@
                                     <path d="M3 3v18h18"></path>
                                     <path d="M19 9l-5 5-4-4-3 3"></path>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -5735,14 +5736,14 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文档编辑</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">文档编辑</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -5750,14 +5751,14 @@
                                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                     <polyline points="21 15 16 10 5 21"></polyline>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">图片设计</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">图片设计</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                     <polygon points="23 7 16 12 23 17 23 7"></polygon>
                                     <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -5766,7 +5767,7 @@
                                     <path d="M7 21h10"></path>
                                     <path d="M12 17l4 4"></path>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">在线编程</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">在线编程</span>
                             </div>
                             <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showFileManagement()">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -5774,7 +5775,7 @@
                                     <polyline points="7 10 12 15 17 10"></polyline>
                                     <line x1="12" y1="15" x2="12" y2="3"></line>
                                 </svg>
-                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
+                                <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
                             </div>
                         </div>
                     </div>
@@ -6088,7 +6089,7 @@
                 <div style="width: 100%; height: 100%; box-sizing: border-box;">
                     <!-- 我的日程 -->
                     <div style="margin-bottom: 16px;">
-                        <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的日程</h3>
+                        <h3 style="font-size: 1rem; font-weight: 600; color: #333; margin-bottom: 15px;">我的日程</h3>
                         <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
                             <div style="display: flex; gap: 40px; align-items: stretch;">
                                 <!-- 左边日历 -->
@@ -6103,7 +6104,7 @@
                                         <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1;">
                                             <!-- 城市选择器 -->
                                             <div style="position: relative;">
-                                                <select id="weatherCity_${tabId}" style="appearance: none; -webkit-appearance: none; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 5px 28px 5px 12px; color: white; font-size: 13px; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; min-width: 80px;">
+                                                <select id="weatherCity_${tabId}" style="appearance: none; -webkit-appearance: none; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 5px 28px 5px 12px; color: white; font-size: 0.8125rem; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; min-width: 80px;">
                                                     <option value="dongguan" style="color: #333; background: white;">东莞</option>
                                                     <option value="beijing" style="color: #333; background: white;">北京</option>
                                                     <option value="shanghai" style="color: #333; background: white;">上海</option>
@@ -6116,25 +6117,25 @@
                                             </div>
                                             <!-- 时间和空气质量上下排版 -->
                                             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-                                                <div style="font-size: 10px; opacity: 0.6;">10:01更新</div>
-                                                <div style="background: rgba(76, 175, 80, 0.85); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">
+                                                <div style="font-size: 0.625rem; opacity: 0.6;">10:01更新</div>
+                                                <div style="background: rgba(76, 175, 80, 0.85); padding: 2px 8px; border-radius: 10px; font-size: 0.625rem; font-weight: 600;">
                                                     18 优
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div style="display: flex; align-items: flex-start; gap: 12px; position: relative; z-index: 1;">
-                                            <div style="font-size: 48px; font-weight: 200; letter-spacing: -2px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">27°</div>
+                                            <div style="font-size: 3rem; font-weight: 200; letter-spacing: -2px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">27°</div>
                                             <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 2px;">
-                                                <div style="font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 4px;">
-                                                    <span style="font-size: 18px;">🌧</span>
+                                                <div style="font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 4px;">
+                                                    <span style="font-size: 1.125rem;">🌧</span>
                                                     <span>阴</span>
                                                 </div>
-                                                <div style="font-size: 11px; opacity: 0.85; display: flex; gap: 10px;">
+                                                <div style="font-size: 0.6875rem; opacity: 0.85; display: flex; gap: 10px;">
                                                     <span>体感 31°</span>
                                                     <span>东风 2级</span>
                                                 </div>
-                                                <div style="font-size: 11px; opacity: 0.75; display: flex; gap: 8px;">
+                                                <div style="font-size: 0.6875rem; opacity: 0.75; display: flex; gap: 8px;">
                                                     <span>最高 27°</span>
                                                     <span>最低 24°</span>
                                                 </div>
@@ -6151,13 +6152,13 @@
                                         
                                         <!-- 时间点1 - 已完成 -->
                                         <div style="position: relative; margin-bottom: 10px; padding: 8px; background-color: #f5f5f5; border-radius: 8px; transition: all 0.3s ease; opacity: 0.7;">
-                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #28f138; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #999; margin-bottom: 4px;">04-14 16:00</div>
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #28f138; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem;">●</div>
+                                            <div style="font-size: 0.75rem; color: #999; margin-bottom: 4px;">04-14 16:00</div>
                                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                                <div style="font-size: 14px; font-weight: 500; color: #666;">项目启动会</div>
-                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #c8e6c9; border-radius: 10px; color: #2e7d32;">已完成</span>
+                                                <div style="font-size: 0.875rem; font-weight: 500; color: #666;">项目启动会</div>
+                                                <span style="font-size: 0.6875rem; padding: 2px 6px; background-color: #c8e6c9; border-radius: 10px; color: #2e7d32;">已完成</span>
                                             </div>
-                                            <div style="font-size: 12px; color: #666;">
+                                            <div style="font-size: 0.75rem; color: #666;">
                                                 <span style="margin-right: 8px;">备注：</span>
                                                 <span>项目正式启动，明确分工</span>
                                             </div>
@@ -6165,13 +6166,13 @@
                                         
                                         <!-- 时间点2 - 已过时 -->
                                         <div style="position: relative; margin-bottom: 10px; padding: 8px; background-color: #f8f9fa; border-radius: 8px; transition: all 0.3s ease;">
-                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">04-15 09:30</div>
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.75rem;">●</div>
+                                            <div style="font-size: 0.75rem; color: #666; margin-bottom: 4px;">04-15 09:30</div>
                                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                                <div style="font-size: 14px; font-weight: 500;">团队周会</div>
-                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #e0e0e0; border-radius: 10px; color: #666;">已过时</span>
+                                                <div style="font-size: 0.875rem; font-weight: 500;">团队周会</div>
+                                                <span style="font-size: 0.6875rem; padding: 2px 6px; background-color: #e0e0e0; border-radius: 10px; color: #666;">已过时</span>
                                             </div>
-                                            <div style="font-size: 12px; color: #666;">
+                                            <div style="font-size: 0.75rem; color: #666;">
                                                 <span style="margin-right: 8px;">备注：</span>
                                                 <span>讨论本周工作安排和项目进展</span>
                                             </div>
@@ -6179,13 +6180,13 @@
                                         
                                         <!-- 时间点3 - 待完成 -->
                                         <div style="position: relative; margin-bottom: 10px; padding: 8px; background-color: #e3f2fd; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #2196f3;">
-                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">04-17 11:00</div>
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem;">●</div>
+                                            <div style="font-size: 0.75rem; color: #666; margin-bottom: 4px;">04-17 11:00</div>
                                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                                <div style="font-size: 14px; font-weight: 500;">技术培训</div>
-                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #bbdefb; border-radius: 10px; color: #1976d2;">待完成</span>
+                                                <div style="font-size: 0.875rem; font-weight: 500;">技术培训</div>
+                                                <span style="font-size: 0.6875rem; padding: 2px 6px; background-color: #bbdefb; border-radius: 10px; color: #1976d2;">待完成</span>
                                             </div>
-                                            <div style="font-size: 12px; color: #666;">
+                                            <div style="font-size: 0.75rem; color: #666;">
                                                 <span style="margin-right: 8px;">备注：</span>
                                                 <span>参加新技术培训课程</span>
                                             </div>
@@ -6193,13 +6194,13 @@
                                         
                                         <!-- 时间点4 - 待完成 -->
                                         <div style="position: relative; padding: 8px; background-color: #fff3e0; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #ff9800;">
-                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">04-18 15:30</div>
+                                            <div style="position: absolute; left: -40px; top: 16px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem;">●</div>
+                                            <div style="font-size: 0.75rem; color: #666; margin-bottom: 4px;">04-18 15:30</div>
                                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                                <div style="font-size: 14px; font-weight: 500;">季度总结会议</div>
-                                                <span style="font-size: 11px; padding: 2px 6px; background-color: #ffe0b2; border-radius: 10px; color: #e65100;">待完成</span>
+                                                <div style="font-size: 0.875rem; font-weight: 500;">季度总结会议</div>
+                                                <span style="font-size: 0.6875rem; padding: 2px 6px; background-color: #ffe0b2; border-radius: 10px; color: #e65100;">待完成</span>
                                             </div>
-                                            <div style="font-size: 12px; color: #666;">
+                                            <div style="font-size: 0.75rem; color: #666;">
                                                 <span style="margin-right: 8px;">备注：</span>
                                                 <span>总结本季度工作成果和不足</span>
                                             </div>
@@ -6212,15 +6213,15 @@
                     
                     <!-- 我的待办 -->
                     <div>
-                        <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的待办</h3>
+                        <h3 style="font-size: 1rem; font-weight: 600; color: #333; margin-bottom: 15px;">我的待办</h3>
                         <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
                             <!-- 搜索和筛选 -->
                             <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;">
                                 <div style="width: 250px;">
-                                    <input type="text" placeholder="关键字搜索（标题、编号）" style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                                    <input type="text" placeholder="关键字搜索（标题、编号）" style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem;">
                                 </div>
                                 <div style="width: 150px;">
-                                    <select style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                                    <select style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem;">
                                         <option value="">全部状态</option>
                                         <option value="pending">待审核</option>
                                         <option value="approved">已通过</option>
@@ -6228,14 +6229,14 @@
                                     </select>
                                 </div>
                                 <div style="display: flex; gap: 8px;">
-                                    <button style="padding: 8px 16px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">搜索</button>
-                                    <button style="padding: 8px 16px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px; cursor: pointer;">重置</button>
+                                    <button style="padding: 8px 16px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 0.8125rem; cursor: pointer;">搜索</button>
+                                    <button style="padding: 8px 16px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.8125rem; cursor: pointer;">重置</button>
                                 </div>
                             </div>
                             
                             <!-- 表格 -->
                             <div style="overflow-x: auto;">
-                                <table style="width: auto; border-collapse: collapse; font-size: 13px; min-width: 100%;">
+                                <table style="width: auto; border-collapse: collapse; font-size: 0.8125rem; min-width: 100%;">
                                     <thead>
                                         <tr style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
                                             <th style="padding: 10px; text-align: left; font-weight: 600; border-right: 1px solid #dee2e6; white-space: nowrap;">标题</th>
@@ -6256,12 +6257,12 @@
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-15</td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-18</td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">
-                                                <span style="padding: 2px 8px; background-color: #ffecb3; border-radius: 10px; color: #ff8f00; font-size: 11px;">待审核</span>
+                                                <span style="padding: 2px 8px; background-color: #ffecb3; border-radius: 10px; color: #ff8f00; font-size: 0.6875rem;">待审核</span>
                                             </td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">需要审批新项目方案</td>
                                             <td style="padding: 10px;">
-                                                <button style="padding: 4px 8px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; margin-right: 4px;">审核</button>
-                                                <button style="padding: 4px 8px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 11px; cursor: pointer;">查看</button>
+                                                <button style="padding: 4px 8px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 0.6875rem; cursor: pointer; margin-right: 4px;">审核</button>
+                                                <button style="padding: 4px 8px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.6875rem; cursor: pointer;">查看</button>
                                             </td>
                                         </tr>
                                         <tr style="border-bottom: 1px solid #dee2e6;">
@@ -6271,11 +6272,11 @@
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-14</td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-17</td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">
-                                                <span style="padding: 2px 8px; background-color: #c8e6c9; border-radius: 10px; color: #2e7d32; font-size: 11px;">已通过</span>
+                                                <span style="padding: 2px 8px; background-color: #c8e6c9; border-radius: 10px; color: #2e7d32; font-size: 0.6875rem;">已通过</span>
                                             </td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">Q2季度预算申请</td>
                                             <td style="padding: 10px;">
-                                                <button style="padding: 4px 8px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 11px; cursor: pointer;">查看</button>
+                                                <button style="padding: 4px 8px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.6875rem; cursor: pointer;">查看</button>
                                             </td>
                                         </tr>
                                         <tr>
@@ -6285,11 +6286,11 @@
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-16</td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">2026-04-19</td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">
-                                                <span style="padding: 2px 8px; background-color: #ffcdd2; border-radius: 10px; color: #c62828; font-size: 11px;">已驳回</span>
+                                                <span style="padding: 2px 8px; background-color: #ffcdd2; border-radius: 10px; color: #c62828; font-size: 0.6875rem;">已驳回</span>
                                             </td>
                                             <td style="padding: 10px; border-right: 1px solid #dee2e6;">需要补充设备清单</td>
                                             <td style="padding: 10px;">
-                                                <button style="padding: 4px 8px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 11px; cursor: pointer;">查看</button>
+                                                <button style="padding: 4px 8px; background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.6875rem; cursor: pointer;">查看</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -6318,18 +6319,18 @@
             // 生成日历HTML
             let calendarHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <button id="prevMonth_${tabId}" style="padding: 3px 6px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; font-size: 10px; cursor: pointer;">&lt;</button>
-                    <h3 style="margin: 0; font-size: 12px;">${year}年 ${monthNames[month]}</h3>
-                    <button id="nextMonth_${tabId}" style="padding: 3px 6px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; font-size: 10px; cursor: pointer;">&gt;</button>
+                    <button id="prevMonth_${tabId}" style="padding: 3px 6px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.625rem; cursor: pointer;">&lt;</button>
+                    <h3 style="margin: 0; font-size: 0.75rem;">${year}年 ${monthNames[month]}</h3>
+                    <button id="nextMonth_${tabId}" style="padding: 3px 6px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.625rem; cursor: pointer;">&gt;</button>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center;">
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">日</div>
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">一</div>
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">二</div>
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">三</div>
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">四</div>
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">五</div>
-                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">六</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">日</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">一</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">二</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">三</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">四</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">五</div>
+                    <div style="font-size: 0.625rem; font-weight: 600; color: #666; padding: 6px;">六</div>
             `;
             
             // 计算当月第一天是星期几
@@ -6341,15 +6342,15 @@
             
             // 添加上个月的占位
             for (let i = 0; i < startDate; i++) {
-                calendarHTML += `<div style="padding: 6px 3px; font-size: 10px; color: #ccc;"></div>`;
+                calendarHTML += `<div style="padding: 6px 3px; font-size: 0.625rem; color: #ccc;"></div>`;
             }
             
             // 添加当月的日期
             for (let day = 1; day <= daysInMonth; day++) {
                 const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                 const dayStyle = isToday 
-                    ? 'padding: 6px 3px; font-size: 10px; background-color: #0051D9; color: white; border-radius: 4px;' 
-                    : 'padding: 6px 3px; font-size: 10px;';
+                    ? 'padding: 6px 3px; font-size: 0.625rem; background-color: #0051D9; color: white; border-radius: 4px;' 
+                    : 'padding: 6px 3px; font-size: 0.625rem;';
                 calendarHTML += `<div style="${dayStyle}">${day}</div>`;
             }
             
@@ -8126,13 +8127,13 @@
                                 <path d="M3 3v18h18"></path>
                                 <path d="M19 9l-5 5-4-4-3 3"></path>
                             </svg>
-                            <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
+                            <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
                         </div>
                         <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
-                            <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
+                            <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
                         </div>
                         <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
@@ -8140,7 +8141,7 @@
                                 <polyline points="7 10 12 15 17 10"></polyline>
                                 <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
-                            <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
+                            <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
                         </div>
                     </div>
                 </div>
@@ -9571,13 +9572,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
             color: white;
         }
 
         .ai-chat-name {
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 500;
             color: var(--deep-gray);
         }
@@ -9585,7 +9586,7 @@
         .ai-chat-close {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 1.25rem;
             cursor: pointer;
             color: var(--deep-gray);
             width: 24px;
@@ -9642,7 +9643,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 0.875rem;
             color: white;
             background-color: var(--hermes-orange);
         }
@@ -9652,7 +9653,7 @@
         }
 
         .ai-name {
-            font-size: 13px;
+            font-size: 0.8125rem;
             font-weight: 500;
             color: var(--deep-gray);
         }
@@ -9668,7 +9669,7 @@
             max-width: 100%;
             padding: 12px 14px 8px 14px;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 0.875rem;
             line-height: 1.6;
             word-wrap: break-word;
             position: relative;
@@ -9712,7 +9713,7 @@
             border: none;
             border-radius: 20px;
             padding: 8px 0;
-            font-size: 14px;
+            font-size: 0.875rem;
             resize: none;
             min-height: 30px;
             max-height: 120px;
@@ -9754,7 +9755,7 @@
             align-items: center;
             gap: 4px;
             color: #666;
-            font-size: 12px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: color 0.3s;
         }
@@ -9773,7 +9774,7 @@
             width: 36px;
             height: 36px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -9800,7 +9801,7 @@
             border: 1px solid var(--border-gray);
             border-radius: 16px;
             padding: 6px 12px;
-            font-size: 12px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -9817,7 +9818,7 @@
             border: 1px solid var(--klein-blue);
             border-radius: 16px;
             padding: 6px 12px;
-            font-size: 12px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s;
         }
