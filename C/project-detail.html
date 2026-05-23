@@ -340,7 +340,7 @@
             background: transparent;
             box-sizing: border-box;
         }
-        /* 从圆圈底部到卡片折线起点的垂直线（无缝衔接::before） */
+        /* 从圆圈底部到卡片折线起点的垂直线（仅非sibling的第一卡片使用） */
         .sop-column .node-card::after {
             content: '';
             position: absolute;
@@ -362,16 +362,20 @@
             top: calc(1rem - 1px);
             height: calc(1rem + 2px);
         }
-        /* 贯穿竖线：从圆圈底部到第二卡片折线处（高度由JS动态计算） */
-        .sop-column .node-connector {
+        /* 贯穿竖线：有sibling时，从圆圈底部延伸到第二卡片L折线处，替代第一卡片::after */
+        .sop-column.has-sibling .node-connector {
             position: absolute;
-            top: calc(0.5rem + 2rem);
-            left: calc(0.125rem + 0.75rem + 1rem - 1px);
+            top: 2rem;
+            left: calc(0.125rem + 0.75rem + 1rem + 1px);
             width: 2px;
             height: 0;
             background: var(--border);
             z-index: 0;
             pointer-events: none;
+        }
+        /* 有sibling时，隐藏第一卡片的::after垂直线（由node-connector统一绘制） */
+        .sop-column.has-sibling > .node-card:first-of-type::after {
+            display: none;
         }
         .sop-column .node-title {
             font-size: 0.8125rem;
@@ -1586,13 +1590,13 @@
             var lastCard = col.querySelector('.node-card-sibling');
             if (!connector || !lastCard) return;
             // 贯穿线终点 = 第二卡片L折线起点在column中的位置
-            // L折线 top = calc(1rem - 1px)，是相对于卡片的
+            // L折线 ::before 的 top = calc(1rem - 1px)，是相对于卡片padding edge的
+            // lastCard.offsetTop 已经是卡片padding edge相对于column的位置（无border时）
             var rootFs = parseFloat(getComputedStyle(document.documentElement).fontSize);
             var lLineTop = rootFs * 1 - 1; // 1rem - 1px
-            var cardPaddingTop = parseFloat(getComputedStyle(lastCard).paddingTop);
-            // 第二卡片L折线在column中的绝对Y位置
-            var targetY = lastCard.offsetTop + cardPaddingTop + lLineTop;
-            // 贯穿线起始Y（已由CSS设好 top: calc(0.5rem + 2rem)）
+            // 第二卡片L折线在column中的绝对Y位置 = offsetTop + (1rem - 1px)
+            var targetY = lastCard.offsetTop + lLineTop;
+            // 贯穿线起始Y（已由CSS设好 top: 2rem）
             var startY = connector.offsetTop;
             connector.style.height = Math.max(0, targetY - startY) + 'px';
         });
@@ -1605,7 +1609,10 @@
         // SOP连线需等布局完成后计算
         requestAnimationFrame(updateNodeConnectors);
     });
-    window.addEventListener('resize', renderDetailGantt);
+    window.addEventListener('resize', function() {
+        renderDetailGantt();
+        updateNodeConnectors();
+    });
 })();
 </script>
 
