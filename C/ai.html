@@ -2307,7 +2307,9 @@
         .message-actions {
             display: flex;
             align-items: center;
-            opacity: 1;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
 
         .chat-message.user .message-actions {
@@ -2319,6 +2321,12 @@
         .chat-message.ai .message-actions {
             justify-content: flex-start;
             margin-top: 8px;
+        }
+
+        /* hover时显示操作按钮 */
+        .chat-message:hover .message-actions {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* 操作图标按钮 */
