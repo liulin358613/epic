@@ -2205,6 +2205,36 @@
             gap: 0;
         }
 
+        /* 用户消息中的引用内容 */
+        .user-quote-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid var(--klein-blue);
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .user-quote-icon {
+            color: var(--klein-blue);
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .user-quote-text {
+            flex: 1;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .chat-message.ai {
             justify-content: flex-start;
             align-items: flex-start;
@@ -5234,6 +5264,12 @@
 
                 <!-- 底部输入框 -->
                 <div class="input-container">
+                    <!-- 引用内容区域 -->
+                    <div class="quote-content" id="quoteContent" style="display: none;">
+                        <div class="quote-icon">"</div>
+                        <span class="quote-text"></span>
+                        <button class="quote-close" id="quoteClose">×</button>
+                    </div>
                     <div class="input-box">
                         <textarea placeholder="输入你的问题..."></textarea>
                     </div>
@@ -8555,13 +8591,48 @@
                 const minutes = now.getMinutes().toString().padStart(2, '0');
                 const currentTime = `${month}-${day} ${hours}:${minutes}`;
                 
+                // 获取引用内容
+                const quoteContent = document.getElementById('quoteContent');
+                const quoteText = document.querySelector('.quote-text');
+                let quotedText = '';
+                if (quoteContent && quoteText && quoteContent.style.display !== 'none') {
+                    quotedText = quoteText.textContent.trim();
+                }
+                
                 // 创建用户消息元素
                 const userMessage = document.createElement('div');
                 userMessage.className = 'chat-message user';
+                
+                // 如果有引用内容，在消息中显示引用区域
+                let quoteHtml = '';
+                if (quotedText) {
+                    quoteHtml = `
+                        <div class="user-quote-content">
+                            <span class="user-quote-icon">"</span>
+                            <span class="user-quote-text">${quotedText}</span>
+                        </div>
+                    `;
+                }
+                
                 userMessage.innerHTML = `
-                    <div class="message-content">${content}<span class="message-time">${currentTime}</span></div>
+                    <div class="message-content">${content}${quoteHtml}<span class="message-time">${currentTime}</span></div>
+                    <div class="message-actions">
+                        <button class="message-action-btn" title="复制">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                    </div>
                 `;
                 document.querySelector('.chat-content').appendChild(userMessage);
+                
+                // 清空引用内容区域
+                if (quoteContent && quoteText) {
+                    quoteContent.style.display = 'none';
+                    quoteText.textContent = '';
+                }
                 
                 // 模拟AI回复 - 流式输出
                 setTimeout(() => {
@@ -8577,6 +8648,15 @@
                             </div>
                             <div class="message-content" id="streamingContent">
                                 <span class="streaming-text"></span><span class="streaming-cursor"></span>
+                            </div>
+                            <div class="message-actions">
+                                <button class="message-action-btn" title="复制">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                                <button class="message-action-btn quote-btn" title="引用">“引用</button>
                             </div>
                         </div>
                     `;
@@ -8658,6 +8738,113 @@
                 
                 // 滚动到底部
                 document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
+            }
+        });
+
+        // 【复制】按钮点击事件
+        document.addEventListener('click', (e) => {
+            const copyBtn = e.target.closest('.message-action-btn:not(.quote-btn)');
+            if (copyBtn) {
+                const messageContent = copyBtn.closest('.chat-message').querySelector('.message-content');
+                if (messageContent) {
+                    // 获取文本内容，去除时间戳和其他元素
+                    const text = messageContent.textContent.trim().replace(/\d{2}-\d{2} \d{2}:\d{2}$/, '').trim();
+                    
+                    // 复制到剪贴板
+                    navigator.clipboard.writeText(text).then(() => {
+                        // 显示复制成功提示（在复制按钮上方）
+                        const toast = document.createElement('div');
+                        toast.className = 'copy-toast';
+                        toast.textContent = '复制成功';
+                        
+                        // 获取复制按钮的位置
+                        const rect = copyBtn.getBoundingClientRect();
+                        
+                        toast.style.cssText = `
+                            position: fixed;
+                            top: ${rect.top - 30}px;
+                            left: ${rect.left - 10}px;
+                            background-color: rgba(0, 0, 0, 0.8);
+                            color: white;
+                            padding: 4px 10px;
+                            border-radius: 4px;
+                            font-size: 12px;
+                            z-index: 9999;
+                            white-space: nowrap;
+                            animation: fadeInOutToast 1.5s ease;
+                        `;
+                        document.body.appendChild(toast);
+                        
+                        // 添加动画样式
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes fadeInOutToast {
+                                0% { opacity: 0; transform: translateY(5px); }
+                                20% { opacity: 1; transform: translateY(0); }
+                                80% { opacity: 1; transform: translateY(0); }
+                                100% { opacity: 0; transform: translateY(-5px); }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                        
+                        // 1.5秒后移除提示
+                        setTimeout(() => {
+                            toast.remove();
+                            style.remove();
+                        }, 1500);
+                    }).catch(err => {
+                        console.error('复制失败:', err);
+                    });
+                }
+            }
+        });
+
+        // 【引用】按钮点击事件
+        document.addEventListener('click', (e) => {
+            const quoteBtn = e.target.closest('.message-action-btn.quote-btn');
+            if (quoteBtn) {
+                const messageContent = quoteBtn.closest('.chat-message').querySelector('.message-content');
+                if (messageContent) {
+                    // 获取文本内容，去除时间戳和其他元素
+                    let text = messageContent.textContent.trim().replace(/\d{2}-\d{2} \d{2}:\d{2}$/, '').trim();
+                    
+                    // 超出部分用...显示（限制在200字符以内）
+                    if (text.length > 200) {
+                        text = text.substring(0, 200) + '...';
+                    }
+                    
+                    // 将引用内容显示在引用区域
+                    const quoteContent = document.getElementById('quoteContent');
+                    const quoteText = document.querySelector('.quote-text');
+                    if (quoteContent && quoteText) {
+                        quoteText.textContent = text;
+                        quoteContent.style.display = 'flex';
+                        
+                        // 聚焦输入框（优先使用.input-container内的textarea）
+                        const inputContainer = document.querySelector('.input-container');
+                        if (inputContainer) {
+                            const textarea = inputContainer.querySelector('textarea');
+                            if (textarea) {
+                                textarea.focus();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 关闭引用区域
+        document.addEventListener('click', (e) => {
+            const quoteClose = e.target.closest('.quote-close');
+            if (quoteClose) {
+                const quoteContent = document.getElementById('quoteContent');
+                if (quoteContent) {
+                    quoteContent.style.display = 'none';
+                    const quoteText = document.querySelector('.quote-text');
+                    if (quoteText) {
+                        quoteText.textContent = '';
+                    }
+                }
             }
         });
 
@@ -10460,6 +10647,12 @@
         </div>
         <div class="ai-chat-input-container">
             <div class="ai-chat-input-box">
+                <!-- 引用内容区域 -->
+                <div class="quote-content" id="quoteContent" style="display: none;">
+                    <div class="quote-icon">"</div>
+                    <span class="quote-text"></span>
+                    <button class="quote-close" id="quoteClose">×</button>
+                </div>
                 <textarea placeholder="输入你的问题..." class="ai-chat-textarea"></textarea>
                 <div class="ai-chat-input-tools">
                     <div class="ai-chat-input-tools-left">
@@ -10781,6 +10974,36 @@
             gap: 0;
         }
 
+        /* 用户消息中的引用内容 */
+        .user-quote-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid var(--klein-blue);
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .user-quote-icon {
+            color: var(--klein-blue);
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .user-quote-text {
+            flex: 1;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .chat-message.ai {
             justify-content: flex-start;
             align-items: flex-start;
@@ -10885,6 +11108,56 @@
 
         .ai-chat-textarea::placeholder {
             color: #999;
+        }
+
+        /* 引用内容区域 */
+        .quote-content {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #f5f7fa;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid var(--border-gray);
+            gap: 8px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .quote-icon {
+            color: #888;
+            font-size: 16px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .quote-text {
+            flex: 1;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .quote-close {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            color: #999;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .quote-close:hover {
+            background-color: #e8eaed;
+            color: #666;
         }
 
         .ai-chat-input-tools {
