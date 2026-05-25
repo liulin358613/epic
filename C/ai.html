@@ -2323,8 +2323,9 @@
             margin-top: 8px;
         }
 
-        /* hover时显示操作按钮 */
-        .chat-message:hover .message-actions {
+        /* hover时显示操作按钮（仅在对话卡片内容区域内） */
+        .chat-message .message-content:hover ~ .message-actions,
+        .chat-message .message-actions:hover {
             opacity: 1;
             visibility: visible;
         }
