@@ -43,7 +43,7 @@
         }
 
         :root {
-            --klein-blue: #0051d9;
+            --klein-blue: #002FA7;
             --hermes-orange: #F37021;
             --deep-gray: #1D2129;
             --light-gray: #86909C;
@@ -78,6 +78,7 @@
             left: 0;
             width: 100%;
             z-index: 99998;
+            border-bottom: 3px solid #FF6600;
         }
 
         .nav-container {
@@ -113,22 +114,21 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
             cursor: pointer;
         }
 
         .logo-text {
-            font-weight: bold;
-            font-size: 1rem;
+            font-weight: 900;
+            font-size: 1.6rem;
             color: var(--white);
         }
 
         .logo-slogan {
-            font-size: 0.75rem;
-            background: linear-gradient(135deg, var(--white), var(--hermes-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+            color: var(--white);
         }
 
         .nav-link {
@@ -365,13 +365,13 @@
         <div class="nav-container">
             <div class="nav-left">
                 <div class="logo-container" onclick="refreshPage()">
-                    <div class="logo-text">RaaS.Dao</div>
-                    <div class="logo-slogan">共创・共享</div>
+                    <div class="logo-text">RaaSDao</div>
+                    <div class="logo-slogan">AI生产力创造平台</div>
                 </div>
             </div>
             <div class="nav-right">
                 
-                <a href="#" class="nav-link">消息中心</a>
+                <!-- <a href="#" class="nav-link">消息中心</a> -->
                 <a href="#" class="nav-link">我的订单</a>
                 <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
                 <a href="#" onclick="goToCreateOrg()" class="nav-link">创建组织</a>
@@ -394,13 +394,13 @@
         <div class="nav-container">
             <div class="nav-left">
                 <div class="logo-container" onclick="refreshPage()">
-                    <div class="logo-text">RaaS.Dao</div>
-                    <div class="logo-slogan">共创・共享</div>
+                    <div class="logo-text">RaaSDao</div>
+                    <div class="logo-slogan">AI生产力创造平台</div>
                 </div>
             </div>
             <div class="nav-right">
                 
-                <a href="#" class="nav-link">消息中心<span class="message-badge">(99+)</span></a>
+                <!-- <a href="#" class="nav-link">消息中心<span class="message-badge">(99+)</span></a> -->
                 <a href="#" class="nav-link">我的订单</a>
                 <a href="#" onclick="goToPersonalCenter()" class="nav-link">个人中心</a>
                 <a href="#" onclick="goToCreateOrg()" class="nav-link">创建组织</a>
