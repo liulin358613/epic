@@ -2761,6 +2761,112 @@
             }
         }
 
+        /* 用户消息中的文件卡片样式 */
+        .user-file-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background-color: #F7F8FA;
+            border-radius: 8px;
+            margin-top: 12px;
+            border: 1px solid #E5E7EB;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .user-file-preview {
+            width: 140px;
+            height: 140px;
+            background-color: #D0D5DD;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .user-file-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-file-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+
+        .user-file-info {
+            flex: 1;
+            min-width: 0;
+            padding-top: 4px;
+        }
+
+        .user-file-name {
+            font-size: 0.875rem;
+            color: #1D2129;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+
+        .user-file-preview-btn {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            color: var(--klein-blue);
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 0.8125rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .user-file-preview-btn:hover {
+            background-color: #0051D9;
+            color: #FFFFFF;
+        }
+
+        /* 图片卡片样式 - 不显示文件名区域 */
+        .user-image-card {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .user-image-card .user-file-info {
+            display: none;
+        }
+
+        .user-image-card .user-file-actions {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .user-image-card .user-file-preview-btn {
+            position: static;
+            right: auto;
+            bottom: auto;
+            margin-bottom: 0;
+        }
+
+        /* 输入框中图片预览缩略图样式 */
+        .upload-file-preview {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
         /* 文件加载loading样式 */
         .file-loading-container {
             display: flex;
@@ -5660,31 +5766,47 @@
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     const fileId = Date.now() + '-' + i;
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+                    
+                    let previewUrl = '';
+                    if (isImage) {
+                        previewUrl = URL.createObjectURL(file);
+                    }
                     
                     uploadedFiles.push({
                         id: fileId,
                         name: file.name,
-                        file: file
+                        file: file,
+                        isImage: isImage,
+                        previewUrl: previewUrl
                     });
                     
                     const fileItem = document.createElement('div');
                     fileItem.className = 'upload-file-item';
                     fileItem.dataset.fileId = fileId;
                     
-                    const fileExtension = file.name.split('.').pop().toLowerCase();
                     let fileIcon = '📄';
                     if (fileExtension === 'pdf') fileIcon = '📕';
                     else if (fileExtension === 'doc' || fileExtension === 'docx') fileIcon = '📘';
                     else if (fileExtension === 'xls' || fileExtension === 'xlsx') fileIcon = '📗';
                     else if (fileExtension === 'ppt' || fileExtension === 'pptx') fileIcon = '📙';
-                    else if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') fileIcon = '🖼️';
+                    else if (isImage) fileIcon = '🖼️';
                     else if (fileExtension === 'zip' || fileExtension === 'rar') fileIcon = '📦';
                     
-                    fileItem.innerHTML = `
-                        <span class="upload-file-icon">${fileIcon}</span>
-                        <span class="upload-file-name">${file.name}</span>
-                        <span class="upload-file-remove" onclick="removeUploadedFile('${fileId}')">×</span>
-                    `;
+                    if (isImage) {
+                        fileItem.innerHTML = `
+                            <img class="upload-file-preview" src="${previewUrl}" alt="${file.name}" />
+                            <span class="upload-file-name">${file.name}</span>
+                            <span class="upload-file-remove" onclick="removeUploadedFile('${fileId}')">×</span>
+                        `;
+                    } else {
+                        fileItem.innerHTML = `
+                            <span class="upload-file-icon">${fileIcon}</span>
+                            <span class="upload-file-name">${file.name}</span>
+                            <span class="upload-file-remove" onclick="removeUploadedFile('${fileId}')">×</span>
+                        `;
+                    }
                     
                     uploadFilesPreview.appendChild(fileItem);
                 }
@@ -8820,7 +8942,7 @@
             }
             
             const content = textarea.value.trim();
-            if (content) {
+            if (content || uploadedFiles.length > 0) {
                 // 清空欢迎文案
                 const welcomeContainer = document.querySelector('.welcome-container');
                 if (welcomeContainer) {
@@ -8858,8 +8980,51 @@
                     `;
                 }
                 
+                // 如果有上传的文件，在消息中显示文件卡片
+                let filesHtml = '';
+                if (uploadedFiles.length > 0) {
+                    uploadedFiles.forEach(file => {
+                        const fileExtension = file.name.split('.').pop().toLowerCase();
+                        const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+                        
+                        if (isImage) {
+                            // 图片文件：显示缩略预览图，不显示文件名
+                            filesHtml += `
+                                <div class="user-file-card user-image-card">
+                                    <div class="user-file-preview">
+                                        <img src="${file.previewUrl}" alt="${file.name}" />
+                                    </div>
+                                    <div class="user-file-actions">
+                                        <button class="user-file-preview-btn">预览</button>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            // 非图片文件：显示图标和文件名
+                            let fileIcon = '📄';
+                            if (fileExtension === 'pdf') fileIcon = '📕';
+                            else if (fileExtension === 'doc' || fileExtension === 'docx') fileIcon = '📘';
+                            else if (fileExtension === 'xls' || fileExtension === 'xlsx') fileIcon = '📗';
+                            else if (fileExtension === 'ppt' || fileExtension === 'pptx') fileIcon = '📙';
+                            else if (fileExtension === 'zip' || fileExtension === 'rar') fileIcon = '📦';
+                            
+                            filesHtml += `
+                                <div class="user-file-card">
+                                    <div class="user-file-preview">
+                                        <div class="user-file-icon">${fileIcon}</div>
+                                    </div>
+                                    <div class="user-file-info">
+                                        <span class="user-file-name">${file.name}</span>
+                                    </div>
+                                    <button class="user-file-preview-btn">预览</button>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                
                 userMessage.innerHTML = `
-                    <div class="message-content">${content}${quoteHtml}<span class="message-time">${currentTime}</span></div>
+                    <div class="message-content">${content}${filesHtml}${quoteHtml}<span class="message-time">${currentTime}</span></div>
                     <div class="message-actions">
                         <button class="message-action-btn" title="复制">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
