@@ -16,15 +16,6 @@
         // 全局登录状态
         let isLoggedIn = false;
         
-        // 填充输入框函数
-        function fillInput(text) {
-            const textarea = document.querySelector('.input-box textarea');
-            if (textarea) {
-                textarea.value = text;
-                textarea.focus();
-            }
-        }
-        
         // 检查登录状态
         function checkLoginStatus() {
             try {
@@ -367,6 +358,8 @@
                     logoutConfirmBtn.addEventListener('click', function() {
                         // 清除登录状态
                         localStorage.removeItem('isLoggedIn');
+                        // 清除未加入组织标识
+                        localStorage.removeItem('userStatus');
                         // 重新检查登录状态
                         checkLoginStatus();
                         
@@ -380,10 +373,8 @@
                             headerIframe.contentWindow.postMessage({ type: 'LOGOUT_SUCCESS' }, '*');
                         }
                         
-                        // 更新全能顾问文本
-                        updateAdvisorText();
-                        // 更新侧边栏登录栏
-                        updateSidebarLoginBar();
+                        // 跳转到未登录页面
+                        window.location.href = 'ai-unlogin.html';
                     });
                 }
 
@@ -718,7 +709,7 @@
                     if (isAiTeam) {
                         // 我的AI团队 - 个性设置
                         submenu.innerHTML = `
-                            <div class="common-submenu-item" onclick="openLoginModal()">
+                            <div class="common-submenu-item">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="3"></circle>
                                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -947,13 +938,12 @@
             border-right: 0.0625rem solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            padding: 0.75rem 0.75rem 3.75rem 0.75rem;
+            padding: 0.75rem 0.75rem 0 0.75rem;
             flex-shrink: 0;
             margin-right: 0;
             height: 100%;
             min-height: 0;
             position: relative;
-            overflow: visible;
         }
 
         .sidebar-top {
@@ -961,7 +951,6 @@
             overflow-y: auto;
             min-height: 0;
             scrollbar-width: none;
-            padding-bottom: 4.5rem;
         }
 
         .sidebar-top::-webkit-scrollbar {
@@ -1012,6 +1001,9 @@
             border-top: 1px solid var(--border-gray);
             display: flex;
             align-items: center;
+            gap: 8px;
+            margin-left: -0.75rem;
+            margin-right: -0.75rem;
             flex-shrink: 0;
         }
 
@@ -2211,44 +2203,6 @@
             flex-direction: column;
             gap: 28px;
             line-height: 1.6;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .welcome-message {
-            text-align: center;
-            max-width: 80%;
-            margin-top: 30%;
-        }
-
-        .welcome-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #1D2129;
-            margin-bottom: 2rem;
-        }
-
-        .welcome-suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .suggestion-tag {
-            padding: 10px 16px;
-            background-color: #f5f7fa;
-            border: 1px solid #e5e7eb;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            color: #4E5969;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .suggestion-tag:hover {
-            background-color: #e5e7eb;
-            border-color: #d1d5db;
         }
 
         /* 对话气泡样式 */
@@ -2648,13 +2602,13 @@
 
 
         .send-btn {
-            background: #d9d9d9;
-            color: #999999;
+            background: #06b6d4;
+            color: var(--white);
             border: none;
             border-radius: 50%;
             width: 36px;
             height: 36px;
-            cursor: not-allowed;
+            cursor: pointer;
             font-size: 1rem;
             display: flex;
             align-items: center;
@@ -2666,29 +2620,10 @@
             min-width: 36px;
             min-height: 36px;
             z-index: 9999;
-            pointer-events: none;
         }
 
-        .send-btn.active {
-            background: #06b6d4;
-            color: var(--white);
-            cursor: pointer;
-            pointer-events: auto;
-        }
-
-        .send-btn.active:hover {
+        .send-btn:hover {
             background: #04a4be;
-        }
-
-        .send-btn.pause {
-            background: #F37021;
-            color: var(--white);
-            cursor: pointer;
-            pointer-events: auto;
-        }
-
-        .send-btn.pause:hover {
-            background: #e0631d;
         }
 
         /* 图片模态框样式 */
@@ -4129,7 +4064,8 @@
                             <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
                                 <div class="member-name" style="font-size: 1.125rem; font-weight: 600;">我的秘书</div>
                                 <div class="team-member-actions" style="display: flex; align-items: center; gap: 6px;">
-                                    <div class="team-member-action" title="发起单聊" onclick="event.stopPropagation(); openLoginModal(); return false;">
+                                    <div class="unread-badge" style="display: none;"></div>
+                                    <div class="team-member-action" title="发起单聊">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                             <line x1="12" y1="10" x2="12" y2="10"></line>
@@ -4146,6 +4082,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="member-time" style="font-size: 0.75rem; color: #86909C; margin-bottom: 2px;">3分钟前</div>
                             <div style="display: flex; flex-direction: column; gap: 2px; font-size: 0.75rem; color: #86909C;">
                                 <span><span style="color: #1D2129;">职务：</span>我的秘书</span>
                                 <span><span style="color: #1D2129;">级别：</span>高级</span>
@@ -4165,11 +4102,12 @@
                         </div>
                         <div class="member-info">
                             <div class="member-name" style="font-size: 1rem; font-weight: 600;">项目经理</div>
+                            <div class="member-time" style="font-size: 0.75rem;">4分钟前</div>
                         </div>
                     </div>
                     <div class="team-member-actions">
                         <div class="unread-badge" style="display: none;"></div>
-                        <div class="team-member-action" title="发起单聊" onclick="event.stopPropagation(); openLoginModal(); return false;">
+                        <div class="team-member-action" title="发起单聊">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                 <line x1="12" y1="10" x2="12" y2="10"></line>
@@ -4186,10 +4124,112 @@
                         </div>
                     </div>
                 </div>
-            </div><!-- /sidebar-fixed-top -->
-            <div class="sidebar-login-bar" id="sidebarLoginBar">
-                <button class="login-btn" onclick="openLoginModal()">登录</button>
+            <div style="border-top: 1px solid var(--border-gray); margin: 0.5rem 0;"></div>
+            <!-- 固定区域：当前登录者信息 -->
+            <div class="menu-item" id="orgMenu" style="padding:0.75rem 1rem; margin: -0rem -0.75rem 0 -0.75rem; border-radius: 0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);margin-bottom:0.5rem;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="images/tx-1.png" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0;" />
+                    <span style="font-size: 0.875rem; color: var(--deep-gray); font-weight: 500;">林工</span>
+                </div>
+                <a href="create-org.html" style="margin-left: auto; padding: 4px 10px; background-color: rgba(0, 81, 217, 0.1); color: var(--klein-blue); font-size: 0.75rem; border-radius: 4px; text-decoration: none; white-space: nowrap; border: 1px solid rgba(0, 81, 217, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white'; this.style.borderColor='var(--klein-blue)';" onmouseout="this.style.backgroundColor='rgba(0, 81, 217, 0.1)'; this.style.color='var(--klein-blue)'; this.style.borderColor='rgba(0, 81, 217, 0.2)';">+ 创建组织</a>
             </div>
+            </div><!-- /sidebar-fixed-top -->
+            <!-- 可滚动区域：我的项目、我的人类伙伴、我的AI团队 -->
+            <div class="sidebar-scroll-area">
+            <!-- 我的项目 -->
+            <div class="sidebar-menu org-submenu">
+                <div class="menu-item" id="projMenu">
+                    <div class="menu-item-content">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>我的项目</span>
+                        </div>
+                    </div>
+                    <div class="collapse-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div style="overflow-y: auto; max-height: calc(100vh - 380px); scrollbar-width: none;">
+                <div class="team-members" id="projMembers">
+                    <div style="padding: 0px 0px 0.5rem 2.5rem;color: #86909C; font-size: 0.8125rem;">暂无项目...</div>
+                </div>
+                </div>
+            </div>
+            <div class="sidebar-menu org-submenu">
+                <div class="menu-item" id="teamMenu2">
+                    <div class="menu-item-content">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>我的人类伙伴</span>
+                        </div>
+                        <button class="add-team-member-btn" title="人类职业市场">
+                            <div class="add-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="collapse-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div style="overflow-y: auto; max-height: calc(100vh - 380px); scrollbar-width: none;">
+                <!-- 团队成员 -->
+                <div class="team-members" id="teamMembers2">
+                    <div style="padding: 0px 0px 0.5rem 2.5rem;color: #86909C; font-size: 0.8125rem;">暂无人类伙伴...</div>
+                </div>
+                </div>
+            </div>
+            <div class="sidebar-menu org-submenu">
+                <div class="menu-item" id="teamMenu1">
+                    <div class="menu-item-content">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>我的AI团队</span>
+                        </div>
+                        <button class="add-team-member-btn" title="添加我的AI员工">
+                            <div class="add-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="collapse-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div style="overflow-y: auto; max-height: calc(100vh - 380px); scrollbar-width: none;">
+                <!-- 团队成员 -->
+                <div class="team-members" id="teamMembers1">
+                    <div style="padding: 0px 0px 0.5rem 2.5rem;color: #86909C; font-size: 0.8125rem;">暂无AI团队...</div>
+                </div>
+                </div>
+            </div>
+</div><!-- /sidebar-scroll-area -->
         </div>
 
         <!-- 中间对话区 -->
@@ -4238,21 +4278,327 @@
                 </button>
             </div>
             <div class="chat-content">
-                <!-- 默认初始提示文案 -->
-                <div class="welcome-message">
-                    <div class="welcome-title">你好，我是你的秘书</div>
-                    <div class="welcome-suggestions">
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">如何通过AI视觉检测降低生产线次品率?</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">智能工厂MES系统建设方案</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">设备预测性维护如何减少故障停机?</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">工业机器人在智能制造中的应用案例</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">推荐智能制造领域的AI学习资源</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">数字孪生技术如何优化生产流程?</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">如何实现生产数据的实时监控与分析?</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">工业互联网平台选型建议</button>
-                        <button class="suggestion-tag" onclick="fillInput(this.textContent)">智能制造转型升级路径规划</button>
+                <!-- 默认对话内容 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/AI-4.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">方案工程师</span>
+                        </div>
+                        <div class="message-content">
+                            感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。
+                            <div class="file-card">
+                                <div class="file-card-icon">文</div>
+                                <div class="file-card-info">
+                                    <div class="file-card-name">智能生产解决方案.pdf</div>
+                                    <div class="file-card-size">2.5MB</div>
+                                </div>
+                                <button class="preview-btn">预览</button>
+                            </div>
+                            <span class="message-time">04-22 08:48</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 用户提问1 -->
+                <div class="chat-message user">
+                    <div class="message-content">
+                        您好，我们工厂是做汽车零部件生产的，目前生产线效率偏低，次品率大概在3%左右，想通过智能生产方案提升效率并降低次品率，请问有什么具体的解决方案？
+                        <span class="message-time">06-06 10:30</span>
+                    </div>
+                    <div class="message-actions">
+                        <button class="message-action-btn" title="复制">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                    </div>
+                </div>
+
+                <!-- 方案工程师回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/AI-4.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">方案工程师</span>
+                        </div>
+                        <div class="message-content">
+                            您好，针对汽车零部件生产的效率提升和次品率降低需求，我们提供以下智能生产解决方案：<br>
+                            1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，检测准确率可达99.8%以上；<br>
+                            2. <strong>设备状态预测性维护</strong>：安装传感器实时监测设备运行状态，预测故障并提前维护；<br>
+                            3. <strong>生产数据分析优化</strong>：建立MES系统，收集分析生产数据，优化生产流程。
+                            <span class="message-time">06-06 10:31</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目经理回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/AI-1.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">项目经理</span>
+                        </div>
+                        <div class="message-content">
+                            方案工程师的建议很全面。我们可以根据您工厂的具体情况，制定分阶段实施计划，先从最关键的工序开始改造，逐步扩展到整个生产线。
+                            <span class="message-time">06-06 10:32</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用户提问2 -->
+                <div class="chat-message user">
+                    <div class="message-content">
+                        这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
+                        <div class="image-card">
+                            <div class="image-card-content" onclick="openImageModal('images/equipment1.png')" style="cursor: pointer;">
+                                <div class="chat-image">
+                                    <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                                </div>
+                            </div>
+                            <div class="image-card-preview">
+                                <button class="preview-btn" onclick="openImageModal('images/equipment1.png')">预览</button>
+                            </div>
+                        </div>
+                        <span class="message-time">06-06 10:35</span>
+                    </div>
+                    <div class="message-actions">
+                        <button class="message-action-btn" title="复制">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                    </div>
+                </div>
+
+                <!-- 销售工程师回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/tx-1.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">销售工程师</span>
+                        </div>
+                        <div class="message-content">
+                            针对您的问题，具体解答如下：<br>
+                            一、<strong>实施成本</strong>：<br>
+                            按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础。
+                            <span class="message-time">06-06 10:36</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 售后工程师回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/AI-3.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">售后工程师</span>
+                        </div>
+                        <div class="message-content">
+                            二、<strong>回报周期</strong>：<br>
+                            根据我们的项目经验，一般情况下，投资回报周期在12-18个月左右，主要来自于：<br>
+                            1. 次品率降低带来的成本节约（按3%次品率计算，每年可节约大量成本）<br>
+                            2. 生产效率提升带来的产量增加（预计可提升15-20%的生产效率）<br>
+                            3. 设备故障减少带来的维护成本降低
+                            <span class="message-time">06-06 10:37</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 产品经理回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/tx-1.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">产品经理</span>
+                        </div>
+                        <div class="message-content">
+                            三、<strong>改造难度</strong>：<br>
+                            对于20台加工中心的改造，难度适中。我们会采用模块化设计，分阶段实施，确保改造过程中不影响正常生产。具体步骤：<br>
+                            1. 前期评估和方案设计（1-2周）<br>
+                            2. 设备传感器安装和网络搭建（2-3周）<br>
+                            3. 系统调试和人员培训（2周）<br>
+                            4. 试运行和优化（1-2周）
+                            <div class="image-card">
+                                <div class="image-card-content" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png']);" style="cursor: pointer;">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="image-card-preview">
+                                    <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
+                                </div>
+                            </div><br>
+                            <span class="message-time">06-06 10:38</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 我的秘书回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="images/tx-2.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">我的秘书</span>
+                        </div>
+                        <div class="message-content">
+                            您好，我已经为您整理了以上方案的详细资料，包括实施计划、成本明细和预期收益分析。如果您需要进一步了解，我可以安排我们的技术团队上门为您做更详细的评估和演示。
+                            <span class="message-time">06-06 10:39</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用户提问3 -->
+                <div class="chat-message user">
+                    <div class="message-content">
+                        非常感谢各位的详细解答！我对这个方案很感兴趣，想了解一下实施过程中需要我们工厂配合做哪些工作？另外，是否可以提供一些成功案例参考？
+                        <span class="message-time">06-06 10:40</span>
+                    </div>
+                    <div class="message-actions">
+                        <button class="message-action-btn" title="复制">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                    </div>
+                </div>
+
+                <!-- 方案工程师回答2 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="border-radius: 8px; overflow: hidden;">
+                            <img src="../A/images/AI-4.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">方案工程师</span>
+                        </div>
+                        <div class="message-content">
+                            实施过程中，需要贵工厂配合的工作包括：<br>
+                            1. 安排专人负责项目对接和协调<br>
+                            2. 提供设备相关技术资料和生产工艺信息<br>
+                            3. 为施工和调试提供必要的场地和时间窗口<br>
+                            4. 组织相关人员参加培训
+
+                            关于成功案例，我们在汽车零部件行业有多个成功实施的项目，例如：<br>
+                            - 某汽车发动机零部件制造商：实施后次品率从2.8%降低到0.5%，生产效率提升18%<br>
+                            - 某汽车底盘零部件企业：实施后设备故障率降低60%，维护成本减少40%
+                            <div class="image-card">
+                                <div class="image-card-content" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png']);" style="cursor: pointer;">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="image-card-preview">
+                                    <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
+                                </div>
+                            </div>
+                            <span class="message-time">06-06 10:42</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="复制">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="message-action-btn quote-btn" title="引用">“引用</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- 输入框区域（包含AI成员信息） -->
             <div class="chat-input-wrapper">
@@ -4315,20 +4661,20 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </div>
                     <div class="tab-add-dropdown" id="tabAddDropdown">
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="showBICenter(); closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M3 3v18h18"></path>
                                 <path d="M19 9l-5 5-4-4-3 3"></path>
                             </svg>
                             <span>BI中心</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
                             <span>设备监控</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -4337,14 +4683,14 @@
                             </svg>
                             <span>3D软件</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                 <polyline points="14 2 14 8 20 8"></polyline>
                             </svg>
                             <span>文档编辑</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -4352,14 +4698,14 @@
                             </svg>
                             <span>图片设计</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <polygon points="23 7 16 12 23 17 23 7"></polygon>
                                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                             </svg>
                             <span>视频制作</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <rect x="1" y="1" width="15" height="15" rx="2" ry="2"></rect>
                                 <path d="M16 1h5v5"></path>
@@ -4368,7 +4714,7 @@
                             </svg>
                             <span>在线编程</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="openLoginModal(); closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="showFileManagement(); closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -4590,24 +4936,14 @@
     <script>
         // 输入框自动高度适配
         const textarea = document.querySelector('.input-box textarea');
-        const sendBtn = document.querySelector('.send-btn');
         textarea.addEventListener('input', () => {
             textarea.style.height = 'auto';
             textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
-            
-            // 控制发送按钮状态
-            if (textarea.value.trim()) {
-                sendBtn.classList.add('active');
-            } else {
-                sendBtn.classList.remove('active');
-            }
         });
         
         // 全局变量
         let currentChatWidth = '50%';
         let currentPreviewWidth = '50%';
-        let isStreaming = false;
-        let streamingTimeout = null;
         
         // 保存当前宽度
         function saveCurrentWidths() {
@@ -6086,13 +6422,6 @@
                     aiMemberInfo.classList.add('show');
                 } else {
                     aiMemberInfo.classList.remove('show');
-                }
-                
-                // 点击我的秘书或项目经理时弹出登录弹窗
-                if (memberId === 'secretary' || memberId === 'pm') {
-                    openLoginModal();
-                    aiMemberInfo.classList.remove('show');
-                    return;
                 }
                 
                 // 点击我的秘书时显示空白预览tab
@@ -7679,38 +8008,12 @@
 
         // 发送按钮点击交互（可后续对接API）
         document.querySelector('.send-btn').addEventListener('click', () => {
-            // 如果正在输出，点击暂停
-            if (isStreaming) {
-                if (streamingTimeout) {
-                    clearTimeout(streamingTimeout);
-                    streamingTimeout = null;
-                }
-                isStreaming = false;
-                
-                const streamingCursor = document.querySelector('.streaming-cursor');
-                if (streamingCursor) {
-                    streamingCursor.remove();
-                }
-                
-                // 恢复发送按钮状态为置灰不可点击
-                sendBtn.innerHTML = '↑';
-                sendBtn.classList.remove('pause');
-                sendBtn.classList.remove('active');
-                textarea.disabled = false;
-                
-                return;
-            }
-            
             const content = textarea.value.trim();
             if (content) {
-                // 清空欢迎文案及标签
+                // 清空欢迎文案
                 const welcomeContainer = document.querySelector('.welcome-container');
                 if (welcomeContainer) {
                     welcomeContainer.remove();
-                }
-                const welcomeMessage = document.querySelector('.welcome-message');
-                if (welcomeMessage) {
-                    welcomeMessage.remove();
                 }
                 
                 // 获取当前时间
@@ -7766,12 +8069,6 @@
                 
                 // 模拟AI回复 - 流式输出
                 setTimeout(() => {
-                    // 设置输出状态
-                    isStreaming = true;
-                    sendBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
-                    sendBtn.classList.add('pause');
-                    textarea.disabled = true;
-                    
                     const aiMessage = document.createElement('div');
                     aiMessage.className = 'chat-message ai';
                     const fullResponse = '感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。';
@@ -7811,27 +8108,16 @@
                     const typingSpeed = 30;
                     
                     function typeCharacter() {
-                        if (!isStreaming) {
-                            return;
-                        }
-                        
                         if (charIndex < fullResponse.length) {
                             streamingText.textContent += fullResponse.charAt(charIndex);
                             charIndex++;
                             document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
-                            streamingTimeout = setTimeout(typeCharacter, typingSpeed);
+                            setTimeout(typeCharacter, typingSpeed);
                         } else {
                             // 流式输出完成，移除光标
                             if (streamingCursor) {
                                 streamingCursor.remove();
                             }
-                            
-                            // 重置状态
-                            isStreaming = false;
-                            sendBtn.innerHTML = '↑';
-                            sendBtn.classList.remove('pause');
-                            sendBtn.classList.remove('active');
-                            textarea.disabled = false;
                             
                             // 模拟文件加载效果
                             setTimeout(() => {
@@ -9001,19 +9287,8 @@
             // 关闭登录弹窗
             closeLoginModal();
             
-            // 判断账号并跳转
-            const username = usernameInput.value.trim();
-            const password = passwordInputEl.value.trim();
-            
-            if (username === 'liu1234' && password === '1234') {
-                // 设置未加入组织标识
-                localStorage.setItem('userStatus', '未加入组织');
-                // 特定账号跳转到ai-un-org页面
-                window.location.href = 'ai-un-org.html';
-            } else {
-                // 其他账号跳转到ai页面
-                window.location.href = 'ai.html';
-            }
+            // 重新加载头部，显示已登录的头部
+            loadHeader();
         });
 
         // ========== 第三方登录二维码弹窗功能 ==========
@@ -9587,128 +9862,11 @@
         window.addEventListener('load', () => {
             initResizer();
             initHistoryMenu();
-            showQuickEntry();//默认显示快捷入口
+            showBICenter();//默认打开BI中心
             initSidebarToggle();
             initPreviewToggle();
             initChatToggle();
         });
-
-        // 显示快捷入口页面
-        function showQuickEntry() {
-            const previewArea = document.getElementById('previewArea');
-            const previewContent = document.querySelector('.preview-content');
-            const previewTabs = document.querySelectorAll('.preview-tab');
-            
-            if (previewArea) {
-                previewArea.style.display = 'flex';
-            }
-            
-            // 取消所有tab的选中状态
-            previewTabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // 显示快捷入口
-            if (previewContent) {
-                previewContent.innerHTML = `
-                    <div class="quick-entry-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px;">
-                        <style>
-                            .quick-entry-items {
-                                display: grid;
-                                grid-template-columns: repeat(3, 140px);
-                                gap: 24px;
-                            }
-                            .quick-entry-item {
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                justify-content: center;
-                                width: 140px;
-                                height: 120px;
-                                background-color: #ffffff;
-                                border-radius: 12px;
-                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                                cursor: pointer;
-                                transition: all 0.3s ease;
-                                border: 1px solid #f0f0f0;
-                            }
-                            .quick-entry-item:hover {
-                                box-shadow: 0 4px 16px rgba(74, 108, 247, 0.15);
-                                transform: translateY(-2px);
-                                border-color: #e8eef7;
-                            }
-                            .quick-entry-item svg {
-                                width: 40px;
-                                height: 40px;
-                                margin-bottom: 12px;
-                                color: #4a6cf7;
-                            }
-                            .quick-entry-item span {
-                                font-size: 0.875rem;
-                                font-weight: 500;
-                                color: #4a5568;
-                                text-align: center;
-                            }
-                        </style>
-                        <div class="quick-entry-items">
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 3v18h18"></path>
-                                    <path d="M19 9l-5 5-4-4-3 3"></path>
-                                </svg>
-                                <span>BI中心</span>
-                            </div>
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                </svg>
-                                <span>设备监控</span>
-                            </div>
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
-                                <span>3D软件</span>
-                            </div>
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                </svg>
-                                <span>文档编辑</span>
-                            </div>
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                    <polyline points="21 15 16 10 5 21"></polyline>
-                                </svg>
-                                <span>图片设计</span>
-                            </div>
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                                </svg>
-                                <span>视频制作</span>
-                            </div>
-                            <div class="quick-entry-item" onclick="openLoginModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                <span>文件管理</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
 
         // 侧边栏隐藏/展示功能
         function initSidebarToggle() {
@@ -9953,8 +10111,6 @@
     <script>
         // 存储当前对话的AI成员ID
         let currentChatMemberId = null;
-        let aiChatStreaming = false;
-        let aiChatTimeout = null;
 
         function closeAIChat() {
             const chatWindow = document.getElementById('aiChatWindow');
@@ -9963,36 +10119,9 @@
             chatBackdrop.classList.remove('show');
         }
 
-        // AI聊天弹窗输入框监听
-        const aiChatTextarea = document.querySelector('.ai-chat-textarea');
-        const aiChatSendBtn = document.querySelector('.ai-chat-send');
-        
-        aiChatTextarea.addEventListener('input', function() {
-            if (this.value.trim()) {
-                aiChatSendBtn.classList.add('active');
-            } else {
-                aiChatSendBtn.classList.remove('active');
-            }
-        });
-
         // 发送消息功能
-        aiChatSendBtn.addEventListener('click', function() {
+        document.querySelector('.ai-chat-send').addEventListener('click', function() {
             const textarea = document.querySelector('.ai-chat-textarea');
-            
-            // 如果正在输出，点击暂停
-            if (aiChatStreaming) {
-                if (aiChatTimeout) {
-                    clearTimeout(aiChatTimeout);
-                    aiChatTimeout = null;
-                }
-                aiChatStreaming = false;
-                aiChatSendBtn.innerHTML = '↑';
-                aiChatSendBtn.classList.remove('pause');
-                aiChatSendBtn.classList.remove('active');
-                textarea.disabled = false;
-                return;
-            }
-            
             const message = textarea.value.trim();
             if (message && currentChatMemberId) {
                 // 添加用户消息
@@ -10025,12 +10154,6 @@
                 
                 // 模拟AI回复
                 setTimeout(() => {
-                    // 设置输出状态
-                    aiChatStreaming = true;
-                    aiChatSendBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
-                    aiChatSendBtn.classList.add('pause');
-                    textarea.disabled = true;
-                    
                     // 先添加消息容器，时间暂不显示
                     const aiReplyHTML = `
                         <div class="chat-message ai">
@@ -10055,10 +10178,6 @@
                     timeEl.style.display = 'none';
                     
                     function typeWriter() {
-                        if (!aiChatStreaming) {
-                            return;
-                        }
-                        
                         if (charIndex < replyText.length) {
                             let currentContent = replyText.substring(0, charIndex + 1);
                             contentEl.innerHTML = currentContent + '<span class="message-time" style="display:none;"></span>';
@@ -10073,19 +10192,12 @@
                                 delay = 200;
                             }
                             
-                            aiChatTimeout = setTimeout(typeWriter, delay);
+                            setTimeout(typeWriter, delay);
                             chatContent.scrollTop = chatContent.scrollHeight;
                         } else {
                             // 内容输出完毕后显示时间
                             contentEl.innerHTML = replyText + `<span class="message-time">${getCurrentTime()}</span>`;
                             chatContent.scrollTop = chatContent.scrollHeight;
-                            
-                            // 重置状态
-                            aiChatStreaming = false;
-                            aiChatSendBtn.innerHTML = '↑';
-                            aiChatSendBtn.classList.remove('pause');
-                            aiChatSendBtn.classList.remove('active');
-                            textarea.disabled = false;
                         }
                     }
                     
@@ -10524,42 +10636,22 @@
 
 
         .ai-chat-send {
-            background-color: #d9d9d9;
-            color: #999999;
+            background-color: #06b6d4;
+            color: white;
             border: none;
             border-radius: 50%;
             width: 36px;
             height: 36px;
-            cursor: not-allowed;
+            cursor: pointer;
             font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
-            pointer-events: none;
         }
 
-        .ai-chat-send.active {
-            background-color: #06b6d4;
-            color: white;
-            cursor: pointer;
-            pointer-events: auto;
-        }
-
-        .ai-chat-send.active:hover {
+        .ai-chat-send:hover {
             background-color: #04a4be;
-            transform: scale(1.05);
-        }
-
-        .ai-chat-send.pause {
-            background-color: #F37021;
-            color: white;
-            cursor: pointer;
-            pointer-events: auto;
-        }
-
-        .ai-chat-send.pause:hover {
-            background-color: #e0631d;
             transform: scale(1.05);
         }
 
@@ -10623,35 +10715,7 @@
         .ai-chat-content::-webkit-scrollbar-thumb:hover {
             background: var(--klein-blue);
         }
-        
-        .sidebar-login-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            gap: 8px;
-        }
-        
-        .sidebar-login-bar .login-btn {
-            padding: 8px 24px;
-            background-color: var(--klein-blue);
-            color: var(--white);
-            border: none;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-login-bar .login-btn:hover {
-            background-color: #0046c0;
-        }
     </style>
-    
+
 </body>
 </html>

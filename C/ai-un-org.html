@@ -2602,13 +2602,13 @@
 
 
         .send-btn {
-            background: #06b6d4;
-            color: var(--white);
+            background: #d9d9d9;
+            color: #999999;
             border: none;
             border-radius: 50%;
             width: 36px;
             height: 36px;
-            cursor: pointer;
+            cursor: not-allowed;
             font-size: 1rem;
             display: flex;
             align-items: center;
@@ -2620,10 +2620,29 @@
             min-width: 36px;
             min-height: 36px;
             z-index: 9999;
+            pointer-events: none;
         }
 
-        .send-btn:hover {
+        .send-btn.active {
+            background: #06b6d4;
+            color: var(--white);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .send-btn.active:hover {
             background: #04a4be;
+        }
+
+        .send-btn.pause {
+            background: #F37021;
+            color: var(--white);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .send-btn.pause:hover {
+            background: #e0631d;
         }
 
         /* 图片模态框样式 */
@@ -5489,14 +5508,24 @@
     <script>
         // 输入框自动高度适配
         const textarea = document.querySelector('.input-box textarea');
+        const sendBtn = document.querySelector('.send-btn');
         textarea.addEventListener('input', () => {
             textarea.style.height = 'auto';
             textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+            
+            // 控制发送按钮状态
+            if (textarea.value.trim()) {
+                sendBtn.classList.add('active');
+            } else {
+                sendBtn.classList.remove('active');
+            }
         });
         
         // 全局变量
         let currentChatWidth = '50%';
         let currentPreviewWidth = '50%';
+        let isStreaming = false;
+        let streamingTimeout = null;
         
         // 保存当前宽度
         function saveCurrentWidths() {
@@ -8561,6 +8590,28 @@
 
         // 发送按钮点击交互（可后续对接API）
         document.querySelector('.send-btn').addEventListener('click', () => {
+            // 如果正在输出，点击暂停
+            if (isStreaming) {
+                if (streamingTimeout) {
+                    clearTimeout(streamingTimeout);
+                    streamingTimeout = null;
+                }
+                isStreaming = false;
+                
+                const streamingCursor = document.querySelector('.streaming-cursor');
+                if (streamingCursor) {
+                    streamingCursor.remove();
+                }
+                
+                // 恢复发送按钮状态为置灰不可点击
+                sendBtn.innerHTML = '↑';
+                sendBtn.classList.remove('pause');
+                sendBtn.classList.remove('active');
+                textarea.disabled = false;
+                
+                return;
+            }
+            
             const content = textarea.value.trim();
             if (content) {
                 // 清空欢迎文案
@@ -8622,6 +8673,12 @@
                 
                 // 模拟AI回复 - 流式输出
                 setTimeout(() => {
+                    // 设置输出状态
+                    isStreaming = true;
+                    sendBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+                    sendBtn.classList.add('pause');
+                    textarea.disabled = true;
+                    
                     const aiMessage = document.createElement('div');
                     aiMessage.className = 'chat-message ai';
                     const fullResponse = '感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。';
@@ -8661,16 +8718,27 @@
                     const typingSpeed = 30;
                     
                     function typeCharacter() {
+                        if (!isStreaming) {
+                            return;
+                        }
+                        
                         if (charIndex < fullResponse.length) {
                             streamingText.textContent += fullResponse.charAt(charIndex);
                             charIndex++;
                             document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
-                            setTimeout(typeCharacter, typingSpeed);
+                            streamingTimeout = setTimeout(typeCharacter, typingSpeed);
                         } else {
                             // 流式输出完成，移除光标
                             if (streamingCursor) {
                                 streamingCursor.remove();
                             }
+                            
+                            // 重置状态
+                            isStreaming = false;
+                            sendBtn.innerHTML = '↑';
+                            sendBtn.classList.remove('pause');
+                            sendBtn.classList.remove('active');
+                            textarea.disabled = false;
                             
                             // 模拟文件加载效果
                             setTimeout(() => {
@@ -10664,6 +10732,8 @@
     <script>
         // 存储当前对话的AI成员ID
         let currentChatMemberId = null;
+        let aiChatStreaming = false;
+        let aiChatTimeout = null;
 
         function closeAIChat() {
             const chatWindow = document.getElementById('aiChatWindow');
@@ -10672,9 +10742,36 @@
             chatBackdrop.classList.remove('show');
         }
 
+        // AI聊天弹窗输入框监听
+        const aiChatTextarea = document.querySelector('.ai-chat-textarea');
+        const aiChatSendBtn = document.querySelector('.ai-chat-send');
+        
+        aiChatTextarea.addEventListener('input', function() {
+            if (this.value.trim()) {
+                aiChatSendBtn.classList.add('active');
+            } else {
+                aiChatSendBtn.classList.remove('active');
+            }
+        });
+
         // 发送消息功能
-        document.querySelector('.ai-chat-send').addEventListener('click', function() {
+        aiChatSendBtn.addEventListener('click', function() {
             const textarea = document.querySelector('.ai-chat-textarea');
+            
+            // 如果正在输出，点击暂停
+            if (aiChatStreaming) {
+                if (aiChatTimeout) {
+                    clearTimeout(aiChatTimeout);
+                    aiChatTimeout = null;
+                }
+                aiChatStreaming = false;
+                aiChatSendBtn.innerHTML = '↑';
+                aiChatSendBtn.classList.remove('pause');
+                aiChatSendBtn.classList.remove('active');
+                textarea.disabled = false;
+                return;
+            }
+            
             const message = textarea.value.trim();
             if (message && currentChatMemberId) {
                 // 添加用户消息
@@ -10707,6 +10804,12 @@
                 
                 // 模拟AI回复
                 setTimeout(() => {
+                    // 设置输出状态
+                    aiChatStreaming = true;
+                    aiChatSendBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+                    aiChatSendBtn.classList.add('pause');
+                    textarea.disabled = true;
+                    
                     // 先添加消息容器，时间暂不显示
                     const aiReplyHTML = `
                         <div class="chat-message ai">
@@ -10731,6 +10834,10 @@
                     timeEl.style.display = 'none';
                     
                     function typeWriter() {
+                        if (!aiChatStreaming) {
+                            return;
+                        }
+                        
                         if (charIndex < replyText.length) {
                             let currentContent = replyText.substring(0, charIndex + 1);
                             contentEl.innerHTML = currentContent + '<span class="message-time" style="display:none;"></span>';
@@ -10745,12 +10852,19 @@
                                 delay = 200;
                             }
                             
-                            setTimeout(typeWriter, delay);
+                            aiChatTimeout = setTimeout(typeWriter, delay);
                             chatContent.scrollTop = chatContent.scrollHeight;
                         } else {
                             // 内容输出完毕后显示时间
                             contentEl.innerHTML = replyText + `<span class="message-time">${getCurrentTime()}</span>`;
                             chatContent.scrollTop = chatContent.scrollHeight;
+                            
+                            // 重置状态
+                            aiChatStreaming = false;
+                            aiChatSendBtn.innerHTML = '↑';
+                            aiChatSendBtn.classList.remove('pause');
+                            aiChatSendBtn.classList.remove('active');
+                            textarea.disabled = false;
                         }
                     }
                     
@@ -11189,22 +11303,42 @@
 
 
         .ai-chat-send {
-            background-color: #06b6d4;
-            color: white;
+            background-color: #d9d9d9;
+            color: #999999;
             border: none;
             border-radius: 50%;
             width: 36px;
             height: 36px;
-            cursor: pointer;
+            cursor: not-allowed;
             font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            pointer-events: none;
         }
 
-        .ai-chat-send:hover {
+        .ai-chat-send.active {
+            background-color: #06b6d4;
+            color: white;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .ai-chat-send.active:hover {
             background-color: #04a4be;
+            transform: scale(1.05);
+        }
+
+        .ai-chat-send.pause {
+            background-color: #F37021;
+            color: white;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .ai-chat-send.pause:hover {
+            background-color: #e0631d;
             transform: scale(1.05);
         }
 
