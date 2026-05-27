@@ -358,6 +358,8 @@
                     logoutConfirmBtn.addEventListener('click', function() {
                         // 清除登录状态
                         localStorage.removeItem('isLoggedIn');
+                        // 清除未加入组织标识
+                        localStorage.removeItem('userStatus');
                         // 重新检查登录状态
                         checkLoginStatus();
                         
@@ -4124,7 +4126,7 @@
                 </div>
             <div style="border-top: 1px solid var(--border-gray); margin: 0.5rem 0;"></div>
             <!-- 固定区域：当前登录者信息 -->
-            <div class="menu-item" id="orgMenu" style="padding: 0.75rem 0.5rem; border-radius: 6px;">
+            <div class="menu-item" id="orgMenu" style="padding:0.75rem 1rem; margin: -0rem -0.75rem 0 -0.75rem; border-radius: 0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);margin-bottom:0.5rem;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <img src="images/tx-1.png" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0;" />
                     <span style="font-size: 0.875rem; color: var(--deep-gray); font-weight: 500;">林工</span>

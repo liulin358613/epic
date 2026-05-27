@@ -1726,7 +1726,7 @@
         <div class="container">
             <div class="tab-row">
                 <div class="tabs">
-                    <button class="create-center-btn" onclick="window.location.href='ai.html'">创造中心</button>
+                    <button class="create-center-btn" onclick="goToCreateCenter()">创造中心</button>
                     <div class="main-tab" data-tab="生产力方案共享">生产力方案共享</div>
                     <div class="main-tab" data-tab="机器人设备共享">机器人设备共享</div>
                     <div class="main-tab" data-tab="资源共享">资源共享</div>
@@ -3080,6 +3080,24 @@
             }
         }
 
+        // 处理创造中心点击事件
+        function goToCreateCenter() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                const userStatus = localStorage.getItem('userStatus');
+                if (userStatus === '未加入组织') {
+                    // 已登录但未加入组织，跳转未加入组织AI页面
+                    window.location.href = 'ai-un-org.html';
+                } else {
+                    // 已登录且已加入组织，跳转AI页面
+                    window.location.href = 'ai.html';
+                }
+            } else {
+                // 未登录，跳转未登录AI页面
+                window.location.href = 'ai-unlogin.html';
+            }
+        }
+
         // 处理来自 header.html 的消息
         window.addEventListener('message', (event) => {
             if (event.data.type === 'SHOW_LOGIN_MODAL') {
@@ -3165,6 +3183,8 @@
             logoutConfirmBtn.addEventListener('click', function() {
                 // 清除登录状态
                 localStorage.removeItem('isLoggedIn');
+                // 清除未加入组织标识
+                localStorage.removeItem('userStatus');
                 // 关闭弹窗
                 if (logoutModalOverlay) {
                     logoutModalOverlay.classList.remove('show');

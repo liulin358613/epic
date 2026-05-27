@@ -8934,6 +8934,8 @@
             const password = passwordInputEl.value.trim();
             
             if (username === 'liu1234' && password === '1234') {
+                // 设置未加入组织标识
+                localStorage.setItem('userStatus', '未加入组织');
                 // 特定账号跳转到ai-un-org页面
                 window.location.href = 'ai-un-org.html';
             } else {
