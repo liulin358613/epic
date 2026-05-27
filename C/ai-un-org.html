@@ -2445,7 +2445,7 @@
             border: 1px solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 4px;
         }
 
         .input-box textarea {
@@ -2513,7 +2513,54 @@
             display: none;
         }
 
+        .upload-files-preview {
+            display: none;
+            flex-wrap: wrap;
+            gap: 8px;
+            /* margin-bottom: 8px; */
+            padding: 8px;
+            background: var(--white);
+            border-radius: 8px;
+        }
 
+        .upload-files-preview.has-files {
+            display: flex;
+        }
+
+        .upload-file-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--deep-gray);
+        }
+
+        .upload-file-icon {
+            font-size: 14px;
+        }
+
+        .upload-file-name {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .upload-file-remove {
+            cursor: pointer;
+            color: var(--classic-gray);
+            padding: 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .upload-file-remove:hover {
+            background: var(--border-gray);
+            color: var(--red);
+        }
 
         .input-tags {
             display: flex;
@@ -5191,13 +5238,15 @@
                         <span class="quote-text"></span>
                         <button class="quote-close" id="quoteClose">×</button>
                     </div>
+                    <!-- 文件预览区域 -->
+                    <div class="upload-files-preview" id="uploadFilesPreview"></div>
                     <div class="input-box">
                         <textarea placeholder="输入你的问题..."></textarea>
                     </div>
                     <div class="input-tool-row">
                         <div class="input-tool-left">
                             <label class="upload-btn">
-                                <input type="file">
+                                <input type="file" multiple>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
                                 </svg>
@@ -5506,6 +5555,69 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // 存储已上传的文件列表
+        let uploadedFiles = [];
+        
+        // 文件上传处理
+        const uploadBtnInput = document.querySelector('.upload-btn input');
+        const uploadFilesPreview = document.getElementById('uploadFilesPreview');
+        
+        uploadBtnInput.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const fileId = Date.now() + '-' + i;
+                    
+                    uploadedFiles.push({
+                        id: fileId,
+                        name: file.name,
+                        file: file
+                    });
+                    
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'upload-file-item';
+                    fileItem.dataset.fileId = fileId;
+                    
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    let fileIcon = '📄';
+                    if (fileExtension === 'pdf') fileIcon = '📕';
+                    else if (fileExtension === 'doc' || fileExtension === 'docx') fileIcon = '📘';
+                    else if (fileExtension === 'xls' || fileExtension === 'xlsx') fileIcon = '📗';
+                    else if (fileExtension === 'ppt' || fileExtension === 'pptx') fileIcon = '📙';
+                    else if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') fileIcon = '🖼️';
+                    else if (fileExtension === 'zip' || fileExtension === 'rar') fileIcon = '📦';
+                    
+                    fileItem.innerHTML = `
+                        <span class="upload-file-icon">${fileIcon}</span>
+                        <span class="upload-file-name">${file.name}</span>
+                        <span class="upload-file-remove" onclick="removeUploadedFile('${fileId}')">×</span>
+                    `;
+                    
+                    uploadFilesPreview.appendChild(fileItem);
+                }
+                
+                uploadFilesPreview.classList.add('has-files');
+                sendBtn.classList.add('active');
+            }
+        });
+        
+        function removeUploadedFile(fileId) {
+            uploadedFiles = uploadedFiles.filter(f => f.id !== fileId);
+            const fileItem = document.querySelector(`.upload-file-item[data-file-id="${fileId}"]`);
+            if (fileItem) {
+                fileItem.remove();
+            }
+            
+            if (!uploadedFiles.length) {
+                uploadFilesPreview.classList.remove('has-files');
+            }
+            
+            if (!uploadedFiles.length && !textarea.value.trim()) {
+                sendBtn.classList.remove('active');
+            }
+        }
+        
         // 输入框自动高度适配
         const textarea = document.querySelector('.input-box textarea');
         const sendBtn = document.querySelector('.send-btn');
@@ -5514,7 +5626,7 @@
             textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
             
             // 控制发送按钮状态
-            if (textarea.value.trim()) {
+            if (textarea.value.trim() || uploadedFiles.length > 0) {
                 sendBtn.classList.add('active');
             } else {
                 sendBtn.classList.remove('active');
@@ -8791,6 +8903,11 @@
 
                 textarea.value = '';
                 textarea.style.height = 'auto';
+                
+                // 清空上传的文件列表
+                uploadedFiles = [];
+                uploadFilesPreview.innerHTML = '';
+                uploadFilesPreview.classList.remove('has-files');
                 
                 // 滚动到底部
                 document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
