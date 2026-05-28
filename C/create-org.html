@@ -98,15 +98,28 @@
         .logo-section {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: var(--spacing-xs);
+            align-items: flex-start;
+            gap: 0;
             padding: 0;
             margin: 0;
             cursor: pointer;
         }
 
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
         .search-logo {
-            font-size: 2.75rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: var(--klein-blue);
             white-space: nowrap;
@@ -116,19 +129,29 @@
             margin: 0;
         }
 
-        .logo-slogan {
-            font-size: 1rem;
+        .logo-subtitle {
+            font-size: 2rem;
             color: var(--deep-gray);
             font-weight: 500;
-            background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: left;
-            white-space: nowrap;
+            line-height: 1.4;
+        }
+
+        .logo-slogan {
+            font-size: 1.2rem;
+            color: var(--classic-gray);
+            font-weight: 500;
             padding: 0;
             margin: 0;
-            line-height: 1;
+            line-height: 2.4;
+        }
+
+        .logo-description {
+            font-size: 1rem;
+            color: #1092ee;
+            font-weight: 400;
+            padding: 0;
+            margin: 0;
+            line-height: 1.4;
         }
 
         .header-right {
@@ -1229,8 +1252,14 @@
         <div class="register-header">
             <div class="header-content">
                 <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
-                    <div class="search-logo" style="color: #0051D9;">RaaS.Dao</div>
-                    <div class="logo-slogan" style="color: #0051D9;">共创・共享</div>
+                    <div class="logo-row">
+                        <div class="logo-left">
+                            <span class="search-logo" style="color: #0051D9;">RaaSDao</span>
+                            <div class="logo-slogan">共创・共享</div>
+                            <div class="logo-description">人类 + 离身智能 + 具身智能，协同创造</div>
+                        </div>
+                        <span class="logo-subtitle">AI生产力创造平台</span>
+                    </div>
                 </div>
                 <div class="header-right">
                     已有组织？<a href="../B/login.html">去登录</a>
@@ -1457,7 +1486,7 @@
         </div>
 
         <div class="register-footer">
-            © 2024 RaaS.Dao. All Rights Reserved.
+            © 2026 RaaS.Dao. All Rights Reserved.
         </div>
     </div>
 
