@@ -100,15 +100,28 @@
         .logo-section {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: var(--spacing-xs);
+            align-items: flex-start;
+            gap: 0;
             padding: 0;
             margin: 0;
             cursor: pointer;
         }
 
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
         .search-logo {
-            font-size: 2.75rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: var(--klein-blue);
             white-space: nowrap;
@@ -118,19 +131,29 @@
             margin: 0;
         }
 
-        .logo-slogan {
-            font-size: 1rem;
+        .logo-subtitle {
+            font-size: 2rem;
             color: var(--deep-gray);
             font-weight: 500;
-            background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: left;
-            white-space: nowrap;
+            line-height: 1.4;
+        }
+
+        .logo-slogan {
+            font-size: 1.2rem;
+            color: var(--classic-gray);
+            font-weight: 500;
             padding: 0;
             margin: 0;
-            line-height: 1;
+            line-height: 2.4;
+        }
+
+        .logo-description {
+            font-size: 1rem;
+            color: #1092ee;
+            font-weight: 400;
+            padding: 0;
+            margin: 0;
+            line-height: 1.4;
         }
 
         .header-right {
@@ -574,6 +597,47 @@
             margin-bottom: var(--spacing-xs);
         }
 
+        /* Toast提示样式 */
+        .toast-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 8%;
+            pointer-events: none;
+            z-index: 999999;
+        }
+
+        .toast {
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            min-width: 12.5rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .toast.success {
+            background-color: rgba(0, 180, 120, 0.9);
+        }
+
+        .toast.error {
+            background-color: rgba(243, 112, 33, 0.9);
+        }
+
         /* 响应式适配 */
         @media (max-width: 768px) {
             .register-box {
@@ -612,11 +676,17 @@
         <div class="register-header">
             <div class="header-content">
                 <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
-                    <div class="search-logo" style="color: #0051D9;">RaaS.Dao</div>
-                    <div class="logo-slogan" style="color: #0051D9;">共创・共享</div>
+                    <div class="logo-row">
+                        <div class="logo-left">
+                            <span class="search-logo" style="color: #0051D9;">RaaSDao</span>
+                            <div class="logo-slogan">共创・共享</div>
+                            <div class="logo-description">人类+离身智能+具身智能，协同创造</div>
+                        </div>
+                        <span class="logo-subtitle">AI生产力创造平台</span>
+                    </div>
                 </div>
                 <div class="header-right">
-                    已有账号？<a href="ai.html?showLogin=true">请登录</a>
+                    已有账号？<a href="ai-unlogin.html?showLogin=true">请登录</a>
                 </div>
             </div>
         </div>
@@ -626,13 +696,6 @@
                 <div class="register-title">用户注册</div>
 
                 <form id="registerForm">
-                    <div class="form-item">
-                        <label class="form-label">
-                            <span class="required-mark">*</span>登录账号
-                        </label>
-                        <input type="text" class="form-input" id="regUsername" placeholder="请设置登录账号" maxlength="16">
-                        <span class="error-tip" id="usernameError"></span>
-                    </div>
 
                     <div class="form-item">
                         <label class="form-label">
@@ -652,10 +715,16 @@
                         </div>
                         <span class="error-tip" id="codeError"></span>
                     </div>
-
+ <div class="form-item">
+                        <label class="form-label">
+                            <span class="required-mark"></span>登录账号
+                        </label>
+                        <input type="text" class="form-input" id="regUsername" placeholder="请设置登录账号" maxlength="16">
+                        <span class="error-tip" id="usernameError"></span>
+                    </div>
                     <div class="form-item">
                         <label class="form-label">
-                            <span class="required-mark">*</span>登录密码
+                            <span class="required-mark"></span>登录密码
                         </label>
                         <div class="password-input">
                                 <input type="password" class="form-input" id="regPassword" placeholder="请设置登录密码" maxlength="20">
@@ -675,7 +744,7 @@
 
                     <div class="form-item">
                         <label class="form-label">
-                            <span class="required-mark">*</span>确认密码
+                            <span class="required-mark"></span>确认密码
                         </label>
                         <div class="password-input">
                                 <input type="password" class="form-input" id="regConfirmPassword" placeholder="请再次输入登录密码" maxlength="20">
@@ -705,7 +774,7 @@
                     <button type="button" class="register-button" id="registerBtn" disabled>注册</button>
 
                     <div class="login-links">
-                        已有账号？<a href="ai.html?showLogin=true">去登录</a>
+                        已有账号？<a href="ai-unlogin.html?showLogin=true">去登录</a>
                     </div>
                 </form>
             </div>
@@ -714,6 +783,11 @@
         <div class="register-footer">
             © 2024 RaaS.Dao. All Rights Reserved.
         </div>
+    </div>
+
+    <!-- Toast提示 -->
+    <div class="toast-overlay" id="toastOverlay">
+        <div class="toast" id="toast"></div>
     </div>
 
     <!-- 用户协议弹窗 -->
@@ -742,6 +816,31 @@
 
         let countdownTimer = null;
         let isCodeSent = false;
+        let toastTimer = null;
+
+        function showToast(message, type = 'success') {
+            const toastOverlay = document.getElementById('toastOverlay');
+            const toast = document.getElementById('toast');
+            
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toastOverlay.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toastOverlay.style.display = 'none';
+                }, 300);
+            }, 2000);
+        }
 
         function showError(inputId, errorId, message) {
             const input = document.getElementById(inputId);
@@ -766,19 +865,15 @@
         function validateUsername() {
             const value = regUsername.value.trim();
             if (!value) {
-                showError('regUsername', 'usernameError', '不能为空，请设置登录账号');
+                clearError('regUsername', 'usernameError');
+                return true;
+            }
+            if (value.length < 6 || value.length > 50) {
+                showError('regUsername', 'usernameError', '账号长度 6-50 位，支持字母、数字、符号');
                 return false;
             }
-            if (value.length < 6 || value.length > 16) {
-                showError('regUsername', 'usernameError', '账号长度 6-16 位，仅支持字母、数字、下划线');
-                return false;
-            }
-            if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-                showError('regUsername', 'usernameError', '账号长度 6-16 位，仅支持字母、数字、下划线');
-                return false;
-            }
-            if (/^\d+$/.test(value)) {
-                showError('regUsername', 'usernameError', '账号长度 6-16 位，仅支持字母、数字、下划线');
+            if (!/^[a-zA-Z0-9@._\-!#$%^&*()+=]+$/.test(value)) {
+                showError('regUsername', 'usernameError', '账号支持字母、数字、@、.、_、- 等常用符号');
                 return false;
             }
             clearError('regUsername', 'usernameError');
@@ -787,6 +882,7 @@
 
         function checkUsernameAvailability() {
             const value = regUsername.value.trim();
+            if (!value) return;
             if (!validateUsername()) return;
             const takenUsernames = ['admin', 'test', 'user', 'admin123', 'test_user'];
             if (takenUsernames.includes(value.toLowerCase())) {
@@ -810,10 +906,6 @@
                 showError('regCode', 'codeError', '请输入短信验证码');
                 return false;
             }
-            if (!/^\d{6}$/.test(value)) {
-                showError('regCode', 'codeError', '验证码错误，请重新输入');
-                return false;
-            }
             clearError('regCode', 'codeError');
             return true;
         }
@@ -821,8 +913,8 @@
         function validatePassword() {
             const value = regPassword.value;
             if (!value) {
-                showError('regPassword', 'passwordError', '请设置登录密码');
-                return false;
+                clearError('regPassword', 'passwordError');
+                return true;
             }
             if (value.length < 8 || value.length > 20) {
                 showError('regPassword', 'passwordError', '密码长度 8-20 位，需包含字母 + 数字');
@@ -838,6 +930,10 @@
 
         function validateConfirmPassword() {
             const value = regConfirmPassword.value;
+            if (!regPassword.value) {
+                clearError('regConfirmPassword', 'confirmPasswordError');
+                return true;
+            }
             if (!value) {
                 showError('regConfirmPassword', 'confirmPasswordError', '请再次输入登录密码');
                 return false;
@@ -940,8 +1036,10 @@
                 !validatePassword() || !validateConfirmPassword() || !validateProtocol()) {
                 return;
             }
-            alert('注册成功！');
-            window.location.href = 'ai.html?showLogin=true';
+            showToast('注册成功！');
+            setTimeout(() => {
+                window.location.href = 'ai-unlogin.html?showLogin=true';
+            }, 1500);
         });
 
         passwordEye.addEventListener('click', function() {

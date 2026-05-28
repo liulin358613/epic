@@ -9019,8 +9019,8 @@
                 return true;
             }
 
-            if (value.length < 4) {
-                showError(usernameError, '账号长度不能少于4个字符');
+            if (value.length < 6) {
+                showError(usernameError, '账号长度不能少于6个字符');
                 usernameInput.classList.add('error');
                 return false;
             }
@@ -9048,8 +9048,8 @@
                 return true;
             }
 
-            if (value.length < 4) {
-                showError(passwordError, '密码长度不能少于4个字符');
+            if (value.length < 8) {
+                showError(passwordError, '密码长度不能少于8个字符');
                 passwordInputEl.classList.add('error');
                 return false;
             }
@@ -9292,7 +9292,7 @@
             const username = usernameInput.value.trim();
             const password = passwordInputEl.value.trim();
             
-            if (username === 'liu1234' && password === '1234') {
+            if (username === 'liu1234' && password === '12345678') {
                 // 设置未加入组织标识
                 localStorage.setItem('userStatus', '未加入组织');
                 // 特定账号跳转到ai-un-org页面
