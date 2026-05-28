@@ -362,7 +362,6 @@
             color: var(--klein-blue);
             text-decoration: none;
             font-size: 0.8125rem;
-            margin-top: var(--spacing-xs);
             display: inline-block;
             transition: color 0.2s;
         }
@@ -408,6 +407,87 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .logout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 99999;
+            backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logout-modal.show {
+            display: block;
+        }
+
+        .logout-modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            padding: 30px 36px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            text-align: center;
+            z-index: 100000;
+        }
+
+        .logout-modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1D2129;
+            margin-bottom: 16px;
+        }
+
+        .logout-modal-message {
+            font-size: 0.875rem;
+            color: #86909C;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .logout-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .logout-modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+        }
+
+        .logout-modal-btn.cancel {
+            background-color: #FFFFFF;
+            color: #1D2129;
+        }
+
+        .logout-modal-btn.cancel:hover {
+            background-color: #F7F8FA;
+        }
+
+        .logout-modal-btn.confirm {
+            background-color: #F37021;
+            color: #FFFFFF;
+            border-color: #F37021;
+        }
+
+        .logout-modal-btn.confirm:hover {
+            background-color: #e0631d;
+            border-color: #e0631d;
+        }
     </style>
 </head>
 <body>
@@ -431,148 +511,235 @@
         </div>
 
         <div class="register-body">
-            <div class="personal-container">
-                <div class="page-title">AI个人中心</div>
+            <div class="personal-container" style="padding: 0;">
+                
+                <div style="padding: 24px 30px;">
+                   <div class="section-title" style="margin-bottom: 20px;">个人信息</div>
+                    <div class="profile-card" style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%); border-radius: 12px; padding: 24px; margin-top: 16px; border: 1px solid #e5e7eb;">
+                        <div style="display: flex; gap: 24px;">
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 16px;">
+                                <div style="display: flex; gap: 16px;">
+                                    <div class="profile-avatar" style="width: 110px; height: 110px; border-radius: 50%; background: rgba(0, 81, 217, 0.1); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; border: 1px solid rgba(0, 81, 217, 0.2);">
+                                        <span style="font-size: 60px;">👤</span>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <h2 style="font-size: 22px; font-weight: bold; color: #1D2129; margin: 0;">HI,林工</h2>
+                                            <span style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #F37021; font-size: 12px; padding: 4px 10px; border-radius: 12px; font-weight: 500;">Lv.5</span>
+                                            <span style="background: #E6F7FF; color: #1890FF; border-radius: 4px; padding: 2px 8px; font-size: 12px; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                </svg>
+                                                组织用户
+                                            </span>
+                                            <button class="edit-btn" onclick="showEditModal()">编辑账号信息</button>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; color: #666;">
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                    <circle cx="12" cy="7" r="4"></circle>
+                                                </svg>
+                                                <span>职务：工程师</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                </svg>
+                                                <span>生日：1990-01-15</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <path d="M12 6v6l4 2"></path>
+                                                </svg>
+                                                <span>性别：男</span>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 14px; color: #666;">
+                                            <div style="display: flex; align-items: flex-start; gap: 6px;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="margin-top: 2px;">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                </svg>
+                                                <div>
+                                                    <span>简介：</span>
+                                                    <span style="color: #374151;">专业从事工艺品设计与开发，拥有10年行业经验，擅长3D建模和产品渲染。</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="padding: 12px; background: white; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0051D9" stroke-width="2">
+                                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="12" cy="7" r="4"></circle>
+                                                    </svg>
+                                                    <span style="font-size: 15px; font-weight: 600; color: #1F2937;">我的能力</span>
+                                                </div>
+                                                <div style="display: flex; gap: 8px;">
+                                                    <button style="padding: 4px 12px; font-size: 12px; color: #0051D9; border: 1px solid #0051D9; border-radius: 4px; background: white; cursor: pointer;">编辑</button>
+                                                    <button style="padding: 4px 12px; font-size: 12px; color: #FFFFFF; border: none; border-radius: 4px; background: #0051D9; cursor: pointer;">授权</button>
+                                                </div>
+                                            </div>
+                                            <div style="font-size: 14px; color: #666;">
+                                                <div style="margin-bottom: 8px;">
+                                                    <span style="color: #9CA3AF;">行业：</span>
+                                                    <span style="color: #374151;">制造业、互联网、服务业</span>
+                                                </div>
+                                                <div>
+                                                    <span style="color: #9CA3AF;">技能：</span>
+                                                    <span style="color: #374151;">项目管理、数据分析、产品设计、技术开发</span>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                <div class="profile-section">
-                    <div class="profile-card">
-                        <div class="avatar-wrapper">
-                            <span class="avatar-icon">👤</span>
-                        </div>
-                        <div class="profile-info">
-                            <div class="profile-header">
-                                <span class="user-name">HI, 用户</span>
-                                <span class="user-level">Lv.1</span>
-                                <span class="user-tag">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                    </svg>
-                                    AI用户
-                                </span>
-                                <button class="edit-btn">编辑账号信息</button>
+                                        <div style="padding: 12px; background: white; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0051D9" stroke-width="2">
+                                                        <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
+                                                    </svg>
+                                                    <span style="font-size: 15px; font-weight: 600; color: #1F2937;">我的组织</span>
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; align-items: center; justify-content: space-between;font-size: 14px;">
+                                                <span>东莞市蓓佳尔工艺品有限公司（<span style="color: #F37021;">审核中</span>）</span>
+                                                <a href="#" style="color: #0051D9; text-decoration: none; font-size: 13px; font-weight: 500;">进入 →</a>
+                                            </div>
+                                            <div style="display: flex; align-items: center; justify-content: space-between;font-size: 14px; margin-top: 12px;">
+                                                <span>东莞市蓓佳尔工艺品有限公司（技术部-工程师）</span>
+                                                <a href="#" style="color: #0051D9; text-decoration: none; font-size: 13px; font-weight: 500;">进入 →</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="profile-details">
-                                <div class="detail-item">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                    <span>职务：<span class="detail-value">AI助手</span></span>
+                            <div style="width: 1px; background: repeating-linear-gradient(0deg, #d9d9d9 0px, #d9d9d9 4px, transparent 4px, transparent 8px);"></div>
+                            <div style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                                <div class="info-item" style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                    <div class="info-label" style="margin-bottom: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                        </svg>
+                                        手机
+                                    </div>
+                                    <div class="info-value" style="margin-bottom: 8px;">13826469793</div>
+                                    <a href="#" class="info-link">重新绑定</a>
                                 </div>
-                                <div class="detail-item">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    </svg>
-                                    <span>注册时间：<span class="detail-value">2024-01-01</span></span>
+                                <div class="info-item" style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                    <div class="info-label" style="margin-bottom: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>
+                                        邮箱
+                                    </div>
+                                    <div class="info-value" style="color: #999; margin-bottom: 8px;">未绑定</div>
+                                    <a href="#" class="info-link">去绑定</a>
                                 </div>
-                                <div class="detail-item">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="M12 6v6l4 2"></path>
-                                    </svg>
-                                    <span>使用时长：<span class="detail-value">120小时</span></span>
+                                <div class="info-item" style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                    <div class="info-label" style="margin-bottom: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        </svg>
+                                        第三方账号
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                                        <span style="font-size: 13px; color: #666;">微信：</span>
+                                        <img src="images/tx-2.png" alt="微信头像" style="width: 24px; height: 24px; border-radius: 4px;">
+                                        <span style="font-size: 13px; color: #1D2129;">林工</span>
+                                        <a href="#" class="info-link">重新绑定</a>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 13px; color: #666;">支付宝：</span>
+                                        <a href="#" class="info-link">支付宝绑定</a>
+                                    </div>
+                                </div>
+                                <div class="info-item" style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                    <div class="info-label" style="margin-bottom: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <path d="M12 6v6l4 2"></path>
+                                        </svg>
+                                        我的元宝
+                                        <a href="#" class="info-link">消费记录</a>
+                                    </div>
+                                    <div class="info-value" style="color: #F37021; font-size: 20px; font-weight: bold; margin-bottom: 8px;">375</div>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <a href="#" class="info-link">去充值 →</a>
+                                    </div>
+                                </div>
+                                <div class="info-item" style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                    <div class="info-label" style="margin-bottom: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        账号设置
+                                    </div>
+                                    <div style="font-size: 13px; color: #666; margin-bottom: 8px;">账号：liulin965565</div>
+                                    <div style="font-size: 13px; color: #666;">
+                                        密码：********* <a href="#" class="info-link">修改密码</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="info-section">
-                        <div class="section-title">账户信息</div>
-                        <div class="info-grid">
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                                    </svg>
-                                    手机
-                                </div>
-                                <div class="info-value">138****8888</div>
-                                <a href="#" class="info-link">重新绑定</a>
+                    <div class="section-title" style="margin-top: 30px; margin-bottom: 20px;">使用统计</div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                        <div class="info-item" style="padding: 16px; background: #f8f9ff; border-radius: 8px;">
+                            <div class="info-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                </svg>
+                                对话次数
                             </div>
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                    邮箱
-                                </div>
-                                <div class="info-value" style="color: var(--classic-gray);">未绑定</div>
-                                <a href="#" class="info-link">去绑定</a>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="M12 6v6l4 2"></path>
-                                    </svg>
-                                    AI积分
-                                </div>
-                                <div class="info-value" style="color: var(--hermes-orange); font-size: 1.5rem; font-weight: bold;">1,280</div>
-                                <a href="#" class="info-link">查看详情 →</a>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                    账号设置
-                                </div>
-                                <div class="info-value" style="font-size: 0.8125rem;">账号：ai_user_001</div>
-                                <a href="#" class="info-link">修改密码</a>
-                            </div>
+                            <div class="info-value" style="font-size: 24px; font-weight: bold; color: #0051D9;">520</div>
                         </div>
-                    </div>
-
-                    <div class="info-section">
-                        <div class="section-title">AI使用统计</div>
-                        <div class="info-grid">
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                        <polyline points="14 2 14 8 20 8"></polyline>
-                                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    </svg>
-                                    AI对话次数
-                                </div>
-                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold;">520</div>
+                        <div class="info-item" style="padding: 16px; background: #f8f9ff; border-radius: 8px;">
+                            <div class="info-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 12V7a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3a2 2 0 0 1 2-2h1a2 2 0 0 0 2-2z"></path>
+                                </svg>
+                                生成内容数
                             </div>
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 12V7a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3a2 2 0 0 1 2-2h1a2 2 0 0 0 2-2z"></path>
-                                    </svg>
-                                    生成内容数
-                                </div>
-                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold;">186</div>
+                            <div class="info-value" style="font-size: 24px; font-weight: bold; color: #0051D9;">186</div>
+                        </div>
+                        <div class="info-item" style="padding: 16px; background: #f8f9ff; border-radius: 8px;">
+                            <div class="info-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 8v4l3 3"></path>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                累计使用天数
                             </div>
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 8v4l3 3"></path>
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                    </svg>
-                                    累计使用时长
-                                </div>
-                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold;">120h</div>
+                            <div class="info-value" style="font-size: 24px; font-weight: bold; color: #0051D9;">120天</div>
+                        </div>
+                        <div class="info-item" style="padding: 16px; background: #f8f9ff; border-radius: 8px;">
+                            <div class="info-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                                    <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                                </svg>
+                                满意度评分
                             </div>
-                            <div class="info-card">
-                                <div class="info-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
-                                        <line x1="12" y1="22" x2="12" y2="15.5"></line>
-                                    </svg>
-                                    满意度评分
-                                </div>
-                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold; color: #FFD700;">4.9</div>
-                            </div>
+                            <div class="info-value" style="font-size: 24px; font-weight: bold; color: #FFD700;">4.9</div>
                         </div>
                     </div>
                 </div>
@@ -580,31 +747,159 @@
         </div>
     </div>
 
-    <div class="logout-modal" id="logoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; justify-content: center; align-items: center;">
-        <div style="background: white; border-radius: 12px; padding: 24px; width: 320px; text-align: center;">
-            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">确认退出</h3>
-            <p style="font-size: 14px; color: #86909C; margin-bottom: 20px;">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
-            <div style="display: flex; gap: 12px; justify-content: center;">
-                <button onclick="hideLogoutConfirm()" style="padding: 10px 24px; border: 1px solid #E5E7EB; border-radius: 6px; background: white; cursor: pointer; font-size: 14px;">取消</button>
-                <button onclick="logout()" style="padding: 10px 24px; background: #F37021; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">确定</button>
+    <div id="editModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;" onclick="if(event.target===this)hideEditModal()">
+        <div style="background: white; border-radius: 12px; width: 650px; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid #e5e7eb;">
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">编辑个人信息</h3>
+                <button onclick="hideEditModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">×</button>
+            </div>
+            <div style="display: flex; gap: 32px; padding: 24px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 20px;">
+                    <img id="editAvatar" src="images/tx-2.png" alt="头像" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover;">
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    <button onclick="document.getElementById('avatarUpload').click()" style="padding: 8px 20px; background: transparent; color: #666; border: 1px solid #d9d9d9; border-radius: 6px; cursor: pointer; font-size: 13px;">更换头像</button>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">名称</label>
+                        <input type="text" id="editName" value="林工" style="width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">职务</label>
+                        <select id="editPosition" style="width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box; background: white;">
+                            <option value="工程师" selected>工程师</option>
+                            <option value="设计师">设计师</option>
+                            <option value="项目经理">项目经理</option>
+                            <option value="技术总监">技术总监</option>
+                            <option value="产品经理">产品经理</option>
+                            <option value="市场经理">市场经理</option>
+                            <option value="销售经理">销售经理</option>
+                            <option value="行政主管">行政主管</option>
+                            <option value="财务主管">财务主管</option>
+                            <option value="总经理">总经理</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">生日</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="birthYear" style="flex: 1; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; background: white;"></select>
+                            <select id="birthMonth" style="flex: 1; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; background: white;"></select>
+                            <select id="birthDay" style="flex: 1; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; background: white;"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">性别</label>
+                        <div style="display: flex; gap: 24px;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="radio" name="gender" value="男" checked>
+                                <span>男</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="radio" name="gender" value="女">
+                                <span>女</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">简介</label>
+                        <textarea id="editIntro" rows="3" style="width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; resize: vertical; box-sizing: border-box;">专业从事工艺品设计与开发，拥有10年行业经验，擅长3D建模和产品渲染。</textarea>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 16px 24px; border-top: 1px solid #e5e7eb; justify-content: flex-end;">
+                <button onclick="hideEditModal()" style="padding: 10px 24px; border: 1px solid #d9d9d9; border-radius: 6px; background: white; cursor: pointer; font-size: 14px;">取消</button>
+                <button onclick="saveEditInfo()" style="padding: 10px 24px; background: #0051D9; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <h3 class="logout-modal-title">确认退出</h3>
+            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+            <div class="logout-modal-buttons">
+                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
+                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
             </div>
         </div>
     </div>
 
     <script>
+        function initBirthdaySelectors() {
+            const yearSelect = document.getElementById('birthYear');
+            const monthSelect = document.getElementById('birthMonth');
+            const daySelect = document.getElementById('birthDay');
+            
+            for (let y = 2025; y >= 1960; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y + '年';
+                if (y === 1990) opt.selected = true;
+                yearSelect.appendChild(opt);
+            }
+            
+            for (let m = 1; m <= 12; m++) {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m + '月';
+                if (m === 1) opt.selected = true;
+                monthSelect.appendChild(opt);
+            }
+            
+            for (let d = 1; d <= 31; d++) {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d + '日';
+                if (d === 15) opt.selected = true;
+                daySelect.appendChild(opt);
+            }
+        }
+        initBirthdaySelectors();
+
+        function showEditModal() {
+            const modal = document.getElementById('editModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function hideEditModal() {
+            const modal = document.getElementById('editModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        function saveEditInfo() {
+            hideEditModal();
+        }
+
         function showLogoutConfirm() {
-            document.getElementById('logoutModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            const logoutModal = document.getElementById('logoutModal');
+            if (logoutModal) {
+                logoutModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function hideLogoutConfirm() {
-            document.getElementById('logoutModal').style.display = 'none';
-            document.body.style.overflow = '';
+            const logoutModal = document.getElementById('logoutModal');
+            if (logoutModal) {
+                logoutModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
         }
 
         function logout() {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = 'index.html';
+            try {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'ai-unlogin.html';
+            } catch (error) {
+                console.error('退出登录时出错:', error);
+                window.location.href = 'ai-unlogin.html';
+            }
         }
 
         document.getElementById('logoutModal').addEventListener('click', function(e) {
@@ -614,8 +909,22 @@
         });
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('logoutModal').style.display === 'flex') {
+            const logoutModal = document.getElementById('logoutModal');
+            if (e.key === 'Escape' && logoutModal && logoutModal.classList.contains('show')) {
                 hideLogoutConfirm();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+            const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+            
+            if (logoutCancelBtn) {
+                logoutCancelBtn.addEventListener('click', hideLogoutConfirm);
+            }
+            
+            if (logoutConfirmBtn) {
+                logoutConfirmBtn.addEventListener('click', logout);
             }
         });
     </script>
