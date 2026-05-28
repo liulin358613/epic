@@ -13,27 +13,31 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        @media (max-width: 1440px) {
+        @media screen and (min-width: 1920px) {
+            html { font-size: 17px; }
+        }
+
+        @media screen and (max-width: 1440px) {
             html { font-size: 15px; }
         }
 
-        @media (max-width: 1366px) {
+        @media screen and (max-width: 1366px) {
             html { font-size: 14px; }
         }
 
-        @media (max-width: 1280px) {
+        @media screen and (max-width: 1280px) {
             html { font-size: 13px; }
         }
 
-        @media (max-width: 1024px) {
+        @media screen and (max-width: 1024px) {
             html { font-size: 12px; }
         }
 
-        @media (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             html { font-size: 11px; }
         }
 
-        @media (max-width: 600px) {
+        @media screen and (max-width: 600px) {
             html { font-size: 10px; }
         }
 
@@ -89,8 +93,8 @@
         }
 
         .header-content {
-            width: 75rem;
-            max-width: 90%;
+            width: 100%;
+            max-width: min(75rem, 92%);
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -172,18 +176,17 @@
         }
 
         .register-body {
-            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: var(--spacing-3xl) 0;
+            padding: var(--spacing-3xl) 1rem;
         }
 
         .register-box {
             background-color: var(--white);
             border-radius: 0.75rem;
             width: 26.25rem;
-            max-width: 90%;
+            max-width: 100%;
             padding: var(--spacing-3xl);
             box-shadow: 0 8px 32px rgba(0, 81, 217, 0.1);
         }
@@ -639,9 +642,10 @@
         }
 
         /* 响应式适配 */
-        @media (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             .register-box {
                 padding: var(--spacing-xl);
+                border-radius: 0.5rem;
             }
 
             .register-title {
@@ -654,10 +658,15 @@
             }
         }
 
-        @media (max-width: 600px) {
+        @media screen and (max-width: 600px) {
             .header-content {
                 flex-direction: column;
                 gap: var(--spacing-lg);
+                align-items: flex-start;
+            }
+
+            .register-body {
+                padding: var(--spacing-xl) 0.75rem;
             }
 
             .register-box {
@@ -667,6 +676,16 @@
             .protocol-modal {
                 width: 95%;
                 border-radius: 0.5rem;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .register-body {
+                padding: var(--spacing-md) 0.5rem;
+            }
+
+            .register-box {
+                padding: var(--spacing-md) var(--spacing-lg);
             }
         }
     </style>

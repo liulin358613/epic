@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AI个人中心 - RaaS.Dao</title>
+    <style>
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @media (max-width: 1440px) {
+            html { font-size: 15px; }
+        }
+
+        @media (max-width: 1366px) {
+            html { font-size: 14px; }
+        }
+
+        @media (max-width: 1280px) {
+            html { font-size: 13px; }
+        }
+
+        @media (max-width: 1024px) {
+            html { font-size: 12px; }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 11px; }
+        }
+
+        @media (max-width: 600px) {
+            html { font-size: 10px; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        :root {
+            --klein-blue: #0051D9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-gray: #F2F3F5;
+            --classic-gray: #86909C;
+            --white: #FFFFFF;
+            --border-gray: #E5E7EB;
+
+            --font-size-base: 0.875rem;
+            --font-size-sm: 0.8125rem;
+            --font-size-md: 0.9375rem;
+            --font-size-lg: 1.5rem;
+            --line-height-base: 1.5;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.375rem;
+            --spacing-md: 0.5rem;
+            --spacing-lg: 0.75rem;
+            --spacing-xl: 1rem;
+            --spacing-2xl: 1.25rem;
+            --spacing-3xl: 1.875rem;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
+
+        .register-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-header {
+            background-color: var(--white);
+            padding: var(--spacing-xl) 0;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .header-content {
+            width: 75rem;
+            max-width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .search-logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--klein-blue);
+            white-space: nowrap;
+            font-family: 'Arial', sans-serif;
+            text-shadow: 0 2px 4px rgba(0, 81, 217, 0.1);
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo-subtitle {
+            font-size: 2rem;
+            color: var(--deep-gray);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .logo-slogan {
+            font-size: 1.2rem;
+            color: var(--classic-gray);
+            font-weight: 500;
+            padding: 0;
+            margin: 0;
+            line-height: 2.4;
+        }
+
+        .logo-description {
+            font-size: 1rem;
+            color: #1092ee;
+            font-weight: 400;
+            padding: 0;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .header-right {
+            font-size: var(--font-size-base);
+            color: var(--classic-gray);
+        }
+
+        .header-right button {
+            padding: 8px 16px;
+            background: transparent;
+            color: var(--hermes-orange);
+            border: 1px solid var(--hermes-orange);
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .header-right button:hover {
+            background: var(--hermes-orange);
+            color: var(--white);
+        }
+
+        .register-body {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .personal-container {
+            background-color: var(--white);
+            border-radius: 0.75rem;
+            width: 75rem;
+            max-width: 90%;
+            padding: var(--spacing-3xl);
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.1);
+        }
+
+        .page-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--deep-gray);
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+            padding-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2xl);
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3xl);
+            padding: var(--spacing-2xl);
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border-radius: 12px;
+            border: 1px solid var(--border-gray);
+        }
+
+        .avatar-wrapper {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 81, 217, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 81, 217, 0.2);
+        }
+
+        .avatar-icon {
+            font-size: 64px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .user-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--deep-gray);
+        }
+
+        .user-level {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: var(--hermes-orange);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .user-tag {
+            background: #E6F7FF;
+            color: #1890FF;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .edit-btn {
+            background: transparent;
+            border: 1px solid var(--klein-blue);
+            color: var(--klein-blue);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: auto;
+        }
+
+        .edit-btn:hover {
+            background: var(--klein-blue);
+            color: var(--white);
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--border-gray);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: var(--font-size-base);
+            color: var(--classic-gray);
+        }
+
+        .detail-item svg {
+            width: 1rem;
+            height: 1rem;
+            stroke: var(--classic-gray);
+        }
+
+        .detail-value {
+            color: var(--deep-gray);
+            font-weight: 500;
+        }
+
+        .info-section {
+            margin-top: var(--spacing-2xl);
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--deep-gray);
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-xl);
+        }
+
+        .info-card {
+            background: var(--light-gray);
+            padding: var(--spacing-xl);
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 0.8125rem;
+            color: var(--classic-gray);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .info-label svg {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+
+        .info-value {
+            font-size: var(--font-size-base);
+            color: var(--deep-gray);
+            font-weight: 500;
+        }
+
+        .info-link {
+            color: var(--klein-blue);
+            text-decoration: none;
+            font-size: 0.8125rem;
+            margin-top: var(--spacing-xs);
+            display: inline-block;
+            transition: color 0.2s;
+        }
+
+        .info-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+
+            .logo-row {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .logo-subtitle {
+                font-size: 1.5rem;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-header {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .edit-btn {
+                margin-left: 0;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <div class="header-content">
+                <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <div class="logo-row">
+                        <div class="logo-left">
+                            <span class="search-logo" style="color: #0051D9;">RaaSDao</span>
+                            <div class="logo-slogan">共创・共享</div>
+                            <div class="logo-description">人类 + 离身智能 + 具身智能，协同创造</div>
+                        </div>
+                        <span class="logo-subtitle">AI生产力创造平台</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button onclick="showLogoutConfirm()">退出登录</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="register-body">
+            <div class="personal-container">
+                <div class="page-title">AI个人中心</div>
+
+                <div class="profile-section">
+                    <div class="profile-card">
+                        <div class="avatar-wrapper">
+                            <span class="avatar-icon">👤</span>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-header">
+                                <span class="user-name">HI, 用户</span>
+                                <span class="user-level">Lv.1</span>
+                                <span class="user-tag">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    AI用户
+                                </span>
+                                <button class="edit-btn">编辑账号信息</button>
+                            </div>
+                            <div class="profile-details">
+                                <div class="detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span>职务：<span class="detail-value">AI助手</span></span>
+                                </div>
+                                <div class="detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <span>注册时间：<span class="detail-value">2024-01-01</span></span>
+                                </div>
+                                <div class="detail-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 6v6l4 2"></path>
+                                    </svg>
+                                    <span>使用时长：<span class="detail-value">120小时</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="section-title">账户信息</div>
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                    </svg>
+                                    手机
+                                </div>
+                                <div class="info-value">138****8888</div>
+                                <a href="#" class="info-link">重新绑定</a>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                    邮箱
+                                </div>
+                                <div class="info-value" style="color: var(--classic-gray);">未绑定</div>
+                                <a href="#" class="info-link">去绑定</a>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 6v6l4 2"></path>
+                                    </svg>
+                                    AI积分
+                                </div>
+                                <div class="info-value" style="color: var(--hermes-orange); font-size: 1.5rem; font-weight: bold;">1,280</div>
+                                <a href="#" class="info-link">查看详情 →</a>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    账号设置
+                                </div>
+                                <div class="info-value" style="font-size: 0.8125rem;">账号：ai_user_001</div>
+                                <a href="#" class="info-link">修改密码</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="section-title">AI使用统计</div>
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    </svg>
+                                    AI对话次数
+                                </div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold;">520</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 12V7a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3a2 2 0 0 1 2-2h1a2 2 0 0 0 2-2z"></path>
+                                    </svg>
+                                    生成内容数
+                                </div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold;">186</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 8v4l3 3"></path>
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                    </svg>
+                                    累计使用时长
+                                </div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold;">120h</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                                        <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                                    </svg>
+                                    满意度评分
+                                </div>
+                                <div class="info-value" style="font-size: 1.5rem; font-weight: bold; color: #FFD700;">4.9</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logout-modal" id="logoutModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 12px; padding: 24px; width: 320px; text-align: center;">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">确认退出</h3>
+            <p style="font-size: 14px; color: #86909C; margin-bottom: 20px;">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button onclick="hideLogoutConfirm()" style="padding: 10px 24px; border: 1px solid #E5E7EB; border-radius: 6px; background: white; cursor: pointer; font-size: 14px;">取消</button>
+                <button onclick="logout()" style="padding: 10px 24px; background: #F37021; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLogoutConfirm() {
+            document.getElementById('logoutModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideLogoutConfirm() {
+            document.getElementById('logoutModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('logoutModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideLogoutConfirm();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('logoutModal').style.display === 'flex') {
+                hideLogoutConfirm();
+            }
+        });
+    </script>
+</body>
+</html>
