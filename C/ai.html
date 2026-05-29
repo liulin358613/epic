@@ -56,6 +56,10 @@
                         </svg>
                     </div>
                 `;
+                loginBar.style.cursor = 'pointer';
+                loginBar.onclick = function() {
+                    window.location.href = 'ai-personal-center.html';
+                };
             } else {
                 loginBar.classList.add('login-bar-logged-out');
                 loginBar.innerHTML = `
