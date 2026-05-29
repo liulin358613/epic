@@ -430,15 +430,15 @@
         .detail-tag-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            padding-left: 14px;
+            gap: 8px;
+            flex: 1;
         }
         .detail-tag {
-            padding: 4px 10px;
-            background: #f1f5f9;
-            border-radius: 16px;
+            padding: 4px 12px;
+            background: #e0f2fe;
+            border-radius: 4px;
             font-size: 13px;
-            color: #64748b;
+            color: #0c4a6e;
         }
         .detail-highlight {
             font-size: 20px;
@@ -663,7 +663,7 @@
                             <td>技术总监</td>
                             <td><span class="badge badge-level">Lv.5</span></td>
                             <td><span class="badge badge-user-type">组织用户</span></td>
-                            <td><span class="org-link" onclick="showOrg('org005')">佛山智能装备科技有限公司</span>（采购部-采购主管）<br><span class="org-link" onclick="showOrg('org006')">佛山华联机械设备厂</span>（质量主管）</td>
+                            <td><span class="org-link" onclick="showOrg('org005')">佛山智能装备科技有限公司</span>（采购部-采购主管）<br> ├─ <span class="org-link" onclick="showOrg('org005-1')">研发中心</span>（研发部-研发工程师）<br> └─ <span class="org-link" onclick="showOrg('org005-2')">生产基地</span>（生产部-生产经理）<br><span class="org-link" onclick="showOrg('org006')">佛山华联机械设备厂</span>（质量主管）</td>
                             <td>2024-05-18</td>
                             <td>2025-05-04 16:08</td>
                             <td><span class="action-link" onclick="showDetail(10005)">详情</span></td>
@@ -844,22 +844,35 @@
                         </div>
 
                         <div class="detail-card" style="margin-left: 14px;">
-                            <div class="detail-card-title"><i class="fa fa-user-o"></i> 他的能力 <span style="font-weight: normal; color: #64748b; font-size: 14px;"></span><span id="detail-auth-scope" class="auth-scope-tag">全开放</span><span style="font-weight: normal; color: #64748b; font-size: 14px;"></span></div>
-                            <div style="margin-bottom: 8px; font-size: 14px; padding-left: 12px;">
-                                <span style="color: #64748b;">行业：</span>
-                                <span id="detail-industry-tags" style="color: #475569;">制造业、互联网、服务业</span>
-                            </div>
-                            <div style="font-size: 14px; padding-left: 12px;">
-                                <span style="color: #64748b;">技能：</span>
-                                <span id="detail-skill-tags" style="color: #475569;">项目管理、数据分析、产品设计、技术开发</span>
-                            </div>
-                        </div>
-
-                        <div class="detail-card" style="margin-left: 14px;">
                             <div class="detail-card-title"><i class="fa fa-building-o"></i> 所属组织/部门/角色</div>
                             <div id="detail-organizations" style="display: flex; flex-direction: column; gap: 8px; padding-left: 12px;">
                                 <div style="font-size: 14px; color: #475569;">东莞长安训练基地（总经理部-总经理）</div>
                                 <div style="font-size: 14px; color: #475569;">东莞嘉东轴承商贸有限公司（销售部-业务员）</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card" style="margin-left: 14px;">
+                            <div class="detail-card-title"><i class="fa fa-user-o"></i> 他的能力 <span style="font-weight: normal; color: #64748b; font-size: 14px;"></span><span id="detail-auth-scope" class="auth-scope-tag">全开放</span><span style="font-weight: normal; color: #64748b; font-size: 14px;"></span></div>
+                            <div style="padding-left: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 13px; color: #64748b; flex-shrink: 0;">行业：</span>
+                                <div id="detail-industry-tags" class="detail-tag-list">
+                                    <span class="detail-tag">制造业</span>
+                                    <span class="detail-tag">互联网</span>
+                                    <span class="detail-tag">服务业</span>
+                                </div>
+                            </div>
+                            <div style="padding-left: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 13px; color: #64748b; flex-shrink: 0;">技能：</span>
+                                <div id="detail-skill-tags" class="detail-tag-list">
+                                    <span class="detail-tag">项目管理</span>
+                                    <span class="detail-tag">数据分析</span>
+                                    <span class="detail-tag">产品设计</span>
+                                    <span class="detail-tag">技术开发</span>
+                                </div>
+                            </div>
+                            <div style="padding-left: 12px; display: flex; align-items: flex-start; gap: 8px;">
+                                <span style="font-size: 13px; color: #64748b; flex-shrink: 0;">描述：</span>
+                                <div id="detail-description" style="font-size: 14px; color: #475569; line-height: 1.5; flex: 1;">暂无描述</div>
                             </div>
                         </div>
                     </div>
@@ -965,6 +978,7 @@
                 authScope: '全开放',
                 industryTags: ['制造业', '互联网'],
                 skillTags: ['项目管理', '数据分析', '产品设计'],
+                description: '专业从事工艺品设计与开发，拥有10年行业经验，擅长3D建模和产品渲染。',
                 createTime: '2024-01-15',
                 status: '正常'
             },
@@ -1036,7 +1050,10 @@
                 position: '技术总监',
                 level: 'Lv.5',
                 organizations: [
-                    { id: 'org005', name: '佛山智能装备科技有限公司', department: '采购部', role: '采购主管' },
+                    { id: 'org005', name: '佛山智能装备科技有限公司', department: '采购部', role: '采购主管', children: [
+                        { id: 'org005-1', name: '研发中心', department: '研发部', role: '研发工程师' },
+                        { id: 'org005-2', name: '生产基地', department: '生产部', role: '生产经理' }
+                    ]},
                     { id: 'org006', name: '佛山华联机械设备厂', department: '质检部', role: '质量主管' }
                 ],
                 coins: '890',
@@ -1136,7 +1153,7 @@
                 position: '会计',
                 level: 'Lv.2',
                 organizations: [
-                    { id: 'org011', name: '成都天府智能科技有限公司', department: '市场部', role: '大区经理' }
+                    { id: 'org011', name: '东莞嘉东科技', department: '', role: '', status: '审核中' }
                 ],
                 coins: '100',
                 lastLoginTime: '2025-04-30 17:55',
@@ -1180,15 +1197,17 @@
             }
             document.getElementById('detail-coins').textContent = user.coins;
 
-            const industryTagsText = user.industryTags.length > 0 
-                ? user.industryTags.join('、') 
-                : '暂无';
-            document.getElementById('detail-industry-tags').textContent = industryTagsText;
+            document.getElementById('detail-description').textContent = user.description || '暂无描述';
 
-            const skillTagsText = user.skillTags.length > 0 
-                ? user.skillTags.join('、') 
-                : '暂无';
-            document.getElementById('detail-skill-tags').textContent = skillTagsText;
+            const industryTagsHtml = user.industryTags.length > 0 
+                ? user.industryTags.map(tag => `<span class="detail-tag">${tag}</span>`).join('')
+                : '<span class="detail-tag" style="color: #94a3b8;">暂无</span>';
+            document.getElementById('detail-industry-tags').innerHTML = industryTagsHtml;
+
+            const skillTagsHtml = user.skillTags.length > 0 
+                ? user.skillTags.map(tag => `<span class="detail-tag">${tag}</span>`).join('')
+                : '<span class="detail-tag" style="color: #94a3b8;">暂无</span>';
+            document.getElementById('detail-skill-tags').innerHTML = skillTagsHtml;
 
             const authScopeEl = document.getElementById('detail-auth-scope');
             if (authScopeEl) {
@@ -1207,12 +1226,26 @@
                 }
             }
 
-            const orgTagsHtml = user.organizations && user.organizations.length > 0
-                ? user.organizations.map(org => {
-                    const deptRole = org.department ? `${org.department}-${org.role}` : org.role;
-                    return `<div onclick="showOrg('${org.id}')" style="font-size: 14px; color: #475569; cursor: pointer;">${org.name}（${deptRole}）</div>`;
-                  }).join('')
-                : '<div style="font-size: 14px; color: #94a3b8;">暂无</div>';
+            function renderOrg(org, prefix = '') {
+                    let displayText;
+                    if (org.status && org.status === '审核中') {
+                        displayText = `<span style="color: #f37021;">审核中</span>`;
+                    } else {
+                        const deptRole = org.department ? `${org.department}-${org.role}` : (org.role || '');
+                        displayText = deptRole;
+                    }
+                    let html = `<div onclick="showOrg('${org.id}')" style="font-size: 14px; color: #475569; cursor: pointer;">${prefix}${org.name}（${displayText}）</div>`;
+                    if (org.children && org.children.length > 0) {
+                        org.children.forEach((child, index) => {
+                            const childPrefix = index === org.children.length - 1 ? ' └─ ' : ' ├─ ';
+                            html += renderOrg(child, prefix + childPrefix);
+                        });
+                    }
+                    return html;
+                }
+                const orgTagsHtml = user.organizations && user.organizations.length > 0
+                    ? user.organizations.map(org => renderOrg(org, '')).join('')
+                    : '<div style="font-size: 14px; color: #94a3b8;">暂无</div>';
             document.getElementById('detail-organizations').innerHTML = orgTagsHtml;
 
             document.getElementById('detailModal').classList.remove('hidden');
