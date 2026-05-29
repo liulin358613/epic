@@ -840,6 +840,16 @@
                                         <span style="color: #475569;">专业从事工艺品设计与开发，拥有10年行业经验，擅长3D建模和产品渲染。</span>
                                     </div>
                                 </div>
+                                <div style="margin-top: 12px; font-size: 14px; color: #64748b; display: flex; align-items: center; gap: 24px;">
+                                    <span style="display: flex; align-items: center; gap: 4px;">
+                                        <i class="fa fa-calendar-plus-o" style="color: #94a3b8;"></i>
+                                        <span>注册时间：<span id="detail-create-time" style="color: #475569;">2024-01-15</span></span>
+                                    </span>
+                                    <span style="display: flex; align-items: center; gap: 4px;">
+                                        <i class="fa fa-sign-in" style="color: #94a3b8;"></i>
+                                        <span>最后登录：<span id="detail-last-login" style="color: #475569;">2025-05-04 16:08</span></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -1196,6 +1206,9 @@
                 detailLevelEl.className = 'badge badge-level';
             }
             document.getElementById('detail-coins').textContent = user.coins;
+
+            document.getElementById('detail-create-time').textContent = user.createTime || '-';
+            document.getElementById('detail-last-login').textContent = user.lastLoginTime || '-';
 
             document.getElementById('detail-description').textContent = user.description || '暂无描述';
 
