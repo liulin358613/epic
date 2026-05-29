@@ -725,8 +725,7 @@
             line-height: 1.5;
         }
         .user-message .message-text {
-            background: #3b82f6;
-            color: white;
+            background: #edf3fe;
             border-bottom-right-radius: 4px;
         }
         .ai-message .message-text {
@@ -744,6 +743,79 @@
             color: #94a3b8;
             margin-top: 4px;
             text-align: right;
+        }
+        /* 消息气泡内文件附件 */
+        .msg-file-attachments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .msg-file-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            color: white;
+            max-width: 160px;
+        }
+        .msg-file-item i {
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .msg-file-item span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .msg-file-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+        }
+        /* AI 气泡内文件附件（灰底风格） */
+        .ai-message .msg-file-item {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .ai-message .msg-file-item i {
+            color: #64748b;
+        }
+        /* 文件区加载动画 */
+        .msg-file-loading {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .msg-file-loading .loading-dots {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+        }
+        .msg-file-loading .loading-dot {
+            width: 5px;
+            height: 5px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            animation: msgLoadingBounce 1.2s ease-in-out infinite;
+        }
+        .msg-file-loading .loading-dot:nth-child(2) { animation-delay: 0.15s; }
+        .msg-file-loading .loading-dot:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes msgLoadingBounce {
+            0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
         }
         .chat-input-wrapper {
             background: white;
@@ -859,19 +931,33 @@
         .send-btn-circle {
             width: 40px;
             height: 40px;
-            background: #06b6d4;
+            background: #d1d5db;
             color: white;
             border: none;
             border-radius: 50%;
-            cursor: pointer;
+            cursor: not-allowed;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            transition: background 0.2s;
+            transition: background 0.2s, opacity 0.2s;
+            opacity: 0.6;
         }
-        .send-btn-circle:hover {
+        .send-btn-circle.active {
+            background: #06b6d4;
+            cursor: pointer;
+            opacity: 1;
+        }
+        .send-btn-circle.active:hover {
             background: #0891b2;
+        }
+        .send-btn-circle.stop {
+            background: #f97316;
+            cursor: pointer;
+            opacity: 1;
+        }
+        .send-btn-circle.stop:hover {
+            background: #ea580c;
         }
         .rating-panel {
             display: flex;
@@ -1788,12 +1874,17 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             // 清空对话区
             chatMessages.innerHTML = '';
             
-            // 添加用户消息
+            // 添加用户消息（含文件）
             const userMessage = document.createElement('div');
             userMessage.className = 'message user-message';
             userMessage.innerHTML = `
                 <div class="message-content">
-                    <div class="message-text">${topic}</div>
+                    <div class="message-text">${topic}
+                        <div class="msg-file-attachments">
+                            <div class="msg-file-item"><img src="images/tx-1.png" alt="需求截图.png" class="msg-file-thumb"></div>
+                            <div class="msg-file-item"><i class="fa fa-file-o"></i><span>需求文档.docx</span></div>
+                        </div>
+                    </div>
                     <div class="message-time">${getCurrentTime()}</div>
                 </div>
             `;
@@ -1808,7 +1899,13 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                     <img class="message-avatar" src="${employeeAvatar}" alt="头像">
                     <div class="message-content">
                         <div class="message-name">${employeeName}</div>
-                        <div class="message-text">好的，让我来为您详细分析这个问题。根据我的专业判断，这个问题需要从多个维度来考虑。</div>
+                        <div class="message-text">好的，让我来为您详细分析这个问题。根据我的专业判断，这个问题需要从多个维度来考虑。
+                            <div class="msg-file-attachments">
+                                <div class="msg-file-item"><img src="images/tx-1.png" alt="分析报告.png" class="msg-file-thumb"></div>
+                                <div class="msg-file-item"><i class="fa fa-file-o"></i><span>数据汇总.xlsx</span></div>
+                                <div class="msg-file-item"><i class="fa fa-file-o"></i><span>参考案例.pdf</span></div>
+                            </div>
+                        </div>
                         <div class="message-time">${getCurrentTime()}</div>
                         <div class="rating-panel">
                             <span class="rating-label">评价：</span>
@@ -1834,7 +1931,12 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                         <img class="message-avatar" src="${employeeAvatar}" alt="头像">
                         <div class="message-content">
                             <div class="message-name">${employeeName}</div>
-                            <div class="message-text">首先，我们需要明确核心目标和关键指标。其次，制定详细的实施计划和阶段性目标。最后，建立完善的评估机制和反馈体系。</div>
+                            <div class="message-text">首先，我们需要明确核心目标和关键指标。其次，制定详细的实施计划和阶段性目标。最后，建立完善的评估机制和反馈体系。
+                                <div class="msg-file-attachments">
+                                    <div class="msg-file-item"><img src="images/tx-1.png" alt="实施方案.png" class="msg-file-thumb"></div>
+                                    <div class="msg-file-item"><i class="fa fa-file-o"></i><span>计划书.docx</span></div>
+                                </div>
+                            </div>
                             <div class="message-time">${getCurrentTime()}</div>
                             <div class="rating-panel">
                                 <span class="rating-label">评价：</span>
@@ -2461,6 +2563,37 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         const modelSelect = document.getElementById('model-select');
         const questionSelect = document.getElementById('question-select');
 
+        const fileUpload = document.getElementById('file-upload');
+        const uploadedFiles = document.getElementById('uploaded-files');
+        let uploadedFileList = [];
+
+        // 发送按钮状态管理
+        let isGenerating = false;
+        let typeWriterTimer = null;
+
+        function updateSendBtnState() {
+            if (isGenerating) return; // 生成中由 sendMessage 控制状态
+            const hasInput = chatInput.value.trim().length > 0;
+            const hasFiles = uploadedFileList.length > 0;
+            if (hasInput || hasFiles) {
+                sendBtn.className = 'send-btn-circle active';
+                sendBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
+            } else {
+                sendBtn.className = 'send-btn-circle';
+                sendBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
+            }
+        }
+
+        function setSendBtnStop() {
+            sendBtn.className = 'send-btn-circle stop';
+            sendBtn.innerHTML = '<i class="fa fa-pause"></i>';
+        }
+
+        function setSendBtnDisabled() {
+            isGenerating = false;
+            updateSendBtnState();
+        }
+
         function resizeChatInput() {
             chatInput.style.height = 'auto';
             const scrollHeight = chatInput.scrollHeight;
@@ -2476,14 +2609,15 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             }
         }
 
-        chatInput.addEventListener('input', resizeChatInput);
+        chatInput.addEventListener('input', function() {
+            resizeChatInput();
+            if (!isGenerating) updateSendBtnState();
+        });
         chatInput.addEventListener('keydown', resizeChatInput);
 
         resizeChatInput();
-
-        const fileUpload = document.getElementById('file-upload');
-        const uploadedFiles = document.getElementById('uploaded-files');
-        let uploadedFileList = [];
+        // 初始化发送按钮状态（默认置灰）
+        updateSendBtnState();
 
         fileUpload.addEventListener('change', function(e) {
             const files = e.target.files;
@@ -2508,11 +2642,13 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                             fileInfo.thumbnail = e.target.result;
                             uploadedFileList.push(fileInfo);
                             renderUploadedFiles();
+                            if (!isGenerating) updateSendBtnState();
                         };
                         reader.readAsDataURL(file);
                     } else {
                         uploadedFileList.push(fileInfo);
                         renderUploadedFiles();
+                        if (!isGenerating) updateSendBtnState();
                     }
                 });
                 this.value = '';
@@ -2538,6 +2674,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         function removeFile(fileId) {
             uploadedFileList = uploadedFileList.filter(file => file.id !== fileId);
             renderUploadedFiles();
+            if (!isGenerating) updateSendBtnState();
         }
 
         window.removeFile = removeFile;
@@ -2561,10 +2698,10 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             default: '感谢您的提问！我会根据您选择的模型为您提供专业的分析和建议。'
         };
         
-        function addMessage(text, isUser) {
+        function addMessage(text, isUser, files) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
-            
+
             const avatar = document.createElement(isUser ? 'div' : 'img');
             avatar.className = 'message-avatar';
             if (isUser) {
@@ -2573,22 +2710,42 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                 avatar.src = employeeAvatar;
                 avatar.alt = '头像';
             }
-            
+
             const content = document.createElement('div');
             content.className = 'message-content';
-            
+
             if (!isUser) {
                 const nameDiv = document.createElement('div');
                 nameDiv.className = 'message-name';
                 nameDiv.textContent = employeeName;
                 content.appendChild(nameDiv);
             }
-            
+
             const textDiv = document.createElement('div');
             textDiv.className = 'message-text';
             textDiv.textContent = text;
             content.appendChild(textDiv);
-            
+
+            // 气泡内展示附件文件（图片缩略图 / 文件图标+名称）
+            if (files && files.length > 0) {
+                const attachmentsDiv = document.createElement('div');
+                attachmentsDiv.className = 'msg-file-attachments';
+                files.forEach(file => {
+                    const item = document.createElement('div');
+                    item.className = 'msg-file-item';
+                    if (file.isImage && file.thumbnail) {
+                        item.innerHTML = `<img src="${file.thumbnail}" alt="${file.name}" class="msg-file-thumb">`;
+                    } else {
+                        item.innerHTML = `<i class="fa fa-file-o"></i><span>${file.name}</span>`;
+                    }
+                    attachmentsDiv.appendChild(item);
+                });
+                textDiv.appendChild(attachmentsDiv);
+            }
+
+            // 返回 textDiv 引用，方便后续操作（如插入加载动画）
+            messageDiv._textDiv = textDiv;
+
             const timeDiv = document.createElement('div');
             timeDiv.className = 'message-time';
             const now = new Date();
@@ -2598,12 +2755,12 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             const minutes = String(now.getMinutes()).padStart(2, '0');
             timeDiv.textContent = `${month}-${day} ${hours}:${minutes}`;
             content.appendChild(timeDiv);
-            
+
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(content);
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
-            
+
             return messageDiv;
         }
         
@@ -2656,41 +2813,105 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             let index = 0;
             element.textContent = '';
             const speed = 50;
-            
+
             function type() {
+                if (!isGenerating) {
+                    // 被停止了，直接结束（保留已输出内容）
+                    if (callback) callback();
+                    return;
+                }
                 if (index < text.length) {
                     element.textContent += text.charAt(index);
                     index++;
-                    setTimeout(type, speed);
+                    typeWriterTimer = setTimeout(type, speed);
                 } else if (callback) {
                     callback();
                 }
             }
             type();
         }
-        
+
         function sendMessage() {
+            // 如果正在生成中，点击=停止生成
+            if (isGenerating) {
+                isGenerating = false;
+                if (typeWriterTimer) {
+                    clearTimeout(typeWriterTimer);
+                    typeWriterTimer = null;
+                }
+                setSendBtnDisabled();
+                return;
+            }
+
             const model = modelSelect.value;
             const userInput = chatInput.value.trim();
-            
-            if (!userInput) return;
-            
-            addMessage(userInput, true);
+
+            // 允许无文字但有文件时发送
+            const hasFiles = uploadedFileList.length > 0;
+            if (!userInput && !hasFiles) return;
+
+            // 快照当前文件列表，传给 addMessage 展示在气泡中
+            const currentFiles = [...uploadedFileList];
+            addMessage(userInput || '', true, currentFiles);
             chatInput.value = '';
-            
+
+            // 清空已上传文件显示
+            uploadedFileList = [];
+            renderUploadedFiles();
+
+            // 切换为「暂停」状态
+            isGenerating = true;
+            setSendBtnStop();
+
             const typingIndicator = addTypingIndicator();
-            
+
             setTimeout(() => {
                 typingIndicator.remove();
-                
+
                 const response = aiResponses['default'];
-                
+
                 const aiMessage = addMessage('', false);
-                const textElement = aiMessage.querySelector('.message-text');
-                
+                const textElement = aiMessage._textDiv || aiMessage.querySelector('.message-text');
+
                 typeWriter(textElement, response, function() {
-                    addRatingPanel(aiMessage.querySelector('.message-content'));
+                    // 文本输出完毕，显示文件加载动画
+                    const loadingDiv = document.createElement('div');
+                    loadingDiv.className = 'msg-file-loading';
+                    loadingDiv.innerHTML = '<i class="fa fa-paperclip"></i><span>正在生成附件</span><span class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+                    textElement.appendChild(loadingDiv);
                     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    // 模拟 AI 回复附件（图片+文档混合）
+                    const mockAiFiles = [
+                        { name: '数据分析报告.png', isImage: true, thumbnail: 'images/tx-1.png' },
+                        { name: '项目计划书.pdf', isImage: false },
+                        { name: '会议纪要.docx', isImage: false }
+                    ];
+
+                    // 2秒后展示实际文件
+                    setTimeout(function() {
+                        if (loadingDiv && loadingDiv.parentNode) {
+                            loadingDiv.remove();
+                        }
+                        const attachmentsDiv = document.createElement('div');
+                        attachmentsDiv.className = 'msg-file-attachments';
+                        mockAiFiles.forEach(file => {
+                            const item = document.createElement('div');
+                            item.className = 'msg-file-item';
+                            if (file.isImage && file.thumbnail) {
+                                item.innerHTML = `<img src="${file.thumbnail}" alt="${file.name}" class="msg-file-thumb">`;
+                            } else {
+                                item.innerHTML = `<i class="fa fa-file-o"></i><span>${file.name}</span>`;
+                            }
+                            attachmentsDiv.appendChild(item);
+                        });
+                        textElement.appendChild(attachmentsDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 2000);
+
+                    // 文本已输出完毕，添加评价面板，恢复置灰
+                    addRatingPanel(aiMessage.querySelector('.message-content'));
+                    setSendBtnDisabled();
                 });
             }, 800);
         }
@@ -2701,6 +2922,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             if (questionKey && questionBank[questionKey]) {
                 chatInput.value = questionBank[questionKey];
                 chatInput.focus();
+                if (!isGenerating) updateSendBtnState();
             }
         });
 
