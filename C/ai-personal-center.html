@@ -833,18 +833,55 @@
                     </div>
                     <div>
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">职务</label>
-                        <select id="editPosition" style="width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box; background: white;">
-                            <option value="工程师" selected>工程师</option>
-                            <option value="设计师">设计师</option>
-                            <option value="项目经理">项目经理</option>
-                            <option value="技术总监">技术总监</option>
-                            <option value="产品经理">产品经理</option>
-                            <option value="市场经理">市场经理</option>
-                            <option value="销售经理">销售经理</option>
-                            <option value="行政主管">行政主管</option>
-                            <option value="财务主管">财务主管</option>
-                            <option value="总经理">总经理</option>
-                        </select>
+                        <div class="custom-select-wrapper" style="position: relative;">
+                            <input type="text" id="editPosition" value="工程师" maxlength="6" placeholder="请输入职务（限6字）" style="width: 100%; padding: 10px 36px 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; box-sizing: border-box; background: white;" onfocus="showPositionDropdown()" oninput="filterPositionOptions()">
+                            <button type="button" onclick="togglePositionDropdown()" style="position: absolute; right: 0; top: 0; bottom: 0; width: 36px; background: transparent; border: none; border-radius: 0 6px 6px 0; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                <svg id="positionDropdownArrow" style="width: 14px; height: 14px; color: #999; transition: transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </button>
+                            <div id="positionDropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: white; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; z-index: 100;">
+                                <div style="padding: 4px;">
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('工程师')">工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('高级工程师')">高级工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('资深工程师')">资深工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('首席工程师')">首席工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('设计师')">设计师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('高级设计师')">高级设计师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('UI设计师')">UI设计师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('产品设计师')">产品设计师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('项目经理')">项目经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('项目总监')">项目总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('技术总监')">技术总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('CTO')">CTO</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('产品经理')">产品经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('产品总监')">产品总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('市场经理')">市场经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('市场总监')">市场总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('销售经理')">销售经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('销售总监')">销售总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('行政主管')">行政主管</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('行政总监')">行政总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('财务主管')">财务主管</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('财务总监')">财务总监</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('总经理')">总经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('CEO')">CEO</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('运营经理')">运营经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('运维工程师')">运维工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('测试工程师')">测试工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('前端开发')">前端开发</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('后端开发')">后端开发</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('全栈开发')">全栈开发</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('架构师')">架构师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('数据分析师')">数据分析师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('算法工程师')">算法工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('安全工程师')">安全工程师</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('质量经理')">质量经理</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('人事主管')">人事主管</div>
+                                    <div class="position-option" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 14px; color: #333;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background=''" onclick="selectPosition('客服专员')">客服专员</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">生日</label>
@@ -963,6 +1000,60 @@
                 charCount.textContent = intro.value.length + '/300';
             }
         }
+
+        function showPositionDropdown() {
+            const dropdown = document.getElementById('positionDropdown');
+            const arrow = document.getElementById('positionDropdownArrow');
+            if (dropdown) dropdown.style.display = 'block';
+            if (arrow) arrow.style.transform = 'rotate(180deg)';
+        }
+
+        function hidePositionDropdown() {
+            const dropdown = document.getElementById('positionDropdown');
+            const arrow = document.getElementById('positionDropdownArrow');
+            if (dropdown) dropdown.style.display = 'none';
+            if (arrow) arrow.style.transform = 'rotate(0deg)';
+        }
+
+        function togglePositionDropdown() {
+            const dropdown = document.getElementById('positionDropdown');
+            const arrow = document.getElementById('positionDropdownArrow');
+            if (dropdown) {
+                if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                    dropdown.style.display = 'block';
+                    if (arrow) arrow.style.transform = 'rotate(180deg)';
+                } else {
+                    dropdown.style.display = 'none';
+                    if (arrow) arrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        }
+
+        function selectPosition(value) {
+            const input = document.getElementById('editPosition');
+            if (input) input.value = value;
+            hidePositionDropdown();
+        }
+
+        function filterPositionOptions() {
+            const input = document.getElementById('editPosition');
+            const options = document.querySelectorAll('.position-option');
+            const searchTerm = input.value.toLowerCase();
+            
+            options.forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                option.style.display = optionText.includes(searchTerm) ? 'block' : 'none';
+            });
+            
+            showPositionDropdown();
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.custom-select-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                hidePositionDropdown();
+            }
+        });
 
         function saveEditInfo() {
             const nameInput = document.getElementById('editName');
