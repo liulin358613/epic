@@ -809,22 +809,13 @@
             </div>
 
             <div class="search-bar">
-                <input type="text" class="form-control" placeholder="搜索AI员工名称/业务能力" id="search-input" style="min-width: 200px;">
+                <input type="text" class="form-control" placeholder="请输入" id="search-input" style="min-width: 200px;">
                 <select class="form-control" id="type-filter">
                     <option value="">全部类型</option>
                     <option value="general">通用型</option>
                     <option value="expert">专家型</option>
                     <option value="industry">行业型</option>
                 </select>
-                <select class="form-control" id="skill-filter">
-                    <option value="">全部业务能力</option>
-                    <option value="python">Python开发</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="design">UI设计</option>
-                    <option value="analysis">数据分析</option>
-                    <option value="marketing">市场营销</option>
-                </select>
-
                 <button class="btn btn-outline" onclick="searchEmployees()"><i class="fa fa-search"></i> 搜索</button>
                 <button class="btn btn-outline" onclick="resetSearch()"><i class="fa fa-refresh"></i> 重置</button>
                 <button class="btn btn-primary" onclick="addAIEmployee()"><i class="fa fa-plus"></i> 添加AI员工</button>
