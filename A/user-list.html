@@ -498,6 +498,137 @@
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 #f1f5f9;
         }
+        /* 可搜索组织下拉选择器 */
+        .org-select-wrapper {
+            position: relative;
+            min-width: 200px;
+        }
+        .org-select-trigger {
+            padding: 8px 32px 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            user-select: none;
+        }
+        .org-select-trigger:hover {
+            border-color: #cbd5e1;
+        }
+        .org-select-trigger.active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .org-select-trigger::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 5px solid transparent;
+            border-top: 6px solid #94a3b8;
+            transition: transform 0.2s ease;
+        }
+        .org-select-trigger.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .org-select-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            width: 320px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+        }
+        .org-select-dropdown.show {
+            display: flex;
+            flex-direction: column;
+        }
+        .org-select-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            position: relative;
+        }
+        .org-select-search input {
+            width: 100%;
+            padding: 7px 10px 7px 30px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #475569;
+            outline: none;
+            background: #f8fafc;
+        }
+        .org-select-search input:focus {
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.08);
+        }
+        .org-select-search input::placeholder {
+            color: #94a3b8;
+        }
+        .org-select-search i {
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .org-select-list {
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .org-select-item {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            display: block;
+            transition: background 0.15s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .org-select-item:hover {
+            background: #f3f4f6;
+        }
+        .org-select-item.selected {
+            background: #e8f2ff;
+            color: #2563eb;
+        }
+        .org-select-item.child {
+            font-size: 13px;
+            color: #475569;
+        }
+        .org-select-item.child.selected {
+            color: #2563eb;
+        }
+        .org-select-item .tree-line {
+            color: #94a3b8;
+            margin-right: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .org-select-empty {
+            padding: 20px 12px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
         @media screen and (max-width: 768px) {
             .main-content {
                 padding: 12px;
@@ -533,11 +664,16 @@
         <div class="card">
             <div class="search-bar">
                 <input type="text" class="form-control" placeholder="搜索用户名称/手机号" style="min-width: 200px;">
-                <select class="form-control">
-                    <option>全部组织</option>
-                    <option>东莞长安训练基地</option>
-                    <option>东莞嘉东轴承商贸有限公司</option>
-                </select>
+                <div class="org-select-wrapper" id="orgSelectWrapper">
+                    <div class="org-select-trigger" id="orgSelectTrigger">全部组织</div>
+                    <div class="org-select-dropdown" id="orgSelectDropdown">
+                        <div class="org-select-search">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="orgSearchInput" placeholder="搜索组织名称...">
+                        </div>
+                        <div class="org-select-list" id="orgSelectList"></div>
+                    </div>
+                </div>
                 <select class="form-control">
                     <option>全部等级</option>
                     <option>Lv.0</option>
@@ -1283,6 +1419,211 @@
         function showOrderList() {
             alert('查看订单列表');
         }
+
+        // ========== 可搜索组织下拉选择器 ==========
+        const orgTreeData = [
+            { id: 'all', name: '全部组织' },
+            {
+                id: 'org001', name: '东莞长安训练基地',
+                children: [
+                    { id: 'org001-1', name: '长安训练一分公司' },
+                    { id: 'org001-2', name: '长安训练二分公司' },
+                    { id: 'org001-3', name: '长安后勤服务公司' }
+                ]
+            },
+            {
+                id: 'org002', name: '东莞嘉东轴承商贸有限公司',
+                children: [
+                    { id: 'org002-1', name: '嘉东轴承销售公司' },
+                    { id: 'org002-2', name: '嘉东轴承采购公司' },
+                    { id: 'org002-3', name: '嘉东轴承财务公司' },
+                    { id: 'org002-4', name: '嘉东轴承仓储公司' }
+                ]
+            },
+            {
+                id: 'org003', name: '深圳众博工业机器人有限公司',
+                children: [
+                    { id: 'org003-1', name: '众博机器人技术公司' },
+                    { id: 'org003-2', name: '众博机器人研发公司' },
+                    { id: 'org003-3', name: '众博机器人测试公司' },
+                    { id: 'org003-4', name: '众博机器人质量公司' }
+                ]
+            },
+            {
+                id: 'org004', name: '广州精工传感设备有限公司',
+                children: [
+                    { id: 'org004-1', name: '精工传感生产公司' },
+                    { id: 'org004-2', name: '精工传感质量公司' },
+                    { id: 'org004-3', name: '精工传感设备公司' }
+                ]
+            },
+            {
+                id: 'org005', name: '佛山智能装备科技有限公司',
+                children: [
+                    { id: 'org005-1', name: '智能装备研发公司' },
+                    { id: 'org005-2', name: '智能装备生产公司' },
+                    { id: 'org005-3', name: '智能装备采购公司' }
+                ]
+            },
+            { id: 'org006', name: '佛山华联机械设备厂' },
+            {
+                id: 'org007', name: '杭州阿里云智能科技有限公司',
+                children: [
+                    { id: 'org007-1', name: '阿里云销售公司' },
+                    { id: 'org007-2', name: '阿里云客户成功公司' },
+                    { id: 'org007-3', name: '阿里云技术支持公司' }
+                ]
+            },
+            {
+                id: 'org008', name: '武汉中兴智能装备有限公司',
+                children: [
+                    { id: 'org008-1', name: '中兴装备区域公司' },
+                    { id: 'org008-2', name: '中兴装备售后公司' },
+                    { id: 'org008-3', name: '中兴装备市场公司' }
+                ]
+            },
+            { id: 'org009', name: '武汉恒力机械设备有限公司' },
+            {
+                id: 'org010', name: '广州售后服务中心',
+                children: [
+                    { id: 'org010-1', name: '广州售后一部' },
+                    { id: 'org010-2', name: '广州售后二部' }
+                ]
+            },
+            {
+                id: 'org011', name: '东莞嘉东科技有限公司',
+                children: [
+                    { id: 'org011-1', name: '嘉东科技运营公司' },
+                    { id: 'org011-2', name: '嘉东科技技术公司' },
+                    { id: 'org011-3', name: '嘉东科技市场公司' }
+                ]
+            },
+            {
+                id: 'org012', name: '上海博创智能科技有限公司',
+                children: [
+                    { id: 'org012-1', name: '博创智能产品公司' },
+                    { id: 'org012-2', name: '博创智能设计公司' },
+                    { id: 'org012-3', name: '博创智能研发公司' }
+                ]
+            },
+            { id: 'org013', name: '成都西部精密机械有限公司' },
+            {
+                id: 'org014', name: '苏州工业园区自动化设备有限公司',
+                children: [
+                    { id: 'org014-1', name: '工业园区自动化研发公司' },
+                    { id: 'org014-2', name: '工业园区自动化工程公司' },
+                    { id: 'org014-3', name: '工业园区自动化项目公司' }
+                ]
+            },
+            { id: 'org015', name: '天津北方重工装备有限公司' },
+            { id: 'org016', name: '深圳哈喽智造科技有限公司',
+                children: [
+                    { id: 'org016-1', name: '哈喽东莞服务公司' },
+                    { id: 'org016-2', name: '哈喽广州服务公司' }
+                ]
+            },
+            { id: 'org017', name: '广州网易自动化设备科技有限公司' }
+        ];
+
+        // 已展开的节点
+        let selectedOrgId = 'all';
+
+        function renderOrgTree(keyword = '') {
+            const listEl = document.getElementById('orgSelectList');
+            let html = '';
+            const kw = keyword.trim().toLowerCase();
+
+            function matchKeyword(item) {
+                if (!kw) return true;
+                if (item.name.toLowerCase().includes(kw)) return true;
+                if (item.children && item.children.some(c => c.name.toLowerCase().includes(kw))) return true;
+                return false;
+            }
+
+            function orgLabel(org) {
+                return org.name;
+            }
+
+            orgTreeData.forEach((org) => {
+                if (!matchKeyword(org)) return;
+
+                // 全部组织
+                if (org.id === 'all') {
+                    html += `<div class="org-select-item ${selectedOrgId === 'all' ? 'selected' : ''}" data-id="all" onclick="selectOrg('all', '全部组织')">${orgLabel(org)}</div>`;
+                    return;
+                }
+
+                const hasChildren = org.children && org.children.length > 0;
+
+                // 父级组织
+                html += `<div class="org-select-item ${selectedOrgId === org.id ? 'selected' : ''}" data-id="${org.id}" onclick="selectOrg('${org.id}', '${org.name}')">${orgLabel(org)}</div>`;
+
+                // 子级组织 - 直接平铺展示
+                if (hasChildren) {
+                    org.children.forEach((child, cIdx) => {
+                        if (kw && !child.name.toLowerCase().includes(kw) && !org.name.toLowerCase().includes(kw)) return;
+                        const isLast = cIdx === org.children.length - 1;
+                        const treeSymbol = isLast ? '└─' : '├─';
+                        html += `<div class="org-select-item child ${selectedOrgId === child.id ? 'selected' : ''}" data-id="${child.id}" onclick="selectOrg('${child.id}', '${child.name}')" style="padding-left: 36px;">
+                            <span class="tree-line">${treeSymbol}</span>${orgLabel(child)}
+                        </div>`;
+                    });
+                }
+            });
+
+            if (!html) {
+                html = '<div class="org-select-empty"><i class="fa fa-search" style="margin-right: 4px;"></i>未找到匹配的组织</div>';
+            }
+            listEl.innerHTML = html;
+        }
+
+        function selectOrg(orgId, orgName) {
+            selectedOrgId = orgId;
+            const trigger = document.getElementById('orgSelectTrigger');
+            trigger.textContent = orgId === 'all' ? '全部组织' : orgName;
+            trigger.classList.remove('active');
+            document.getElementById('orgSelectDropdown').classList.remove('show');
+            renderOrgTree();
+        }
+
+        // 下拉开关
+        document.getElementById('orgSelectTrigger').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('orgSelectDropdown');
+            const isOpen = dropdown.classList.contains('show');
+            if (isOpen) {
+                dropdown.classList.remove('show');
+                this.classList.remove('active');
+            } else {
+                dropdown.classList.add('show');
+                this.classList.add('active');
+                document.getElementById('orgSearchInput').value = '';
+                renderOrgTree();
+                setTimeout(() => document.getElementById('orgSearchInput').focus(), 50);
+            }
+        });
+
+        // 搜索
+        document.getElementById('orgSearchInput').addEventListener('input', function() {
+            renderOrgTree(this.value);
+        });
+
+        // 阻止下拉内部点击冒泡关闭
+        document.getElementById('orgSelectDropdown').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // 点击外部关闭
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('orgSelectWrapper');
+            if (!wrapper.contains(e.target)) {
+                document.getElementById('orgSelectDropdown').classList.remove('show');
+                document.getElementById('orgSelectTrigger').classList.remove('active');
+            }
+        });
+
+        // 初始渲染
+        renderOrgTree();
     </script>
 </body>
 </html>
