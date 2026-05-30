@@ -1230,7 +1230,6 @@
         function resetSearch() {
             document.getElementById('search-input').value = '';
             document.getElementById('type-filter').value = '';
-            document.getElementById('skill-filter').value = '';
             const tabs = document.querySelectorAll('.tab-item');
             tabs.forEach(t => t.classList.remove('active'));
             document.querySelector('[data-tab="all"]').classList.add('active');
@@ -1241,15 +1240,13 @@
             const activeTab = document.querySelector('.tab-item.active').getAttribute('data-tab');
             const searchText = document.getElementById('search-input').value.toLowerCase();
             const typeFilter = document.getElementById('type-filter').value;
-            const skillFilter = document.getElementById('skill-filter').value;
 
             const filtered = employees.filter(emp => {
                 const matchesTab = activeTab === 'all' || emp.status === activeTab;
                 const matchesSearch = emp.name.toLowerCase().includes(searchText) || 
                                       emp.tags.some(tag => tag.toLowerCase().includes(searchText));
                 const matchesType = !typeFilter || emp.type === typeFilter;
-                const matchesSkill = !skillFilter || emp.tags.some(tag => tag.toLowerCase().includes(skillFilter.toLowerCase()));
-                return matchesTab && matchesSearch && matchesType && matchesSkill;
+                return matchesTab && matchesSearch && matchesType;
             });
 
             renderEmployees(filtered);
