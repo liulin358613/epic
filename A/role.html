@@ -1645,12 +1645,17 @@
                 return item;
             }
 
-            document.getElementById('add-data-module').addEventListener('click', function() {
-                const list = document.getElementById('data-module-list');
-                const newItem = createModuleItem();
-                list.appendChild(newItem);
-                updateDeleteButtons();
-            });
+            const addButton = document.getElementById('add-data-module');
+            if (addButton) {
+                addButton.addEventListener('click', function() {
+                    const list = document.getElementById('data-module-list');
+                    if (list) {
+                        const newItem = createModuleItem();
+                        list.appendChild(newItem);
+                        updateDeleteButtons();
+                    }
+                });
+            }
 
             const initialSelects = document.querySelectorAll('.module-select');
             initialSelects.forEach(select => {

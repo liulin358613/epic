@@ -1064,7 +1064,7 @@
                 <div id="agent-submenu" class="submenu">
                     <div class="submenu-item" data-module="ai-model-config" onclick="showModule('ai-model-config'); event.stopPropagation()">
                         <i class="fa fa-cog"></i>
-                        <span>模型配置</span>
+                        <span>模型管理</span>
                     </div>
                     <div class="submenu-item" data-module="skill-library" onclick="showModule('skill-library'); event.stopPropagation()">
                         <i class="fa fa-book"></i>
@@ -1191,12 +1191,8 @@
                     </div>
                 </div>
 
-                <div id="ai-model-config-module" class="module hidden">
-                    <div class="empty-state">
-                        <i class="fa fa-cog text-gray-300 text-6xl"></i>
-                        <h3 class="text-xl font-semibold text-gray-600 mt-4">模型配置</h3>
-                        <p class="text-gray-400 mt-2">暂无内容</p>
-                    </div>
+                <div id="ai-model-config-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="model-management.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
                 </div>
 
                 <div id="mcp-tools-module" class="module hidden">
@@ -1462,17 +1458,27 @@
             'org-list': { name: '组织管理', icon: 'fa-building' },
             'ai-employee': { name: 'AI员工', icon: 'fa-user' },
             'ai-question-bank': { name: '标准题库', icon: 'fa-book' },
-            'ai-model-config': { name: '模型配置', icon: 'fa-cog' },
+            'ai-model-config': { name: '模型管理', icon: 'fa-cog' },
             'mcp-tools': { name: 'MCP工具库', icon: 'fa-wrench' },
             'skill-library': { name: 'Skill技能库', icon: 'fa-book' }
         };
 
         function showModule(moduleName) {
+            const info = moduleInfo[moduleName];
+            if (!info) {
+                console.error('Module info not found for:', moduleName);
+                return;
+            }
+            
             const tabsContainer = document.getElementById('tabs-container');
+            if (!tabsContainer) {
+                console.error('Tabs container not found');
+                return;
+            }
+            
             let targetTab = tabsContainer.querySelector(`[data-module="${moduleName}"]`);
             
             if (!targetTab) {
-                const info = moduleInfo[moduleName];
                 targetTab = document.createElement('div');
                 targetTab.className = 'tab';
                 targetTab.dataset.module = moduleName;
@@ -1491,7 +1497,9 @@
                 targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }, 0);
             
-            selectTabFromNav(moduleName, event.target);
+            if (event && event.target) {
+                selectTabFromNav(moduleName, event.target);
+            }
         }
 
         function selectTabFromNav(moduleName, navItem) {
@@ -1506,9 +1514,14 @@
             }
             
             const actualNavItem = navItem.closest('.submenu-item') || navItem.closest('.nav-item') || navItem;
-            actualNavItem.classList.add('active');
+            if (actualNavItem) {
+                actualNavItem.classList.add('active');
+            }
             
-            document.getElementById(moduleName + '-module').classList.remove('hidden');
+            const moduleEl = document.getElementById(moduleName + '-module');
+            if (moduleEl) {
+                moduleEl.classList.remove('hidden');
+            }
         }
 
         function selectTabFromTab(moduleName) {
@@ -1546,14 +1559,26 @@
                 }
             }
             
-            document.getElementById(moduleName + '-module').classList.remove('hidden');
+            const moduleEl = document.getElementById(moduleName + '-module');
+            if (moduleEl) {
+                moduleEl.classList.remove('hidden');
+            }
         }
 
         function closeTab(moduleName) {
             const tabsContainer = document.getElementById('tabs-container');
-            const tab = tabsContainer.querySelector(`[data-module="${moduleName}"]`);
-            const tabs = tabsContainer.querySelectorAll('.tab');
+            if (!tabsContainer) {
+                console.error('Tabs container not found');
+                return;
+            }
             
+            const tab = tabsContainer.querySelector(`[data-module="${moduleName}"]`);
+            if (!tab) {
+                console.error('Tab not found for:', moduleName);
+                return;
+            }
+            
+            const tabs = tabsContainer.querySelectorAll('.tab');
             if (tabs.length <= 1) return;
             
             const isActive = tab.classList.contains('active');
@@ -1563,14 +1588,30 @@
                 const remainingTabs = tabsContainer.querySelectorAll('.tab');
                 if (remainingTabs.length > 0) {
                     const lastTab = remainingTabs[remainingTabs.length - 1];
-                    selectTabFromTab(lastTab.dataset.module);
+                    if (lastTab && lastTab.dataset.module) {
+                        selectTabFromTab(lastTab.dataset.module);
+                    }
                 }
             }
         }
 
         function toggleSubmenu(submenuId) {
             const submenu = document.getElementById(submenuId);
+            if (!submenu) {
+                console.error('Submenu not found for:', submenuId);
+                return;
+            }
+            
+            if (!event || !event.target) {
+                console.error('Event not available in toggleSubmenu');
+                return;
+            }
+            
             const navItem = event.target.closest('.nav-item');
+            if (!navItem) {
+                console.error('Nav item not found');
+                return;
+            }
             
             submenu.classList.toggle('expanded');
             navItem.classList.toggle('expanded');
@@ -1831,6 +1872,7 @@
         function selectTab(moduleName) {
             const moduleEl = document.getElementById(moduleName + '-module');
             if (!moduleEl) {
+                console.error('Module element not found for:', moduleName);
                 return;
             }
             
