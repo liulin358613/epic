@@ -247,12 +247,10 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             display: none;
-            align-items: center;
-            justify-content: center;
             z-index: 1000;
         }
         .modal-overlay.active {
-            display: flex;
+            display: block;
         }
         .modal {
             background: white;
@@ -294,6 +292,146 @@
         }
         .modal-body {
             padding: 16px;
+        }
+
+        /* 抽屉式弹窗样式 */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -640px;
+            width: 640px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+            transition: right 0.3s ease;
+        }
+        .modal-overlay.active .drawer {
+            right: 0;
+        }
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .drawer-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .drawer-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .drawer-close:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .drawer-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .drawer-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+            gap: 12px;
+            background: white;
+            position: sticky;
+            bottom: 0;
+        }
+        .form-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .form-row .form-label {
+            flex: 0 0 80px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0;
+            padding-top: 6px;
+            text-align: right;
+        }
+        .form-row .form-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .form-row .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-row .form-select {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .form-row .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-row .form-input-explain {
+            width: 120px;
+            flex-shrink: 0;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        .form-row .form-input-explain:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .error-message {
+            display: none;
+            font-size: 12px;
+            color: #ef4444;
+            padding-left: 92px;
+            margin-top: -8px;
+            margin-bottom: 8px;
+        }
+        .error-message.show {
+            display: block;
         }
         .form-group {
             margin-bottom: 16px;
@@ -483,22 +621,32 @@
         </div>
     </div>
 
-    <!-- 添加/编辑模型弹窗 -->
+    <!-- 添加/编辑模型抽屉 -->
     <div class="modal-overlay" id="model-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title" id="modal-title">添加模型</div>
-                <button class="modal-close" onclick="closeModal()">
+        <div class="drawer" id="model-drawer">
+            <div class="drawer-header">
+                <div class="drawer-title" id="modal-title">添加模型</div>
+                <button class="drawer-close" onclick="closeModal()">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="drawer-body">
                 <input type="hidden" id="edit-id" value="">
-                <div class="form-group">
+                
+                <div class="form-row">
                     <label class="form-label">模型名称 <span style="color: #ef4444;">*</span></label>
                     <input type="text" class="form-input" id="model-name" placeholder="请输入模型名称">
+                    <input type="text" class="form-input form-input-explain" id="model-name-explain" placeholder="解释">
                 </div>
-                <div class="form-group">
+                <div class="error-message" id="error-model-name"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型说明</label>
+                    <input type="text" class="form-input" id="model-note" placeholder="请输入模型说明">
+                    <input type="text" class="form-input form-input-explain" id="model-note-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
                     <label class="form-label">模型类型 <span style="color: #ef4444;">*</span></label>
                     <select class="form-select" id="model-type">
                         <option value="">请选择模型类型</option>
@@ -507,8 +655,11 @@
                         <option value="voice">语音合成</option>
                         <option value="multimodal">多模态</option>
                     </select>
+                    <input type="text" class="form-input form-input-explain" id="model-type-explain" placeholder="解释">
                 </div>
-                <div class="form-group">
+                <div class="error-message" id="error-model-type"></div>
+                
+                <div class="form-row">
                     <label class="form-label">提供商 <span style="color: #ef4444;">*</span></label>
                     <select class="form-select" id="model-provider">
                         <option value="">请选择提供商</option>
@@ -519,29 +670,71 @@
                         <option value="腾讯">腾讯</option>
                         <option value="其他">其他</option>
                     </select>
+                    <input type="text" class="form-input form-input-explain" id="model-provider-explain" placeholder="解释">
                 </div>
-                <div class="form-group">
+                <div class="error-message" id="error-model-provider"></div>
+                
+                <div class="form-row">
                     <label class="form-label">版本号 <span style="color: #ef4444;">*</span></label>
                     <input type="text" class="form-input" id="model-version" placeholder="例如：v1.0、GPT-4等">
+                    <input type="text" class="form-input form-input-explain" id="model-version-explain" placeholder="解释">
                 </div>
-                <div class="form-group">
+                <div class="error-message" id="error-model-version"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">原始模型</label>
+                    <input type="text" class="form-input" id="model-original" placeholder="请输入原始模型名称">
+                    <input type="text" class="form-input form-input-explain" id="model-original-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型架构</label>
+                    <select class="form-select" id="model-architecture">
+                        <option value="">请选择模型架构</option>
+                        <option value="Transformer">Transformer</option>
+                        <option value="CNN">CNN</option>
+                        <option value="RNN">RNN</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <input type="text" class="form-input form-input-explain" id="model-architecture-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">参数规模</label>
+                    <input type="text" class="form-input" id="model-params" placeholder="例如：~1.8T">
+                    <input type="text" class="form-input form-input-explain" id="model-params-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型大小</label>
+                    <input type="text" class="form-input" id="model-size" placeholder="例如：89GB">
+                    <input type="text" class="form-input form-input-explain" id="model-size-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
                     <label class="form-label">API地址</label>
                     <input type="text" class="form-input" id="model-api-url" placeholder="请输入API地址">
+                    <input type="text" class="form-input form-input-explain" id="model-api-url-explain" placeholder="解释">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">状态 <span style="color: #ef4444;">*</span></label>
+                
+                <div class="form-row">
+                    <label class="form-label">运行状态 <span style="color: #ef4444;">*</span></label>
                     <select class="form-select" id="model-status">
                         <option value="active">运行中</option>
                         <option value="inactive">停用</option>
                         <option value="testing">测试中</option>
                     </select>
+                    <input type="text" class="form-input form-input-explain" id="model-status-explain" placeholder="解释">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">描述</label>
-                    <textarea class="form-input" id="model-description" rows="3" placeholder="请输入模型描述信息"></textarea>
+                <div class="error-message" id="error-model-status"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型描述</label>
+                    <textarea class="form-input" id="model-description" rows="2" placeholder="请输入模型描述信息"></textarea>
+                    <input type="text" class="form-input form-input-explain" id="model-description-explain" placeholder="解释">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="drawer-footer">
                 <button class="btn btn-outline" onclick="closeModal()">取消</button>
                 <button class="btn btn-primary" onclick="saveModel()">保存</button>
             </div>
@@ -745,6 +938,24 @@
             document.getElementById('model-modal').classList.remove('active');
         }
 
+        // 显示错误提示
+        function showError(id, message) {
+            const errorEl = document.getElementById(id);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.add('show');
+            }
+        }
+
+        // 隐藏错误提示
+        function hideError(id) {
+            const errorEl = document.getElementById(id);
+            if (errorEl) {
+                errorEl.textContent = '';
+                errorEl.classList.remove('show');
+            }
+        }
+
         // 保存模型
         function saveModel() {
             const name = document.getElementById('model-name').value.trim();
@@ -754,20 +965,37 @@
             const status = document.getElementById('model-status').value;
             const description = document.getElementById('model-description').value.trim();
 
+            // 隐藏所有错误提示
+            hideError('error-model-name');
+            hideError('error-model-type');
+            hideError('error-model-provider');
+            hideError('error-model-version');
+            hideError('error-model-status');
+
+            let isValid = true;
+
             if (!name) {
-                alert('请输入模型名称');
-                return;
+                showError('error-model-name', '请输入模型名称');
+                isValid = false;
             }
             if (!type) {
-                alert('请选择模型类型');
-                return;
+                showError('error-model-type', '请选择模型类型');
+                isValid = false;
             }
             if (!provider) {
-                alert('请选择提供商');
-                return;
+                showError('error-model-provider', '请选择提供商');
+                isValid = false;
             }
             if (!version) {
-                alert('请输入版本号');
+                showError('error-model-version', '请输入版本号');
+                isValid = false;
+            }
+            if (!status) {
+                showError('error-model-status', '请选择运行状态');
+                isValid = false;
+            }
+
+            if (!isValid) {
                 return;
             }
 

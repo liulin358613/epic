@@ -12,13 +12,14 @@
         html, body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
             font-size: 14px; line-height: 1.5; background: #f5f7fa; height: 100%;
-            margin: 0; padding: 0; display: flex; flex-direction: column;
+            margin: 0; padding: 0; overflow: hidden;
             -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
         }
         .card {
             background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            overflow: hidden; border: 1px solid #e5e7eb;
-            display: flex; flex-direction: column; flex: 1;
+            border: 1px solid #e5e7eb;
+            height: 100%;
+            overflow: hidden;
         }
         .btn {
             padding: 8px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;
@@ -36,6 +37,7 @@
         .page-header {
             display: flex; align-items: center; justify-content: space-between;
             padding: 12px 16px; background: white; border-bottom: 1px solid #e5e7eb;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 101;
         }
         .page-header-left { display: flex; align-items: center; gap: 12px; }
         .back-btn {
@@ -52,6 +54,7 @@
         .tab-nav {
             display: flex; padding: 0 16px; background: white;
             border-bottom: 1px solid #e5e7eb; overflow-x: auto;
+            position: fixed; top: 66px; left: 0; right: 0; z-index: 100;
         }
         .tab-item {
             padding: 12px 16px; font-size: 14px; color: #64748b; cursor: pointer;
@@ -64,7 +67,7 @@
 
         /* 主内容 */
         .main-content {
-            flex: 1; padding: 16px;
+            height: 100%; padding: 130px 16px 16px; overflow-y: auto;
         }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
@@ -72,7 +75,8 @@
         /* 通用section */
         .section-card {
             background: white; border: 1px solid #e5e7eb; border-radius: 8px;
-            margin-top: 16px; overflow: hidden;
+            overflow: hidden;
+            margin-bottom: 16px;
         }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -113,20 +117,21 @@
         .status-dot.testing { background: #f59e0b; }
 
         /* 统计卡片 */
-        .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;margin-bottom: 16px; }
         .stat-card {
             background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;
-            text-align: center;
+            display: flex; align-items: center; gap: 12px;
         }
         .stat-card .stat-icon {
-            width: 40px; height: 40px; border-radius: 8px; margin: 0 auto 8px;
-            display: flex; align-items: center; justify-content: center; font-size: 18px;
+            border-radius: 8px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 3rem;width: 5.2rem;height: 100%;
         }
         .stat-card .stat-icon.blue { background: #dbeafe; color: #2563eb; }
         .stat-card .stat-icon.green { background: #dcfce7; color: #16a34a; }
         .stat-card .stat-icon.amber { background: #fef3c7; color: #d97706; }
         .stat-card .stat-icon.purple { background: #ede9fe; color: #7c3aed; }
-        .stat-card .stat-num { font-size: 22px; font-weight: 700; color: #1e293b; }
+        .stat-card .stat-content { flex: 1; display: flex; flex-direction: column; }
+        .stat-card .stat-num { font-size: 20px; font-weight: 700; color: #1e293b; }
         .stat-card .stat-label { font-size: 12px; color: #94a3b8; margin-top: 2px; }
         .stat-card .stat-change { font-size: 12px; margin-top: 4px; }
         .stat-card .stat-change.up { color: #16a34a; }
@@ -296,9 +301,7 @@
             <div class="tab-item active" onclick="switchTab('info')"><i class="fa fa-info-circle"></i> 基本信息</div>
             <div class="tab-item" onclick="switchTab('deploy')"><i class="fa fa-server"></i> 部署配置</div>
             <div class="tab-item" onclick="switchTab('monitor')"><i class="fa fa-line-chart"></i> 性能监控</div>
-            <div class="tab-item" onclick="switchTab('cost')"><i class="fa fa-money"></i> 成本分析</div>
             <div class="tab-item" onclick="switchTab('stats')"><i class="fa fa-bar-chart"></i> 调用统计</div>
-            <div class="tab-item" onclick="switchTab('alert')"><i class="fa fa-bell"></i> 告警设置</div>
             <div class="tab-item" onclick="switchTab('history')"><i class="fa fa-code-branch"></i> 版本历史</div>
         </div>
 
@@ -310,32 +313,40 @@
                 <div class="stat-cards">
                     <div class="stat-card">
                         <div class="stat-icon blue"><i class="fa fa-phone"></i></div>
-                        <div class="stat-num">152,340</div>
-                        <div class="stat-label">累计调用次数</div>
-                        <div class="stat-change up"><i class="fa fa-arrow-up"></i> 12.5% 较上周</div>
+                        <div class="stat-content">
+                            <div class="stat-num">152,340</div>
+                            <div class="stat-label">累计调用次数</div>
+                            <div class="stat-change up"><i class="fa fa-arrow-up"></i> 12.5% 较上周</div>
+                        </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon green"><i class="fa fa-check-circle"></i></div>
-                        <div class="stat-num">99.7%</div>
-                        <div class="stat-label">调用成功率</div>
-                        <div class="stat-change up"><i class="fa fa-arrow-up"></i> 0.2% 较上周</div>
+                        <div class="stat-content">
+                            <div class="stat-num">99.7%</div>
+                            <div class="stat-label">调用成功率</div>
+                            <div class="stat-change up"><i class="fa fa-arrow-up"></i> 0.2% 较上周</div>
+                        </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon amber"><i class="fa fa-clock-o"></i></div>
-                        <div class="stat-num">1.2s</div>
-                        <div class="stat-label">平均响应时间</div>
-                        <div class="stat-change down"><i class="fa fa-arrow-down"></i> 0.1s 较上周</div>
+                        <div class="stat-content">
+                            <div class="stat-num">1.2s</div>
+                            <div class="stat-label">平均响应时间</div>
+                            <div class="stat-change down"><i class="fa fa-arrow-down"></i> 0.1s 较上周</div>
+                        </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon purple"><i class="fa fa-rmb"></i></div>
-                        <div class="stat-num">¥8,560</div>
-                        <div class="stat-label">本月累计费用</div>
-                        <div class="stat-change down"><i class="fa fa-arrow-down"></i> 3.2% 较上月</div>
+                        <div class="stat-content">
+                            <div class="stat-num">¥8,560</div>
+                            <div class="stat-label">本月累计费用</div>
+                            <div class="stat-change down"><i class="fa fa-arrow-down"></i> 3.2% 较上月</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 左右双栏布局 -->
-                <div style="display: flex; gap: 16px; height: calc(100vh - 300px);">
+                <div style="display: flex; gap: 16px; height: calc(100vh - 254px);">
                     <!-- 左边：基本信息 -->
                     <div class="section-card" style="flex: 1; display: flex; flex-direction: column; max-height: 100%;">
                         <div class="section-header">
@@ -674,33 +685,59 @@
 
             <!-- ========== 部署配置 ========== -->
             <div class="tab-panel" id="panel-deploy">
-                <!-- 部署拓扑 -->
+                <!-- 部署方式 -->
                 <div class="section-card">
                     <div class="section-header">
-                        <div class="section-title"><i class="fa fa-sitemap"></i> 部署拓扑</div>
+                        <div class="section-title"><i class="fa fa-cloud"></i> 部署方式</div>
+                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;"><i class="fa fa-edit"></i> 修改</button>
                     </div>
                     <div class="section-body">
-                        <div class="deploy-topology">
-                            <div class="deploy-node">
-                                <div class="node-title"><i class="fa fa-desktop" style="color:#3b82f6;"></i> 客户端</div>
-                                <div class="node-desc">API调用方</div>
-                            </div>
-                            <div class="deploy-arrow"><i class="fa fa-long-arrow-right"></i></div>
-                            <div class="deploy-node">
-                                <div class="node-title"><i class="fa fa-shield" style="color:#7c3aed;"></i> 网关层</div>
-                                <div class="node-desc">API Gateway / 负载均衡</div>
-                            </div>
-                            <div class="deploy-arrow"><i class="fa fa-long-arrow-right"></i></div>
-                            <div class="deploy-node primary">
-                                <div class="node-title"><i class="fa fa-server" style="color:#2563eb;"></i> 模型服务</div>
-                                <div class="node-desc">OpenAI API Endpoint</div>
-                            </div>
-                            <div class="deploy-arrow"><i class="fa fa-long-arrow-right"></i></div>
-                            <div class="deploy-node">
-                                <div class="node-title"><i class="fa fa-database" style="color:#059669;"></i> 数据存储</div>
-                                <div class="node-desc">调用日志 / 缓存</div>
-                            </div>
-                        </div>
+                        <table class="detail-table">
+                            <colgroup>
+                                <col style="width: 25%;">
+                                <col style="width: 30%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">项目</th>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">内容</th>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">解释</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 500;">部署模式</td>
+                                    <td>API接入</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">通过API接口调用外部模型服务</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">云服务商</td>
+                                    <td>OpenAI</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">模型服务提供商</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">区域</td>
+                                    <td>美国东部（us-east-1）</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">服务部署的地理区域</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">实例类型</td>
+                                    <td>GPT-4 Turbo</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">使用的模型版本</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">可用性</td>
+                                    <td><span class="badge badge-active"><span class="status-dot active"></span>高可用</span></td>
+                                    <td style="color: #94a3b8; font-size: 13px;">服务具备高可用性保障</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">SLA保障</td>
+                                    <td>99.9%</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">服务级别协议保障</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -710,37 +747,63 @@
                         <div class="section-title"><i class="fa fa-plug"></i> 接口配置</div>
                         <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;"><i class="fa fa-edit"></i> 修改</button>
                     </div>
-                    <div class="config-item">
-                        <div class="config-label">API地址</div>
-                        <div class="config-value mono">https://api.openai.com/v1/chat/completions</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">请求方式</div>
-                        <div class="config-value">POST</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">认证方式</div>
-                        <div class="config-value">Bearer Token</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">API Key</div>
-                        <div class="config-value mono" style="color: #94a3b8;">sk-*******************************xK3m</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">超时设置</div>
-                        <div class="config-value">30 秒</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">最大并发</div>
-                        <div class="config-value">100 请求/秒</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">限流策略</div>
-                        <div class="config-value">令牌桶算法（60次/分钟）</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">重试策略</div>
-                        <div class="config-value">最多3次，间隔2/4/8秒（指数退避）</div>
+                    <div class="section-body">
+                        <table class="detail-table">
+                            <colgroup>
+                                <col style="width: 25%;">
+                                <col style="width: 30%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">项目</th>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">内容</th>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">解释</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 500;">API地址</td>
+                                    <td style="font-family: monospace;">https://api.openai.com/v1/chat/completions</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">模型服务的API端点地址</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">请求方式</td>
+                                    <td>POST</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">HTTP请求方法</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">认证方式</td>
+                                    <td>Bearer Token</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">使用Bearer Token进行身份认证</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">API Key</td>
+                                    <td style="font-family: monospace; color: #94a3b8;">sk-*******************************xK3m</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">用于API认证的密钥</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">超时设置</td>
+                                    <td>30 秒</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">API请求超时时间</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">最大并发</td>
+                                    <td>100 请求/秒</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">允许的最大并发请求数</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">限流策略</td>
+                                    <td>令牌桶算法（60次/分钟）</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">控制请求频率的限流算法</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">重试策略</td>
+                                    <td>最多3次，间隔2/4/8秒（指数退避）</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">失败重试策略，采用指数退避算法</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -749,21 +812,43 @@
                     <div class="section-header">
                         <div class="section-title"><i class="fa fa-cogs"></i> 资源配置</div>
                     </div>
-                    <div class="config-item">
-                        <div class="config-label">最大Token数</div>
-                        <div class="config-value">128K</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">Temperature</div>
-                        <div class="config-value">0.7</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">Top P</div>
-                        <div class="config-value">0.9</div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">上下文缓存</div>
-                        <div class="config-value">已开启（缓存TTL: 10分钟）</div>
+                    <div class="section-body">
+                        <table class="detail-table">
+                            <colgroup>
+                                <col style="width: 25%;">
+                                <col style="width: 30%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">项目</th>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">内容</th>
+                                    <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">解释</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 500;">最大Token数</td>
+                                    <td>128K</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">模型一次能处理的最大token数</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">Temperature</td>
+                                    <td>0.7</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">温度参数，控制输出随机性</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">Top P</td>
+                                    <td>0.9</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">核采样参数，控制采样范围</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">上下文缓存</td>
+                                    <td>已开启（缓存TTL: 10分钟）</td>
+                                    <td style="color: #94a3b8; font-size: 13px;">开启对话上下文缓存，提升响应速度</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -771,163 +856,177 @@
             <!-- ========== 性能监控 ========== -->
             <div class="tab-panel" id="panel-monitor">
                 <!-- 实时指标 -->
-                <div class="stat-cards" style="margin-bottom: 16px;">
+                <div class="stat-cards" style="margin-bottom: 12px;">
                     <div class="stat-card">
                         <div class="stat-icon blue"><i class="fa fa-tachometer"></i></div>
-                        <div class="stat-num">98.5</div>
-                        <div class="stat-label">健康评分</div>
+                        <div class="stat-content">
+                            <div class="stat-num">98.5</div>
+                            <div class="stat-label">健康评分</div>
+                        </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon green"><i class="fa fa-bolt"></i></div>
-                        <div class="stat-num">856</div>
-                        <div class="stat-label">QPS（当前）</div>
+                        <div class="stat-content">
+                            <div class="stat-num">856</div>
+                            <div class="stat-label">QPS（当前）</div>
+                        </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon amber"><i class="fa fa-exclamation-triangle"></i></div>
-                        <div class="stat-num">0.3%</div>
-                        <div class="stat-label">错误率（24h）</div>
+                        <div class="stat-content">
+                            <div class="stat-num">0.3%</div>
+                            <div class="stat-label">错误率（24h）</div>
+                        </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon purple"><i class="fa fa-database"></i></div>
-                        <div class="stat-num">62%</div>
-                        <div class="stat-label">GPU利用率</div>
-                    </div>
-                </div>
-
-                <!-- 响应时间趋势 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-area-chart"></i> 响应时间趋势（近7天）</div>
-                        <div style="font-size: 12px; color: #94a3b8;">单位：毫秒</div>
-                    </div>
-                    <div class="section-body">
-                        <div class="bar-chart">
-                            <div class="bar-col"><div class="bar blue" style="height: 75%;"></div><div class="bar-label">周一</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 82%;"></div><div class="bar-label">周二</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 68%;"></div><div class="bar-label">周三</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 90%;"></div><div class="bar-label">周四</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 85%;"></div><div class="bar-label">周五</div></div>
-                            <div class="bar-col"><div class="bar green" style="height: 60%;"></div><div class="bar-label">周六</div></div>
-                            <div class="bar-col"><div class="bar green" style="height: 55%;"></div><div class="bar-label">周日</div></div>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#94a3b8;">
-                            <span>P50: 980ms</span><span>P90: 1,450ms</span><span>P99: 2,300ms</span>
+                        <div class="stat-content">
+                            <div class="stat-num">62%</div>
+                            <div class="stat-label">GPU利用率</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 延迟分布 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-clock-o"></i> 延迟分布</div>
+                <!-- 双栏布局：响应时间趋势 + 延迟分布 -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                    <!-- 响应时间趋势 -->
+                    <div class="section-card">
+                        <div class="section-header" style="padding: 10px 12px;">
+                            <div class="section-title" style="font-size: 13px;"><i class="fa fa-area-chart"></i> 响应时间趋势</div>
+                        </div>
+                        <div class="section-body" style="padding: 12px;">
+                            <div class="bar-chart" style="height: 100px;">
+                                <div class="bar-col"><div class="bar blue" style="height: 75%;"></div><div class="bar-label">周一</div></div>
+                                <div class="bar-col"><div class="bar blue" style="height: 82%;"></div><div class="bar-label">周二</div></div>
+                                <div class="bar-col"><div class="bar blue" style="height: 68%;"></div><div class="bar-label">周三</div></div>
+                                <div class="bar-col"><div class="bar blue" style="height: 90%;"></div><div class="bar-label">周四</div></div>
+                                <div class="bar-col"><div class="bar blue" style="height: 85%;"></div><div class="bar-label">周五</div></div>
+                                <div class="bar-col"><div class="bar green" style="height: 60%;"></div><div class="bar-label">周六</div></div>
+                                <div class="bar-col"><div class="bar green" style="height: 55%;"></div><div class="bar-label">周日</div></div>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px; color:#94a3b8;">
+                                <span>P50: 980ms</span><span>P90: 1,450ms</span><span>P99: 2,300ms</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="section-body" style="padding: 16px;">
-                        <div style="display: flex; flex-direction: column; gap: 14px;">
-                            <div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom: 4px; font-size: 13px;">
-                                    <span style="color: #475569;">&lt; 500ms</span><span style="color: #1e293b; font-weight: 500;">35%</span>
+
+                    <!-- 延迟分布 -->
+                    <div class="section-card">
+                        <div class="section-header" style="padding: 10px 12px;">
+                            <div class="section-title" style="font-size: 13px;"><i class="fa fa-clock-o"></i> 延迟分布</div>
+                        </div>
+                        <div class="section-body" style="padding: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom: 3px; font-size: 12px;">
+                                        <span style="color: #475569;">&lt; 500ms</span><span style="color: #1e293b; font-weight: 500;">35%</span>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill green" style="width: 35%;"></div></div>
                                 </div>
-                                <div class="progress-bar"><div class="progress-fill green" style="width: 35%;"></div></div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom: 4px; font-size: 13px;">
-                                    <span style="color: #475569;">500ms ~ 1s</span><span style="color: #1e293b; font-weight: 500;">40%</span>
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom: 3px; font-size: 12px;">
+                                        <span style="color: #475569;">500ms ~ 1s</span><span style="color: #1e293b; font-weight: 500;">40%</span>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill blue" style="width: 40%;"></div></div>
                                 </div>
-                                <div class="progress-bar"><div class="progress-fill blue" style="width: 40%;"></div></div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom: 4px; font-size: 13px;">
-                                    <span style="color: #475569;">1s ~ 2s</span><span style="color: #1e293b; font-weight: 500;">18%</span>
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom: 3px; font-size: 12px;">
+                                        <span style="color: #475569;">1s ~ 2s</span><span style="color: #1e293b; font-weight: 500;">18%</span>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill amber" style="width: 18%;"></div></div>
                                 </div>
-                                <div class="progress-bar"><div class="progress-fill amber" style="width: 18%;"></div></div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom: 4px; font-size: 13px;">
-                                    <span style="color: #475569;">&gt; 2s</span><span style="color: #1e293b; font-weight: 500;">7%</span>
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; margin-bottom: 3px; font-size: 12px;">
+                                        <span style="color: #475569;">&gt; 2s</span><span style="color: #1e293b; font-weight: 500;">7%</span>
+                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill red" style="width: 7%;"></div></div>
                                 </div>
-                                <div class="progress-bar"><div class="progress-fill red" style="width: 7%;"></div></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ========== 成本分析 ========== -->
-            <div class="tab-panel" id="panel-cost">
-                <!-- 费用概览 -->
-                <div class="stat-cards" style="margin-bottom: 16px;">
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fa fa-money"></i></div>
-                        <div class="stat-num">¥8,560</div>
-                        <div class="stat-label">本月费用</div>
-                        <div class="stat-change down"><i class="fa fa-arrow-down"></i> 3.2%</div>
+                <!-- 通知渠道 -->
+                <div class="section-card" style="margin-bottom: 12px;">
+                    <div class="section-header" style="padding: 10px 12px;">
+                        <div class="section-title" style="font-size: 13px;"><i class="fa fa-envelope"></i> 通知渠道</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fa fa-calculator"></i></div>
-                        <div class="stat-num">¥0.056</div>
-                        <div class="stat-label">平均单次调用</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon amber"><i class="fa fa-bullseye"></i></div>
-                        <div class="stat-num">¥12,000</div>
-                        <div class="stat-label">月度预算</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fa fa-percent"></i></div>
-                        <div class="stat-num">71.3%</div>
-                        <div class="stat-label">预算使用率</div>
+                    <div class="section-body" style="padding: 12px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px;">
+                                <i class="fa fa-envelope" style="color: #16a34a; font-size: 14px;"></i>
+                                <span style="font-size: 12px; color: #1e293b;">邮件通知</span>
+                                <span style="font-size: 11px; color: #16a34a;">● 已开启</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px;">
+                                <i class="fa fa-comment" style="color: #2563eb; font-size: 14px;"></i>
+                                <span style="font-size: 12px; color: #1e293b;">企业微信</span>
+                                <span style="font-size: 11px; color: #2563eb;">● 已开启</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px;">
+                                <i class="fa fa-mobile" style="color: #94a3b8; font-size: 14px;"></i>
+                                <span style="font-size: 12px; color: #1e293b;">短信通知</span>
+                                <span style="font-size: 11px; color: #94a3b8;">○ 未开启</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 费用趋势 -->
+                <!-- 告警规则 -->
                 <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-line-chart"></i> 费用趋势（近6个月）</div>
+                    <div class="section-header" style="padding: 10px 12px;">
+                        <div class="section-title" style="font-size: 13px;"><i class="fa fa-bell"></i> 告警规则</div>
+                        <button class="btn btn-outline" style="padding: 3px 10px; font-size: 11px;"><i class="fa fa-plus"></i> 新增</button>
                     </div>
-                    <div class="section-body">
-                        <div class="bar-chart">
-                            <div class="bar-col"><div class="bar blue" style="height: 55%;"></div><div class="bar-label">1月</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 65%;"></div><div class="bar-label">2月</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 72%;"></div><div class="bar-label">3月</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 88%;"></div><div class="bar-label">4月</div></div>
-                            <div class="bar-col"><div class="bar blue" style="height: 95%;"></div><div class="bar-label">5月</div></div>
-                            <div class="bar-col"><div class="bar amber" style="height: 70%;"></div><div class="bar-label">6月</div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 成本分布 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-pie-chart"></i> 成本构成</div>
-                    </div>
-                    <div class="section-body">
-                        <div class="cost-pie-list">
-                            <div class="cost-pie-item">
-                                <div class="cost-pie-color" style="background:#3b82f6;"></div>
-                                <div class="cost-pie-name">API调用费用</div>
-                                <div class="cost-pie-val">¥6,420</div>
-                                <div class="cost-pie-pct">75.0%</div>
-                            </div>
-                            <div class="cost-pie-item">
-                                <div class="cost-pie-color" style="background:#10b981;"></div>
-                                <div class="cost-pie-name">Token消耗费用</div>
-                                <div class="cost-pie-val">¥1,284</div>
-                                <div class="cost-pie-pct">15.0%</div>
-                            </div>
-                            <div class="cost-pie-item">
-                                <div class="cost-pie-color" style="background:#f59e0b;"></div>
-                                <div class="cost-pie-name">网络传输费用</div>
-                                <div class="cost-pie-val">¥514</div>
-                                <div class="cost-pie-pct">6.0%</div>
-                            </div>
-                            <div class="cost-pie-item">
-                                <div class="cost-pie-color" style="background:#7c3aed;"></div>
-                                <div class="cost-pie-name">存储缓存费用</div>
-                                <div class="cost-pie-val">¥342</div>
-                                <div class="cost-pie-pct">4.0%</div>
+                    <div class="alert-rule" style="padding: 10px 12px;">
+                        <div class="alert-rule-left">
+                            <div class="alert-rule-icon red" style="width: 28px; height: 28px; font-size: 13px;"></div>
+                            <div>
+                                <div class="alert-rule-name" style="font-size: 13px;">错误率告警</div>
+                                <div class="alert-rule-desc" style="font-size: 11px;">5分钟内错误率超过 5%</div>
                             </div>
                         </div>
+                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                    </div>
+                    <div class="alert-rule" style="padding: 10px 12px;">
+                        <div class="alert-rule-left">
+                            <div class="alert-rule-icon amber" style="width: 28px; height: 28px; font-size: 13px;"></div>
+                            <div>
+                                <div class="alert-rule-name" style="font-size: 13px;">延迟告警</div>
+                                <div class="alert-rule-desc" style="font-size: 11px;">响应时间超过 3秒 持续5分钟</div>
+                            </div>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                    </div>
+                    <div class="alert-rule" style="padding: 10px 12px;">
+                        <div class="alert-rule-left">
+                            <div class="alert-rule-icon blue" style="width: 28px; height: 28px; font-size: 13px;"></div>
+                            <div>
+                                <div class="alert-rule-name" style="font-size: 13px;">费用告警</div>
+                                <div class="alert-rule-desc" style="font-size: 11px;">当日累计费用超过 ¥500</div>
+                            </div>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                    </div>
+                    <div class="alert-rule" style="padding: 10px 12px;">
+                        <div class="alert-rule-left">
+                            <div class="alert-rule-icon amber" style="width: 28px; height: 28px; font-size: 13px;"></div>
+                            <div>
+                                <div class="alert-rule-name" style="font-size: 13px;">服务不可用告警</div>
+                                <div class="alert-rule-desc" style="font-size: 11px;">连续3次请求失败</div>
+                            </div>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                    </div>
+                    <div class="alert-rule" style="padding: 10px 12px; border-bottom: none;">
+                        <div class="alert-rule-left">
+                            <div class="alert-rule-icon gray" style="width: 28px; height: 28px; font-size: 13px;"></div>
+                            <div>
+                                <div class="alert-rule-name" style="font-size: 13px;">调用限流告警</div>
+                                <div class="alert-rule-desc" style="font-size: 11px;">限流超过10次/分钟</div>
+                            </div>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="switch-slider"></span></label>
                     </div>
                 </div>
             </div>
@@ -935,37 +1034,35 @@
             <!-- ========== 调用统计 ========== -->
             <div class="tab-panel" id="panel-stats">
                 <!-- 调用概览 -->
-                <div class="stat-cards" style="margin-bottom: 16px;">
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fa fa-phone"></i></div>
-                        <div class="stat-num">152,340</div>
-                        <div class="stat-label">累计调用</div>
+                <div class="section-card" style="margin-bottom: 12px;">
+                    <div class="section-header" style="padding: 10px 12px;">
+                        <div class="section-title" style="font-size: 13px;"><i class="fa fa-bar-chart"></i> 调用概览</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fa fa-check"></i></div>
-                        <div class="stat-num">151,884</div>
-                        <div class="stat-label">成功调用</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon amber"><i class="fa fa-times"></i></div>
-                        <div class="stat-num">456</div>
-                        <div class="stat-label">失败调用</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fa fa-users"></i></div>
-                        <div class="stat-num">86</div>
-                        <div class="stat-label">调用方数量</div>
-                    </div>
-                </div>
-
-                <!-- 调用量趋势 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-bar-chart"></i> 调用量趋势（近7天）</div>
-                        <div style="font-size: 12px; color: #94a3b8;">单位：次</div>
-                    </div>
-                    <div class="section-body">
-                        <div class="bar-chart">
+                    <div class="section-body" style="padding: 12px;">
+                        <div class="stat-cards" style="margin-bottom: 12px;">
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon blue"><i class="fa fa-phone"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">152,340</div>
+                                    <div class="stat-label">累计调用</div>
+                                </div>
+                            </div>
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon green"><i class="fa fa-check"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">151,884</div>
+                                    <div class="stat-label">成功调用</div>
+                                </div>
+                            </div>
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon amber"><i class="fa fa-times"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">456</div>
+                                    <div class="stat-label">失败调用</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-chart" style="height: 80px;">
                             <div class="bar-col"><div class="bar blue" style="height: 78%;"></div><div class="bar-label">周一</div></div>
                             <div class="bar-col"><div class="bar blue" style="height: 85%;"></div><div class="bar-label">周二</div></div>
                             <div class="bar-col"><div class="bar blue" style="height: 92%;"></div><div class="bar-label">周三</div></div>
@@ -974,157 +1071,99 @@
                             <div class="bar-col"><div class="bar green" style="height: 45%;"></div><div class="bar-label">周六</div></div>
                             <div class="bar-col"><div class="bar green" style="height: 40%;"></div><div class="bar-label">周日</div></div>
                         </div>
-                        <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#94a3b8;">
-                            <span>日均: 21,763次</span><span>峰值: 24,580次（周四）</span><span>谷值: 9,240次（周日）</span>
+                        <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px; color:#94a3b8;">
+                            <span>调用量趋势（近7天）</span>
+                            <span>日均: 21,763次</span>
+                            <span>峰值: 24,580次</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Top调用方 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-trophy"></i> Top 调用方</div>
+                <!-- 费用概览 -->
+                <div class="section-card" style="margin-bottom: 12px;">
+                    <div class="section-header" style="padding: 10px 12px;">
+                        <div class="section-title" style="font-size: 13px;"><i class="fa fa-money"></i> 费用概览</div>
                     </div>
-                    <table class="detail-table">
-                        <thead>
-                            <tr>
-                                <th>排名</th>
-                                <th>调用方</th>
-                                <th>调用次数</th>
-                                <th>占比</th>
-                                <th>成功率</th>
-                                <th>平均耗时</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="color:#f59e0b; font-weight:600;">1</td>
-                                <td style="font-weight:500; color:#1e293b;">智能客服系统</td>
-                                <td>45,280</td>
-                                <td>29.7%</td>
-                                <td><span class="badge badge-active">99.9%</span></td>
-                                <td>0.8s</td>
-                            </tr>
-                            <tr>
-                                <td style="color:#94a3b8; font-weight:600;">2</td>
-                                <td style="font-weight:500; color:#1e293b;">内容创作平台</td>
-                                <td>32,150</td>
-                                <td>21.1%</td>
-                                <td><span class="badge badge-active">99.8%</span></td>
-                                <td>1.5s</td>
-                            </tr>
-                            <tr>
-                                <td style="color:#b45309; font-weight:600;">3</td>
-                                <td style="font-weight:500; color:#1e293b;">数据分析工具</td>
-                                <td>21,340</td>
-                                <td>14.0%</td>
-                                <td><span class="badge badge-active">99.5%</span></td>
-                                <td>2.1s</td>
-                            </tr>
-                            <tr>
-                                <td style="color:#64748b; font-weight:600;">4</td>
-                                <td style="font-weight:500; color:#1e293b;">知识问答系统</td>
-                                <td>18,720</td>
-                                <td>12.3%</td>
-                                <td><span class="badge badge-active">99.7%</span></td>
-                                <td>1.0s</td>
-                            </tr>
-                            <tr>
-                                <td style="color:#64748b; font-weight:600;">5</td>
-                                <td style="font-weight:500; color:#1e293b;">其他（12个）</td>
-                                <td>34,850</td>
-                                <td>22.9%</td>
-                                <td><span class="badge badge-active">99.6%</span></td>
-                                <td>1.3s</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- ========== 告警设置 ========== -->
-            <div class="tab-panel" id="panel-alert">
-                <!-- 通知渠道 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-envelope"></i> 通知渠道</div>
-                    </div>
-                    <div class="section-body">
-                        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                            <div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;">
-                                <i class="fa fa-envelope" style="color: #16a34a;"></i>
-                                <span style="font-size: 13px; color: #1e293b;">邮件通知</span>
-                                <span style="font-size: 12px; color: #16a34a;">● 已开启</span>
+                    <div class="section-body" style="padding: 12px;">
+                        <div class="stat-cards" style="margin-bottom: 12px;">
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon blue"><i class="fa fa-money"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">¥8,560</div>
+                                    <div class="stat-label">本月费用</div>
+                                    <div class="stat-change down"><i class="fa fa-arrow-down"></i> 3.2%</div>
+                                </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px;">
-                                <i class="fa fa-comment" style="color: #2563eb;"></i>
-                                <span style="font-size: 13px; color: #1e293b;">企业微信</span>
-                                <span style="font-size: 12px; color: #2563eb;">● 已开启</span>
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon green"><i class="fa fa-calculator"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">¥0.056</div>
+                                    <div class="stat-label">平均单次调用</div>
+                                </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px;">
-                                <i class="fa fa-mobile" style="color: #94a3b8;"></i>
-                                <span style="font-size: 13px; color: #1e293b;">短信通知</span>
-                                <span style="font-size: 12px; color: #94a3b8;">○ 未开启</span>
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon amber"><i class="fa fa-bullseye"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">¥12,000</div>
+                                    <div class="stat-label">月度预算</div>
+                                </div>
                             </div>
+                            <div class="stat-card" style="flex: 1;">
+                                <div class="stat-icon purple"><i class="fa fa-percent"></i></div>
+                                <div class="stat-content">
+                                    <div class="stat-num">71.3%</div>
+                                    <div class="stat-label">预算使用率</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar-chart" style="height: 80px;">
+                            <div class="bar-col"><div class="bar blue" style="height: 55%;"></div><div class="bar-label">1月</div></div>
+                            <div class="bar-col"><div class="bar blue" style="height: 65%;"></div><div class="bar-label">2月</div></div>
+                            <div class="bar-col"><div class="bar blue" style="height: 72%;"></div><div class="bar-label">3月</div></div>
+                            <div class="bar-col"><div class="bar blue" style="height: 88%;"></div><div class="bar-label">4月</div></div>
+                            <div class="bar-col"><div class="bar blue" style="height: 95%;"></div><div class="bar-label">5月</div></div>
+                            <div class="bar-col"><div class="bar amber" style="height: 70%;"></div><div class="bar-label">6月</div></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:11px; color:#94a3b8;">
+                            <span>费用趋势（近6月）</span>
+                            <span>总计: ¥48,320</span>
+                            <span>月均: ¥8,053</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 告警规则 -->
+                <!-- 成本构成 -->
                 <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-bell"></i> 告警规则</div>
-                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;"><i class="fa fa-plus"></i> 新增规则</button>
+                    <div class="section-header" style="padding: 10px 12px;">
+                        <div class="section-title" style="font-size: 13px;"><i class="fa fa-pie-chart"></i> 成本构成</div>
                     </div>
-                    <div class="alert-rule">
-                        <div class="alert-rule-left">
-                            <div class="alert-rule-icon red"><i class="fa fa-exclamation-circle"></i></div>
-                            <div>
-                                <div class="alert-rule-name">错误率告警</div>
-                                <div class="alert-rule-desc">当5分钟内错误率超过 5% 时触发告警</div>
+                    <div class="section-body" style="padding: 10px;">
+                        <div class="cost-pie-list" style="gap: 8px;">
+                            <div class="cost-pie-item" style="padding: 8px;">
+                                <div class="cost-pie-color" style="background:#3b82f6;"></div>
+                                <div class="cost-pie-name" style="font-size: 12px;">API调用费用</div>
+                                <div class="cost-pie-val" style="font-size: 13px;">¥6,420</div>
+                                <div class="cost-pie-pct" style="font-size: 12px;">75.0%</div>
+                            </div>
+                            <div class="cost-pie-item" style="padding: 8px;">
+                                <div class="cost-pie-color" style="background:#10b981;"></div>
+                                <div class="cost-pie-name" style="font-size: 12px;">Token消耗费用</div>
+                                <div class="cost-pie-val" style="font-size: 13px;">¥1,284</div>
+                                <div class="cost-pie-pct" style="font-size: 12px;">15.0%</div>
+                            </div>
+                            <div class="cost-pie-item" style="padding: 8px;">
+                                <div class="cost-pie-color" style="background:#f59e0b;"></div>
+                                <div class="cost-pie-name" style="font-size: 12px;">网络传输费用</div>
+                                <div class="cost-pie-val" style="font-size: 13px;">¥514</div>
+                                <div class="cost-pie-pct" style="font-size: 12px;">6.0%</div>
+                            </div>
+                            <div class="cost-pie-item" style="padding: 8px;">
+                                <div class="cost-pie-color" style="background:#7c3aed;"></div>
+                                <div class="cost-pie-name" style="font-size: 12px;">存储缓存费用</div>
+                                <div class="cost-pie-val" style="font-size: 13px;">¥342</div>
+                                <div class="cost-pie-pct" style="font-size: 12px;">4.0%</div>
                             </div>
                         </div>
-                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
-                    </div>
-                    <div class="alert-rule">
-                        <div class="alert-rule-left">
-                            <div class="alert-rule-icon amber"><i class="fa fa-clock-o"></i></div>
-                            <div>
-                                <div class="alert-rule-name">延迟告警</div>
-                                <div class="alert-rule-desc">当平均响应时间超过 3秒 持续5分钟时触发告警</div>
-                            </div>
-                        </div>
-                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
-                    </div>
-                    <div class="alert-rule">
-                        <div class="alert-rule-left">
-                            <div class="alert-rule-icon blue"><i class="fa fa-rmb"></i></div>
-                            <div>
-                                <div class="alert-rule-name">费用告警</div>
-                                <div class="alert-rule-desc">当日累计费用超过 ¥500 时触发告警</div>
-                            </div>
-                        </div>
-                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
-                    </div>
-                    <div class="alert-rule">
-                        <div class="alert-rule-left">
-                            <div class="alert-rule-icon amber"><i class="fa fa-plug"></i></div>
-                            <div>
-                                <div class="alert-rule-name">服务不可用告警</div>
-                                <div class="alert-rule-desc">当连续3次请求失败时触发告警</div>
-                            </div>
-                        </div>
-                        <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
-                    </div>
-                    <div class="alert-rule">
-                        <div class="alert-rule-left">
-                            <div class="alert-rule-icon gray"><i class="fa fa-ban"></i></div>
-                            <div>
-                                <div class="alert-rule-name">调用限流告警</div>
-                                <div class="alert-rule-desc">当请求触发限流超过10次/分钟时触发告警</div>
-                            </div>
-                        </div>
-                        <label class="switch"><input type="checkbox"><span class="switch-slider"></span></label>
                     </div>
                 </div>
             </div>
