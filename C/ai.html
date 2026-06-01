@@ -6173,6 +6173,13 @@
                     document.querySelector('.preview-toolbar').style.display = 'none';
                     // 加载方案预览页面
                     loadFanganYL();
+                } else if (currentTab.title === '组织详情') {
+                    // 隐藏图片列表区域和工具栏
+                    document.querySelector('.preview-file-list').style.display = 'none';
+                    document.querySelector('.preview-toolbar').style.display = 'none';
+                    // 加载组织详情页面
+                    const previewContent = document.getElementById('previewContent');
+                    previewContent.innerHTML = '<iframe src="org-manage.html" style="width: 100%; height: 100%; border: none; display: block;"></iframe>';
                 }
             } else {
                 console.log('没有找到当前Tab');
@@ -6185,7 +6192,7 @@
         function updatePreviewPadding(title) {
              const previewContent = document.getElementById('previewContent');
             // 检查是否需要移除内边距
-            if (title === '文件管理' || title === '项目管理') {
+            if (title === '文件管理' || title === '项目管理' || title === '组织详情') {
                 // 移除下内边距
                 previewContent.style.paddingBottom = '0';
                 // 移除上内边距
@@ -9890,6 +9897,26 @@
             }
         }
 
+        // 打开组织详情Tab
+        function openOrgDetailTab() {
+            // 如果已有"组织详情"tab，直接激活
+            const existingTab = previewTabs.find(tab => tab.title === '组织详情');
+            if (existingTab) {
+                activateTab(existingTab.id);
+                return;
+            }
+            // 新建tab
+            const tabId = 'tab_org_' + Date.now();
+            previewTabs.push({ id: tabId, title: '组织详情' });
+            updateTabs();
+            activateTab(tabId);
+            // 关闭组织切换下拉
+            const menu = document.getElementById('orgSwitchMenu');
+            const btn = document.getElementById('orgSwitchBtn');
+            if (menu) menu.classList.remove('show');
+            if (btn) btn.classList.remove('open');
+        }
+
         // 组织切换下拉（复用 common-submenu 样式，与团队成员设置菜单一致）
         function toggleOrgSwitch(event) {
             event.stopPropagation();
@@ -9917,6 +9944,8 @@
             item.addEventListener('click', function(e) {
                 // 如果点击的是组织架构图标，不触发组织切换
                 if (e.target.closest('.org-structure-icon')) {
+                    e.stopPropagation();
+                    openOrgDetailTab();
                     return;
                 }
                 
