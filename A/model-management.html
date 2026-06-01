@@ -414,7 +414,7 @@
             </select>
             <select class="form-control" id="status-filter" onchange="filterModels()">
                 <option value="">全部状态</option>
-                <option value="active">启用</option>
+                <option value="active">运行中</option>
                 <option value="inactive">停用</option>
                 <option value="testing">测试中</option>
             </select>
@@ -531,7 +531,7 @@
                 <div class="form-group">
                     <label class="form-label">状态 <span style="color: #ef4444;">*</span></label>
                     <select class="form-select" id="model-status">
-                        <option value="active">启用</option>
+                        <option value="active">运行中</option>
                         <option value="inactive">停用</option>
                         <option value="testing">测试中</option>
                     </select>
@@ -597,7 +597,7 @@
         // 根据状态获取badge
         function getStatusBadge(status) {
             const badges = {
-                'active': '<span class="badge badge-active"><span class="status-dot active"></span>启用</span>',
+                'active': '<span class="badge badge-active"><span class="status-dot active"></span>运行中</span>',
                 'inactive': '<span class="badge badge-inactive"><span class="status-dot inactive"></span>停用</span>',
                 'testing': '<span class="badge badge-testing"><span class="status-dot testing"></span>测试中</span>'
             };
@@ -796,67 +796,19 @@
 
         // 查看详情
         function viewDetail(id) {
-            const model = models.find(m => m.id === id);
-            if (!model) return;
-            
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay active';
-            modal.innerHTML = `
-                <div class="modal" style="max-width: 500px;" onclick="event.stopPropagation()">
-                    <div class="modal-header">
-                        <div class="modal-title">模型详情</div>
-                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="padding: 16px;">
-                        <div style="display: grid; grid-template-columns: 100px 1fr; gap: 12px; row-gap: 10px;">
-                            <div style="font-weight: 500; color: #64748b;">模型ID:</div>
-                            <div style="color: #1e293b; font-family: monospace;">${model.id}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">模型名称:</div>
-                            <div style="color: #1e293b; font-weight: 500;">${model.name}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">模型类型:</div>
-                            <div style="color: #1e293b;">${getTypeName(model.type)}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">提供商:</div>
-                            <div style="color: #1e293b;">${model.provider}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">版本:</div>
-                            <div style="color: #1e293b;">${model.version}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">状态:</div>
-                            <div>${getStatusBadge(model.status)}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">部署方式:</div>
-                            <div style="color: #1e293b;">${model.deploy || '-'}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">API地址:</div>
-                            <div style="color: #1e293b; word-break: break-all;">${model.apiUrl || '-'}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">描述:</div>
-                            <div style="color: #1e293b;">${model.description || '-'}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">添加时间:</div>
-                            <div style="color: #1e293b;">${model.createdTime || '-'}</div>
-                            
-                            <div style="font-weight: 500; color: #64748b;">更新时间:</div>
-                            <div style="color: #1e293b;">${model.updatedTime || '-'}</div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">关闭</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    modal.remove();
+            if (window.parent) {
+                try {
+                    window.parent.postMessage({
+                        type: 'openModelDetail',
+                        modelId: id
+                    }, '*');
+                } catch (e) {
+                    console.error('Failed to send message:', e);
+                    window.location.href = 'model-detail.html?id=' + id;
                 }
-            });
+            } else {
+                window.location.href = 'model-detail.html?id=' + id;
+            }
         }
 
         // 删除模型

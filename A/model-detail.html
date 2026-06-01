@@ -64,7 +64,7 @@
 
         /* 主内容 */
         .main-content {
-            flex: 1; padding: 16px; overflow-y: auto; overflow-x: hidden;
+            flex: 1; padding: 16px;
         }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
@@ -72,7 +72,7 @@
         /* 通用section */
         .section-card {
             background: white; border: 1px solid #e5e7eb; border-radius: 8px;
-            margin-bottom: 16px; overflow: hidden;
+            margin-top: 16px; overflow: hidden;
         }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -83,7 +83,6 @@
             display: flex; align-items: center; gap: 6px;
         }
         .section-title i { color: #3b82f6; font-size: 14px; }
-        .section-body { padding: 16px; }
 
         /* 信息网格 */
         .info-grid {
@@ -281,7 +280,6 @@
         <!-- 页面头部 -->
         <div class="page-header">
             <div class="page-header-left">
-                <button class="back-btn" onclick="history.back()"><i class="fa fa-angle-left"></i></button>
                 <div>
                     <div class="page-title">模型详情 - GPT-4</div>
                     <div class="page-subtitle">MDL20260101001 · OpenAI · 文本生成</div>
@@ -290,7 +288,6 @@
             <div class="header-actions">
                 <button class="btn btn-outline"><i class="fa fa-refresh"></i> 同步配置</button>
                 <button class="btn btn-danger"><i class="fa fa-stop-circle-o"></i> 停用</button>
-                <button class="btn btn-primary"><i class="fa fa-edit"></i> 编辑</button>
             </div>
         </div>
 
@@ -309,64 +306,6 @@
         <div class="main-content">
             <!-- ========== 基本信息 ========== -->
             <div class="tab-panel active" id="panel-info">
-                <!-- 基本信息卡片 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-cube"></i> 基本信息</div>
-                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;"><i class="fa fa-edit"></i> 编辑</button>
-                    </div>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-label">模型名称</div>
-                            <div class="info-value" style="font-weight: 600;">GPT-4</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">模型ID</div>
-                            <div class="info-value mono">MDL20260101001</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">模型类型</div>
-                            <div class="info-value">文本生成</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">提供商</div>
-                            <div class="info-value">OpenAI</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">版本号</div>
-                            <div class="info-value">GPT-4</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">部署方式</div>
-                            <div class="info-value">API接入</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">运行状态</div>
-                            <div class="info-value"><span class="badge badge-active"><span class="status-dot active"></span>运行中</span></div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">添加时间</div>
-                            <div class="info-value">2026-01-15 10:30:00</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">更新时间</div>
-                            <div class="info-value">2026-05-28 14:20:00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 描述 -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-title"><i class="fa fa-file-text-o"></i> 模型描述</div>
-                    </div>
-                    <div class="section-body">
-                        <div style="color: #475569; font-size: 14px; line-height: 1.8;">
-                            GPT-4是OpenAI发布的多模态大型语言模型，具备强大的自然语言理解与生成能力，支持复杂推理、代码编写、数据分析等多种任务。该模型采用Transformer架构，参数量超过1万亿，在各类NLP基准测试中表现优异。当前通过API接入方式提供服务，适用于智能客服、内容创作、知识问答等场景。
-                        </div>
-                    </div>
-                </div>
-
                 <!-- 概览统计 -->
                 <div class="stat-cards">
                     <div class="stat-card">
@@ -392,6 +331,343 @@
                         <div class="stat-num">¥8,560</div>
                         <div class="stat-label">本月累计费用</div>
                         <div class="stat-change down"><i class="fa fa-arrow-down"></i> 3.2% 较上月</div>
+                    </div>
+                </div>
+
+                <!-- 左右双栏布局 -->
+                <div style="display: flex; gap: 16px; height: calc(100vh - 300px);">
+                    <!-- 左边：基本信息 -->
+                    <div class="section-card" style="flex: 1; display: flex; flex-direction: column; max-height: 100%;">
+                        <div class="section-header">
+                            <div class="section-title"><i class="fa fa-cube"></i> 基本信息</div>
+                        </div>
+                        <div class="section-body" style="flex: 1; overflow-y: auto;">
+                            <table class="detail-table">
+                                <colgroup>
+                                    <col style="width: 25%;">
+                                    <col style="width: 30%;">
+                                    <col style="width: 45%;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">项目</th>
+                                        <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">内容</th>
+                                        <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">解释</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型ID</td>
+                                        <td style="font-family: monospace;">MDL20260101001</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型名称</td>
+                                        <td>GPT-4</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型说明</td>
+                                        <td>GPT-4是OpenAI发布的大型语言模型</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型类型</td>
+                                        <td>文本生成</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">提供商</td>
+                                        <td>OpenAI</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">版本号</td>
+                                        <td>GPT-4</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">运行状态</td>
+                                        <td><span class="badge badge-active"><span class="status-dot active"></span>运行中</span></td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">原始模型</td>
+                                        <td>gpt-4-0125-preview</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型架构</td>
+                                        <td>Transformer</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">Transformer是一种基于自注意力机制的深度学习架构，广泛用于NLP任务</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">参数规模</td>
+                                        <td>~1.8T</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">模型的参数数量，越大通常能力越强但需要更多计算资源</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型大小</td>
+                                        <td>89GB</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型描述</td>
+                                        <td colspan="2">GPT-4是OpenAI发布的多模态大型语言模型，具备强大的自然语言理解与生成能力，支持复杂推理、代码编写、数据分析等多种任务。</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">添加时间</td>
+                                        <td>2026-01-15 10:30:00</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">更新时间</td>
+                                        <td>2026-05-28 14:20:00</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 右边：参数说明 -->
+                    <div class="section-card" style="flex: 1; display: flex; flex-direction: column; max-height: 100%;">
+                        <div class="section-header">
+                            <div class="section-title"><i class="fa fa-sliders"></i> 参数说明</div>
+                        </div>
+                        <div class="section-body" style="flex: 1; overflow-y: auto;">
+                            <table class="detail-table">
+                                <colgroup>
+                                    <col style="width: 25%;">
+                                    <col style="width: 30%;">
+                                    <col style="width: 45%;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">项目</th>
+                                        <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">内容</th>
+                                        <th style="position: sticky; top: 0; background: #ffffff; z-index: 1;">解释</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: 500;">模型格式</td>
+                                        <td>GPTQ</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">模型文件的存储格式，GPTQ是一种流行的量化格式</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">量化方案</td>
+                                        <td>4-bit</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">将模型参数从FP16压缩为4位整数，大幅减少显存占用</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">平均 BPW</td>
+                                        <td>4.0</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">平均每参数比特数，衡量量化后的存储效率</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">分片数量</td>
+                                        <td>8</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">模型分割成的片数，用于多显卡分布式部署</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">推理框架</td>
+                                        <td>vLLM</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">用于高效模型推理部署的开源框架，支持连续批处理</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">部署方式</td>
+                                        <td>API接入</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">通过API接口调用模型服务</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">推理模式</td>
+                                        <td>动态批处理</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">动态将多个请求合并批处理以提高吞吐量</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">上下文长度</td>
+                                        <td>128K</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">模型一次能处理的最大token数，决定上下文窗口大小</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">Tool Calling</td>
+                                        <td><span class="badge badge-active"><span class="status-dot active"></span>支持</span></td>
+                                        <td style="color: #94a3b8; font-size: 13px;">支持调用外部工具和API的能力</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">多轮对话</td>
+                                        <td><span class="badge badge-active"><span class="status-dot active"></span>支持</span></td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">长文本处理</td>
+                                        <td><span class="badge badge-active"><span class="status-dot active"></span>支持</span></td>
+                                        <td style="color: #94a3b8; font-size: 13px;">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">推理速度</td>
+                                        <td>1,200 tokens/s</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">每秒生成的token数量，反映推理效率</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--model</td>
+                                        <td>GGUF 模型路径</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">指定GGUF格式模型文件的路径，用于加载模型</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--jinja</td>
+                                        <td>开启</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">启用DSML Chat Template模板系统，支持自定义对话格式</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--reasoning off</td>
+                                        <td>关闭思考模式</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">关闭Chain of Thought思考模式，输出更稳定、速度更快</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--ctx-size</td>
+                                        <td>32768</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">上下文窗口大小，决定模型一次能"记住"的内容量</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--n-gpu-layers</td>
+                                        <td>999</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">将999层模型参数加载到GPU，尽可能利用GPU加速推理</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--split-mode</td>
+                                        <td>layer</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">按层拆分模型到多张显卡，实现多卡并行推理</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--flash-attn</td>
+                                        <td>on</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">开启Flash Attention高速注意力机制，提升长文本处理速度</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--no-repack</td>
+                                        <td>开启</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">禁用模型重打包，降低加载时的内存峰值</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--host 0.0.0.0</td>
+                                        <td>全网卡监听</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">绑定所有网络接口，支持局域网和API访问</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--port 6006</td>
+                                        <td>6006</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">服务监听的端口号</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--parallel</td>
+                                        <td>1</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">设置并行处理的请求数为1，保证输出稳定性</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--batch-size</td>
+                                        <td>512</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">批处理大小，影响长文本处理效率和显存占用</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--ubatch-size</td>
+                                        <td>512</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">微批处理大小，用于优化推理性能</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--temp</td>
+                                        <td>0.6</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">温度参数，控制输出随机性，0.6适合商务办公场景</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--top-p 0.9</td>
+                                        <td>0.9</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">核采样参数，控制从概率分布的前90%中采样</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--top-k 40</td>
+                                        <td>40</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">限制每次只从概率最高的40个token中选择</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--repeat-penalty 1.1</td>
+                                        <td>1.1</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">重复惩罚系数，降低重复输出的概率</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--threads 40</td>
+                                        <td>40</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">CPU推理线程数，充分利用多核CPU</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--threads-batch 40</td>
+                                        <td>40</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">批处理阶段使用的线程数</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--n-cpu-moe 30</td>
+                                        <td>30</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">MoE模型中放在CPU上推理的专家数量</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--tensor-split</td>
+                                        <td>4,1</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">双显卡工作比例分配，4:1平衡显存占用</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--reasoning on</td>
+                                        <td>开启 CoT 思考模式</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">开启Chain of Thought，提升复杂推理能力</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--min-p</td>
+                                        <td>最低概率过滤</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">过滤概率低于阈值的token，提升输出稳定性</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--cache-type-k</td>
+                                        <td>KV Cache 类型</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">Key缓存类型，V4版本默认强制f16精度</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--cache-type-v</td>
+                                        <td>KV Cache 类型</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">Value缓存类型，V4版本默认强制f16精度</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--cont-batching</td>
+                                        <td>连续批处理</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">启用连续批处理，适合高并发场景</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--metrics</td>
+                                        <td>性能监控</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">开启性能指标收集，便于压力测试</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--api-key</td>
+                                        <td>API 鉴权</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">启用API密钥认证，生产环境建议开启</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--embedding</td>
+                                        <td>启用 embedding</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">启用嵌入向量生成，用于向量检索场景</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--mlock</td>
+                                        <td>锁定内存</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">将模型锁定在内存中，降低swap交换风险</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500;">--numa distribute</td>
+                                        <td>NUMA 优化</td>
+                                        <td style="color: #94a3b8; font-size: 13px;">启用NUMA优化，推荐在多CPU服务器使用</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

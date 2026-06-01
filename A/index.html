@@ -1195,6 +1195,10 @@
                     <iframe src="model-management.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
                 </div>
 
+                <div id="ai-model-detail-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe id="model-detail-iframe" src="" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+
                 <div id="mcp-tools-module" class="module hidden">
                     <div class="empty-state">
                         <i class="fa fa-wrench text-gray-300 text-6xl"></i>
@@ -1460,7 +1464,8 @@
             'ai-question-bank': { name: '标准题库', icon: 'fa-book' },
             'ai-model-config': { name: '模型管理', icon: 'fa-cog' },
             'mcp-tools': { name: 'MCP工具库', icon: 'fa-wrench' },
-            'skill-library': { name: 'Skill技能库', icon: 'fa-book' }
+            'skill-library': { name: 'Skill技能库', icon: 'fa-book' },
+            'ai-model-detail': { name: '模型详情', icon: 'fa-cube' }
         };
 
         function showModule(moduleName) {
@@ -1594,6 +1599,58 @@
                 }
             }
         }
+
+        window.openModelDetail = function(modelId) {
+            const moduleName = 'ai-model-detail';
+            const info = moduleInfo[moduleName];
+            if (!info) {
+                console.error('Module info not found for:', moduleName);
+                return;
+            }
+            
+            const tabsContainer = document.getElementById('tabs-container');
+            if (!tabsContainer) {
+                console.error('Tabs container not found');
+                return;
+            }
+            
+            let targetTab = tabsContainer.querySelector(`[data-module="${moduleName}"]`);
+            
+            if (!targetTab) {
+                targetTab = document.createElement('div');
+                targetTab.className = 'tab';
+                targetTab.dataset.module = moduleName;
+                targetTab.innerHTML = `
+                    <i class="fa ${info.icon}"></i>
+                    <span>${info.name}</span>
+                    <i class="fa fa-times tab-close" onclick="closeTab('${moduleName}'); event.stopPropagation()"></i>
+                `;
+                targetTab.onclick = function() {
+                    selectTabFromTab(moduleName);
+                };
+                tabsContainer.appendChild(targetTab);
+            }
+            
+            setTimeout(() => {
+                targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }, 0);
+            
+            selectTabFromTab(moduleName);
+            
+            const iframe = document.getElementById('model-detail-iframe');
+            if (iframe) {
+                iframe.src = 'model-detail.html?id=' + modelId;
+            }
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'openModelDetail') {
+                const modelId = event.data.modelId;
+                if (modelId) {
+                    window.openModelDetail(modelId);
+                }
+            }
+        }, false);
 
         function toggleSubmenu(submenuId) {
             const submenu = document.getElementById(submenuId);
