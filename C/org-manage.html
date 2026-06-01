@@ -599,6 +599,252 @@
             background-color: #0044b3;
             border-color: #0044b3;
         }
+
+        /* 组织树样式 */
+        .org-tree-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #475569;
+            transition: all 0.2s;
+        }
+        .org-tree-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .org-tree-item.active {
+            background: rgba(59, 130, 246, 0.08);
+            color: #1e40af;
+            font-weight: 500;
+        }
+        .org-tree-item.parent {
+            padding-left: 24px;
+        }
+        .org-tree-item.child {
+            padding-left: 60px;
+        }
+        .org-tree-item.child.level3 {
+            padding-left: 56px;
+        }
+        .org-tree-item i {
+            margin-right: 6px;
+            font-size: 12px;
+        }
+        .org-tree-item .tree-arrow {
+            width: 12px;
+            height: 12px;
+            font-size: 10px;
+            color: #94a3b8;
+            transition: transform 0.2s;
+        }
+        .org-tree-item.parent.expanded .tree-arrow {
+            transform: rotate(90deg);
+        }
+        .org-tree-children {
+            display: none;
+        }
+        .org-tree-children.show {
+            display: block;
+        }
+
+        /* 组织成员高度撑满 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .org-member-card {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 110px);
+            min-height: 400px;
+        }
+        .org-member-card .section-header {
+            flex-shrink: 0;
+        }
+        .org-member-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 !important;
+            min-height: 0;
+        }
+        .org-member-layout {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+        .org-tree-panel {
+            width: 280px;
+            border-right: 1px solid #e2e8f0;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .org-tree-scroll {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .member-list-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            background: white;
+            position: relative;
+        }
+        .member-list-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+            flex-shrink: 0;
+        }
+        /* .member-list-scroll {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        } */
+
+        /* 分页样式 */
+        :root {
+            --border-color: #e8e8e8;
+            --text-primary: #262626;
+            --text-secondary: #8c8c8c;
+        }
+        .pagination-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 8px 16px;
+            border-top: 1px solid var(--border-color);
+            background: #fff;
+            flex-shrink: 0;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            flex-wrap: nowrap;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+        .pagination-bar > * {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .pagination-total {
+            margin-right: 12px;
+        }
+        .pagination-total b {
+            color: var(--text-primary);
+        }
+        .pagination-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background: #fff;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        .pagination-btn:hover {
+            color: #1890ff;
+            border-color: #1890ff;
+        }
+        .pagination-btn:disabled {
+            color: #d9d9d9;
+            border-color: #d9d9d9;
+            cursor: not-allowed;
+        }
+        .pagination-pages {
+            display: flex;
+            gap: 4px;
+        }
+        .pagination-page {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background: #fff;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8125rem;
+            transition: all 0.2s;
+        }
+        .pagination-page:hover {
+            color: #1890ff;
+            border-color: #1890ff;
+        }
+        .pagination-page.active {
+            background: #1890ff;
+            border-color: #1890ff;
+            color: #fff;
+        }
+        .pagination-ellipsis {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+        .pagination-size-label {
+            margin-left: 8px;
+        }
+        .pagination-size-select {
+            height: 28px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            padding: 0 6px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+        .pagination-size-select:focus {
+            border-color: #1890ff;
+        }
+        .pagination-jump-label {
+            margin-left: 8px;
+        }
+        .pagination-jump-input {
+            width: 40px;
+            height: 28px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.8125rem;
+            color: var(--text-primary);
+            outline: none;
+        }
+        .pagination-jump-input:focus {
+            border-color: #1890ff;
+        }
+        .btn-sm {
+            height: 28px;
+            padding: 0 12px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            background: #1890ff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-sm:hover {
+            background: #40a9ff;
+        }
     </style>
 </head>
 <body>
@@ -687,79 +933,129 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card org-member-card">
             <div class="section-header">
-                <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
-                <button class="btn-outline-blue" onclick="window.location.href='add-sub-org.html'">
-                    <i class="fa fa-plus"></i> 添加
+                <div class="section-title"><i class="fa fa-users"></i> 组织成员 <span class="section-count">(58人)</span></div>
+                <button class="btn-outline-blue" onclick="showAddMemberModal()">
+                    <i class="fa fa-plus"></i> 添加成员
                 </button>
             </div>
-            <div class="section-content" style="padding: 0;">
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; min-width: 700px;">
-                        <thead>
-                            <tr style="background: #f8fafc;">
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">名称(编号)</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加时间</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">东莞市长安培训中心</div>
-                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB001</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">东莞市长安培训中心</a></div>
-                                    <div style="margin-top: 4px; color: #64748b;">法人：李蓓佳</div>
-                                    <div style="color: #64748b;">信用代码：91441900MA4U4X2K8R</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">培训中心</td>
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569;">李明</div>
-                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13812345678</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇振安中路88号A栋</td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">25</td>
-                                <td style="padding: 10px 12px; white-space: nowrap;">2024-03-15</td>
-                                <td style="padding: 10px 12px; white-space: nowrap;">
-                                    <span style="display: inline-flex; gap: 4px; flex-wrap: nowrap;">
-                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #dbeafe; color: #1e40af;" onclick="window.location.href='sub-org-detail.html?hasEnterprise=true'"><i class="fa fa-eye"></i>详情</button>
-                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #fef2f2; color: #ef4444;" onclick="showDeleteConfirm('SUB001', '东莞市长安培训中心')"><i class="fa fa-trash"></i>删除</button>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">东莞市长安训练基地</div>
-                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">SUB002</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                   -
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">实训基地</td>
-                                <td style="padding: 10px 12px;">
-                                    <div style="font-size: 14px; color: #475569;">王强</div>
-                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">13987654321</div>
-                                </td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">长安镇乌沙社区兴发路</td>
-                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">18</td>
-                                <td style="padding: 10px 12px; white-space: nowrap;">2024-05-20</td>
-                                <td style="padding: 10px 12px; white-space: nowrap;">
-                                    <span style="display: inline-flex; gap: 4px; flex-wrap: nowrap;">
-                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #dbeafe; color: #1e40af;" onclick="window.location.href='sub-org-detail.html?hasEnterprise=false'"><i class="fa fa-eye"></i>详情</button>
-                                        <button style="padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; background: #fef2f2; color: #ef4444;" onclick="showDeleteConfirm('SUB002', '东莞市长安训练基地')"><i class="fa fa-trash"></i>删除</button>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="section-content org-member-content">
+                <div class="org-member-layout">
+                    <div class="org-tree-panel">
+                        <div style="padding: 18px 12px; border-bottom: 1px solid #e2e8f0;">
+                            <div style="font-size: 13px; font-weight: 600; color: #475569; padding-left: 8px;">组织架构</div>
+                        </div>
+                        <div class="org-tree-scroll">
+                            <div style="padding: 8px 0;">
+                                <div class="org-tree-item active" data-org-id="root" onclick="selectOrg('root')">
+                                    <i class="fa fa-folder-open" style="color: #3b82f6;"></i>
+                                    <span>东莞市智联科技有限公司</span>
+                                    <span style="float: right; font-size: 12px; color: #64748b;">58人</span>
+                                </div>
+                                <div class="org-tree-item parent" data-org-id="dept1" onclick="selectOrg('dept1')">
+                                    <i class="fa fa-chevron-right tree-arrow"></i>
+                                    <i class="fa fa-folder" style="color: #64748b;"></i>
+                                    <span>研发部</span>
+                                    <span style="float: right; font-size: 12px; color: #64748b;">25人</span>
+                                </div>
+                                <div class="org-tree-children" data-parent="dept1">
+                                    <div class="org-tree-item child" data-org-id="dept1-1" onclick="selectOrg('dept1-1')">
+                                        <i class="fa fa-building-o" style="color: #94a3b8;"></i>
+                                        <span>算法组</span>
+                                        <span style="float: right; font-size: 12px; color: #64748b;">12人</span>
+                                    </div>
+                                    <div class="org-tree-item child" data-org-id="dept1-2" onclick="selectOrg('dept1-2')">
+                                        <i class="fa fa-building-o" style="color: #94a3b8;"></i>
+                                        <span>研发组</span>
+                                        <span style="float: right; font-size: 12px; color: #64748b;">13人</span>
+                                    </div>
+                                </div>
+                                <div class="org-tree-item parent" data-org-id="dept2" onclick="selectOrg('dept2')">
+                                    <i class="fa fa-chevron-right tree-arrow"></i>
+                                    <i class="fa fa-folder" style="color: #64748b;"></i>
+                                    <span>培训部</span>
+                                    <span style="float: right; font-size: 12px; color: #64748b;">18人</span>
+                                </div>
+                                <div class="org-tree-children" data-parent="dept2">
+                                    <div class="org-tree-item child" data-org-id="dept2-1" onclick="selectOrg('dept2-1')">
+                                        <i class="fa fa-building-o" style="color: #94a3b8;"></i>
+                                        <span>培训一组</span>
+                                        <span style="float: right; font-size: 12px; color: #64748b;">9人</span>
+                                    </div>
+                                    <div class="org-tree-item child" data-org-id="dept2-2" onclick="selectOrg('dept2-2')">
+                                        <i class="fa fa-building-o" style="color: #94a3b8;"></i>
+                                        <span>培训二组</span>
+                                        <span style="float: right; font-size: 12px; color: #64748b;">9人</span>
+                                    </div>
+                                </div>
+                                <div class="org-tree-item parent" data-org-id="dept3" onclick="selectOrg('dept3')">
+                                    <i class="fa fa-chevron-right tree-arrow"></i>
+                                    <i class="fa fa-folder" style="color: #64748b;"></i>
+                                    <span>运维部</span>
+                                    <span style="float: right; font-size: 12px; color: #64748b;">15人</span>
+                                </div>
+                                <div class="org-tree-children" data-parent="dept3">
+                                    <div class="org-tree-item child level3" data-org-id="dept3-1" onclick="selectOrg('dept3-1')">
+                                        <i class="fa fa-building-o" style="color: #94a3b8;"></i>
+                                        <span>运维一组</span>
+                                        <span style="float: right; font-size: 12px; color: #64748b;">8人</span>
+                                    </div>
+                                    <div class="org-tree-item child level3" data-org-id="dept3-2" onclick="selectOrg('dept3-2')">
+                                        <i class="fa fa-building-o" style="color: #94a3b8;"></i>
+                                        <span>运维二组</span>
+                                        <span style="float: right; font-size: 12px; color: #64748b;">7人</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-list-panel">
+                        <div class="member-list-header">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="font-size: 13px; font-weight: 600; color: #475569;" id="selected-org-name">东莞市智联科技有限公司</div>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" id="member-search-input" placeholder="搜索成员..." style="width: 200px; padding: 6px 10px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 12px;">
+                                    <button style="padding: 6px 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 12px; color: #64748b; cursor: pointer;" onclick="searchMember()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="member-list-scroll">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc; position: sticky; top: 0;">
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">头像</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">姓名</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">部门</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">职务</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">手机号</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="member-list">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination-bar">
+                            <span class="pagination-total">共 <b id="member-pagination-total">0</b> 条</span>
+                            <button class="pagination-btn" onclick="goToMemberPage(currentMemberPage - 1)" title="上一页">&lt;</button>
+                            <div class="pagination-pages" id="member-pagination-pages"></div>
+                            <button class="pagination-btn" onclick="goToMemberPage(currentMemberPage + 1)" title="下一页">&gt;</button>
+                            <span class="pagination-size-label">每页</span>
+                            <select class="pagination-size-select" id="member-pagination-size" onchange="changeMemberPageSize(this.value)">
+                                <option value="5">5 条</option>
+                                <option value="10" selected>10 条</option>
+                                <option value="20">20 条</option>
+                                <option value="50">50 条</option>
+                            </select>
+                            <span class="pagination-jump-label">跳转</span>
+                            <input type="text" class="pagination-jump-input" id="member-pagination-jump" onkeydown="if(event.key==='Enter')jumpToMemberPage()">
+                            <span class="pagination-jump-label">页</span>
+                            <button class="btn-sm" onclick="jumpToMemberPage()">GO</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -773,7 +1069,7 @@
             </button>
             <div style="background: white; border-radius: 8px; padding: 20px; text-align: center;">
                 <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">营业执照</div>
-                <img src="images/1.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
+                <img src="images/yz.png" alt="营业执照" style="max-width: 100%; max-height: 70vh; border-radius: 4px;">
             </div>
         </div>
     </div>
@@ -942,7 +1238,7 @@
                             <i class="fa fa-plus" style="font-size: 24px; color: #94a3b8;"></i>
                             <span style="font-size: 12px; color: #94a3b8; margin-top: 4px;">上传</span>
                         </div>
-                        <div id="edit-license-preview" style="width: 100px; height: 100px; border-radius: 8px; display: block; cursor: pointer; background-image: url('images/1.png'); background-size: cover; background-position: center;" onclick="showLicensePreview()"></div>
+                        <div id="edit-license-preview" style="width: 100px; height: 100px; border-radius: 8px; display: block; cursor: pointer; background-image: url('images/yz.png'); background-size: cover; background-position: center;" onclick="showLicensePreview()"></div>
                         <input type="file" id="edit-license-input" accept="image/*" style="display: none;" onchange="previewLicense()">
                         <div id="edit-license-actions" style="display: flex; flex-direction: column; gap: 6px;">
                             <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer;" onclick="reuploadLicense()">重新上传</button>
@@ -1099,6 +1395,134 @@
             <div class="modal-footer">
                 <button class="btn btn-cancel" onclick="hideDeleteConfirm()">取消</button>
                 <button class="btn btn-confirm" style="background: #ef4444;" onclick="confirmDelete()">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加成员弹窗 -->
+    <div id="addMemberModal" style="display: none;" class="modal-overlay" onclick="hideAddMemberModal()">
+        <div class="modal-content" style="width: 600px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>添加成员</h3>
+                <button class="close-btn" onclick="hideAddMemberModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 姓名</label>
+                        <input type="text" id="add-member-name" placeholder="请输入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 账号</label>
+                        <input type="text" id="add-member-account" placeholder="请输入账号">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 职位</label>
+                        <input type="text" id="add-member-position" placeholder="请输入职位">
+                    </div>
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 手机</label>
+                        <input type="text" id="add-member-phone" placeholder="请输入手机号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" id="add-member-email" placeholder="请输入邮箱">
+                </div>
+                <div class="form-group">
+                    <label>所属部门</label>
+                    <select id="add-member-department">
+                        <option value="dept1">研发部</option>
+                        <option value="dept1-1">算法组</option>
+                        <option value="dept1-2">研发组</option>
+                        <option value="dept2">培训部</option>
+                        <option value="dept2-1">培训一组</option>
+                        <option value="dept2-2">培训二组</option>
+                        <option value="dept3">运维部</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideAddMemberModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveAddMember()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑成员弹窗 -->
+    <div id="editMemberModal" style="display: none;" class="modal-overlay" onclick="hideEditMemberModal()">
+        <div class="modal-content" style="width: 600px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>编辑成员</h3>
+                <button class="close-btn" onclick="hideEditMemberModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-member-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 姓名</label>
+                        <input type="text" id="edit-member-name" placeholder="请输入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 账号</label>
+                        <input type="text" id="edit-member-account" placeholder="请输入账号">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 职位</label>
+                        <input type="text" id="edit-member-position" placeholder="请输入职位">
+                    </div>
+                    <div class="form-group">
+                        <label><span style="color: #ef4444;">*</span> 手机</label>
+                        <input type="text" id="edit-member-phone" placeholder="请输入手机号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" id="edit-member-email" placeholder="请输入邮箱">
+                </div>
+                <div class="form-group">
+                    <label>所属部门</label>
+                    <select id="edit-member-department">
+                        <option value="dept1">研发部</option>
+                        <option value="dept1-1">算法组</option>
+                        <option value="dept1-2">研发组</option>
+                        <option value="dept2">培训部</option>
+                        <option value="dept2-1">培训一组</option>
+                        <option value="dept2-2">培训二组</option>
+                        <option value="dept3">运维部</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideEditMemberModal()">取消</button>
+                <button class="btn btn-confirm" onclick="saveEditMember()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除成员确认弹窗 -->
+    <div id="deleteMemberConfirmModal" style="display: none;" class="modal-overlay confirm-modal" onclick="hideDeleteMemberConfirm()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>确认删除</h3>
+                <button class="close-btn" onclick="hideDeleteMemberConfirm()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #666; font-size: 14px; line-height: 1.5;">确定要删除成员 <span id="delete-member-name" style="color: #ef4444; font-weight: 500;"></span> 吗？此操作不可撤销。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="hideDeleteMemberConfirm()">取消</button>
+                <button class="btn btn-confirm" style="background: #ef4444;" onclick="confirmDeleteMember()">确认删除</button>
             </div>
         </div>
     </div>
@@ -1776,6 +2200,299 @@
             setTimeout(function() {
                 document.getElementById('toast').style.display = 'none';
             }, 2000);
+        }
+
+        // 头像列表
+        var avatarList = ['AI-1.png', 'AI-2.png', 'AI-3.png', 'AI-4.png', 'tx-1.png', 'tx-2.png', 'tx-3.png'];
+        
+        // 成员数据
+        var memberData = [
+            { id: 'M001', name: '王浩宇', dept: '研发部', position: 'CEO', phone: '13800138001', addTime: '2024-01-15', orgId: 'dept1' },
+            { id: 'M002', name: '李蓓佳', dept: '培训部', position: '总经理', phone: '13800138002', addTime: '2024-01-18', orgId: 'dept2' },
+            { id: 'M003', name: '张伟', dept: '研发部', position: '技术总监', phone: '13800138003', addTime: '2024-02-01', orgId: 'dept1' },
+            { id: 'M004', name: '刘芳', dept: '算法组', position: '研发经理', phone: '13800138004', addTime: '2024-02-10', orgId: 'dept1-1' },
+            { id: 'M005', name: '陈明', dept: '培训一组', position: '培训主管', phone: '13800138005', addTime: '2024-02-15', orgId: 'dept2-1' },
+            { id: 'M006', name: '赵磊', dept: '研发组', position: '高级工程师', phone: '13800138006', addTime: '2024-03-01', orgId: 'dept1-2' },
+            { id: 'M007', name: '孙丽', dept: '运维部', position: '运维主管', phone: '13800138007', addTime: '2024-03-05', orgId: 'dept3' },
+            { id: 'M008', name: '周杰', dept: '算法组', position: '算法工程师', phone: '13800138008', addTime: '2024-03-10', orgId: 'dept1-1' },
+            { id: 'M009', name: '吴敏', dept: '培训二组', position: '培训师', phone: '13800138009', addTime: '2024-03-15', orgId: 'dept2-2' },
+            { id: 'M010', name: '郑强', dept: '运维一组', position: '运维工程师', phone: '13800138010', addTime: '2024-03-20', orgId: 'dept3-1' },
+            { id: 'M011', name: '冯娜', dept: '研发组', position: '软件工程师', phone: '13800138011', addTime: '2024-04-01', orgId: 'dept1-2' },
+            { id: 'M012', name: '许峰', dept: '算法组', position: '算法工程师', phone: '13800138012', addTime: '2024-04-05', orgId: 'dept1-1' },
+            { id: 'M013', name: '杨婷', dept: '培训一组', position: '培训师', phone: '13800138013', addTime: '2024-04-10', orgId: 'dept2-1' },
+            { id: 'M014', name: '黄磊', dept: '运维二组', position: '运维工程师', phone: '13800138014', addTime: '2024-04-15', orgId: 'dept3-2' },
+            { id: 'M015', name: '林静', dept: '研发部', position: '产品经理', phone: '13800138015', addTime: '2024-05-01', orgId: 'dept1' },
+            { id: 'M016', name: '何伟', dept: '培训部', position: '课程顾问', phone: '13800138016', addTime: '2024-05-05', orgId: 'dept2' },
+            { id: 'M017', name: '梁燕', dept: '运维一组', position: '运维工程师', phone: '13800138017', addTime: '2024-05-10', orgId: 'dept3-1' },
+            { id: 'M018', name: '谢军', dept: '研发组', position: '测试工程师', phone: '13800138018', addTime: '2024-05-15', orgId: 'dept1-2' },
+            { id: 'M019', name: '韩宇', dept: '算法组', position: '数据工程师', phone: '13800138019', addTime: '2024-05-20', orgId: 'dept1-1' },
+            { id: 'M020', name: '唐琳', dept: '培训二组', position: '培训助理', phone: '13800138020', addTime: '2024-06-01', orgId: 'dept2-2' },
+            { id: 'M021', name: '钱进', dept: '运维二组', position: '运维工程师', phone: '13800138021', addTime: '2024-06-05', orgId: 'dept3-2' },
+            { id: 'M022', name: '尹华', dept: '研发部', position: '架构师', phone: '13800138022', addTime: '2024-06-10', orgId: 'dept1' },
+            { id: 'M023', name: '朱丽', dept: '培训一组', position: '培训师', phone: '13800138023', addTime: '2024-06-15', orgId: 'dept2-1' },
+            { id: 'M024', name: '马超', dept: '运维部', position: '运维经理', phone: '13800138024', addTime: '2024-06-20', orgId: 'dept3' },
+            { id: 'M025', name: '高山', dept: '研发组', position: '高级工程师', phone: '13800138025', addTime: '2024-07-01', orgId: 'dept1-2' },
+            { id: 'M026', name: '陈雪', dept: '算法组', position: '算法工程师', phone: '13800138026', addTime: '2024-07-05', orgId: 'dept1-1' },
+            { id: 'M027', name: '周天', dept: '培训二组', position: '课程设计师', phone: '13800138027', addTime: '2024-07-10', orgId: 'dept2-2' },
+            { id: 'M028', name: '吴刚', dept: '运维一组', position: '运维主管', phone: '13800138028', addTime: '2024-07-15', orgId: 'dept3-1' },
+            { id: 'M029', name: '郑萍', dept: '研发部', position: '项目经理', phone: '13800138029', addTime: '2024-07-20', orgId: 'dept1' },
+            { id: 'M030', name: '冯伟', dept: '培训部', position: '培训总监', phone: '13800138030', addTime: '2024-08-01', orgId: 'dept2' }
+        ];
+        
+        // 分页变量
+        var currentMemberPage = 1;
+        var memberPageSize = 10;
+        var currentSelectedOrgId = 'root';
+        var avatarIndexCounter = 0;
+        
+        // 获取随机头像
+        var avatarIndex = 0;
+        function getRandomAvatar() {
+            var index = avatarIndex % avatarList.length;
+            avatarIndex++;
+            return '../A/images/' + avatarList[index];
+        }
+        
+        // 渲染成员列表
+        function renderMemberList(data) {
+            var tbody = document.getElementById('member-list');
+            if (!tbody) {
+                console.error('member-list tbody not found');
+                return;
+            }
+            
+            var start = (currentMemberPage - 1) * memberPageSize;
+            var end = start + memberPageSize;
+            var pageData = data.slice(start, end);
+            
+            var html = '';
+            var avatarPath = '../A/images/';
+            var avatars = ['AI-1.png', 'AI-2.png', 'AI-3.png', 'AI-4.png', 'tx-1.png', 'tx-2.png', 'tx-3.png'];
+            
+            pageData.forEach(function(member, index) {
+                var avatarIndex = (avatarIndexCounter + index) % avatars.length;
+                var avatarSrc = avatarPath + avatars[avatarIndex];
+                
+                html += `
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 10px 12px;">
+                            <img src="${avatarSrc}" alt="${member.name}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                        </td>
+                        <td style="padding: 10px 12px; font-size: 14px; color: #475569; font-weight: 500;">${member.name}</td>
+                        <td style="padding: 10px 12px; font-size: 13px; color: #64748b;">${member.dept}</td>
+                        <td style="padding: 10px 12px; font-size: 13px; color: #475569;">${member.position}</td>
+                        <td style="padding: 10px 12px; font-size: 13px; color: #475569;">${member.phone}</td>
+                        <td style="padding: 10px 12px; font-size: 13px; color: #64748b;">${member.addTime}</td>
+                    </tr>
+                `;
+            });
+            
+            avatarIndexCounter += pageData.length;
+            tbody.innerHTML = html;
+            renderMemberPagination(data.length);
+        }
+        
+        // 渲染分页
+        function renderMemberPagination(total) {
+            var totalPages = Math.ceil(total / memberPageSize) || 1;
+            var totalEl = document.getElementById('member-pagination-total');
+            if (totalEl) {
+                totalEl.textContent = total;
+            }
+            
+            var pagesContainer = document.getElementById('member-pagination-pages');
+            if (!pagesContainer) {
+                console.error('pagination-pages container not found');
+                return;
+            }
+            
+            var leftBtn = document.querySelector('.member-list-panel .pagination-btn:first-of-type');
+            if (leftBtn) leftBtn.disabled = currentMemberPage <= 1;
+            
+            var html = '';
+            for (var i = 1; i <= Math.min(totalPages, 5); i++) {
+                html += '<button class="pagination-page' + (i === currentMemberPage ? ' active' : '') + '" onclick="goToMemberPage(' + i + ')">' + i + '</button>';
+            }
+            if (totalPages > 5) {
+                html += '<span class="pagination-ellipsis">...</span>';
+                html += '<button class="pagination-page" onclick="goToMemberPage(' + totalPages + ')">' + totalPages + '</button>';
+            }
+            pagesContainer.innerHTML = html;
+            
+            var rightBtn = document.querySelectorAll('.member-list-panel .pagination-btn');
+            if (rightBtn.length > 1) {
+                rightBtn[1].disabled = currentMemberPage >= totalPages;
+            }
+        }
+        
+        // 跳转到指定页
+        function goToMemberPage(page) {
+            var filteredData = getFilteredMembers();
+            var totalPages = Math.ceil(filteredData.length / memberPageSize) || 1;
+            if (page < 1 || page > totalPages) return;
+            currentMemberPage = page;
+            renderMemberList(filteredData);
+            document.getElementById('member-pagination-jump').value = '';
+        }
+        
+        // 改变每页条数
+        function changeMemberPageSize(val) {
+            memberPageSize = parseInt(val);
+            currentMemberPage = 1;
+            renderMemberList(getFilteredMembers());
+        }
+        
+        // 跳转指定页
+        function jumpToMemberPage() {
+            var input = document.getElementById('member-pagination-jump');
+            var page = parseInt(input.value);
+            if (isNaN(page) || page < 1) { input.value = ''; return; }
+            goToMemberPage(page);
+        }
+        
+        // 获取筛选后的成员
+        function getFilteredMembers() {
+            var keyword = document.getElementById('member-search-input').value.toLowerCase();
+            var filtered = memberData.filter(function(member) {
+                var matchKeyword = member.name.toLowerCase().includes(keyword) || 
+                                   member.dept.toLowerCase().includes(keyword) ||
+                                   member.position.toLowerCase().includes(keyword);
+                
+                var matchOrg = false;
+                if (currentSelectedOrgId === 'root') {
+                    matchOrg = true;
+                } else if (member.orgId === currentSelectedOrgId) {
+                    matchOrg = true;
+                } else if (currentSelectedOrgId.startsWith('dept') && !currentSelectedOrgId.includes('-')) {
+                    matchOrg = member.orgId.startsWith(currentSelectedOrgId);
+                }
+                
+                return matchKeyword && matchOrg;
+            });
+            return filtered;
+        }
+        
+        // 组织树功能
+        function selectOrg(orgId) {
+            var items = document.querySelectorAll('.org-tree-item');
+            items.forEach(function(item) {
+                item.classList.remove('active');
+            });
+            
+            var activeItem = document.querySelector('[data-org-id="' + orgId + '"]');
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+            
+            var orgNames = {
+                'root': '东莞市智联科技有限公司',
+                'dept1': '研发部',
+                'dept1-1': '算法组',
+                'dept1-2': '研发组',
+                'dept2': '培训部',
+                'dept2-1': '培训一组',
+                'dept2-2': '培训二组',
+                'dept3': '运维部',
+                'dept3-1': '运维一组',
+                'dept3-2': '运维二组'
+            };
+            
+            document.getElementById('selected-org-name').textContent = orgNames[orgId] || '东莞市智联科技有限公司';
+            currentSelectedOrgId = orgId;
+            currentMemberPage = 1;
+            renderMemberList(getFilteredMembers());
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                renderMemberList(memberData);
+            } catch (e) {
+                console.error('Error rendering member list:', e);
+            }
+            
+            var parentItems = document.querySelectorAll('.org-tree-item.parent');
+            parentItems.forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var orgId = this.dataset.orgId;
+                    var children = document.querySelector('.org-tree-children[data-parent="' + orgId + '"]');
+                    if (children) {
+                        children.classList.toggle('show');
+                        this.classList.toggle('expanded');
+                        
+                        var folderIcon = this.querySelector('.fa-folder');
+                        if (folderIcon) {
+                            if (this.classList.contains('expanded')) {
+                                folderIcon.classList.remove('fa-folder');
+                                folderIcon.classList.add('fa-folder-open');
+                                folderIcon.style.color = '#3b82f6';
+                            } else {
+                                folderIcon.classList.remove('fa-folder-open');
+                                folderIcon.classList.add('fa-folder');
+                                folderIcon.style.color = '#64748b';
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        // 搜索成员
+        function searchMember() {
+            var keyword = document.getElementById('member-search-input').value.toLowerCase();
+            var rows = document.querySelectorAll('#member-list tr');
+            
+            rows.forEach(function(row) {
+                var name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                var account = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                if (name.includes(keyword) || account.includes(keyword)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // 添加成员弹窗
+        function showAddMemberModal() {
+            document.getElementById('addMemberModal').style.display = 'flex';
+        }
+        function hideAddMemberModal() {
+            document.getElementById('addMemberModal').style.display = 'none';
+        }
+        function saveAddMember() {
+            hideAddMemberModal();
+            showToast('成员添加成功');
+        }
+
+        // 编辑成员弹窗
+        function showEditMemberModal(id) {
+            document.getElementById('editMemberModal').style.display = 'flex';
+        }
+        function hideEditMemberModal() {
+            document.getElementById('editMemberModal').style.display = 'none';
+        }
+        function saveEditMember() {
+            hideEditMemberModal();
+            showToast('成员编辑成功');
+        }
+
+        // 删除成员确认
+        var currentDeleteMemberId = '';
+        var currentDeleteMemberName = '';
+        function showDeleteMemberConfirm(id, name) {
+            currentDeleteMemberId = id;
+            currentDeleteMemberName = name;
+            document.getElementById('delete-member-name').textContent = name;
+            document.getElementById('deleteMemberConfirmModal').style.display = 'flex';
+        }
+        function hideDeleteMemberConfirm() {
+            document.getElementById('deleteMemberConfirmModal').style.display = 'none';
+        }
+        function confirmDeleteMember() {
+            hideDeleteMemberConfirm();
+            showToast('成员删除成功');
         }
     </script>
 </body>
