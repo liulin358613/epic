@@ -712,12 +712,6 @@
                 </div>
                 
                 <div class="form-row">
-                    <label class="form-label">API地址</label>
-                    <input type="text" class="form-input" id="model-api-url" placeholder="请输入API地址">
-                    <input type="text" class="form-input form-input-explain" id="model-api-url-explain" placeholder="解释">
-                </div>
-                
-                <div class="form-row">
                     <label class="form-label">运行状态 <span style="color: #ef4444;">*</span></label>
                     <select class="form-select" id="model-status">
                         <option value="active">运行中</option>
@@ -924,10 +918,14 @@
             document.getElementById('modal-title').textContent = '添加模型';
             document.getElementById('edit-id').value = '';
             document.getElementById('model-name').value = '';
+            document.getElementById('model-note').value = '';
             document.getElementById('model-type').value = '';
             document.getElementById('model-provider').value = '';
             document.getElementById('model-version').value = '';
-            document.getElementById('model-api-url').value = '';
+            document.getElementById('model-original').value = '';
+            document.getElementById('model-architecture').value = '';
+            document.getElementById('model-params').value = '';
+            document.getElementById('model-size').value = '';
             document.getElementById('model-status').value = 'active';
             document.getElementById('model-description').value = '';
             document.getElementById('model-modal').classList.add('active');
