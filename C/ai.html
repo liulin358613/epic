@@ -1652,7 +1652,7 @@
         .common-submenu-item svg {
             width: 14px;
             height: 14px;
-            /* margin-right: 0.5rem; */
+            margin-right: 0.5rem;
         }
 
         .common-submenu-item.active {
@@ -6177,9 +6177,11 @@
                     // 隐藏图片列表区域和工具栏
                     document.querySelector('.preview-file-list').style.display = 'none';
                     document.querySelector('.preview-toolbar').style.display = 'none';
-                    // 加载组织详情页面
+                    // 加载组织详情页面，传递组织名称
                     const previewContent = document.getElementById('previewContent');
-                    previewContent.innerHTML = '<iframe src="org-manage.html" style="width: 100%; height: 100%; border: none; display: block;"></iframe>';
+                    const orgName = currentTab.orgName || '';
+                    const encodedOrgName = encodeURIComponent(orgName);
+                    previewContent.innerHTML = `<iframe src="org-manage.html?orgName=${encodedOrgName}" style="width: 100%; height: 100%; border: none; display: block;"></iframe>`;
                 }
             } else {
                 console.log('没有找到当前Tab');
@@ -9897,17 +9899,26 @@
             }
         }
 
+        // 更新组织详情内容
+        function updateOrgDetailContent(orgName) {
+            const previewContent = document.getElementById('previewContent');
+            const encodedOrgName = encodeURIComponent(orgName);
+            previewContent.innerHTML = `<iframe src="org-manage.html?orgName=${encodedOrgName}" style="width: 100%; height: 100%; border: none; display: block;"></iframe>`;
+        }
+
         // 打开组织详情Tab
-        function openOrgDetailTab() {
+        function openOrgDetailTab(orgName) {
             // 如果已有"组织详情"tab，直接激活
             const existingTab = previewTabs.find(tab => tab.title === '组织详情');
             if (existingTab) {
+                // 更新组织名称
+                existingTab.orgName = orgName;
                 activateTab(existingTab.id);
                 return;
             }
             // 新建tab
             const tabId = 'tab_org_' + Date.now();
-            previewTabs.push({ id: tabId, title: '组织详情' });
+            previewTabs.push({ id: tabId, title: '组织详情', orgName: orgName });
             updateTabs();
             activateTab(tabId);
             // 关闭组织切换下拉
@@ -9945,7 +9956,24 @@
                 // 如果点击的是组织架构图标，不触发组织切换
                 if (e.target.closest('.org-structure-icon')) {
                     e.stopPropagation();
-                    openOrgDetailTab();
+                    // 获取组织名称（只获取第一层span的内容）
+                    let orgName = '';
+                    const wrapper = this.querySelector('.org-switch-item-wrapper');
+                    if (wrapper) {
+                        const span = wrapper.querySelector('span');
+                        if (span) {
+                            orgName = span.textContent;
+                        }
+                    } else {
+                        // 处理子级组织没有wrapper的情况
+                        const span = this.querySelector('span');
+                        if (span && !span.classList.contains('org-tree-line')) {
+                            orgName = span.textContent;
+                        }
+                    }
+                    // 去掉人数部分，只保留组织名称
+                    orgName = orgName.replace(/\（\d+人\）/g, '').replace(/\(\d+人\)/g, '').trim();
+                    openOrgDetailTab(orgName);
                     return;
                 }
                 

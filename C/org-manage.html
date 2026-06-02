@@ -7,6 +7,33 @@
     <title>组织管理</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 页面加载时从URL参数获取组织名称并更新显示
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orgName = urlParams.get('orgName');
+            
+            if (orgName) {
+                // 更新组织信息区域的组织名称
+                const orgInfoName = document.getElementById('org-info-name');
+                if (orgInfoName) {
+                    orgInfoName.textContent = orgName;
+                }
+                
+                // 更新组织架构树中的根节点名称
+                const treeRoot = document.querySelector('.org-tree-item[data-org-id="root"] span');
+                if (treeRoot) {
+                    treeRoot.textContent = orgName;
+                }
+                
+                // 更新成员列表头部的组织名称
+                const selectedOrgName = document.getElementById('selected-org-name');
+                if (selectedOrgName) {
+                    selectedOrgName.textContent = orgName;
+                }
+            }
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -846,7 +873,7 @@
                     </div>
                     <div style="flex: 1; min-width: 0;">
                         <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
-                            <span>东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                            <span id="org-info-name">东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
                         </div>
                         <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">
                             <span style="color: #64748b;">组织类型：</span>
