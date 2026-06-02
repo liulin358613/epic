@@ -426,9 +426,14 @@
             display: none;
             font-size: 12px;
             color: #ef4444;
-            padding-left: 92px;
+            padding-left: 80px;
             margin-top: -8px;
             margin-bottom: 8px;
+        }
+        .form-input.error,
+        .form-select.error {
+            border-color: #ef4444;
+            background: #fef2f2;
         }
         .error-message.show {
             display: block;
@@ -527,6 +532,67 @@
         .model-name-cell {
             display: flex;
             align-items: center;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 420px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+        }
+        .dialog-body {
+            padding: 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .dialog-icon .fa {
+            font-size: 24px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .dialog-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            background: #fafafa;
         }
     </style>
 </head>
@@ -731,6 +797,22 @@
             <div class="drawer-footer">
                 <button class="btn btn-outline" onclick="closeModal()">取消</button>
                 <button class="btn btn-primary" onclick="saveModel()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModelModal" class="dialog-overlay hidden">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message" id="delete-message">确定要删除该模型吗？删除后不可恢复</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">删除</button>
             </div>
         </div>
     </div>
@@ -954,6 +1036,22 @@
             }
         }
 
+        // 移除字段错误样式
+        function removeFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.remove('error');
+            }
+        }
+
+        // 添加字段错误样式
+        function addFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.add('error');
+            }
+        }
+
         // 保存模型
         function saveModel() {
             const name = document.getElementById('model-name').value.trim();
@@ -969,27 +1067,39 @@
             hideError('error-model-provider');
             hideError('error-model-version');
             hideError('error-model-status');
+            
+            // 移除所有字段错误样式
+            removeFieldError('model-name');
+            removeFieldError('model-type');
+            removeFieldError('model-provider');
+            removeFieldError('model-version');
+            removeFieldError('model-status');
 
             let isValid = true;
 
             if (!name) {
                 showError('error-model-name', '请输入模型名称');
+                addFieldError('model-name');
                 isValid = false;
             }
             if (!type) {
                 showError('error-model-type', '请选择模型类型');
+                addFieldError('model-type');
                 isValid = false;
             }
             if (!provider) {
                 showError('error-model-provider', '请选择提供商');
+                addFieldError('model-provider');
                 isValid = false;
             }
             if (!version) {
                 showError('error-model-version', '请输入版本号');
+                addFieldError('model-version');
                 isValid = false;
             }
             if (!status) {
                 showError('error-model-status', '请选择运行状态');
+                addFieldError('model-status');
                 isValid = false;
             }
 
@@ -1037,21 +1147,41 @@
             }
         }
 
+        let deletingModelId = null;
+
         // 删除模型
         function deleteModel(id) {
             const model = models.find(m => m.id === id);
             if (!model) return;
 
-            if (confirm(`确定要删除模型"${model.name}"吗？此操作不可恢复。`)) {
-                models = models.filter(m => m.id !== id);
+            deletingModelId = id;
+            document.getElementById('delete-message').textContent = `确定要删除模型"${model.name}"吗？此操作不可恢复。`;
+            document.getElementById('deleteModelModal').classList.remove('hidden');
+        }
+
+        function closeDeleteDialog() {
+            document.getElementById('deleteModelModal').classList.add('hidden');
+            deletingModelId = null;
+        }
+
+        function confirmDelete() {
+            if (deletingModelId) {
+                models = models.filter(m => m.id !== deletingModelId);
                 filterModels();
             }
+            closeDeleteDialog();
         }
 
         // 点击弹窗外区域关闭弹窗
         document.getElementById('model-modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
+            }
+        });
+
+        document.getElementById('deleteModelModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteDialog();
             }
         });
 

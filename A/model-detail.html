@@ -278,6 +278,361 @@
             .deploy-topology { flex-direction: column; }
             .deploy-arrow { transform: rotate(90deg); }
         }
+
+        /* Toast 样式 */
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 14px 24px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            animation: toastIn 0.3s ease-out;
+            min-width: 320px;
+            max-width: 480px;
+        }
+        .toast.success {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+        .toast.error {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #991b1b;
+        }
+        .toast.warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+        .toast-icon {
+            font-size: 20px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Loading 遮罩 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            display: none;
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+        .loading-text {
+            font-size: 14px;
+            color: white;
+            font-weight: 500;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 对话框遮罩 */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 420px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+        }
+        .dialog-body {
+            padding: 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .dialog-icon .fa {
+            font-size: 24px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .dialog-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            background: #fafafa;
+        }
+
+        /* 弹窗遮罩 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        .modal-overlay.active {
+            display: block;
+        }
+
+        /* 抽屉式弹窗 */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -640px;
+            width: 640px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1001;
+            transition: right 0.3s ease;
+        }
+        .drawer.active {
+            right: 0;
+        }
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .drawer-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .drawer-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        .drawer-close:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .drawer-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .drawer-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+            gap: 12px;
+            background: white;
+            position: sticky;
+            bottom: 0;
+        }
+        .form-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .form-row .form-label {
+            flex: 0 0 80px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0;
+            padding-top: 6px;
+            text-align: right;
+        }
+        .form-row .form-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .form-row .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-row .form-select {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .form-row .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-row .form-input-explain {
+            width: 120px;
+            flex-shrink: 0;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        .error-message {
+            display: none;
+            font-size: 12px;
+            color: #ef4444;
+            padding-left: 80px;
+            margin-top: -8px;
+            margin-bottom: 8px;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .form-input.error,
+        .form-select.error {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+        .form-row .input-with-icon {
+            flex: 1;
+            position: relative;
+            padding: 0px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            transition: all 0.2s ease;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        .form-row .input-with-icon input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            color: #475569;
+        }
+        .form-row .input-with-icon input:focus {
+            outline: none;
+        }
+        .form-row .input-with-icon:hover {
+            border-color: #cbd5e1;
+        }
+        .form-row .input-with-icon:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-row .input-with-icon .toggle-password-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-row .input-with-icon .toggle-password-btn:hover {
+            color: #3b82f6;
+        }
     </style>
 </head>
 <body>
@@ -291,8 +646,8 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-outline"><i class="fa fa-refresh"></i> 同步配置</button>
-                <button class="btn btn-danger"><i class="fa fa-stop-circle-o"></i> 停用</button>
+                <button class="btn btn-outline" onclick="syncConfig()"><i class="fa fa-refresh"></i> 同步配置</button>
+                <button class="btn btn-danger" onclick="showDeactivateConfirm()"><i class="fa fa-stop-circle-o"></i> 停用</button>
             </div>
         </div>
 
@@ -351,6 +706,7 @@
                     <div class="section-card" style="flex: 1; display: flex; flex-direction: column; max-height: 100%;">
                         <div class="section-header">
                             <div class="section-title"><i class="fa fa-cube"></i> 基本信息</div>
+                            <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;" onclick="openEditModal()"><i class="fa fa-edit"></i> 修改</button>
                         </div>
                         <div class="section-body" style="flex: 1; overflow-y: auto;">
                             <table class="detail-table">
@@ -689,7 +1045,7 @@
                 <div class="section-card">
                     <div class="section-header">
                         <div class="section-title"><i class="fa fa-cloud"></i> 部署方式</div>
-                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;"><i class="fa fa-edit"></i> 修改</button>
+                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;" onclick="openDeployEditModal()"><i class="fa fa-edit"></i> 修改</button>
                     </div>
                     <div class="section-body">
                         <table class="detail-table">
@@ -745,7 +1101,7 @@
                 <div class="section-card">
                     <div class="section-header">
                         <div class="section-title"><i class="fa fa-plug"></i> 接口配置</div>
-                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;"><i class="fa fa-edit"></i> 修改</button>
+                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;" onclick="openDeployEditModal()"><i class="fa fa-edit"></i> 修改</button>
                     </div>
                     <div class="section-body">
                         <table class="detail-table">
@@ -779,7 +1135,12 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight: 500;">API Key</td>
-                                    <td style="font-family: monospace; color: #94a3b8;">sk-*******************************xK3m</td>
+                                    <td style="font-family: monospace; color: #94a3b8;">
+                                        <span id="api-key-display">sk-*******************************xK3m</span>
+                                        <button type="button" style="background: none; border: none; cursor: pointer; color: #949698; margin-left: 8px; display: inline-flex; align-items: center; gap: 2px;" onclick="toggleDetailApiKey()">
+                                            <i class="fa fa-eye" id="api-key-eye-icon"></i>
+                                        </button>
+                                    </td>
                                     <td style="color: #94a3b8; font-size: 13px;">用于API认证的密钥</td>
                                 </tr>
                                 <tr>
@@ -811,6 +1172,7 @@
                 <div class="section-card">
                     <div class="section-header">
                         <div class="section-title"><i class="fa fa-cogs"></i> 资源配置</div>
+                        <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;" onclick="openDeployEditModal()"><i class="fa fa-edit"></i> 修改</button>
                     </div>
                     <div class="section-body">
                         <table class="detail-table">
@@ -1223,6 +1585,312 @@
         </div>
     </div>
 
+    <!-- Loading 遮罩 -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">同步中</div>
+    </div>
+
+    <!-- Toast 容器 -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- 停用确认对话框 -->
+    <div id="deactivateModal" class="dialog-overlay hidden">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认停用</div>
+                <div class="dialog-message">确定要停用该模型吗？停用后将无法继续调用。</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeactivateModal()">取消</button>
+                <button class="btn btn-danger" onclick="confirmDeactivate()">停用</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 部署配置编辑抽屉 -->
+    <div class="modal-overlay" id="deploy-edit-modal">
+        <div class="drawer" id="deploy-edit-drawer">
+            <div class="drawer-header">
+                <div class="drawer-title" id="deploy-modal-title">修改部署配置</div>
+                <button class="drawer-close" onclick="closeDeployEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="drawer-body">
+                <!-- 部署方式 -->
+                <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #e5e7eb;">
+                    <h4 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">部署方式</h4>
+                    
+                    <div class="form-row">
+                        <label class="form-label">部署模式 <span style="color: #ef4444;">*</span></label>
+                        <select class="form-select" id="deploy-mode">
+                            <option value="api" selected>API接入</option>
+                            <option value="private">私有部署</option>
+                            <option value="hybrid">混合部署</option>
+                            <option value="local">本地部署</option>
+                        </select>
+                        <input type="text" class="form-input form-input-explain" id="deploy-mode-explain" placeholder="解释">
+                    </div>
+                    <div class="error-message" id="deploy-error-mode"></div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">云服务商 <span style="color: #ef4444;">*</span></label>
+                        <select class="form-select" id="deploy-provider">
+                            <option value="OpenAI" selected>OpenAI</option>
+                            <option value="Google">Google</option>
+                            <option value="百度">百度</option>
+                            <option value="阿里">阿里</option>
+                            <option value="腾讯">腾讯</option>
+                            <option value="自建">自建</option>
+                        </select>
+                        <input type="text" class="form-input form-input-explain" id="deploy-provider-explain" placeholder="解释">
+                    </div>
+                    <div class="error-message" id="deploy-error-provider"></div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">区域</label>
+                        <input type="text" class="form-input" id="deploy-region" placeholder="例如：us-east-1" value="美国东部（us-east-1）">
+                        <input type="text" class="form-input form-input-explain" id="deploy-region-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">实例类型</label>
+                        <input type="text" class="form-input" id="deploy-instance" placeholder="例如：GPT-4 Turbo" value="GPT-4 Turbo">
+                        <input type="text" class="form-input form-input-explain" id="deploy-instance-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">SLA保障</label>
+                        <input type="text" class="form-input" id="deploy-sla" placeholder="例如：99.9%" value="99.9%">
+                        <input type="text" class="form-input form-input-explain" id="deploy-sla-explain" placeholder="解释">
+                    </div>
+                </div>
+
+                <!-- 接口配置 -->
+                <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #e5e7eb;">
+                    <h4 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">接口配置</h4>
+                    
+                    <div class="form-row">
+                        <label class="form-label">API地址 <span style="color: #ef4444;">*</span></label>
+                        <input type="text" class="form-input" id="api-url" placeholder="请输入API地址" value="https://api.openai.com/v1/chat/completions">
+                        <input type="text" class="form-input form-input-explain" id="api-url-explain" placeholder="解释">
+                    </div>
+                    <div class="error-message" id="deploy-error-api-url"></div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">请求方式</label>
+                        <select class="form-select" id="api-method">
+                            <option value="POST" selected>POST</option>
+                            <option value="GET">GET</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                        <input type="text" class="form-input form-input-explain" id="api-method-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">认证方式</label>
+                        <select class="form-select" id="api-auth">
+                            <option value="bearer" selected>Bearer Token</option>
+                            <option value="api-key">API Key</option>
+                            <option value="oauth">OAuth 2.0</option>
+                            <option value="basic">Basic Auth</option>
+                            <option value="none">无认证</option>
+                        </select>
+                        <input type="text" class="form-input form-input-explain" id="api-auth-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">API Key</label>
+                        <div class="input-with-icon">
+                            <input type="password" class="form-input" id="api-key" placeholder="请输入API Key" value="sk-*******************************xK3m">
+                            <button type="button" class="toggle-password-btn" onclick="toggleApiKeyVisibility()">
+                                <i class="fa fa-eye-slash" id="api-key-eye"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-input form-input-explain" id="api-key-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">超时设置 <span style="color: #ef4444;">*</span></label>
+                        <input type="text" class="form-input" id="api-timeout" placeholder="例如：30 秒" value="30 秒">
+                        <input type="text" class="form-input form-input-explain" id="api-timeout-explain" placeholder="解释">
+                    </div>
+                    <div class="error-message" id="deploy-error-timeout"></div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">最大并发</label>
+                        <input type="text" class="form-input" id="api-concurrency" placeholder="例如：100 请求/秒" value="100 请求/秒">
+                        <input type="text" class="form-input form-input-explain" id="api-concurrency-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">限流策略</label>
+                        <input type="text" class="form-input" id="api-rate-limit" placeholder="例如：令牌桶算法（60次/分钟）" value="令牌桶算法（60次/分钟）">
+                        <input type="text" class="form-input form-input-explain" id="api-rate-limit-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">重试策略</label>
+                        <input type="text" class="form-input" id="api-retry" placeholder="例如：最多3次，间隔2/4/8秒" value="最多3次，间隔2/4/8秒（指数退避）">
+                        <input type="text" class="form-input form-input-explain" id="api-retry-explain" placeholder="解释">
+                    </div>
+                </div>
+
+                <!-- 资源配置 -->
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">资源配置</h4>
+                    
+                    <div class="form-row">
+                        <label class="form-label">最大Token数</label>
+                        <input type="text" class="form-input" id="resource-max-tokens" placeholder="例如：128K" value="128K">
+                        <input type="text" class="form-input form-input-explain" id="resource-max-tokens-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">Temperature</label>
+                        <input type="text" class="form-input" id="resource-temperature" placeholder="例如：0.7" value="0.7">
+                        <input type="text" class="form-input form-input-explain" id="resource-temperature-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">Top P</label>
+                        <input type="text" class="form-input" id="resource-top-p" placeholder="例如：0.9" value="0.9">
+                        <input type="text" class="form-input form-input-explain" id="resource-top-p-explain" placeholder="解释">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label class="form-label">上下文缓存</label>
+                        <select class="form-select" id="resource-cache">
+                            <option value="enabled" selected>已开启</option>
+                            <option value="disabled">已关闭</option>
+                        </select>
+                        <input type="text" class="form-input form-input-explain" id="resource-cache-explain" placeholder="缓存TTL: 10分钟">
+                    </div>
+                </div>
+            </div>
+            <div class="drawer-footer">
+                <button class="btn btn-outline" onclick="closeDeployEditModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveDeployEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑模型抽屉 -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="drawer" id="edit-drawer">
+            <div class="drawer-header">
+                <div class="drawer-title" id="edit-modal-title">修改模型</div>
+                <button class="drawer-close" onclick="closeEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="drawer-body">
+                <input type="hidden" id="edit-id" value="MDL20260101001">
+                
+                <div class="form-row">
+                    <label class="form-label">模型名称 <span style="color: #ef4444;">*</span></label>
+                    <input type="text" class="form-input" id="edit-model-name" placeholder="请输入模型名称" value="GPT-4">
+                    <input type="text" class="form-input form-input-explain" id="edit-model-name-explain" placeholder="解释">
+                </div>
+                <div class="error-message" id="edit-error-name"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型说明</label>
+                    <input type="text" class="form-input" id="edit-model-note" placeholder="请输入模型说明" value="GPT-4是OpenAI发布的大型语言模型">
+                    <input type="text" class="form-input form-input-explain" id="edit-model-note-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型类型 <span style="color: #ef4444;">*</span></label>
+                    <select class="form-select" id="edit-model-type">
+                        <option value="text" selected>文本生成</option>
+                        <option value="image">图像生成</option>
+                        <option value="voice">语音合成</option>
+                        <option value="multimodal">多模态</option>
+                    </select>
+                    <input type="text" class="form-input form-input-explain" id="edit-model-type-explain" placeholder="解释">
+                </div>
+                <div class="error-message" id="edit-error-type"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">提供商 <span style="color: #ef4444;">*</span></label>
+                    <select class="form-select" id="edit-model-provider">
+                        <option value="OpenAI" selected>OpenAI</option>
+                        <option value="Google">Google</option>
+                        <option value="百度">百度</option>
+                        <option value="阿里">阿里</option>
+                        <option value="腾讯">腾讯</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <input type="text" class="form-input form-input-explain" id="edit-model-provider-explain" placeholder="解释">
+                </div>
+                <div class="error-message" id="edit-error-provider"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">版本号 <span style="color: #ef4444;">*</span></label>
+                    <input type="text" class="form-input" id="edit-model-version" placeholder="例如：v1.0、GPT-4等" value="GPT-4">
+                    <input type="text" class="form-input form-input-explain" id="edit-model-version-explain" placeholder="解释">
+                </div>
+                <div class="error-message" id="edit-error-version"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">原始模型</label>
+                    <input type="text" class="form-input" id="edit-model-original" placeholder="请输入原始模型名称" value="gpt-4-0125-preview">
+                    <input type="text" class="form-input form-input-explain" id="edit-model-original-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型架构</label>
+                    <select class="form-select" id="edit-model-architecture">
+                        <option value="Transformer" selected>Transformer</option>
+                        <option value="CNN">CNN</option>
+                        <option value="RNN">RNN</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <input type="text" class="form-input form-input-explain" id="edit-model-architecture-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">参数规模</label>
+                    <input type="text" class="form-input" id="edit-model-params" placeholder="例如：~1.8T" value="~1.8T">
+                    <input type="text" class="form-input form-input-explain" id="edit-model-params-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型大小</label>
+                    <input type="text" class="form-input" id="edit-model-size" placeholder="例如：89GB" value="89GB">
+                    <input type="text" class="form-input form-input-explain" id="edit-model-size-explain" placeholder="解释">
+                </div>
+                
+                <div class="form-row">
+                    <label class="form-label">运行状态 <span style="color: #ef4444;">*</span></label>
+                    <select class="form-select" id="edit-model-status">
+                        <option value="active" selected>运行中</option>
+                        <option value="inactive">停用</option>
+                        <option value="testing">测试中</option>
+                    </select>
+                    <input type="text" class="form-input form-input-explain" id="edit-model-status-explain" placeholder="解释">
+                </div>
+                <div class="error-message" id="edit-error-status"></div>
+                
+                <div class="form-row">
+                    <label class="form-label">模型描述</label>
+                    <textarea class="form-input" id="edit-model-description" rows="2" placeholder="请输入模型描述信息">GPT-4是OpenAI发布的多模态大型语言模型，具备强大的自然语言理解与生成能力，支持复杂推理、代码编写、数据分析等多种任务。</textarea>
+                    <input type="text" class="form-input form-input-explain" id="edit-model-description-explain" placeholder="解释">
+                </div>
+            </div>
+            <div class="drawer-footer">
+                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveEditModel()">保存</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function switchTab(tabId) {
             // 切换tab样式
@@ -1233,6 +1901,315 @@
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             document.getElementById('panel-' + tabId).classList.add('active');
         }
+
+        // Toast 提示函数
+        function showToast(message, type = 'success') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fa ${iconMap[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 2500);
+        }
+
+        // 同步配置
+        function syncConfig() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            loadingOverlay.classList.add('active');
+            
+            setTimeout(() => {
+                loadingOverlay.classList.remove('active');
+                showToast('同步成功', 'success');
+            }, 2000);
+        }
+
+        // 显示停用确认对话框
+        function showDeactivateConfirm() {
+            document.getElementById('deactivateModal').classList.remove('hidden');
+        }
+
+        // 关闭停用确认对话框
+        function closeDeactivateModal() {
+            document.getElementById('deactivateModal').classList.add('hidden');
+        }
+
+        // 确认停用
+        function confirmDeactivate() {
+            closeDeactivateModal();
+            showToast('模型已停用', 'success');
+        }
+
+        // 切换弹窗中API Key可见性
+        function toggleApiKeyVisibility() {
+            const apiKeyInput = document.getElementById('api-key');
+            const eyeIcon = document.getElementById('api-key-eye');
+            
+            if (apiKeyInput.type === 'password') {
+                apiKeyInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else {
+                apiKeyInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // 切换详情页面中API Key可见性
+        function toggleDetailApiKey() {
+            const apiKeyDisplay = document.getElementById('api-key-display');
+            const eyeIcon = document.getElementById('api-key-eye-icon');
+            const maskedKey = 'sk-*******************************xK3m';
+            const realKey = 'sk-proj-xxxxxxxxx';
+            
+            if (apiKeyDisplay.textContent === maskedKey) {
+                apiKeyDisplay.textContent = realKey;
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                apiKeyDisplay.textContent = maskedKey;
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // 打开部署配置编辑弹窗
+        function openDeployEditModal() {
+            document.getElementById('deploy-edit-modal').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('deploy-edit-drawer').classList.add('active');
+            }, 50);
+        }
+
+        // 关闭部署配置编辑弹窗
+        function closeDeployEditModal() {
+            document.getElementById('deploy-edit-drawer').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('deploy-edit-modal').classList.remove('active');
+            }, 300);
+        }
+
+        // 显示部署错误提示
+        function showDeployError(id, message) {
+            const errorEl = document.getElementById(id);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.add('show');
+            }
+        }
+
+        // 隐藏部署错误提示
+        function hideDeployError(id) {
+            const errorEl = document.getElementById(id);
+            if (errorEl) {
+                errorEl.textContent = '';
+                errorEl.classList.remove('show');
+            }
+        }
+
+        // 保存部署配置编辑
+        function saveDeployEdit() {
+            const mode = document.getElementById('deploy-mode').value;
+            const provider = document.getElementById('deploy-provider').value;
+            const apiUrl = document.getElementById('api-url').value.trim();
+            const timeout = document.getElementById('api-timeout').value.trim();
+
+            // 隐藏所有错误提示
+            hideDeployError('deploy-error-mode');
+            hideDeployError('deploy-error-provider');
+            hideDeployError('deploy-error-api-url');
+            hideDeployError('deploy-error-timeout');
+
+            // 移除所有字段错误样式
+            removeFieldError('deploy-mode');
+            removeFieldError('deploy-provider');
+            removeFieldError('api-url');
+            removeFieldError('api-timeout');
+
+            let isValid = true;
+
+            if (!mode) {
+                showDeployError('deploy-error-mode', '请选择部署模式');
+                addFieldError('deploy-mode');
+                isValid = false;
+            }
+            if (!provider) {
+                showDeployError('deploy-error-provider', '请选择云服务商');
+                addFieldError('deploy-provider');
+                isValid = false;
+            }
+            if (!apiUrl) {
+                showDeployError('deploy-error-api-url', '请输入API地址');
+                addFieldError('api-url');
+                isValid = false;
+            }
+            if (!timeout) {
+                showDeployError('deploy-error-timeout', '请输入超时设置');
+                addFieldError('api-timeout');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            closeDeployEditModal();
+            showToast('部署配置修改成功', 'success');
+        }
+
+        // 打开编辑弹窗
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('edit-drawer').classList.add('active');
+            }, 50);
+        }
+
+        // 关闭编辑弹窗
+        function closeEditModal() {
+            document.getElementById('edit-drawer').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('edit-modal').classList.remove('active');
+            }, 300);
+        }
+
+        // 显示错误提示
+        function showEditError(id, message) {
+            const errorEl = document.getElementById(id);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.add('show');
+            }
+        }
+
+        // 隐藏错误提示
+        function hideEditError(id) {
+            const errorEl = document.getElementById(id);
+            if (errorEl) {
+                errorEl.textContent = '';
+                errorEl.classList.remove('show');
+            }
+        }
+
+        // 移除字段错误样式
+        function removeFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.remove('error');
+            }
+        }
+
+        // 添加字段错误样式
+        function addFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.add('error');
+            }
+        }
+
+        // 保存编辑
+        function saveEditModel() {
+            const name = document.getElementById('edit-model-name').value.trim();
+            const type = document.getElementById('edit-model-type').value;
+            const provider = document.getElementById('edit-model-provider').value;
+            const version = document.getElementById('edit-model-version').value.trim();
+            const status = document.getElementById('edit-model-status').value;
+
+            // 隐藏所有错误提示
+            hideEditError('edit-error-name');
+            hideEditError('edit-error-type');
+            hideEditError('edit-error-provider');
+            hideEditError('edit-error-version');
+            hideEditError('edit-error-status');
+            
+            // 移除所有字段错误样式
+            removeFieldError('edit-model-name');
+            removeFieldError('edit-model-type');
+            removeFieldError('edit-model-provider');
+            removeFieldError('edit-model-version');
+            removeFieldError('edit-model-status');
+
+            let isValid = true;
+
+            if (!name) {
+                showEditError('edit-error-name', '请输入模型名称');
+                addFieldError('edit-model-name');
+                isValid = false;
+            }
+            if (!type) {
+                showEditError('edit-error-type', '请选择模型类型');
+                addFieldError('edit-model-type');
+                isValid = false;
+            }
+            if (!provider) {
+                showEditError('edit-error-provider', '请选择提供商');
+                addFieldError('edit-model-provider');
+                isValid = false;
+            }
+            if (!version) {
+                showEditError('edit-error-version', '请输入版本号');
+                addFieldError('edit-model-version');
+                isValid = false;
+            }
+            if (!status) {
+                showEditError('edit-error-status', '请选择运行状态');
+                addFieldError('edit-model-status');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            closeEditModal();
+            showToast('修改成功', 'success');
+        }
+
+        // 点击弹窗外区域关闭弹窗
+        document.getElementById('edit-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+
+        document.getElementById('deactivateModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeactivateModal();
+            }
+        });
+
+        document.getElementById('deploy-edit-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeployEditModal();
+            }
+        });
     </script>
 </body>
 </html>
