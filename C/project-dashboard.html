@@ -29,7 +29,9 @@
             --spacing-xl: 1rem;
             --spacing-2xl: 1.125rem;
             --border-color: #E5E7EB;
+            --border: #E5E7EB;
             --primary-color: #0051D9;
+            --primary-light: #E8F0FE;
             --success-color: #52C41A;
             --warning-color: #FAAD14;
             --danger-color: #FF4D4F;
@@ -361,17 +363,20 @@
         .gantt-table {
             width: 100%;
             table-layout: fixed;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
         }
 
         .gantt-table th,
         .gantt-table td {
-            padding: 0.5rem 0.125rem;
+            padding: 0;
             text-align: center;
-            border: 1px solid var(--border-color);
+            vertical-align: middle;
+            border: 1px solid var(--border);
             font-size: 0.8125rem;
             white-space: nowrap;
+            height: 1.375rem;
+            line-height: 1.375rem;
+            box-sizing: border-box;
         }
 
         .gantt-table th {
@@ -381,9 +386,8 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            box-shadow: 
-                0 -1px 0 0 var(--border-color),
-                0 1px 0 0 var(--border-color);
+            box-shadow: 0 -1px 0 0 var(--border), 0 1px 0 0 var(--border);
+            height: 1.375rem;
         }
 
         .gantt-table th.date-header.weekend,
@@ -433,6 +437,12 @@
         #gantt-table-body tr {
             transition: background-color 0.15s ease;
         }
+        #gantt-table-body tr:hover {
+            background: var(--primary-light);
+        }
+        #gantt-table-body tr:hover td.date-cell:not(.project):not(.active):not(.delayed):not(.warning):not(.completed-gantt):not(.delayed-completed):not(.weekend) {
+            background: var(--primary-light);
+        }
 
         .gantt-table th.project-col {
             min-width: 12.5rem;
@@ -440,11 +450,15 @@
             background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         }
 
-        .gantt-table th.date-header { }
+        .gantt-table th.date-header {
+            text-align: center;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
 
         .gantt-table td.project-col {
             font-weight: 500;
-            padding-left: 0.75rem;
+            padding: 0.2rem 0.5rem;
             color: var(--text-color);
             text-align: left;
             background-color: #FAFAFA;
