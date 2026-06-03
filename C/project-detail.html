@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>项目详情 - 嘉东智能</title>
+    <title>自动化机器人生产线 - 项目详情</title>
     <style>
         /* ========== 响应式基础字体 ========== */
         html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -36,13 +36,31 @@
 
         body { background: var(--bg); color: var(--text); line-height: 1.6; }
 
+        /* ========== 刷新按钮 ========== */
+        .btn-refresh {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-refresh:hover {
+            background: var(--primary-hover);
+        }
+
         /* ========== 主容器 ========== */
         .page-container {
             margin: 0 auto;
             padding: 0.75rem;
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1rem;
         }
 
         /* ========== 卡片通用 ========== */
@@ -328,6 +346,7 @@
             bottom: 0;
             width: 2px;
             background: #e5e7eb;
+            height: 90%;
         }
         .timeline-item {
             position: relative;
@@ -451,56 +470,6 @@
             text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* ========== 现场图片/视频 ========== */
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-            gap: 0.75rem;
-        }
-        .media-item {
-            position: relative;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            aspect-ratio: 4/3;
-            background: var(--bg);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .media-item:hover { transform: scale(1.02); box-shadow: var(--shadow-md); }
-        .media-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .media-item .media-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0.5rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.6));
-            color: white;
-            font-size: 0.6875rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .media-item .video-badge {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 2.5rem;
-            height: 2.5rem;
-            background: rgba(0,0,0,0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-        }
-
         /* ========== 成员组织架构（与dashboard一致） ========== */
         .org-chart {
             display: flex;
@@ -566,6 +535,27 @@
         .org-vline.drop {
             height: 8px;
         }
+
+        .node-clickable {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .node-clickable:hover {
+            background: rgba(24, 144, 255, 0.1);
+            color: var(--primary);
+        }
+        .node-clickable.active {
+            background: rgba(24, 144, 255, 0.15);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .node-description {
+            padding: 0.75rem;
+            background: rgba(24, 144, 255, 0.05);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid var(--primary);
+        }
         .org-branch {
             display: flex;
             flex-direction: column;
@@ -594,7 +584,7 @@
         }
 
         /* ========== 其他信息（风险/文档/里程碑） ========== */
-        .risk-list { display: flex; flex-direction: column; gap: 0.625rem; }
+        .risk-list { display: flex; flex-direction: column; gap: 0.625rem; padding: 1rem; }
         .risk-item {
             display: flex;
             align-items: center;
@@ -614,7 +604,7 @@
         .risk-dot.medium { background: var(--warning); }
         .risk-dot.low { background: var(--primary); }
 
-        .doc-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .doc-list { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; }
         .doc-item {
             display: flex;
             align-items: center;
@@ -682,7 +672,7 @@
         .bottom-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.25rem;
+            gap: 1rem;
         }
         @media (max-width: 768px) {
             .two-col { grid-template-columns: 1fr; }
@@ -884,21 +874,139 @@
             color: var(--primary);
             font-size: 1.5rem;
         }
+
+        /* ========== 暂无数据提示 ========== */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+        .empty-state .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .empty-state .empty-text {
+            font-size: 0.9375rem;
+        }
+
+        /* ========== 媒体预览弹窗 ========== */
+        .media-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999999;
+            cursor: pointer;
+        }
+        .media-modal-overlay.show {
+            display: flex;
+        }
+        .media-modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1rem;
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            cursor: default;
+        }
+        .media-modal-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .media-modal-close {
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .media-modal-close:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+        .media-modal-content {
+            max-width: 60rem;
+            max-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .media-modal-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 0.5rem;
+        }
+        .media-modal-content video {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 0.5rem;
+        }
+        .media-preview {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .media-preview:hover {
+            transform: scale(1.05);
+        }
+        .timeline-video {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .timeline-video:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
 
-<div class="page-container">
+<!-- 媒体预览弹窗 -->
+    <div class="media-modal-overlay" id="media-modal-overlay">
+        <div class="media-modal" id="media-modal" onclick="event.stopPropagation()">
+            <div class="media-modal-header">
+                <button class="media-modal-close" id="media-modal-close">&times;</button>
+            </div>
+            <div class="media-modal-content" id="media-modal-content"></div>
+        </div>
+    </div>
+
+    <div class="page-container">
 
     <!-- ===== 1. 项目概述 ===== -->
     <div class="card">
         <div class="card-body" style="padding:0.75rem;">
             <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
-                <div style="font-size:1.25rem;font-weight:700;color:var(--text);">嘉东智能制造升级项目</div>
+                <div style="font-size:1.25rem;font-weight:700;color:var(--text);">自动化机器人生产线项目</div>
                 <span class="status-tag blue">进行中</span>
+                <button class="btn btn-refresh" onclick="resetView()" title="恢复初始状态">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 3C4.13 3 1 6.13 1 10c0 2.76 1.87 5.07 4.41 5.82.38.07.58-.16.58-.38 0-.19-.01-.82-.01-1.49-1.78.4-2.25-.89-2.25-.89-.36-.92-.89-1.17-.89-1.17-.72-.49.05-.48.05-.48.8.05 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.77-.2-3.64-.88-3.64-3.95 0-.87.31-1.57.82-2.12-.08-.2-.36-1.02.08-2.08 0 0 .67-.21 2.2.82A7.45 7.45 0 018 4.8c.68 0 1.37.09 2.03.26 1.53-1.03 2.2-.82 2.2-.82.44 1.06.16 1.88.08 2.08.51.55.82 1.25.82 2.12 0 3.07-1.87 3.75-3.65 3.95.28.24.53.73.53 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.2.45.59.38C14.13 15.07 16 12.76 16 10c0-3.87-3.13-7-7-7z" fill="currentColor"/>
+                    </svg>
+                    <span>刷新</span>
+                </button>
             </div>
             <div class="overview-desc" style="margin-top:0;margin-bottom:1rem;">
-                <strong>项目概述：</strong>本项目旨在对嘉东智能现有制造产线进行智能化升级，涵盖自动化设备引进、MES系统部署、数据采集平台建设及人员培训四大模块。项目完成后预计生产效率提升30%，人力成本降低20%，产品不良率降低至0.5%以下。
+                <strong>项目概述：</strong>本项目旨在建设自动化机器人生产线，涵盖工业机器人引进、机器人编程调试、自动化控制系统部署及人员操作培训四大模块。项目完成后预计生产效率提升40%，人力成本降低30%，产品不良率降低至0.3%以下。
             </div>
             <table class="overview-table" style="margin-bottom:0;">
                     <tr>
@@ -922,13 +1030,13 @@
                         <span id="stat-warn-msg">--</span>
                     </div>
                 </div>
+                <div class="stat-card red">
+                    <span class="stat-num">12</span>
+                    <span class="stat-label">待处理任务</span>
+                </div> 
                 <div class="stat-card orange">
                     <span class="stat-num" id="stat-cost">¥128万</span>
                     <span class="stat-label">项目成本（已使用）</span>
-                </div>
-                <div class="stat-card red">
-                    <span class="stat-num">12</span>
-                    <span class="stat-label">待处理风险</span>
                 </div>
             </div>
          <!-- ===== 项目进度甘特图（与dashboard一致） ===== -->
@@ -944,57 +1052,57 @@
                         <table id="gantt-detail-table" class="gantt-table">
                             <thead>
                                 <tr>
-                                    <th class="node-col">项目SOP节点</th>
-                                    <th class="nav-col nav-left-col"><button class="nav-btn" onclick="scrollDetailDates(-1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></th>
-                                    <th class="nav-col nav-right-col"><button class="nav-btn" onclick="scrollDetailDates(1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></th>
-                                </tr>
-                            </thead>
-                            <tbody id="gantt-detail-body">
-                                <tr>
-                                    <td class="node-col">需求确认</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">方案设计</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">市场调研</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">采购与进场</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">系统开发</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">安装实施</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">数据平台部署</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">联调试运行</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
-                                <tr>
-                                    <td class="node-col">培训与验收</td>
-                                    <td class="nav-col"></td>
-                                    <td class="nav-col"></td>
-                                </tr>
+                                    <th class="node-col">机器人SOP节点</th>
+                                <th class="nav-col nav-left-col"><button class="nav-btn" onclick="scrollDetailDates(-1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></th>
+                                <th class="nav-col nav-right-col"><button class="nav-btn" onclick="scrollDetailDates(1)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></th>
+                            </tr>
+                        </thead>
+                        <tbody id="gantt-detail-body">
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('需求确认')">需求确认</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('方案设计')">方案设计</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('机器人选型')">机器人选型</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('采购与进场')">采购与进场</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('控制系统开发')">控制系统开发</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable active" onclick="selectNode('机器人安装')">机器人安装</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('数据平台部署')">数据平台部署</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('联调测试')">联调测试</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
+                            <tr>
+                                <td class="node-col node-clickable" onclick="selectNode('培训验收')">培训验收</td>
+                                <td class="nav-col"></td>
+                                <td class="nav-col"></td>
+                            </tr>
                             </tbody>
                         </table>
                         <div class="gantt-tooltip" id="gantt-tooltip"></div>
@@ -1006,16 +1114,20 @@
     </div>
 
 
-    <!-- ===== 4. 第一行两列：项目成员 + 项目反馈 ===== -->
+    <!-- ===== 4. 第一行两列：项目成员 + 待处理任务 ===== -->
     <div class="bottom-grid">
         <!-- 项目成员 -->
-        <div class="card">
+        <div class="card" id="member-card">
             <div class="card-header">
                 <div class="title">项目成员</div>
-                <span style="font-size:0.75rem;color:var(--text-light);">共 18 人</span>
+                <span id="member-count" style="font-size:0.75rem;color:var(--text-light);">共 18 人</span>
             </div>
-            <div class="card-body">
-                <div class="org-chart">
+            <div class="card-body" style="padding:1rem;">
+                <div class="node-description" id="node-description" style="display:none;">
+                    <div style="font-size:0.875rem;font-weight:600;color:var(--text);margin-bottom:0.25rem;" id="node-title"></div>
+                    <div style="font-size:0.75rem;color:var(--text-secondary);" id="node-desc"></div>
+                </div>
+                <div class="org-chart" id="org-chart">
                     <!-- 第一层：项目经理（Owner） -->
                     <div class="org-card owner-card">
                         <img class="org-avatar-img" src="../A/images/AI-1.png" alt="" />
@@ -1220,6 +1332,61 @@
             </div>
         </div>
 
+        <!-- 待处理任务 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="title">待处理任务</div>
+                <span class="status-tag red">12 项任务</span>
+            </div>
+            <div class="card-body">
+                <div class="risk-list">
+                    <div class="risk-item">
+                        <div class="risk-dot high"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">确认协作机器人到货时间</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">联系采购总监确认最新到货进度，更新机器人安装计划</div>
+                        </div>
+                        <span class="status-tag red">紧急</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot high"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">跟进机械臂清关</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">协调物流部门加快清关流程，预计23日到货</div>
+                        </div>
+                        <span class="status-tag red">紧急</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot medium"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">机器人控制系统联调</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">完成剩余20%通信协议对接，确认控制文档</div>
+                        </div>
+                        <span class="status-tag orange">高</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot medium"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">机器人运动算法优化</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">优化方案已确定，计划明日开始实施</div>
+                        </div>
+                        <span class="status-tag orange">高</span>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-dot low"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">机器人操作培训</div>
+                            <div style="font-size:0.75rem;color:var(--text-light);">制定员工机器人操作培训计划和考核方案</div>
+                        </div>
+                        <span class="status-tag blue">中</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 5. 第二行两列：项目反馈 + 项目文档 ===== -->
+    <div class="bottom-grid">
         <!-- 项目反馈（时间轴） -->
         <div class="card">
             <div class="card-header">
@@ -1234,9 +1401,9 @@
                     <select id="member-filter" class="filter-select">
                         <option value="">全部成员</option>
                         <option value="刘洋">刘洋</option>
-                        <option value="AI-代码助手">AI-代码助手</option>
-                        <option value="AI-数据管家">AI-数据管家</option>
-                        <option value="AI-设计助手">AI-设计助手</option>
+                        <option value="代码助手">代码助手</option>
+                        <option value="数据管家">数据管家</option>
+                        <option value="设计助手">设计助手</option>
                         <option value="李婷">李婷</option>
                     </select>
                     <select id="node-filter" class="filter-select">
@@ -1250,52 +1417,52 @@
                 </div>
                 <div class="timeline">
                     <!-- 时间轴节点1：最新 -->
-                    <div class="timeline-item" data-member="刘洋" data-node="安装实施" data-content="现场安装进度更新：B线已完成60%设备安装，A线等待机械臂到货。已协调物流部门加快清关流程，预计23日可到货。">
+                    <div class="timeline-item" data-member="刘洋" data-node="安装实施" data-content="工业机器人安装进度更新：B线已完成60%机器人安装调试，A线等待协作机器人到货。已协调物流部门加快清关流程，预计23日可到货并开始安装。">
                         <div class="timeline-dot"></div>
                         <div class="timeline-header">
                             <span class="timeline-time">2026-05-21 16:30</span>
-                            <span class="timeline-node">安装实施</span>
+                            <span class="timeline-node">机器人安装</span>
                         </div>
                         <div class="timeline-body">
                             <div class="timeline-left">
                                 <img class="timeline-avatar" src="../A/images/tx-2.png" alt="" />
                                 <div class="timeline-name">刘洋</div>
-                                <div class="timeline-role">现场实施工程师</div>
+                                <div class="timeline-role">机器人安装工程师</div>
                             </div>
                             <div class="timeline-right">
-                                <div class="timeline-text">现场安装进度更新：B线已完成60%设备安装，A线等待机械臂到货。已协调物流部门加快清关流程，预计23日可到货。</div>
+                                <div class="timeline-text">工业机器人安装进度更新：B线已完成60%机器人安装调试，A线等待协作机器人到货。已协调物流部门加快清关流程，预计23日可到货并开始安装。</div>
                                 <div class="timeline-media">
-                                    <img src="../A/images/AI-1.png" alt="现场照片" />
-                                    <div class="timeline-video"><img src="../A/images/tx-1.png" alt="视频缩略图" /></div>
+                                    <img class="media-preview" src="images/1.png" alt="机器人安装现场" />
+                                    <div class="timeline-video" data-video="video/XC.mp4"><img src="images/2.png" alt="安装过程视频" /></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 时间轴节点2 -->
-                    <div class="timeline-item" data-member="AI-代码助手" data-node="系统开发" data-content="ERP接口联调完成80%，剩余字段映射工作正在进行。数据库优化方案已确定，预计明日开始实施。">
+                    <div class="timeline-item" data-member="代码助手" data-node="系统开发" data-content="机器人控制系统开发完成80%，剩余通信协议对接工作正在进行。机器人运动控制算法优化方案已确定，预计明日开始实施。">
                         <div class="timeline-dot"></div>
                         <div class="timeline-header">
                             <span class="timeline-time">2026-05-21 11:20</span>
-                            <span class="timeline-node">系统开发</span>
+                            <span class="timeline-node">控制系统</span>
                         </div>
                         <div class="timeline-body">
                             <div class="timeline-left">
                                 <img class="timeline-avatar" src="../A/images/AI-3.png" alt="" />
-                                <div class="timeline-name">AI-代码助手</div>
-                                <div class="timeline-role">系统开发工程师<span class="ai-badge">AI</span></div>
+                                <div class="timeline-name">代码助手</div>
+                                <div class="timeline-role">机器人编程工程师<span class="ai-badge">AI</span></div>
                             </div>
                             <div class="timeline-right">
-                                <div class="timeline-text">ERP接口联调完成80%，剩余字段映射工作正在进行。数据库优化方案已确定，预计明日开始实施。</div>
+                                <div class="timeline-text">机器人控制系统开发完成80%，剩余通信协议对接工作正在进行。机器人运动控制算法优化方案已确定，预计明日开始实施。</div>
                                 <div class="timeline-media">
-                                    <img src="../A/images/AI-2.png" alt="接口文档" />
+                                    <img class="media-preview" src="images/3.png" alt="控制系统架构图" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 时间轴节点3 -->
-                    <div class="timeline-item" data-member="AI-数据管家" data-node="数据平台" data-content="数据清洗流程已自动化，每日定时执行。数据仓库架构文档已更新至v2.0版本。">
+                    <div class="timeline-item" data-member="数据管家" data-node="数据平台" data-content="机器人运行数据采集流程已自动化，每日定时执行数据分析。机器人性能监控平台架构文档已更新至v2.0版本。">
                         <div class="timeline-dot"></div>
                         <div class="timeline-header">
                             <span class="timeline-time">2026-05-20 18:45</span>
@@ -1304,22 +1471,22 @@
                         <div class="timeline-body">
                             <div class="timeline-left">
                                 <img class="timeline-avatar" src="../A/images/AI-4.png" alt="" />
-                                <div class="timeline-name">AI-数据管家</div>
+                                <div class="timeline-name">数据管家</div>
                                 <div class="timeline-role">数据工程师<span class="ai-badge">AI</span></div>
                             </div>
                             <div class="timeline-right">
-                                <div class="timeline-text">数据清洗流程已自动化，每日定时执行。数据仓库架构文档已更新至v2.0版本。</div>
+                                <div class="timeline-text">机器人运行数据采集流程已自动化，每日定时执行数据分析。机器人性能监控平台架构文档已更新至v2.0版本。</div>
                                 <div class="timeline-media">
-                                    <img src="../A/images/AI-4.png" alt="数据报表" />
-                                    <img src="../A/images/tx-2.png" alt="架构图" />
-                                    <div class="timeline-video"><img src="../A/images/tx-3.png" alt="演示视频" /></div>
+                                    <img class="media-preview" src="images/4.png" alt="数据报表" />
+                                    <img class="media-preview" src="images/5.png" alt="监控平台架构" />
+                                    <div class="timeline-video" data-video="video/3D.mp4"><img src="images/1.png" alt="数据演示" /></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 时间轴节点4 -->
-                    <div class="timeline-item" data-member="AI-设计助手" data-node="方案设计" data-content="技术方案评审会议纪要已整理完成，各部门反馈意见已汇总，正在进行方案优化。">
+                    <div class="timeline-item" data-member="设计助手" data-node="方案设计" data-content="机器人布局方案评审会议纪要已整理完成，各部门反馈意见已汇总，正在进行机器人工作站布局优化。">
                         <div class="timeline-dot"></div>
                         <div class="timeline-header">
                             <span class="timeline-time">2026-05-20 10:00</span>
@@ -1328,17 +1495,17 @@
                         <div class="timeline-body">
                             <div class="timeline-left">
                                 <img class="timeline-avatar" src="../A/images/AI-1.png" alt="" />
-                                <div class="timeline-name">AI-设计助手</div>
-                                <div class="timeline-role">方案设计师<span class="ai-badge">AI</span></div>
+                                <div class="timeline-name">设计助手</div>
+                                <div class="timeline-role">机器人方案设计师<span class="ai-badge">AI</span></div>
                             </div>
                             <div class="timeline-right">
-                                <div class="timeline-text">技术方案评审会议纪要已整理完成，各部门反馈意见已汇总，正在进行方案优化。</div>
+                                <div class="timeline-text">机器人布局方案评审会议纪要已整理完成，各部门反馈意见已汇总，正在进行机器人工作站布局优化。</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 时间轴节点5：最早 -->
-                    <div class="timeline-item" data-member="李婷" data-node="需求确认" data-content="需求确认阶段提前完成，客户对需求文档认可度较高，建议后续各阶段保持高频沟通。">
+                    <div class="timeline-item" data-member="李婷" data-node="需求确认" data-content="自动化机器人需求确认阶段提前完成，客户对机器人配置需求文档认可度较高，建议后续各阶段保持高频沟通。">
                         <div class="timeline-dot"></div>
                         <div class="timeline-header">
                             <span class="timeline-time">2026-05-18 14:30</span>
@@ -1348,23 +1515,24 @@
                             <div class="timeline-left">
                                 <img class="timeline-avatar" src="../A/images/tx-1.png" alt="" />
                                 <div class="timeline-name">李婷</div>
-                                <div class="timeline-role">需求分析师</div>
+                                <div class="timeline-role">机器人需求分析师</div>
                             </div>
                             <div class="timeline-right">
-                                <div class="timeline-text">需求确认阶段提前完成，客户对需求文档认可度较高，建议后续各阶段保持高频沟通。</div>
+                                <div class="timeline-text">自动化机器人需求确认阶段提前完成，客户对机器人配置需求文档认可度较高，建议后续各阶段保持高频沟通。</div>
                                 <div class="timeline-media">
-                                    <div class="timeline-video"><img src="../A/images/tx-1.png" alt="会议录像" /></div>
+                                    <div class="timeline-video" data-video="video/XC.mp4"><img src="images/2.png" alt="需求评审会议" /></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="empty-state" id="feedback-empty" style="display: none;">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-text">暂无数据...</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ===== 5. 第二行两列：项目文档 + 项目风险 ===== -->
-    <div class="bottom-grid">
         <!-- 项目文档 -->
         <div class="card">
             <div class="card-header">
@@ -1372,130 +1540,823 @@
             </div>
             <div class="card-body">
                 <div class="doc-list">
-                    <div class="doc-item">📄 需求规格说明书 v2.1.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-05</span></div>
-                    <div class="doc-item">📄 技术方案设计书 v1.3.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
-                    <div class="doc-item">📊 MES系统测试报告.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
-                    <div class="doc-item">📋 设备清单及验收标准.docx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-12</span></div>
-                    <div class="doc-item">📈 项目周报汇总.pptx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-17</span></div>
-                    <div class="doc-item">📝 试运行问题记录表.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-20</span></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 风险登记册 -->
-        <div class="card">
-            <div class="card-header">
-                <div class="title">项目风险</div>
-                <span class="status-tag red">12 项风险</span>
-            </div>
-            <div class="card-body">
-                <div class="risk-list">
-                    <div class="risk-item">
-                        <div class="risk-dot high"></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">服务器到货延迟</div>
-                            <div style="font-size:0.75rem;color:var(--text-light);">影响数据平台部署进度，已升级至采购总监处理</div>
-                        </div>
-                        <span class="status-tag red">高</span>
-                    </div>
-                    <div class="risk-item">
-                        <div class="risk-dot high"></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">机械臂清关延迟</div>
-                            <div style="font-size:0.75rem;color:var(--text-light);">A线机器人工作站受影响，预计延迟5天</div>
-                        </div>
-                        <span class="status-tag red">高</span>
-                    </div>
-                    <div class="risk-item">
-                        <div class="risk-dot medium"></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">ERP接口变更</div>
-                            <div style="font-size:0.75rem;color:var(--text-light);">客户ERP系统升级可能导致接口重构</div>
-                        </div>
-                        <span class="status-tag orange">中</span>
-                    </div>
-                    <div class="risk-item">
-                        <div class="risk-dot medium"></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">关键人员请假</div>
-                            <div style="font-size:0.75rem;color:var(--text-light);">孙磊下月婚假7天，已安排备岗支持</div>
-                        </div>
-                        <span class="status-tag orange">中</span>
-                    </div>
-                    <div class="risk-item">
-                        <div class="risk-dot low"></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:600;">预算结余</div>
-                            <div style="font-size:0.75rem;color:var(--text-light);">当前预算执行率68%，预计有节余，可申请追加培训预算</div>
-                        </div>
-                        <span class="status-tag blue">低</span>
-                    </div>
+                    <div class="doc-item">📄 机器人需求规格说明书 v2.1.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-05</span></div>
+                    <div class="doc-item">📄 机器人技术方案设计书 v1.3.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
+                    <div class="doc-item">📊 机器人控制系统测试报告.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
+                    <div class="doc-item">📋 机器人设备清单及验收标准.docx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-12</span></div>
+                    <div class="doc-item">📈 机器人项目周报汇总.pptx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-17</span></div>
+                    <div class="doc-item">📝 机器人试运行问题记录表.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-20</span></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== 6. 现场图片/视频 ===== -->
-    <div class="card">
-        <div class="card-header">
-            <div class="title">现场图片 / 视频</div>
-            <button class="btn">+ 上传资料</button>
-        </div>
-        <div class="card-body">
-            <div class="media-grid">
-                <div class="media-item">
-                    <div class="placeholder-img">📷 车间A线实景</div>
-                    <div class="media-overlay">
-                        <span>IMG_001.jpg</span>
-                        <span>2026-05-18</span>
-                    </div>
-                </div>
-                <div class="media-item">
-                    <div class="placeholder-img">📷 控制柜布线</div>
-                    <div class="media-overlay">
-                        <span>IMG_002.jpg</span>
-                        <span>2026-05-15</span>
-                    </div>
-                </div>
-                <div class="media-item">
-                    <div class="placeholder-img" style="background:linear-gradient(135deg,#FFF7E6,#FFE58F);color:#FA8C16;">🎬 设备安装视频</div>
-                    <div class="video-badge">▶</div>
-                    <div class="media-overlay">
-                        <span>VID_001.mp4</span>
-                        <span>2026-05-12</span>
-                    </div>
-                </div>
-                <div class="media-item">
-                    <div class="placeholder-img">📷 MES界面截图</div>
-                    <div class="media-overlay">
-                        <span>IMG_003.png</span>
-                        <span>2026-05-08</span>
-                    </div>
-                </div>
-                <div class="media-item">
-                    <div class="placeholder-img">📷 培训现场</div>
-                    <div class="media-overlay">
-                        <span>IMG_004.jpg</span>
-                        <span>2026-05-05</span>
-                    </div>
-                </div>
-                <div class="media-item">
-                    <div class="placeholder-img" style="background:linear-gradient(135deg,#F9F0FF,#EFDBFF);color:#722ED1;">🎬 试运行记录</div>
-                    <div class="video-badge">▶</div>
-                    <div class="media-overlay">
-                        <span>VID_002.mp4</span>
-                        <span>2026-05-03</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
-
-
-</div>
 
 <script>
+// ===== SOP节点切换功能 =====
+var currentNode = '机器人安装';
+
+var nodeData = {
+    '需求确认': {
+        description: '负责收集和确认客户对自动化机器人项目的需求，制定需求规格说明书。',
+        members: [
+            { name: '李婷', role: '需求负责人' },
+            { name: '王芳', role: '需求分析师' },
+            { name: '赵刚', role: '文档编写' },
+            { name: '孙燕', role: '竞品分析' },
+            { name: '钱浩', role: '用户调研' }
+        ],
+        tasks: [
+            { title: '整理客户需求清单', priority: '紧急', desc: '汇总客户提出的机器人功能需求' },
+            { title: '编写需求规格说明书', priority: '高', desc: '完成需求文档编写并评审' },
+            { title: '确认技术可行性', priority: '高', desc: '评估需求的技术实现可行性' }
+        ],
+        feedback: [
+            { member: '李婷', time: '2026-05-18 14:30', text: '需求确认阶段提前完成，客户对需求文档认可度较高。', images: ['images/1.png'], videos: ['video/XC.mp4'] },
+            { member: '王芳', time: '2026-05-17 10:15', text: '完成竞品分析报告，整理了3家主要竞争对手的机器人产品线。', images: ['images/2.png', 'images/3.png'] },
+            { member: '钱浩', time: '2026-05-16 16:45', text: '用户调研已完成，共收集50份有效问卷，整理出核心需求点。', images: ['images/4.png'] }
+        ],
+        docs: ['📄 机器人需求规格说明书 v2.1.pdf', '📝 需求评审会议纪要.docx', '📋 需求变更记录.xlsx']
+    },
+    '方案设计': {
+        description: '根据需求进行自动化机器人系统的方案设计，包括布局、选型和技术架构。',
+        members: [
+            { name: '设计助手', role: '方案主设计(AI)' },
+            { name: '陈磊', role: '架构设计' },
+            { name: '周敏', role: '方案评审' },
+            { name: '吴丽', role: '技术调研' },
+            { name: '郑涛', role: '成本评估' }
+        ],
+        tasks: [
+            { title: '机器人工作站布局设计', priority: '紧急', desc: '完成车间机器人布局规划' },
+            { title: '技术方案评审', priority: '高', desc: '组织技术方案评审会议' },
+            { title: '成本预算评估', priority: '中', desc: '评估方案成本预算' }
+        ],
+        feedback: [
+            { member: '设计助手', time: '2026-05-20 10:00', text: '机器人布局方案评审会议纪要已整理完成，正在进行方案优化。', images: ['images/1.png', 'images/2.png'] },
+            { member: '陈磊', role: '架构设计', time: '2026-05-19 14:30', text: '完成技术架构设计文档，包含系统整体架构图和模块划分。', images: ['images/3.png'] },
+            { member: '吴丽', time: '2026-05-18 09:00', text: '技术调研报告已更新，新增3种机器人控制方案对比分析。', images: ['images/4.png', 'images/5.png'] }
+        ],
+        docs: ['📄 机器人技术方案设计书 v1.3.pdf', '📐 机器人布局图.dwg', '📊 方案对比分析报告.xlsx']
+    },
+    '机器人选型': {
+        description: '根据方案设计选择合适的工业机器人型号和配套设备。',
+        members: [
+            { name: '分析专家', role: '选型分析(AI)' },
+            { name: '吴丽', role: '技术调研' },
+            { name: '郑涛', role: '成本评估' },
+            { name: '赵敏', role: '采购协调' }
+        ],
+        tasks: [
+            { title: '机器人品牌选型', priority: '紧急', desc: '确定机器人品牌和型号' },
+            { title: '供应商评估', priority: '高', desc: '评估潜在供应商资质' },
+            { title: '价格谈判', priority: '高', desc: '与供应商进行价格谈判' }
+        ],
+        feedback: [
+            { member: '分析专家', time: '2026-05-12 16:00', text: '机器人选型工作已完成，确定选用ABB协作机器人。', images: ['images/1.png', 'images/2.png'] },
+            { member: '郑涛', time: '2026-05-11 11:00', text: '成本评估报告已完成，选型方案在预算范围内。', images: ['images/3.png'] },
+            { member: '赵敏', time: '2026-05-10 15:30', text: '已联系5家供应商，收到3份报价单，正在进行比价。', images: ['images/4.png'] }
+        ],
+        docs: ['📄 机器人选型报告.pdf', '📋 供应商评估表.xlsx', '📈 成本对比分析.xlsx']
+    },
+    '采购与进场': {
+        description: '负责机器人设备的采购、物流运输和现场进场工作。',
+        members: [
+            { name: '赵敏', role: '采购负责人' },
+            { name: '孙燕', role: '供应商管理' },
+            { name: '钱浩', role: '合同管理' },
+            { name: '刘洋', role: '现场协调' }
+        ],
+        tasks: [
+            { title: '跟进设备到货', priority: '紧急', desc: '确认协作机器人到货时间' },
+            { title: '机械臂清关', priority: '紧急', desc: '协调物流部门加快清关流程' },
+            { title: '设备验收', priority: '高', desc: '准备设备到货验收清单' }
+        ],
+        feedback: [
+            { member: '赵敏', time: '2026-05-21 09:00', text: '设备采购进度正常，预计23日到货。', images: ['images/1.png'], videos: ['video/3D.mp4'] },
+            { member: '孙燕', time: '2026-05-20 14:00', text: '供应商已确认发货，物流单号已获取。', images: ['images/2.png'] },
+            { member: '刘洋', time: '2026-05-19 16:30', text: '现场准备工作已完成，等待设备进场。', images: ['images/3.png', 'images/4.png'] }
+        ],
+        docs: ['📄 采购合同.pdf', '📋 设备到货清单.xlsx', '📝 物流跟踪记录.docx']
+    },
+    '控制系统开发': {
+        description: '开发机器人控制系统软件，实现机器人的运动控制和通信功能。',
+        members: [
+            { name: '代码助手', role: '开发工程师(AI)' },
+            { name: '测试专家', role: '测试工程师(AI)' },
+            { name: '陈磊', role: '架构设计' },
+            { name: '周敏', role: '代码评审' }
+        ],
+        tasks: [
+            { title: '控制系统联调', priority: '紧急', desc: '完成通信协议对接' },
+            { title: '运动算法优化', priority: '高', desc: '优化机器人运动控制算法' },
+            { title: '软件测试', priority: '高', desc: '进行系统功能测试' }
+        ],
+        feedback: [
+            { member: '代码助手', time: '2026-05-21 11:20', text: '机器人控制系统开发完成80%，剩余通信协议对接工作正在进行。', images: ['images/1.png'] },
+            { member: '测试专家', time: '2026-05-20 15:00', text: '单元测试覆盖率达到95%，发现3个bug已修复。', images: ['images/2.png', 'images/3.png'] },
+            { member: '周敏', time: '2026-05-19 10:30', text: '代码评审已完成，提出5处优化建议已采纳。', images: ['images/4.png'] }
+        ],
+        docs: ['📄 控制系统设计文档.pdf', '💻 机器人控制源代码.zip', '📊 测试报告.xlsx']
+    },
+    '机器人安装': {
+        description: '负责工业机器人的现场安装、调试和验收工作，确保机器人系统正常运行。',
+        members: [
+            { name: '刘洋', role: '安装负责人' },
+            { name: '张明远', role: '项目负责人' },
+            { name: '王芳', role: '技术支持' },
+            { name: '赵敏', role: '设备协调' }
+        ],
+        tasks: [
+            { title: '机器人本体安装', priority: '紧急', desc: 'B线机器人安装调试' },
+            { title: '机械臂组装', priority: '紧急', desc: '完成机械臂组装工作' },
+            { title: '现场布线', priority: '高', desc: '完成机器人电气布线' }
+        ],
+        feedback: [
+            { member: '刘洋', time: '2026-05-21 16:30', text: 'B线已完成60%机器人安装调试，A线等待协作机器人到货。', images: ['images/1.png'], videos: ['video/XC.mp4'] },
+            { member: '王芳', time: '2026-05-21 09:00', text: '技术支持工作正常，解决了2个安装技术问题。', images: ['images/2.png', 'images/3.png'] },
+            { member: '张明远', time: '2026-05-20 14:00', text: '现场巡检完成，整体进度符合预期，继续推进。', images: ['images/4.png'] }
+        ],
+        docs: ['📄 安装手册.pdf', '📋 安装验收标准.docx', '📝 安装进度记录.xlsx']
+    },
+    '数据平台部署': {
+        description: '部署机器人运行数据采集和监控平台，实现数据可视化和分析。',
+        members: [
+            { name: '数据管家', role: '数据工程师(AI)' },
+            { name: '陈磊', role: '架构设计' },
+            { name: '周敏', role: '方案评审' }
+        ],
+        tasks: [
+            { title: '数据采集部署', priority: '中', desc: '部署数据采集系统' },
+            { title: '监控平台配置', priority: '中', desc: '配置机器人监控平台' }
+        ],
+        feedback: [
+            { member: '数据管家', time: '2026-05-20 18:45', text: '数据采集流程已自动化，每日定时执行数据分析。', images: ['images/1.png', 'images/2.png'] },
+            { member: '陈磊', time: '2026-05-19 11:00', text: '数据平台架构已完成部署，正在进行性能测试。', images: ['images/3.png'] },
+            { member: '周敏', time: '2026-05-18 15:30', text: '方案评审通过，数据平台配置符合预期。', images: ['images/4.png', 'images/5.png'] }
+        ],
+        docs: ['📄 数据平台架构文档.pdf', '📊 数据报表模板.xlsx', '📈 性能监控报告.pptx']
+    },
+    '联调测试': {
+        description: '进行机器人系统联调测试，确保各模块协同工作正常。',
+        members: [
+            { name: '测试专家', role: '测试负责人(AI)' },
+            { name: '代码助手', role: '开发支持(AI)' },
+            { name: '刘洋', role: '现场测试' },
+            { name: '王芳', role: '需求验证' }
+        ],
+        tasks: [
+            { title: '系统联调', priority: '高', desc: '进行机器人系统整体联调' },
+            { title: '功能测试', priority: '高', desc: '完成各项功能测试' },
+            { title: '性能测试', priority: '中', desc: '进行系统性能测试' }
+        ],
+        feedback: [
+            { member: '测试专家', time: '2026-05-19 14:00', text: '联调测试工作已启动，目前进展顺利。', images: ['images/1.png'], videos: ['video/3D.mp4'] },
+            { member: '代码助手', time: '2026-05-18 16:30', text: '联调支持工作正常，已解决2个接口问题。', images: ['images/2.png'] },
+            { member: '刘洋', time: '2026-05-17 10:00', text: '现场测试环境已准备就绪，等待联调开始。', images: ['images/3.png', 'images/4.png'] }
+        ],
+        docs: ['📄 测试计划文档.pdf', '📋 测试用例.xlsx', '📝 Bug跟踪记录.xlsx']
+    },
+    '培训验收': {
+        description: '对客户人员进行机器人操作培训，并完成项目验收交付。',
+        members: [
+            { name: '刘洋', role: '培训讲师' },
+            { name: '李婷', role: '需求验收' },
+            { name: '赵敏', role: '文档整理' },
+            { name: '周敏', role: '评审确认' }
+        ],
+        tasks: [
+            { title: '操作培训', priority: '中', desc: '制定员工机器人操作培训计划' },
+            { title: '验收准备', priority: '中', desc: '准备项目验收资料' },
+            { title: '项目交付', priority: '中', desc: '完成项目交付验收' }
+        ],
+        feedback: [
+            { member: '刘洋', time: '2026-05-22 09:00', text: '培训计划已制定完成，将分3期进行机器人操作培训。', images: ['images/1.png'] },
+            { member: '赵敏', time: '2026-05-21 14:30', text: '验收资料正在整理中，预计明日完成。', images: ['images/2.png'] },
+            { member: '李婷', time: '2026-05-20 11:00', text: '需求验收标准已确认，等待项目完成后进行验收。', images: ['images/3.png'] }
+        ],
+        docs: ['📄 培训手册.pdf', '📋 验收 checklist.xlsx', '📝 项目交付报告.docx']
+    }
+};
+
+function selectNode(nodeName) {
+    currentNode = nodeName;
+    
+    // 更新选中状态
+    document.querySelectorAll('.node-clickable').forEach(el => {
+        el.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // 更新节点描述（显示）
+    var descEl = document.getElementById('node-description');
+    var titleEl = document.getElementById('node-title');
+    var descTextEl = document.getElementById('node-desc');
+    if (descEl) {
+        descEl.style.display = 'block';
+        titleEl.textContent = nodeName;
+        descTextEl.textContent = nodeData[nodeName].description;
+    }
+    
+    // 更新人数统计（包含项目经理）
+    var memberCountEl = document.getElementById('member-count');
+    if (memberCountEl) {
+        var memberCount = nodeData[nodeName].members.length + 1; // +1 为项目经理
+        memberCountEl.textContent = '共 ' + memberCount + ' 人';
+    }
+    
+    // 更新项目成员组织结构
+    updateOrgChart(nodeName);
+    
+    // 更新待处理任务
+    var taskCard = document.querySelector('.card:has(.risk-list)');
+    if (taskCard) {
+        var tasks = nodeData[nodeName].tasks;
+        var taskHtml = tasks.map(t => `
+            <div class="risk-item">
+                <div class="risk-dot ${t.priority === '紧急' ? 'high' : t.priority === '高' ? 'medium' : 'low'}"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;">${t.title}</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);">${t.desc}</div>
+                </div>
+                <span class="status-tag ${t.priority === '紧急' ? 'red' : t.priority === '高' ? 'orange' : 'blue'}">${t.priority}</span>
+            </div>
+        `).join('');
+        taskCard.querySelector('.risk-list').innerHTML = taskHtml;
+    }
+    
+    // 更新项目反馈
+    var feedbackCard = document.querySelector('.card:has(.feedback-scroll)');
+    if (feedbackCard) {
+        var feedback = nodeData[nodeName].feedback;
+        var timelineEl = feedbackCard.querySelector('.timeline');
+        var emptyEl = feedbackCard.querySelector('.empty-state');
+        
+        if (feedback.length > 0) {
+            var feedbackHtml = feedback.map(f => {
+                // 生成图片HTML
+                var imagesHtml = '';
+                if (f.images && f.images.length > 0) {
+                    imagesHtml = f.images.map(img => `
+                        <img class="media-preview" src="${img}" alt="图片" />
+                    `).join('');
+                }
+                
+                // 生成视频HTML
+                var videosHtml = '';
+                if (f.videos && f.videos.length > 0) {
+                    videosHtml = f.videos.map(video => `
+                        <div class="timeline-video" data-video="${video}"><img src="images/2.png" alt="视频" /></div>
+                    `).join('');
+                }
+                
+                var mediaHtml = '';
+                if (imagesHtml || videosHtml) {
+                    mediaHtml = `<div class="timeline-media">${imagesHtml}${videosHtml}</div>`;
+                }
+                
+                return `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <span class="timeline-time">${f.time}</span>
+                            <span class="timeline-node">${nodeName}</span>
+                        </div>
+                        <div class="timeline-body">
+                            <div class="timeline-left">
+                                <img class="timeline-avatar" src="../A/images/tx-1.png" alt="" />
+                                <div class="timeline-name">${f.member}</div>
+                                <div class="timeline-role">项目成员</div>
+                            </div>
+                            <div class="timeline-right">
+                                <div class="timeline-text">${f.text}</div>
+                                ${mediaHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            timelineEl.innerHTML = feedbackHtml;
+            emptyEl.style.display = 'none';
+            timelineEl.style.display = 'block';
+        } else {
+            timelineEl.style.display = 'none';
+            emptyEl.style.display = 'flex';
+        }
+    }
+    
+    // 更新项目文档
+    var docCard = document.querySelector('.card:has(.doc-list)');
+    if (docCard) {
+        var docs = nodeData[nodeName].docs;
+        var docHtml = docs.map(d => `
+            <div class="doc-item">${d} <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-20</span></div>
+        `).join('');
+        docCard.querySelector('.doc-list').innerHTML = docHtml;
+    }
+}
+
+function updateOrgChart(nodeName) {
+    var orgChart = document.getElementById('org-chart');
+    var members = nodeData[nodeName].members;
+    
+    // 第一级：负责人
+    var firstLevel = members.slice(0, 2);
+    // 第二级：核心成员
+    var secondLevel = members.slice(2, 4);
+    // 第三级：其他成员
+    var thirdLevel = members.slice(4);
+    
+    var firstLevelHtml = firstLevel.map((member, index) => {
+        var avatarIndex = index === 0 ? 1 : 2;
+        return `
+            <div class="org-child-col">
+                <div class="org-vline drop"></div>
+                <div class="org-card lead-card">
+                    <img class="org-avatar-img" src="../A/images/tx-${avatarIndex}.png" alt="" />
+                    <div class="org-card-info">
+                        <div class="org-card-name">${member.name}</div>
+                        <div class="org-card-role">${member.role}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    var secondLevelHtml = secondLevel.map((member, index) => {
+        var avatarIndex = (index + 3) % 4 + 1;
+        return `
+            <div class="org-child-col">
+                <div class="org-vline drop"></div>
+                <div class="org-card member-card">
+                    <img class="org-avatar-img" src="../A/images/AI-${avatarIndex}.png" alt="" />
+                    <div class="org-card-info">
+                        <div class="org-card-name">${member.name}</div>
+                        <div class="org-card-role">${member.role}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    var thirdLevelHtml = thirdLevel.map((member, index) => {
+        var avatarIndex = (index + 1) % 3 + 1;
+        return `
+            <div class="org-child-col">
+                <div class="org-vline drop"></div>
+                <div class="org-card member-card">
+                    <img class="org-avatar-img" src="../A/images/tx-${avatarIndex}.png" alt="" />
+                    <div class="org-card-info">
+                        <div class="org-card-name">${member.name}</div>
+                        <div class="org-card-role">${member.role}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    var html = `
+        <div class="org-card owner-card">
+            <img class="org-avatar-img" src="../A/images/AI-1.png" alt="" />
+            <div class="org-card-info">
+                <div class="org-card-name">张明远</div>
+                <div class="org-card-role">项目负责人</div>
+            </div>
+        </div>
+        <div class="org-branch">
+            <div class="org-vline"></div>
+            <div class="org-children-row">
+                ${firstLevelHtml}
+            </div>
+        </div>
+    `;
+    
+    if (secondLevel.length > 0) {
+        html += `
+            <div class="org-branch">
+                <div class="org-vline"></div>
+                <div class="org-children-row">
+                    ${secondLevelHtml}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (thirdLevel.length > 0) {
+        html += `
+            <div class="org-branch">
+                <div class="org-vline"></div>
+                <div class="org-children-row">
+                    ${thirdLevelHtml}
+                </div>
+            </div>
+        `;
+    }
+    
+    orgChart.innerHTML = html;
+}
+
+function resetView() {
+    // 移除所有节点选中状态
+    document.querySelectorAll('.node-clickable').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // 隐藏节点描述
+    var descEl = document.getElementById('node-description');
+    if (descEl) {
+        descEl.style.display = 'none';
+    }
+    
+    // 恢复人数统计
+    var memberCountEl = document.getElementById('member-count');
+    if (memberCountEl) {
+        memberCountEl.textContent = '共 18 人';
+    }
+    
+    // 恢复项目成员组织结构
+    var orgChart = document.getElementById('org-chart');
+    if (orgChart) {
+        orgChart.innerHTML = `
+            <!-- 第一层：项目经理（Owner） -->
+            <div class="org-card owner-card">
+                <img class="org-avatar-img" src="../A/images/AI-1.png" alt="" />
+                <div class="org-card-info">
+                    <div class="org-card-name">张明远</div>
+                    <div class="org-card-role">项目负责人</div>
+                </div>
+            </div>
+            <!-- 第二层分支 -->
+            <div class="org-branch">
+                <div class="org-vline"></div>
+                <div class="org-children-row">
+                    <!-- 需求确认 -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/tx-1.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">李婷</div>
+                                <div class="org-card-role">需求确认</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 方案设计（AI） -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/AI-1.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">设计助手</div>
+                                <div class="org-card-role">方案设计（AI）</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 市场调研（AI） -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/AI-2.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">分析专家</div>
+                                <div class="org-card-role">市场调研（AI）</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 采购进场 -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/tx-3.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">赵敏</div>
+                                <div class="org-card-role">采购进场</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 第三层分支 -->
+            <div class="org-branch">
+                <div class="org-vline"></div>
+                <div class="org-children-row">
+                    <!-- 系统开发（AI） -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/AI-3.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">代码助手</div>
+                                <div class="org-card-role">系统开发（AI）</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 安装实施 -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/tx-2.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">刘洋</div>
+                                <div class="org-card-role">安装实施</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 数据平台（AI） -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card lead-card">
+                            <img class="org-avatar-img" src="../A/images/AI-4.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">数据管家</div>
+                                <div class="org-card-role">数据平台（AI）</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 测试工程师（AI） -->
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/AI-1.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">测试专家</div>
+                                <div class="org-card-role">测试工程师（AI）</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 第四层分支（其他成员） -->
+            <div class="org-branch">
+                <div class="org-vline"></div>
+                <div class="org-children-row">
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/tx-2.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">王芳</div>
+                                <div class="org-card-role">需求分析</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/tx-3.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">赵刚</div>
+                                <div class="org-card-role">文档编写</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/AI-4.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">陈磊</div>
+                                <div class="org-card-role">架构设计</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/AI-1.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">周敏</div>
+                                <div class="org-card-role">方案评审</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 第五层分支（剩余成员） -->
+            <div class="org-branch">
+                <div class="org-vline"></div>
+                <div class="org-children-row">
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/AI-2.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">吴丽</div>
+                                <div class="org-card-role">技术调研</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/AI-3.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">郑涛</div>
+                                <div class="org-card-role">成本评估</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/tx-1.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">孙燕</div>
+                                <div class="org-card-role">竞品分析</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-child-col">
+                        <div class="org-vline drop"></div>
+                        <div class="org-card member-card">
+                            <img class="org-avatar-img" src="../A/images/tx-2.png" alt="" />
+                            <div class="org-card-info">
+                                <div class="org-card-name">钱浩</div>
+                                <div class="org-card-role">用户调研</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // 恢复待处理任务
+    var taskCard = document.querySelector('.card:has(.risk-list)');
+    if (taskCard) {
+        taskCard.querySelector('.risk-list').innerHTML = `
+            <div class="risk-item">
+                <div class="risk-dot high"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;">确认协作机器人到货时间</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);">联系采购总监确认最新到货进度，更新机器人安装计划</div>
+                </div>
+                <span class="status-tag red">紧急</span>
+            </div>
+            <div class="risk-item">
+                <div class="risk-dot high"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;">跟进机械臂清关</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);">协调物流部门加快清关流程，预计23日到货</div>
+                </div>
+                <span class="status-tag red">紧急</span>
+            </div>
+            <div class="risk-item">
+                <div class="risk-dot medium"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;">机器人控制系统联调</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);">完成剩余20%通信协议对接，确认控制文档</div>
+                </div>
+                <span class="status-tag orange">高</span>
+            </div>
+            <div class="risk-item">
+                <div class="risk-dot medium"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;">机器人运动算法优化</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);">优化方案已确定，计划明日开始实施</div>
+                </div>
+                <span class="status-tag orange">高</span>
+            </div>
+            <div class="risk-item">
+                <div class="risk-dot low"></div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;">机器人操作培训</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);">制定员工机器人操作培训计划和考核方案</div>
+                </div>
+                <span class="status-tag blue">中</span>
+            </div>
+        `;
+    }
+    
+    // 恢复项目反馈
+    var feedbackCard = document.querySelector('.card:has(.feedback-scroll)');
+    if (feedbackCard) {
+        feedbackCard.querySelector('.timeline').innerHTML = `
+            <!-- 时间轴节点1：最新 -->
+            <div class="timeline-item" data-member="刘洋" data-node="安装实施" data-content="工业机器人安装进度更新：B线已完成60%机器人安装调试，A线等待协作机器人到货。">
+                <div class="timeline-dot"></div>
+                <div class="timeline-header">
+                    <span class="timeline-time">2026-05-21 16:30</span>
+                    <span class="timeline-node">机器人安装</span>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-left">
+                        <img class="timeline-avatar" src="../A/images/tx-2.png" alt="" />
+                        <div class="timeline-name">刘洋</div>
+                        <div class="timeline-role">机器人安装工程师</div>
+                    </div>
+                    <div class="timeline-right">
+                        <div class="timeline-text">工业机器人安装进度更新：B线已完成60%机器人安装调试，A线等待协作机器人到货。已协调物流部门加快清关流程，预计23日可到货并开始安装。</div>
+                        <div class="timeline-media">
+                            <img class="media-preview" src="images/1.png" alt="机器人安装现场" />
+                            <div class="timeline-video" data-video="video/XC.mp4"><img src="images/2.png" alt="安装过程视频" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 时间轴节点2 -->
+            <div class="timeline-item" data-member="代码助手" data-node="系统开发" data-content="机器人控制系统开发完成80%，剩余通信协议对接工作正在进行。">
+                <div class="timeline-dot"></div>
+                <div class="timeline-header">
+                    <span class="timeline-time">2026-05-21 11:20</span>
+                    <span class="timeline-node">控制系统</span>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-left">
+                        <img class="timeline-avatar" src="../A/images/AI-3.png" alt="" />
+                        <div class="timeline-name">代码助手</div>
+                        <div class="timeline-role">机器人编程工程师<span class="ai-badge">AI</span></div>
+                    </div>
+                    <div class="timeline-right">
+                        <div class="timeline-text">机器人控制系统开发完成80%，剩余通信协议对接工作正在进行。机器人运动控制算法优化方案已确定，预计明日开始实施。</div>
+                        <div class="timeline-media">
+                            <img class="media-preview" src="images/3.png" alt="控制系统架构图" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 时间轴节点3 -->
+            <div class="timeline-item" data-member="数据管家" data-node="数据平台" data-content="机器人运行数据采集流程已自动化，每日定时执行数据分析。">
+                <div class="timeline-dot"></div>
+                <div class="timeline-header">
+                    <span class="timeline-time">2026-05-20 18:45</span>
+                    <span class="timeline-node">数据平台</span>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-left">
+                        <img class="timeline-avatar" src="../A/images/AI-4.png" alt="" />
+                        <div class="timeline-name">数据管家</div>
+                        <div class="timeline-role">数据工程师<span class="ai-badge">AI</span></div>
+                    </div>
+                    <div class="timeline-right">
+                        <div class="timeline-text">机器人运行数据采集流程已自动化，每日定时执行数据分析。机器人性能监控平台架构文档已更新至v2.0版本。</div>
+                        <div class="timeline-media">
+                            <img class="media-preview" src="images/4.png" alt="数据报表" />
+                            <img class="media-preview" src="images/5.png" alt="监控平台架构" />
+                            <div class="timeline-video" data-video="video/3D.mp4"><img src="images/1.png" alt="数据演示" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 时间轴节点4 -->
+            <div class="timeline-item" data-member="设计助手" data-node="方案设计" data-content="机器人布局方案评审会议纪要已整理完成。">
+                <div class="timeline-dot"></div>
+                <div class="timeline-header">
+                    <span class="timeline-time">2026-05-20 10:00</span>
+                    <span class="timeline-node">方案设计</span>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-left">
+                        <img class="timeline-avatar" src="../A/images/AI-1.png" alt="" />
+                        <div class="timeline-name">设计助手</div>
+                        <div class="timeline-role">机器人方案设计师<span class="ai-badge">AI</span></div>
+                    </div>
+                    <div class="timeline-right">
+                        <div class="timeline-text">机器人布局方案评审会议纪要已整理完成，各部门反馈意见已汇总，正在进行机器人工作站布局优化。</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 时间轴节点5：最早 -->
+            <div class="timeline-item" data-member="李婷" data-node="需求确认" data-content="自动化机器人需求确认阶段提前完成。">
+                <div class="timeline-dot"></div>
+                <div class="timeline-header">
+                    <span class="timeline-time">2026-05-18 14:30</span>
+                    <span class="timeline-node">需求确认</span>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-left">
+                        <img class="timeline-avatar" src="../A/images/tx-1.png" alt="" />
+                        <div class="timeline-name">李婷</div>
+                        <div class="timeline-role">机器人需求分析师</div>
+                    </div>
+                    <div class="timeline-right">
+                        <div class="timeline-text">自动化机器人需求确认阶段提前完成，客户对机器人配置需求文档认可度较高，建议后续各阶段保持高频沟通。</div>
+                        <div class="timeline-media">
+                            <div class="timeline-video" data-video="video/XC.mp4"><img src="images/2.png" alt="需求评审会议" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        feedbackCard.querySelector('.timeline').style.display = 'block';
+        feedbackCard.querySelector('.empty-state').style.display = 'none';
+    }
+    
+    // 恢复项目文档
+    var docCard = document.querySelector('.card:has(.doc-list)');
+    if (docCard) {
+        docCard.querySelector('.doc-list').innerHTML = `
+            <div class="doc-item">📄 机器人需求规格说明书 v2.1.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-05</span></div>
+            <div class="doc-item">📄 机器人技术方案设计书 v1.3.pdf <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
+            <div class="doc-item">📊 机器人控制系统测试报告.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-10</span></div>
+            <div class="doc-item">📋 机器人设备清单及验收标准.docx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-12</span></div>
+            <div class="doc-item">📈 机器人项目周报汇总.pptx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-17</span></div>
+            <div class="doc-item">📝 机器人试运行问题记录表.xlsx <span style="margin-left:auto;color:var(--text-light);font-size:0.75rem;">2026-05-20</span></div>
+        `;
+    }
+}
+
 (function() {
     // ===== 动态日期偏移（与 dashboard 一致，base = 2026-05-20） =====
     var _detailDateOffset = 0;
@@ -1522,7 +2383,7 @@
 
     // 从 SOP 节点动态推导项目级日期
     function computeProjectRange() {
-        var nodeNames = ['需求确认','方案设计','市场调研','采购与进场','系统开发','安装实施','数据平台部署','联调试运行','培训与验收'];
+        var nodeNames = ['需求确认','方案设计','机器人选型','采购与进场','控制系统开发','机器人安装','数据平台部署','联调测试','培训验收'];
         var minPS = null, maxPE = null, minAS = null;
         nodeNames.forEach(function(name) {
             var info = getNodeInfo(name);
@@ -1571,6 +2432,10 @@
             var selectedNode = nodeFilter.value;
 
             var items = document.querySelectorAll('.timeline-item');
+            var emptyState = document.getElementById('feedback-empty');
+            var timeline = document.querySelector('.timeline');
+            var visibleCount = 0;
+
             items.forEach(function(item) {
                 var member = item.getAttribute('data-member') || '';
                 var node = item.getAttribute('data-node') || '';
@@ -1583,8 +2448,20 @@
                 var matchMember = !selectedMember || member === selectedMember;
                 var matchNode = !selectedNode || node === selectedNode;
 
-                item.style.display = (matchKeyword && matchMember && matchNode) ? '' : 'none';
+                var isVisible = matchKeyword && matchMember && matchNode;
+                item.style.display = isVisible ? '' : 'none';
+                if (isVisible) visibleCount++;
             });
+
+            if (emptyState && timeline) {
+                if (visibleCount === 0) {
+                    timeline.style.display = 'none';
+                    emptyState.style.display = 'flex';
+                } else {
+                    timeline.style.display = '';
+                    emptyState.style.display = 'none';
+                }
+            }
         }
 
         if (searchInput) {
@@ -1596,6 +2473,53 @@
         if (nodeFilter) {
             nodeFilter.addEventListener('change', applyFilter);
         }
+    }
+
+    // ===== 媒体预览功能 =====
+    function initMediaPreview() {
+        var overlay = document.getElementById('media-modal-overlay');
+        var modal = document.getElementById('media-modal');
+        var content = document.getElementById('media-modal-content');
+        var closeBtn = document.getElementById('media-modal-close');
+
+        function closeModal() {
+            overlay.classList.remove('show');
+            content.innerHTML = '';
+        }
+
+        // 点击遮罩关闭
+        overlay.addEventListener('click', closeModal);
+        // 点击关闭按钮
+        closeBtn.addEventListener('click', closeModal);
+        // ESC键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && overlay.classList.contains('show')) {
+                closeModal();
+            }
+        });
+
+        // 图片点击预览（使用事件委托）
+        document.addEventListener('click', function(e) {
+            var target = e.target;
+            if (target.classList.contains('media-preview')) {
+                var src = target.src;
+                var alt = target.alt || '图片预览';
+                content.innerHTML = '<img src="' + src + '" alt="' + alt + '" />';
+                overlay.classList.add('show');
+            }
+        });
+
+        // 视频点击播放（使用事件委托）
+        document.addEventListener('click', function(e) {
+            var target = e.target;
+            var videoWrap = target.closest('.timeline-video');
+            if (videoWrap) {
+                var videoSrc = videoWrap.getAttribute('data-video');
+                var alt = videoWrap.querySelector('img').alt || '视频播放';
+                content.innerHTML = '<video src="' + videoSrc + '" controls autoplay style="max-width:100%;max-height:70vh;"></video>';
+                overlay.classList.add('show');
+            }
+        });
     }
 
     // 甘特图初始视图从今日附近开始（向前偏移15天，确保今日可见）
@@ -1721,13 +2645,13 @@
         // offset=13时（今日=06-02）对应目标日期：
         //   需求确认：计划 05-15~05-18，实际 05-15~05-17（提前1天完成）
         //   方案设计：计划 05-18~05-21，实际 05-18~05-21（按时完成）
-        //   市场调研：计划 05-21~05-24，实际 05-22~05-25（延期1天完成）
+        //   机器人选型：计划 05-21~05-24，实际 05-22~05-25（延期1天完成）
         //   采购与进场：计划 05-22~06-03，实际开始 05-22（进行中，正常）
-        //   系统开发：计划 05-25~05-31，实际开始 05-26（已延期2天）
-        //   安装实施：计划 05-28~06-01，实际开始 05-31（已延期1天，还可能延期2天）
+        //   控制系统开发：计划 05-25~05-31，实际开始 05-26（已延期2天）
+        //   机器人安装：计划 05-28~06-01，实际开始 05-31（已延期1天，还可能延期2天）
         //   数据平台部署：已取消
-        //   联调试运行：计划 05-30~06-02，实际开始 06-01（可能延期2天）
-        //   培训与验收：计划 06-01~06-05（未开始）
+        //   联调测试：计划 05-30~06-02，实际开始 06-01（可能延期2天）
+        //   培训验收：计划 06-01~06-05（未开始）
         var nodeInfo = {
             '需求确认': {
                 planStart:   oD(5, 2),
@@ -1743,7 +2667,7 @@
                 actualEnd:   oD(5, 8),
                 status: 'completed'
             },
-            '市场调研': {
+            '机器人选型': {
                 planStart:   oD(5, 8),
                 planEnd:     oD(5, 11),
                 actualStart: oD(5, 9),
@@ -1757,14 +2681,14 @@
                 actualEnd:   null,
                 status: 'active'
             },
-            '系统开发': {
+            '控制系统开发': {
                 planStart:   oD(5, 12),
                 planEnd:     oD(5, 18),
                 actualStart: oD(5, 13),
                 actualEnd:   null,
                 status: 'active'
             },
-            '安装实施': {
+            '机器人安装': {
                 planStart:   oD(5, 15),
                 planEnd:     oD(5, 19),
                 actualStart: oD(5, 18),
@@ -1778,14 +2702,14 @@
                 actualEnd:   null,
                 status: 'cancelled'
             },
-            '联调试运行': {
+            '联调测试': {
                 planStart:   oD(5, 17),
                 planEnd:     oD(5, 20),
                 actualStart: oD(5, 19),
                 actualEnd:   null,
                 status: 'active'
             },
-            '培训与验收': {
+            '培训验收': {
                 planStart:   oD(5, 19),
                 planEnd:     oD(5, 23),
                 actualStart: null,
@@ -2015,7 +2939,7 @@
                 status: 'completed',
                 hint: '按时完成'
             },
-            '市场调研': {
+            '机器人选型': {
                 planStart:   oD(5, 8),
                 planEnd:     oD(5, 11),
                 actualStart: oD(5, 9),
@@ -2031,7 +2955,7 @@
                 status: 'active',
                 hint: ''
             },
-            '系统开发': {
+            '控制系统开发': {
                 planStart:   oD(5, 12),
                 planEnd:     oD(5, 18),
                 actualStart: oD(5, 13),
@@ -2043,7 +2967,7 @@
                     return od > 0 ? '已延期' + od + '天' : '';
                 })()
             },
-            '安装实施': {
+            '机器人安装': {
                 planStart:   oD(5, 15),
                 planEnd:     oD(5, 19),
                 actualStart: oD(5, 18),
@@ -2069,7 +2993,7 @@
                 status: 'cancelled',
                 hint: ''
             },
-            '联调试运行': {
+            '联调测试': {
                 planStart:   oD(5, 17),
                 planEnd:     oD(5, 20),
                 actualStart: oD(5, 19),
@@ -2085,7 +3009,7 @@
                     return '';
                 })()
             },
-            '培训与验收': {
+            '培训验收': {
                 planStart:   oD(5, 19),
                 planEnd:     oD(5, 23),
                 actualStart: null,
@@ -2266,6 +3190,8 @@
         requestAnimationFrame(updateNodeConnectors);
         // 初始化项目反馈筛选
         initFeedbackFilter();
+        // 初始化媒体预览
+        initMediaPreview();
     });
     window.addEventListener('resize', function() {
         renderDetailGantt();
