@@ -996,7 +996,7 @@
     <div class="card">
         <div class="card-body" style="padding:0.75rem;">
             <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
-                <div style="font-size:1.25rem;font-weight:700;color:var(--text);">自动化机器人生产线项目</div>
+                <div id="projectTitle" style="font-size:1.25rem;font-weight:700;color:var(--text);">自动化机器人生产线项目</div>
                 <span class="status-tag blue">进行中</span>
                 <button class="btn btn-refresh" onclick="resetView()" title="恢复初始状态">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -3043,10 +3043,20 @@ function resetView() {
         var pe = parseDateParam(getQueryParam('projectEnd'));
         var as = parseDateParam(getQueryParam('actualStart'));
         var cost = getQueryParam('cost');
+        var projectName = getQueryParam('projectName');
         if (ps) detailProject.projectStart = ps;
         if (pe) detailProject.projectEnd = pe;
         if (as) detailProject.actualStart = as;
         if (cost) detailProject.cost = cost;
+        // 更新页面上的项目名称
+        if (projectName) {
+            var titleEl = document.getElementById('projectTitle');
+            if (titleEl) {
+                titleEl.textContent = projectName;
+            }
+            // 更新页面标题
+            document.title = projectName + ' - 项目详情';
+        }
     }
     function calcDetailStats() {
         var p = detailProject;
