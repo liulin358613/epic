@@ -799,7 +799,7 @@
                             <td>技术总监</td>
                             <td><span class="badge badge-level">Lv.5</span></td>
                             <td><span class="badge badge-user-type">组织用户</span></td>
-                            <td><span class="org-link" onclick="showOrg('org005')">佛山智能装备科技有限公司</span>（采购部-采购主管）<br> ├─ <span class="org-link" onclick="showOrg('org005-1')">研发中心</span>（研发部-研发工程师）<br> └─ <span class="org-link" onclick="showOrg('org005-2')">生产基地</span>（生产部-生产经理）<br><span class="org-link" onclick="showOrg('org006')">佛山华联机械设备厂</span>（质量主管）</td>
+                            <td><span class="org-link" onclick="showOrg('org005')">佛山智能装备科技有限公司</span>（采购部-采购主管）<br>　├─ <span class="org-link" onclick="showOrg('org005-1')">研发中心</span>（研发部-研发工程师）<br>　└─ <span class="org-link" onclick="showOrg('org005-2')">生产基地</span>（生产部-生产经理）<br><span class="org-link" onclick="showOrg('org006')">佛山华联机械设备厂</span>（质量主管）</td>
                             <td>2024-05-18</td>
                             <td>2025-05-04 16:08</td>
                             <td><span class="action-link" onclick="showDetail('00000005')">详情</span></td>
@@ -1388,7 +1388,7 @@
                     let html = `<div onclick="showOrg('${org.id}')" style="font-size: 14px; color: #475569; cursor: pointer;">${prefix}${org.name}（${displayText}）</div>`;
                     if (org.children && org.children.length > 0) {
                         org.children.forEach((child, index) => {
-                            const childPrefix = index === org.children.length - 1 ? ' └─ ' : ' ├─ ';
+                            const childPrefix = index === org.children.length - 1 ? '　└─ ' : '　├─ ';
                             html += renderOrg(child, prefix + childPrefix);
                         });
                     }
