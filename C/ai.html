@@ -758,11 +758,29 @@
                     
                     // 设置菜单位置
                     const rect = this.getBoundingClientRect();
-                    submenu.style.left = rect.right + 8 + 'px';
-                    submenu.style.top = rect.top + 'px';
                     
-                    // 显示菜单
+                    // 先显示菜单以获取其实际高度
                     submenu.classList.add('show');
+                    const menuHeight = submenu.offsetHeight;
+                    
+                    // 计算菜单在下方和上方的位置
+                    const bottomPosition = rect.bottom;
+                    const topPosition = rect.top - menuHeight;
+                    
+                    // 检查菜单显示在下方是否会超出浏览器视口
+                    const viewportHeight = window.innerHeight;
+                    const bottomOverflow = bottomPosition + menuHeight - viewportHeight;
+                    
+                    // 如果下方空间不足，将菜单显示在上方
+                    let menuTop;
+                    if (bottomOverflow > 0) {
+                        menuTop = Math.max(0, topPosition);
+                    } else {
+                        menuTop = rect.top;
+                    }
+                    
+                    submenu.style.left = rect.right + 8 + 'px';
+                    submenu.style.top = menuTop + 'px';
                 });
             });
         }
@@ -1117,7 +1135,7 @@
             border-right: 0.0625rem solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            padding: 0.75rem 0.75rem 0 0.75rem;
+            padding: 0.5rem 0.5rem 0 0.5rem;
             flex-shrink: 0;
             margin-right: 0;
             height: 100%;
@@ -9622,9 +9640,29 @@
                 e.stopPropagation();
                 clearTimeout(hideTimeout);
                 const rect = this.getBoundingClientRect();
-                submenu.style.left = rect.left + 'px';
-                submenu.style.top = rect.bottom + 2 + 'px';
+                
+                // 先显示菜单以获取其实际高度
                 submenu.classList.add('show');
+                const menuHeight = submenu.offsetHeight;
+                
+                // 计算菜单在下方和上方的位置
+                const bottomPosition = rect.bottom;
+                const topPosition = rect.top - menuHeight;
+                
+                // 检查菜单显示在下方是否会超出浏览器视口
+                const viewportHeight = window.innerHeight;
+                const bottomOverflow = bottomPosition + menuHeight - viewportHeight;
+                
+                // 如果下方空间不足，将菜单显示在上方
+                let menuTop;
+                if (bottomOverflow > 0) {
+                    menuTop = Math.max(0, topPosition);
+                } else {
+                    menuTop = rect.bottom + 2;
+                }
+                
+                submenu.style.left = rect.left + 'px';
+                submenu.style.top = menuTop + 'px';
             });
 
             resourceShareItem.addEventListener('mouseleave', function() {
@@ -9735,9 +9773,29 @@
                 e.stopPropagation();
                 clearTimeout(hideTimeout);
                 const rect = this.getBoundingClientRect();
-                submenu.style.left = rect.left + 'px';
-                submenu.style.top = rect.bottom + 2 + 'px';
+                
+                // 先显示菜单以获取其实际高度
                 submenu.classList.add('show');
+                const menuHeight = submenu.offsetHeight;
+                
+                // 计算菜单在下方和上方的位置
+                const bottomPosition = rect.bottom;
+                const topPosition = rect.top - menuHeight;
+                
+                // 检查菜单显示在下方是否会超出浏览器视口
+                const viewportHeight = window.innerHeight;
+                const bottomOverflow = bottomPosition + menuHeight - viewportHeight;
+                
+                // 如果下方空间不足，将菜单显示在上方
+                let menuTop;
+                if (bottomOverflow > 0) {
+                    menuTop = Math.max(0, topPosition);
+                } else {
+                    menuTop = rect.bottom + 2;
+                }
+                
+                submenu.style.left = rect.left + 'px';
+                submenu.style.top = menuTop + 'px';
             });
 
             consumptionItem.addEventListener('mouseleave', function() {
@@ -10138,9 +10196,29 @@
 
             // 每次点击都重新定位并显示（与团队设置菜单一致：非toggle模式）
             const rect = btn.getBoundingClientRect();
-            menu.style.left = rect.right + 8 + 'px';
-            menu.style.top = rect.top + 'px';
+            
+            // 先显示菜单以获取其实际高度
             menu.classList.add('show');
+            const menuHeight = menu.offsetHeight;
+            
+            // 计算菜单在下方和上方的位置
+            const bottomPosition = rect.bottom;
+            const topPosition = rect.top - menuHeight;
+            
+            // 检查菜单显示在下方是否会超出浏览器视口
+            const viewportHeight = window.innerHeight;
+            const bottomOverflow = bottomPosition + menuHeight - viewportHeight;
+            
+            // 如果下方空间不足，将菜单显示在上方
+            let menuTop;
+            if (bottomOverflow > 0) {
+                menuTop = Math.max(0, topPosition);
+            } else {
+                menuTop = rect.top;
+            }
+            
+            menu.style.left = rect.right + 8 + 'px';
+            menu.style.top = menuTop + 'px';
             btn.classList.add('open');
         }
         // 点击外部关闭（与团队成员设置菜单交互一致）
