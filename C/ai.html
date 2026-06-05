@@ -1081,13 +1081,11 @@
             height: 100%;
             min-height: 0;
             position: relative;
+            overflow: hidden;
         }
 
         .sidebar-top {
-            flex: 1;
-            overflow-y: auto;
-            min-height: 0;
-            scrollbar-width: none;
+            display: none;
         }
 
         .sidebar-top::-webkit-scrollbar {
@@ -1095,8 +1093,7 @@
         }
 
         .sidebar-top:hover::-webkit-scrollbar {
-            display: block;
-            width: 6px;
+            display: none;
         }
 
         .sidebar-top::-webkit-scrollbar-track {
@@ -1104,32 +1101,20 @@
         }
 
         .sidebar-top::-webkit-scrollbar-thumb {
-            background: var(--border-gray);
-            border-radius: 3px;
+            background: transparent;
         }
 
         .sidebar-fixed-top {
             flex-shrink: 0;
+            overflow: hidden;
         }
-        .sidebar-scroll-area {
+        .sidebar-menus-area {
             flex: 1;
-            overflow-y: auto;
             min-height: 0;
-            scrollbar-width: none;
-        }
-        .sidebar-scroll-area::-webkit-scrollbar {
-            display: none;
-        }
-        .sidebar-scroll-area:hover::-webkit-scrollbar {
-            display: block;
-            width: 6px;
-        }
-        .sidebar-scroll-area::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .sidebar-scroll-area::-webkit-scrollbar-thumb {
-            background: var(--border-gray);
-            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
        .sidebar-login-bar {
@@ -1139,14 +1124,9 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            /* margin-left: -0.75rem;
-            margin-right: -0.75rem;
-            margin-bottom: -0.75rem; */
             flex-shrink: 0;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            margin-left: -0.75rem;
+            margin-right: -0.75rem;
         }
 
         .sidebar-login-bar .login-avatar {
@@ -1234,8 +1214,52 @@
         .sidebar-menu {
             display: flex;
             flex-direction: column;
-            /* gap: 0.5rem; */
-            /* margin-bottom: 0.625rem; */
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-menu.expanded {
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        /* 触底时：允许收缩，子级区域变为可滚动 */
+        .sidebar-menu.expanded.overflow {
+            flex: 0 1 auto;
+            min-height: 0;
+        }
+
+        .sidebar-menu .submenu-scroll-area {
+            /* 默认不滚动，子级内容全部展示 */
+        }
+
+        .sidebar-menu.expanded.overflow .submenu-scroll-area {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .sidebar-menu.expanded.overflow .submenu-scroll-area::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar-menu.expanded.overflow .submenu-scroll-area:hover::-webkit-scrollbar {
+            display: block;
+            width: 6px;
+        }
+
+        .sidebar-menu.expanded.overflow .submenu-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-menu.expanded.overflow .submenu-scroll-area::-webkit-scrollbar-thumb {
+            background: var(--border-gray);
+            border-radius: 3px;
+        }
+
+        .sidebar-menu.collapsed .submenu-scroll-area {
+            display: none;
         }
         /* 我的人类伙伴+我的AI团队一级菜单 */
         .org-submenu .menu-item {
@@ -1405,6 +1429,7 @@
 
         .team-members.collapsed {
             max-height: 0;
+            overflow: hidden;
         }
 
         .team-member {
@@ -4433,6 +4458,8 @@
                         </div>
                     </div>
                 </div>
+            </div><!-- /sidebar-fixed-top -->
+            <div class="sidebar-menus-area">
             <!-- 我的人类伙伴 -->
             <div class="sidebar-menu org-submenu">
                 <div class="menu-item" id="teamMenu2">
@@ -4462,7 +4489,7 @@
                         </svg>
                     </div>
                 </div>
-                <div style="overflow-y: auto; max-height: calc(100vh - 380px); scrollbar-width: none;">
+                <div class="submenu-scroll-area">
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers2">
                     <!-- 搜索栏 -->
@@ -4586,7 +4613,7 @@
                         </svg>
                     </div>
                 </div>
-                <div style="overflow-y: auto; max-height: calc(100vh - 380px); scrollbar-width: none;">
+                <div class="submenu-scroll-area">
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers1">
                     <!-- 搜索栏 -->
@@ -4836,7 +4863,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="overflow-y: auto; max-height: calc(100vh - 380px); scrollbar-width: none;">
+                <div class="submenu-scroll-area">
                 <!-- 项目列表 -->
                 <div class="team-members" id="projMembers">
                     <!-- 搜索栏 -->
@@ -5163,7 +5190,7 @@
                 </div>
                 </div>
             </div>
-</div><!-- /sidebar-scroll-area -->
+</div><!-- /sidebar-menus-area -->
             <div class="sidebar-login-bar" id="sidebarLoginBar">
                 <img src="images/tx-1.png" class="login-avatar" alt="用户头像">
                 <div class="login-info">
@@ -10141,27 +10168,204 @@
             const menu = document.getElementById(menuId);
             const members = document.getElementById(membersId);
             if (!menu || !members) return;
+            const sidebarMenu = menu.closest('.sidebar-menu');
             const icon = menu.querySelector('.collapse-icon');
             const addButton = menu.querySelector('.add-team-member-btn');
             const orgSwitchDropdown = menu.querySelector('.org-switch-dropdown');
 
-            // 默认展开状态
-            members.classList.remove('collapsed');
-            if (icon) icon.classList.remove('collapsed');
-
-            // 点击切换折叠状态，但排除添加按钮和组织切换按钮
             menu.addEventListener('click', (e) => {
-                // 如果点击的是添加按钮或其内部元素，不执行折叠操作
-                if (addButton && (addButton === e.target || addButton.contains(e.target))) {
-                    return;
+                if (addButton && (addButton === e.target || addButton.contains(e.target))) return;
+                if (orgSwitchDropdown && (orgSwitchDropdown === e.target || orgSwitchDropdown.contains(e.target))) return;
+
+                const isCurrentlyCollapsed = members.classList.contains('collapsed');
+
+                if (isCurrentlyCollapsed) {
+                    const menusArea = document.querySelector('.sidebar-menus-area');
+                    const loginBar = document.querySelector('.sidebar-login-bar');
+                    if (menusArea && sidebarMenu && loginBar) {
+                        // 检测当前菜单是否是「触底菜单」
+                        const isAtBottom = sidebarMenu.classList.contains('at-bottom');
+
+                        if (isAtBottom) {
+                            // 点击触底菜单：先收起所有已展开的菜单，释放空间
+                            const allExpanded = menusArea.querySelectorAll('.sidebar-menu.expanded');
+                            allExpanded.forEach(item => {
+                                if (item !== sidebarMenu) {
+                                    collapseMenu(item);
+                                }
+                            });
+                            // 清除所有at-bottom标记（空间释放后需重新评估）
+                            menusArea.querySelectorAll('.sidebar-menu.at-bottom').forEach(item => {
+                                item.classList.remove('at-bottom');
+                            });
+                        }
+
+                        // 展开当前菜单
+                        members.classList.remove('collapsed');
+                        if (icon) icon.classList.remove('collapsed');
+                        sidebarMenu.classList.add('expanded');
+                        sidebarMenu.classList.remove('collapsed');
+                        sidebarMenu.classList.remove('at-bottom');
+                        sidebarMenu.classList.remove('overflow');
+
+                        // 强制浏览器重排
+                        void menusArea.offsetHeight;
+
+                        // 核心布局协调：自动收起触底菜单 + 处理溢出滚动
+                        reconcileLayout(sidebarMenu);
+                    }
+                } else {
+                    // 当前是展开状态，收起
+                    collapseSidebarMenu(sidebarMenu, members, icon);
+                    const menusArea = document.querySelector('.sidebar-menus-area');
+                    if (menusArea) {
+                        void menusArea.offsetHeight;
+                        recalcBottomState();
+                    }
                 }
-                // 如果点击的是组织切换下拉或其内部元素，不执行折叠操作
-                if (orgSwitchDropdown && (orgSwitchDropdown === e.target || orgSwitchDropdown.contains(e.target))) {
-                    return;
-                }
-                members.classList.toggle('collapsed');
-                if (icon) icon.classList.toggle('collapsed');
             });
+        }
+
+        // 核心布局协调：展开菜单后，自动收起被挤压触底的菜单，并处理溢出滚动
+        function reconcileLayout(expandedMenu) {
+            const menusArea = document.querySelector('.sidebar-menus-area');
+            if (!menusArea) return;
+            const loginBar = document.querySelector('.sidebar-login-bar');
+            if (!loginBar) return;
+
+            const allMenus = Array.from(menusArea.querySelectorAll('.sidebar-menu'));
+
+            // Step 1: 从底部往上，自动收起被挤压触底的菜单（不收起当前展开的菜单）
+            let changed = true;
+            while (changed) {
+                changed = false;
+                void menusArea.offsetHeight;
+                const loginBarTop = loginBar.getBoundingClientRect().top;
+
+                for (let i = allMenus.length - 1; i >= 0; i--) {
+                    const menuEl = allMenus[i];
+                    if (menuEl === expandedMenu) continue;
+                    if (!menuEl.classList.contains('expanded')) continue;
+
+                    const menuRect = menuEl.getBoundingClientRect();
+                    if (menuRect.bottom > loginBarTop + 2) {
+                        // 该菜单被挤压触底：收起子菜单，标记为触底
+                        const submenu = menuEl.querySelector('.team-members');
+                        const subIcon = menuEl.querySelector('.menu-item .collapse-icon');
+                        if (submenu) submenu.classList.add('collapsed');
+                        if (subIcon) subIcon.classList.add('collapsed');
+                        menuEl.classList.remove('expanded');
+                        menuEl.classList.add('collapsed');
+                        menuEl.classList.add('at-bottom');
+                        menuEl.classList.remove('overflow');
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+
+            // Step 2: 标记所有未展开且紧贴底部的菜单为 at-bottom
+            void menusArea.offsetHeight;
+            const currentLoginBarTop = loginBar.getBoundingClientRect().top;
+            for (let i = allMenus.length - 1; i >= 0; i--) {
+                const menuEl = allMenus[i];
+                if (menuEl.classList.contains('expanded')) continue;
+                const menuRect = menuEl.getBoundingClientRect();
+                if (menuRect.bottom >= currentLoginBarTop - 2) {
+                    menuEl.classList.add('at-bottom');
+                }
+            }
+
+            // Step 3: 检查当前展开菜单是否超出边界，需要滚动
+            void menusArea.offsetHeight;
+            allMenus.forEach(item => item.classList.remove('overflow'));
+            void menusArea.offsetHeight;
+
+            const finalLoginBarTop = loginBar.getBoundingClientRect().top;
+            if (expandedMenu && expandedMenu.classList.contains('expanded')) {
+                const menuRect = expandedMenu.getBoundingClientRect();
+                if (menuRect.bottom > finalLoginBarTop + 2) {
+                    expandedMenu.classList.add('overflow');
+                }
+            }
+        }
+
+        // 收起菜单后，重新评估触底状态
+        function recalcBottomState() {
+            const menusArea = document.querySelector('.sidebar-menus-area');
+            if (!menusArea) return;
+            const loginBar = document.querySelector('.sidebar-login-bar');
+            if (!loginBar) return;
+
+            // 先移除所有at-bottom标记
+            menusArea.querySelectorAll('.sidebar-menu.at-bottom').forEach(item => {
+                item.classList.remove('at-bottom');
+            });
+
+            void menusArea.offsetHeight;
+
+            // 如果有展开菜单，重新运行reconcileLayout
+            const expandedMenus = menusArea.querySelectorAll('.sidebar-menu.expanded');
+            if (expandedMenus.length > 0) {
+                // 以第一个展开菜单为主
+                reconcileLayout(expandedMenus[0]);
+            } else {
+                // 没有展开菜单，标记所有紧贴底部的收起菜单
+                const loginBarTop = loginBar.getBoundingClientRect().top;
+                const allMenus = menusArea.querySelectorAll('.sidebar-menu');
+                allMenus.forEach(menuEl => {
+                    if (menuEl.classList.contains('expanded')) return;
+                    const menuRect = menuEl.getBoundingClientRect();
+                    if (menuRect.bottom >= loginBarTop - 2) {
+                        menuEl.classList.add('at-bottom');
+                    }
+                });
+            }
+        }
+
+        // 初始化菜单状态
+        function initMenuStates() {
+            const menusArea = document.querySelector('.sidebar-menus-area');
+            if (!menusArea) return;
+
+            // 先全部展开
+            const allMenus = menusArea.querySelectorAll('.sidebar-menu');
+            allMenus.forEach(item => {
+                const members = item.querySelector('.team-members');
+                const icon = item.querySelector('.menu-item .collapse-icon');
+                if (members) members.classList.remove('collapsed');
+                if (icon) icon.classList.remove('collapsed');
+                item.classList.add('expanded');
+                item.classList.remove('collapsed');
+                item.classList.remove('overflow');
+                item.classList.remove('at-bottom');
+            });
+
+            void menusArea.offsetHeight;
+
+            // 使用reconcileLayout以最后一个菜单为基准
+            // 它会自动从底部往上收起触底菜单
+            reconcileLayout(allMenus[allMenus.length - 1]);
+        }
+
+        function collapseSidebarMenu(sidebarMenu, members, icon) {
+            if (members) members.classList.add('collapsed');
+            if (icon) icon.classList.add('collapsed');
+            if (sidebarMenu) {
+                sidebarMenu.classList.remove('expanded');
+                sidebarMenu.classList.add('collapsed');
+                sidebarMenu.classList.remove('overflow');
+            }
+        }
+
+        function collapseMenu(sidebarMenuEl) {
+            const members = sidebarMenuEl.querySelector('.team-members');
+            const icon = sidebarMenuEl.querySelector('.menu-item .collapse-icon');
+            if (members) members.classList.add('collapsed');
+            if (icon) icon.classList.add('collapsed');
+            sidebarMenuEl.classList.remove('expanded');
+            sidebarMenuEl.classList.add('collapsed');
+            sidebarMenuEl.classList.remove('overflow');
         }
 
         // 项目列表点击事件处理
@@ -10242,6 +10446,10 @@
         initCollapse('teamMenu1', 'teamMembers1');
         initCollapse('teamMenu2', 'teamMembers2');
         initCollapse('orgMenu', 'projMembers');
+        // 初始化菜单状态：先全部展开，触底的自动收起
+        initMenuStates();
+        // 窗口大小变化时重新检测
+        window.addEventListener('resize', recalcBottomState);
 
         // 初始化项目列表点击事件
         initProjectClick();
