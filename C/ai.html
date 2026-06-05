@@ -781,6 +781,7 @@
         function searchHumanPartners(keyword) {
             const teamMembers = document.querySelectorAll('#teamMembers2 .team-member');
             const clearBtn = document.getElementById('clearHumanPartnerSearch');
+            const noDataDiv = document.getElementById('noDataHumanPartners');
             
             // 显示/隐藏清除按钮
             if (keyword.trim() === '') {
@@ -789,25 +790,39 @@
                 clearBtn.style.display = 'flex';
             }
             
+            let hasMatch = false;
             teamMembers.forEach(member => {
                 const memberName = member.getAttribute('data-member-name');
                 if (keyword.trim() === '') {
                     member.style.display = '';
+                    hasMatch = true;
                 } else if (memberName.toLowerCase().includes(keyword.toLowerCase())) {
                     member.style.display = '';
+                    hasMatch = true;
                 } else {
                     member.style.display = 'none';
                 }
             });
+            
+            // 显示/隐藏暂无数据提示
+            if (noDataDiv) {
+                noDataDiv.style.display = (keyword.trim() !== '' && !hasMatch) ? 'flex' : 'none';
+            }
         }
 
         // 清除搜索
         function clearHumanPartnerSearch() {
             const searchInput = document.getElementById('humanPartnerSearch');
             const clearBtn = document.getElementById('clearHumanPartnerSearch');
+            const noDataDiv = document.getElementById('noDataHumanPartners');
             
             searchInput.value = '';
             clearBtn.style.display = 'none';
+            
+            // 隐藏暂无数据提示
+            if (noDataDiv) {
+                noDataDiv.style.display = 'none';
+            }
             
             // 重置列表显示
             const teamMembers = document.querySelectorAll('#teamMembers2 .team-member');
@@ -820,6 +835,7 @@
         function searchAITeam(keyword) {
             const teamMembers = document.querySelectorAll('#teamMembers1 .team-member');
             const clearBtn = document.getElementById('clearAITeamSearch');
+            const noDataDiv = document.getElementById('noDataAITeam');
             
             // 显示/隐藏清除按钮
             if (keyword.trim() === '') {
@@ -828,25 +844,39 @@
                 clearBtn.style.display = 'flex';
             }
             
+            let hasMatch = false;
             teamMembers.forEach(member => {
                 const memberName = member.getAttribute('data-member-name');
                 if (keyword.trim() === '') {
                     member.style.display = '';
+                    hasMatch = true;
                 } else if (memberName.toLowerCase().includes(keyword.toLowerCase())) {
                     member.style.display = '';
+                    hasMatch = true;
                 } else {
                     member.style.display = 'none';
                 }
             });
+            
+            // 显示/隐藏暂无数据提示
+            if (noDataDiv) {
+                noDataDiv.style.display = (keyword.trim() !== '' && !hasMatch) ? 'flex' : 'none';
+            }
         }
 
         // 清除AI团队搜索
         function clearAITeamSearch() {
             const searchInput = document.getElementById('aiTeamSearch');
             const clearBtn = document.getElementById('clearAITeamSearch');
+            const noDataDiv = document.getElementById('noDataAITeam');
             
             searchInput.value = '';
             clearBtn.style.display = 'none';
+            
+            // 隐藏暂无数据提示
+            if (noDataDiv) {
+                noDataDiv.style.display = 'none';
+            }
             
             // 重置列表显示
             const teamMembers = document.querySelectorAll('#teamMembers1 .team-member');
@@ -859,6 +889,7 @@
         function searchProjects(keyword) {
             const projectItems = document.querySelectorAll('#projMembers .history-item');
             const clearBtn = document.getElementById('clearProjectSearch');
+            const noDataDiv = document.getElementById('noDataProjects');
             
             // 显示/隐藏清除按钮
             if (keyword.trim() === '') {
@@ -867,6 +898,7 @@
                 clearBtn.style.display = 'flex';
             }
             
+            let hasMatch = false;
             projectItems.forEach(item => {
                 const itemName = item.querySelector('.history-item-content span').textContent;
                 const hasMatchingChild = item.querySelector('.history-item-children .history-item-content span') !== null && 
@@ -874,21 +906,34 @@
                 
                 if (keyword.trim() === '') {
                     item.style.display = '';
+                    hasMatch = true;
                 } else if (itemName.toLowerCase().includes(keyword.toLowerCase()) || hasMatchingChild) {
                     item.style.display = '';
+                    hasMatch = true;
                 } else {
                     item.style.display = 'none';
                 }
             });
+            
+            // 显示/隐藏暂无数据提示
+            if (noDataDiv) {
+                noDataDiv.style.display = (keyword.trim() !== '' && !hasMatch) ? 'flex' : 'none';
+            }
         }
 
         // 清除项目搜索
         function clearProjectSearch() {
             const searchInput = document.getElementById('projectSearch');
             const clearBtn = document.getElementById('clearProjectSearch');
+            const noDataDiv = document.getElementById('noDataProjects');
             
             searchInput.value = '';
             clearBtn.style.display = 'none';
+            
+            // 隐藏暂无数据提示
+            if (noDataDiv) {
+                noDataDiv.style.display = 'none';
+            }
             
             // 重置列表显示
             const projectItems = document.querySelectorAll('#projMembers .history-item');
@@ -4516,6 +4561,7 @@
                             </button>
                         </div>
                     </div>
+                    <div id="noDataHumanPartners" style="display: none; justify-content: center; align-items: center; color: var(--classic-gray); font-size: 0.8rem;">暂无数据</div>
                     <div class="team-member" data-member-id="zhangsan" data-member-name="RaaS开发群" data-avatar-color="#4CAF50">
                         <div class="team-member-content">
                             <div class="member-avatar" style="width: 32px; height: 32px; border-radius: 8px; overflow: hidden;">
@@ -4640,6 +4686,7 @@
                             </button>
                         </div>
                     </div>
+                    <div id="noDataAITeam" style="display: none; justify-content: center; align-items: center; color: var(--classic-gray); font-size: 0.8rem;">暂无数据</div>
                     <div class="team-member" data-member-id="sales" data-member-name="销售工程师" data-avatar-color="#2196F3" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#2196F3"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="width: 32px; height: 32px; border-radius: 8px; overflow: hidden;">
@@ -4890,6 +4937,7 @@
                             </button>
                         </div>
                     </div>
+                    <div id="noDataProjects" style="display: none; justify-content: center; align-items: center; color: var(--classic-gray); font-size: 0.8rem;">暂无数据</div>
                     <div class="history-item has-children">
                         <div class="history-item-content">
                             <span>工业机器人装配线项目</span>
