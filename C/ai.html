@@ -961,6 +961,8 @@
         }
 
 
+
+
     </script>
     <style>
         html {
@@ -5723,7 +5725,7 @@
                             </svg>
                             <span>3D软件</span>
                         </div>
-                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
+                        <div class="dropdown-menu-item" onclick="showDocumentEditor(); closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -5799,7 +5801,7 @@
                                     </svg>
                                     <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
                                 </div>
-                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showDocumentEditor()">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
@@ -6096,8 +6098,11 @@
         }
         
         // 全局变量存储tabs
-        let previewTabs = [];
-        
+        if (!window.previewTabs) {
+            window.previewTabs = [];
+        }
+        let previewTabs = window.previewTabs;
+
         // 显示BI中心
         function showBICenter() {
             // 检查是否已经存在BI中心tab
@@ -6405,6 +6410,13 @@
                     const orgName = currentTab.orgName || '';
                     const encodedOrgName = encodeURIComponent(orgName);
                     previewContent.innerHTML = `<iframe src="org-manage.html?orgName=${encodedOrgName}" style="width: 100%; height: 100%; border: none; display: block;"></iframe>`;
+                } else if (currentTab.title === '文件编辑') {
+                    // 隐藏图片列表区域和工具栏
+                    document.querySelector('.preview-file-list').style.display = 'none';
+                    document.querySelector('.preview-toolbar').style.display = 'none';
+                    // 加载文件编辑页面
+                    const previewContent = document.getElementById('previewContent');
+                    previewContent.innerHTML = `<iframe src="files.html" style="width: 100%; height: 100%; border: none; display: block;"></iframe>`;
                 }
             } else {
                 console.log('没有找到当前Tab');
@@ -6417,7 +6429,7 @@
         function updatePreviewPadding(title) {
              const previewContent = document.getElementById('previewContent');
             // 检查是否需要移除内边距
-            if (title === '文件管理' || title === '项目管理' || title === '组织详情' || title === '项目详情') {
+            if (title === '文件管理' || title === '项目管理' || title === '组织详情' || title === '项目详情' || title === '文件编辑') {
                 // 移除下内边距
                 previewContent.style.paddingBottom = '0';
                 // 移除上内边距
@@ -6857,7 +6869,7 @@
                                 </svg>
                                 <span style="font-size: 0.875rem; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
                             </div>
-                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showDocumentEditor()">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -7165,6 +7177,71 @@
             // 创建新Tab
             const tabId = 'tab_' + Date.now();
             const tabTitle = '文件管理';
+            
+            // 添加到tabs数组
+            previewTabs.push({
+                id: tabId,
+                title: tabTitle
+            });
+            
+            // 更新Tab栏
+            updateTabs();
+            
+            // 激活当前Tab
+            activateTab(tabId);
+        }
+        
+        // 显示文档编辑
+        function showDocumentEditor() {
+            // 检查是否已经存在文件编辑tab
+            const existingTab = previewTabs.find(tab => tab.title === '文件编辑');
+            if (existingTab) {
+                // 激活已存在的tab
+                activateTab(existingTab.id);
+                return;
+            }
+            
+            // 切换到全屏布局
+            const mainContainer = document.querySelector('.main-container');
+            mainContainer.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-preview');
+            
+            // 显示预览区（不改变用户拖动的宽度）
+            const previewArea = document.getElementById('previewArea');
+            const resizer = document.getElementById('resizer');
+            const inputContainer = document.querySelector('.input-container');
+            const chatContent = document.querySelector('.chat-content');
+            if (previewArea) {
+                previewArea.style.display = 'flex';
+            }
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            if (inputContainer) {
+                inputContainer.style.width = '';
+            }
+            if (chatContent) {
+                chatContent.style.padding = '';
+            }
+            
+            // 显示预览区标题栏（包含Tab栏）
+            const previewHeader = document.querySelector('.preview-header');
+            if (previewHeader) {
+                previewHeader.style.display = 'flex';
+            }
+            
+            // 隐藏图片列表区域和工具栏
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 显示分隔线
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            
+            // 创建新Tab
+            const tabId = 'tab_' + Date.now();
+            const tabTitle = '文件编辑';
             
             // 添加到tabs数组
             previewTabs.push({
