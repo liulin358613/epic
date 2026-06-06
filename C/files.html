@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档编辑</title>
+    
+    <style>
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        #tab-bar {
+            display: none;
+            background: #fff;
+            padding: 6px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            align-items: center;
+            gap: 4px;
+        }
+
+        #tab-bar.show {
+            display: flex;
+        }
+
+        .tab-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f1f3f4;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 13px;
+            color: #5f6368;
+            border: 1px solid transparent;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-item.active {
+            background: #fff;
+            border-color: #dadce0;
+            border-bottom-color: #dc2626;
+            color: #dc2626;
+        }
+
+        .tab-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .tab-icon.text { background: #4a7bc4; }
+        .tab-icon.demo { background: #f59e0b; }
+        .tab-icon.table { background: #10b981; }
+        .tab-icon.pdf { background: #ef4444; }
+
+        .tab-close {
+            margin-left: 8px;
+            opacity: 0;
+            font-size: 16px;
+            color: #9ca3af;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .tab-item:hover .tab-close {
+            opacity: 1;
+        }
+
+        .add-btn {
+            padding: 6px 12px;
+            border: 2px dashed #dadce0;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 14px;
+            margin-left: auto;
+        }
+
+        .more-btn {
+            padding: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 14px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: fixed;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            padding: 8px;
+            z-index: 9999;
+            min-width: 160px;
+        }
+
+        .dropdown-menu.show {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f3f4;
+        }
+
+        .dropdown-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .dropdown-icon.text { background: #4a7bc4; }
+        .dropdown-icon.demo { background: #f59e0b; }
+        .dropdown-icon.table { background: #10b981; }
+        .dropdown-icon.pdf { background: #ef4444; }
+
+        #icons-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        #content-area {
+            display: none;
+            flex: 1;
+            background: #fff;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        #content-area.show {
+            display: flex;
+        }
+
+        .icon-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .icon-square {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .icon-square.w { background: linear-gradient(135deg, #4a7bc4, #356ac3); }
+        .icon-square.p { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .icon-square.s { background: linear-gradient(135deg, #10b981, #059669); }
+        .icon-square.pdf { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .icon-text {
+            font-size: 14px;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div id="tab-bar">
+        <div class="tab-item" data-type="text">
+            <span class="tab-icon text">W</span>
+            <span>新建文档</span>
+            <span class="tab-close" data-type="text">×</span>
+        </div>
+        <div class="tab-item" data-type="demo">
+            <span class="tab-icon demo">P</span>
+            <span>新建演示文稿</span>
+            <span class="tab-close" data-type="demo">×</span>
+        </div>
+        <div class="tab-item" data-type="table">
+            <span class="tab-icon table">S</span>
+            <span>新建表格</span>
+            <span class="tab-close" data-type="table">×</span>
+        </div>
+        <div class="tab-item" data-type="pdf">
+            <span class="tab-icon pdf">P</span>
+            <span>新建PDF</span>
+            <span class="tab-close" data-type="pdf">×</span>
+        </div>
+        <button class="add-btn" id="addBtn">+</button>
+        <button class="more-btn">⋯</button>
+    </div>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-item" data-type="text">
+            <span class="dropdown-icon text">W</span>
+            <span>新建文件</span>
+        </div>
+        <div class="dropdown-item" data-type="table">
+            <span class="dropdown-icon table">S</span>
+            <span>新建表格</span>
+        </div>
+        <div class="dropdown-item" data-type="demo">
+            <span class="dropdown-icon demo">P</span>
+            <span>新建演示文稿</span>
+        </div>
+        <div class="dropdown-item" data-type="pdf">
+            <span class="dropdown-icon pdf">P</span>
+            <span>新建PDF</span>
+        </div>
+    </div>
+
+    <div id="icons-wrapper">
+        <div class="icon-block" data-type="text">
+            <div class="icon-square w">W</div>
+            <span class="icon-text">文字</span>
+        </div>
+        <div class="icon-block" data-type="demo">
+            <div class="icon-square p">P</div>
+            <span class="icon-text">演示</span>
+        </div>
+        <div class="icon-block" data-type="table">
+            <div class="icon-square s">S</div>
+            <span class="icon-text">表格</span>
+        </div>
+        <div class="icon-block" data-type="pdf">
+            <div class="icon-square pdf">P</div>
+            <span class="icon-text">PDF</span>
+        </div>
+    </div>
+
+    <div id="content-area">文档内容区域</div>
+
+    <script>
+        const tabBar = document.getElementById('tab-bar');
+        const iconsWrapper = document.getElementById('icons-wrapper');
+        const contentArea = document.getElementById('content-area');
+
+        document.querySelectorAll('.icon-block').forEach(item => {
+            item.addEventListener('click', () => {
+                const type = item.dataset.type;
+                
+                tabBar.classList.add('show');
+                iconsWrapper.style.display = 'none';
+                contentArea.classList.add('show');
+                
+                document.querySelectorAll('.tab-item').forEach(tab => {
+                    tab.style.display = 'none';
+                    tab.classList.remove('active');
+                });
+                
+                const targetTab = document.querySelector(`.tab-item[data-type="${type}"]`);
+                if (targetTab) {
+                    targetTab.style.display = 'flex';
+                    targetTab.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab-close')) return;
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.tab-close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const type = e.target.dataset.type;
+                const tab = document.querySelector(`.tab-item[data-type="${type}"]`);
+                const isActive = tab.classList.contains('active');
+                tab.remove();
+                
+                if (isActive) {
+                    const remainingTabs = document.querySelectorAll('.tab-item');
+                    if (remainingTabs.length > 0) {
+                        remainingTabs[0].classList.add('active');
+                    } else {
+                        tabBar.classList.remove('show');
+                        contentArea.classList.remove('show');
+                        iconsWrapper.style.display = 'flex';
+                    }
+                }
+            });
+        });
+
+        const addBtn = document.getElementById('addBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        addBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+                return;
+            }
+            
+            const rect = this.getBoundingClientRect();
+            dropdownMenu.style.left = rect.left + 'px';
+            dropdownMenu.style.top = (rect.top + rect.height + 4) + 'px';
+            dropdownMenu.classList.add('show');
+        });
+
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const type = this.dataset.type;
+                
+                let existingTab = document.querySelector(`.tab-item[data-type="${type}"]`);
+                
+                if (!existingTab) {
+                    const icons = { text: 'W', demo: 'P', table: 'S', pdf: 'P' };
+                    const names = { text: '新建文档', demo: '新建演示文稿', table: '新建表格', pdf: '新建PDF' };
+                    const colors = { text: 'text', demo: 'demo', table: 'table', pdf: 'pdf' };
+                    
+                    existingTab = document.createElement('div');
+                    existingTab.className = 'tab-item';
+                    existingTab.dataset.type = type;
+                    existingTab.innerHTML = `
+                        <span class="tab-icon ${colors[type]}">${icons[type]}</span>
+                        <span>${names[type]}</span>
+                        <span class="tab-close" data-type="${type}">×</span>
+                    `;
+                    
+                    addBtn.parentElement.insertBefore(existingTab, addBtn);
+                    
+                    existingTab.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('tab-close')) return;
+                        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                        existingTab.classList.add('active');
+                    });
+                    
+                    existingTab.querySelector('.tab-close').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isActive = existingTab.classList.contains('active');
+                        existingTab.remove();
+                        if (isActive) {
+                            const remaining = document.querySelectorAll('.tab-item');
+                            if (remaining.length > 0) remaining[0].classList.add('active');
+                            else {
+                                tabBar.classList.remove('show');
+                                contentArea.classList.remove('show');
+                                iconsWrapper.style.display = 'flex';
+                            }
+                        }
+                    });
+                }
+                
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                existingTab.style.display = 'flex';
+                existingTab.classList.add('active');
+                
+                dropdownMenu.classList.remove('show');
+            });
+        });
+
+        document.addEventListener('click', () => {
+            dropdownMenu.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
