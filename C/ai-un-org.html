@@ -685,7 +685,7 @@
                                     this.classList.remove('expanded');
                                 } else {
                                     // 展开
-                                    subItems.style.display = 'block';
+                                    subItems.style.display = 'flex';
                                     this.classList.add('expanded');
                                 }
                             }
@@ -1681,6 +1681,9 @@
         .history-sub-items {
             margin-left: 24px;
             padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .history-item.sub-item {
