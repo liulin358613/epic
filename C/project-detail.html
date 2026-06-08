@@ -482,7 +482,7 @@
             overflow-x: auto;
             overflow-y: visible;
             scrollbar-width: thin;
-            scrollbar-color: #d1d5db transparent;
+            scrollbar-color: #d1d5db #f1f1f1;
         }
         /* 滚动条样式 — 与全局 feedback-scroll 一致 */
         #member-card .card-body::-webkit-scrollbar {
@@ -490,7 +490,8 @@
             height: 6px;
         }
         #member-card .card-body::-webkit-scrollbar-track {
-            background: transparent;
+            background: #f1f1f1;
+            border-radius: 3px;
         }
         #member-card .card-body::-webkit-scrollbar-thumb {
             background: #d1d5db;
@@ -3304,6 +3305,42 @@ function resetView() {
         });
     }
 
+    function initOrgChartDragScroll() {
+        var memberCardBody = document.querySelector('#member-card .card-body');
+        if (!memberCardBody) return;
+        
+        var isDragging = false;
+        var startX, scrollLeft;
+        
+        memberCardBody.style.cursor = 'grab';
+        
+        memberCardBody.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            memberCardBody.style.cursor = 'grabbing';
+            startX = e.pageX - memberCardBody.offsetLeft;
+            scrollLeft = memberCardBody.scrollLeft;
+            e.preventDefault();
+        });
+        
+        memberCardBody.addEventListener('mouseleave', function() {
+            isDragging = false;
+            memberCardBody.style.cursor = 'grab';
+        });
+        
+        memberCardBody.addEventListener('mouseup', function() {
+            isDragging = false;
+            memberCardBody.style.cursor = 'grab';
+        });
+        
+        memberCardBody.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            var x = e.pageX - memberCardBody.offsetLeft;
+            var walk = (x - startX) * 1.5;
+            memberCardBody.scrollLeft = scrollLeft - walk;
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         loadProjectFromURL();
         syncProjectFromGantt();
@@ -3322,6 +3359,8 @@ function resetView() {
         initFeedbackFilter();
         // 初始化媒体预览
         initMediaPreview();
+        // 初始化组织架构拖拽滚动
+        initOrgChartDragScroll();
     });
     window.addEventListener('resize', function() {
         renderDetailGantt();
