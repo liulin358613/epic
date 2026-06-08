@@ -1609,8 +1609,8 @@
                 showError('contactName', 'contactNameError', '不能为空，请输入联系人姓名');
                 return false;
             }
-            if (value.length < 2 || value.length > 20) {
-                showError('contactName', 'contactNameError', '联系人姓名长度为2-20个字符');
+            if (value.length !== 6) {
+                showError('contactName', 'contactNameError', '联系人姓名长度为6个字符');
                 return false;
             }
             clearError('contactName', 'contactNameError');
@@ -1891,8 +1891,8 @@
                 clearError('account', 'accountError');
                 return true;
             }
-            if (value.length < 3 || value.length > 50) {
-                showError('account', 'accountError', '账号长度为3-50个字符');
+            if (value.length < 6 || value.length > 50) {
+                showError('account', 'accountError', '账号长度 6-50 位，支持字母、数字、符号');
                 return false;
             }
             
@@ -1912,8 +1912,12 @@
                 clearError('password', 'passwordError');
                 return true;
             }
-            if (value.length < 6 || value.length > 50) {
-                showError('password', 'passwordError', '密码长度为6-50个字符');
+            if (value.length < 8 || value.length > 20) {
+                showError('password', 'passwordError', '密码长度 8-20 位，需包含字母 + 数字');
+                return false;
+            }
+            if (!/^(?=.*[a-zA-Z])(?=.*\d).+$/.test(value)) {
+                showError('password', 'passwordError', '密码长度 8-20 位，需包含字母 + 数字');
                 return false;
             }
             clearError('password', 'passwordError');
@@ -1921,11 +1925,7 @@
         }
 
         function needLicense() {
-            if (selectedOrgTypes.length === 0) return false;
-            return selectedOrgTypes.some(item => {
-                const typeData = orgTypeData[item.level1];
-                return typeData && typeData.requireLicense;
-            });
+            return false;
         }
 
         function validateLicense() {
