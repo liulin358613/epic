@@ -250,6 +250,13 @@
             color: var(--classic-gray);
         }
 
+        .form-input.auto-resize {
+            resize: none;
+            overflow: hidden;
+            min-height: 4.2rem;
+            line-height: 1.5;
+        }
+
         .form-input:disabled {
             background-color: var(--light-gray);
             cursor: not-allowed;
@@ -1433,6 +1440,16 @@
                     </div>
 
                     <div class="form-item">
+                        <label class="form-label">
+                            组织描述
+                        </label>
+                        <div class="form-content">
+                            <textarea class="form-input auto-resize" id="orgDescription" placeholder="请输入组织描述" maxlength="500" rows="2"></textarea>
+                            <span class="error-tip" id="orgDescriptionError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-item">
                         <label class="form-label" id="licenseLabel">
                             营业执照
                         </label>
@@ -1869,6 +1886,17 @@
         const account = document.getElementById('account');
         const password = document.getElementById('password');
         const passwordToggle = document.getElementById('passwordToggle');
+        const orgDescription = document.getElementById('orgDescription');
+
+        function autoResizeTextarea() {
+            this.style.height = 'auto';
+            const minHeight = parseInt(window.getComputedStyle(this).minHeight);
+            const scrollHeight = this.scrollHeight;
+            this.style.height = Math.max(minHeight, scrollHeight) + 'px';
+        }
+
+        orgDescription.addEventListener('input', autoResizeTextarea);
+        orgDescription.addEventListener('propertychange', autoResizeTextarea);
 
         passwordToggle.addEventListener('click', function() {
             const eyeIcon = this.querySelector('.eye-icon');
