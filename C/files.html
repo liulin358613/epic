@@ -152,16 +152,38 @@
         }
 
         .tab-add {
-            padding: 0.375rem 0.75rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            padding: 0;
             border: 2px dashed var(--border);
             border-radius: 0.375rem;
             background: var(--white);
             cursor: pointer;
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0;
             flex-shrink: 0;
             margin-left: 0.5rem;
             transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-add::before {
+            content: '';
+            width: 0.75rem;
+            height: 0.125rem;
+            background: currentColor;
+            position: absolute;
+        }
+
+        .tab-add::after {
+            content: '';
+            width: 0.125rem;
+            height: 0.75rem;
+            background: currentColor;
+            position: absolute;
         }
 
         .tab-add:hover {
@@ -338,13 +360,37 @@
         }
 
         .title-setting input {
-            flex: 1;
+            width: 30rem;
+            max-width: 100%;
             padding: 0.625rem 0.875rem;
             border: 1px solid var(--border);
             border-radius: 0.5rem;
             font-size: 0.875rem;
             outline: none;
             transition: all 0.2s ease;
+        }
+
+        .title-setting .actions {
+            margin-left: auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .title-setting .action-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 0.8125rem;
+            background: var(--white);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .title-setting .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
         }
 
         .title-setting input:focus {
@@ -402,8 +448,15 @@
     <div id="content-area">
         <div class="title-setting" id="title-setting">
             <input type="text" id="tab-title" placeholder="请输入标题">
+            <div class="actions">
+                <button class="action-btn">分享</button>
+                <button class="action-btn">下载</button>
+            </div>
         </div>
         <img id="excel-image" src="images/excel.png" alt="Excel">
+        <img id="ppt-image" src="images/ppt.png" alt="PPT">
+        <img id="word-image" src="images/word.png" alt="Word">
+        <img id="pdf-image" src="images/pdf.png" alt="PDF">
         <span id="default-text">文档内容区域</span>
     </div>
 
@@ -444,9 +497,10 @@
                 tabElement.dataset.tabId = tab.id;
                 const icons = { text: 'W', demo: 'P', table: 'S', pdf: 'P' };
                 const colors = { text: 'text', demo: 'demo', table: 'table', pdf: 'pdf' };
+                const displayTitle = tab.title.length > 10 ? tab.title.substring(0, 10) + '...' : tab.title;
                 tabElement.innerHTML = `
                     <span class="tab-icon ${colors[tab.type]}">${icons[tab.type]}</span>
-                    <span>${tab.title}</span>
+                    <span>${displayTitle}</span>
                     <span class="tab-close">×</span>
                 `;
 
@@ -484,13 +538,47 @@
             const excelImage = document.getElementById('excel-image');
             const defaultText = document.getElementById('default-text');
 
+            const pptImage = document.getElementById('ppt-image');
+            const wordImage = document.getElementById('word-image');
+            const pdfImage = document.getElementById('pdf-image');
+            
             if (tabData && tabData.type === 'table') {
                 excelImage.style.display = 'block';
+                pptImage.style.display = 'none';
+                wordImage.style.display = 'none';
+                pdfImage.style.display = 'none';
+                defaultText.style.display = 'none';
+                titleSetting.classList.add('show');
+                tabTitleInput.value = tabData.title;
+            } else if (tabData && tabData.type === 'demo') {
+                excelImage.style.display = 'none';
+                pptImage.style.display = 'block';
+                wordImage.style.display = 'none';
+                pdfImage.style.display = 'none';
+                defaultText.style.display = 'none';
+                titleSetting.classList.add('show');
+                tabTitleInput.value = tabData.title;
+            } else if (tabData && tabData.type === 'text') {
+                excelImage.style.display = 'none';
+                pptImage.style.display = 'none';
+                wordImage.style.display = 'block';
+                pdfImage.style.display = 'none';
+                defaultText.style.display = 'none';
+                titleSetting.classList.add('show');
+                tabTitleInput.value = tabData.title;
+            } else if (tabData && tabData.type === 'pdf') {
+                excelImage.style.display = 'none';
+                pptImage.style.display = 'none';
+                wordImage.style.display = 'none';
+                pdfImage.style.display = 'block';
                 defaultText.style.display = 'none';
                 titleSetting.classList.add('show');
                 tabTitleInput.value = tabData.title;
             } else {
                 excelImage.style.display = 'none';
+                pptImage.style.display = 'none';
+                wordImage.style.display = 'none';
+                pdfImage.style.display = 'none';
                 defaultText.style.display = 'block';
                 titleSetting.classList.remove('show');
             }
@@ -615,7 +703,9 @@
             if (activeTabId) {
                 const tabIndex = fileTabs.findIndex(tab => tab.id === activeTabId);
                 if (tabIndex !== -1) {
-                    fileTabs[tabIndex].title = this.value || '新建表格';
+                    const tab = fileTabs[tabIndex];
+                    const defaultNames = { text: '新建文档', demo: '新建演示文稿', table: '新建表格', pdf: '新建PDF' };
+                    fileTabs[tabIndex].title = this.value || defaultNames[tab.type] || '新建文档';
                     updateTabs();
                     activateTab(activeTabId);
                 }
