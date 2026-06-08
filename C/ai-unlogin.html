@@ -9048,14 +9048,14 @@
                 return true;
             }
 
-            if (value.length < 8) {
-                showError(passwordError, '密码长度不能少于8个字符');
+            if (value.length < 6) {
+                showError(passwordError, '密码长度不能少于6个字符');
                 passwordInputEl.classList.add('error');
                 return false;
             }
 
-            if (value.length > 20) {
-                showError(passwordError, '密码长度不能超过20个字符');
+            if (value.length > 50) {
+                showError(passwordError, '密码长度不能超过50个字符');
                 passwordInputEl.classList.add('error');
                 return false;
             }

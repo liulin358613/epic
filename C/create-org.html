@@ -1912,12 +1912,8 @@
                 clearError('password', 'passwordError');
                 return true;
             }
-            if (value.length < 8 || value.length > 20) {
-                showError('password', 'passwordError', '密码长度 8-20 位，需包含字母 + 数字');
-                return false;
-            }
-            if (!/^(?=.*[a-zA-Z])(?=.*\d).+$/.test(value)) {
-                showError('password', 'passwordError', '密码长度 8-20 位，需包含字母 + 数字');
+            if (value.length < 6 || value.length > 50) {
+                showError('password', 'passwordError', '密码长度 6-50 位，支持数字、字母、符号');
                 return false;
             }
             clearError('password', 'passwordError');
