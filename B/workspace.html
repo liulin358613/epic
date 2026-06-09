@@ -249,6 +249,27 @@
             justify-content: center;
             color: #94a3b8;
         }
+
+        /* 美化横向滚动条 */
+        #orgTableContainer::-webkit-scrollbar {
+            height: 6px;
+        }
+        #orgTableContainer::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        #orgTableContainer::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #orgTableContainer::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        #orgTableContainer {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
     </style>
 </head>
 <body>
@@ -422,14 +443,14 @@
                         <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
                     </div>
                     <div class="section-content" style="padding: 0;">
-                        <div style="overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                        <div id="orgTableContainer" style="overflow-x: auto; cursor: grab;" onmousedown="startDrag(event)" onmousemove="onDrag(event)" onmouseup="stopDrag()" onmouseleave="stopDrag()">
+                            <table style="width: 100%; border-collapse: collapse; min-width: max-content;">
                                 <thead>
                                     <tr style="background: #f8fafc;">
-                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">名称(编号)</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">名称(编号)</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
-                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">联系人/电话</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
                                         <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">创建者</th>
@@ -639,6 +660,41 @@
 
         function hideLicense() {
             document.getElementById('licenseModal').style.display = 'none';
+        }
+
+        // 表格拖拽滚动功能
+        let isDragging = false;
+        let startX = 0;
+        let scrollLeft = 0;
+
+        function startDrag(e) {
+            const container = document.getElementById('orgTableContainer');
+            if (container && e.target.closest('table')) {
+                isDragging = true;
+                container.style.cursor = 'grabbing';
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+                e.preventDefault();
+            }
+        }
+
+        function onDrag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const container = document.getElementById('orgTableContainer');
+            if (container) {
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                container.scrollLeft = scrollLeft - walk;
+            }
+        }
+
+        function stopDrag() {
+            isDragging = false;
+            const container = document.getElementById('orgTableContainer');
+            if (container) {
+                container.style.cursor = 'grab';
+            }
         }
 
         // 成员活跃度图表
