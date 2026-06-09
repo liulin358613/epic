@@ -10358,6 +10358,9 @@
                     // 去掉人数和状态部分，只保留组织名称
                     orgName = orgName.replace(/\（\d+人\）/g, '').replace(/\(\d+人\)/g, '').replace(/（[^（）]+）/g, '').trim();
                     openOrgDetailTab(orgName, orgStatus);
+                    // 关闭组织二级菜单
+                    document.getElementById('orgSwitchMenu').classList.remove('show');
+                    document.getElementById('orgSwitchBtn').classList.remove('open');
                     return;
                 }
                 

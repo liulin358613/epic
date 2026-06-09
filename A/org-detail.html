@@ -779,6 +779,7 @@
                             <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 6px;">
                                 <span id="org-phone"><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
                                 <span><i class="fa fa-users" style="color: #94a3b8;"></i> <span id="org-member-count">58</span> 名成员</span>
+                                <span id="org-creator"><i class="fa fa-user" style="color: #94a3b8;"></i> 创建者：张三 / 13826469575</span>
                                 <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 入驻时间：2024-01-15</span>
                             </div>
                             <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
@@ -974,10 +975,11 @@
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">名称(编号)</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人/电话</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">联系人</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
-                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加日期</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">创建者</th>
+                                <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加时间</th>
                                 <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">操作</th>
                             </tr>
                         </thead>
@@ -1193,9 +1195,13 @@
                 document.getElementById('sub-org-detail-id-display').textContent = '(' + (data.id || '-') + ')';
                 document.getElementById('sub-org-detail-type-display').textContent = data.type || '-';
                 document.getElementById('sub-org-detail-address-line').innerHTML = '<i class="fa fa-map-marker" style="color: #94a3b8;"></i> ' + (data.address || '-');
+                document.getElementById('sub-org-detail-phone-line').innerHTML = '<i class="fa fa-phone" style="color: #94a3b8;"></i> ' + (data.phone || '-');
+                document.getElementById('sub-org-detail-email-line').innerHTML = '<i class="fa fa-envelope" style="color: #94a3b8;"></i> ' + (data.email || '-');
                 document.getElementById('sub-org-detail-contact-line').innerHTML = '<i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：' + (data.contact || '-') + ' / ' + (data.phone || '-');
                 document.getElementById('sub-org-detail-member-count-display').textContent = data.memberCount || '-';
+                document.getElementById('sub-org-detail-creator-display').textContent = (data.contact || '-') + ' / ' + (data.phone || '-');
                 document.getElementById('sub-org-detail-create-date-display').textContent = data.createDate || '-';
+                document.getElementById('sub-org-detail-desc-display').textContent = data.description || '-';
                 
                 const companyInfoSection = document.getElementById('sub-org-company-info');
                 const viewLicenseBtn = document.getElementById('sub-org-view-license');
@@ -1482,7 +1488,9 @@
                 createTime: getUrlParameter('createTime') || '2018-06-15',
                 status: getUrlParameter('status') || 'approved',
                 statusReason: getUrlParameter('statusReason'),
-                level: getUrlParameter('level') || 'Lv.3'
+                level: getUrlParameter('level') || 'Lv.3',
+                creator: decodeURIComponent(getUrlParameter('creator')) || '张明',
+                creatorPhone: getUrlParameter('creatorPhone') || '13826469793'
             };
 
             const orgName = document.getElementById('org-name');
@@ -1504,6 +1512,9 @@
             
             const orgMemberCount = document.getElementById('org-member-count');
             if (orgMemberCount) orgMemberCount.textContent = orgData.memberCount || '-';
+            
+            const orgCreator = document.getElementById('org-creator');
+            if (orgCreator) orgCreator.innerHTML = '<i class="fa fa-user" style="color: #94a3b8;"></i> 创建者：' + (orgData.creator || '-') + ' / ' + (orgData.creatorPhone || '-');
             
             const orgCompany = document.getElementById('org-company');
             if (orgCompany) orgCompany.textContent = orgData.companyName || '-';
@@ -1622,6 +1633,10 @@
                     </td>
                     <td style="padding: 10px 12px; font-size: 14px; color: #475569;">${org.address}</td>
                     <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${org.memberCount}</td>
+                    <td style="padding: 10px 12px;">
+                        <div style="font-size: 14px; color: #475569;">${org.contact || '-'}</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">${org.phone || '-'}</div>
+                    </td>
                     <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${org.createDate || '-'}</td>
                     <td style="padding: 10px 12px;">
                         <span class="action-link" onclick="showSubOrgDetail('${org.id}')">详情</span>
@@ -2014,7 +2029,7 @@
     </div>
 
     <div id="sub-org-detail-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10002; justify-content: center; align-items: center;" onclick="hideSubOrgDetailModal()">
-        <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 900px; max-height: 90vh; overflow: hidden;" onclick="event.stopPropagation()">
+        <div style="position: relative; background: white; border-radius: 8px; width: 90%; max-width: 1000px; max-height: 90vh; overflow: hidden;" onclick="event.stopPropagation()">
             <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
                 <div style="font-size: 16px; font-weight: 600; color: #1e293b;">下级组织详情</div>
                 <button onclick="hideSubOrgDetailModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">
@@ -2028,7 +2043,7 @@
                     </div>
                     <div class="section-content" style="padding: 16px;">
                         <div style="display: flex; gap: 16px;">
-                            <div style="width: 100px; height: 100px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <div style="width: 126px; height: 126px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                 <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
                             </div>
                             <div style="flex: 1; min-width: 0;">
@@ -2042,11 +2057,17 @@
                                 </div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
                                     <span id="sub-org-detail-address-line"><i class="fa fa-map-marker" style="color: #94a3b8;"></i> -</span>
+                                    <span id="sub-org-detail-phone-line"><i class="fa fa-phone" style="color: #94a3b8;"></i> -</span>
+                                    <span id="sub-org-detail-email-line"><i class="fa fa-envelope" style="color: #94a3b8;"></i> -</span>
                                 </div>
-                                <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                                <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 6px;">
                                     <span id="sub-org-detail-contact-line"><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：-</span>
                                     <span id="sub-org-detail-member-line"><i class="fa fa-users" style="color: #94a3b8;"></i> <span id="sub-org-detail-member-count-display">-</span> 名成员</span>
-                                    <span id="sub-org-detail-create-date-line"><i class="fa fa-calendar" style="color: #94a3b8;"></i> 添加日期：<span id="sub-org-detail-create-date-display">-</span></span>
+                                    <span id="sub-org-detail-creator-line"><i class="fa fa-user" style="color: #94a3b8;"></i> 创建者：<span id="sub-org-detail-creator-display">-</span></span>
+                                    <span id="sub-org-detail-create-date-line"><i class="fa fa-calendar" style="color: #94a3b8;"></i> 添加时间：<span id="sub-org-detail-create-date-display">-</span></span>
+                                </div>
+                                <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                                    <span id="sub-org-detail-desc-line"><i class="fa fa-file-text-o" style="color: #64748b;"></i> 组织描述：<span id="sub-org-detail-desc-display">-</span></span>
                                 </div>
                             </div>
                         </div>
