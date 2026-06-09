@@ -923,11 +923,17 @@
                 </div>
                 
                 <!-- 联系电话 + 邮箱 -->
-                <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
                     <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">联系电话:</label>
                     <input type="text" id="edit-tel" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
                     <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 50px; flex-shrink: 0; padding-top: 8px; text-align: right;">邮箱:</label>
                     <input type="text" id="edit-email" placeholder="请输入" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b;">
+                </div>
+
+                <!-- 组织描述 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                    <label style="font-size: 14px; color: #64748b; font-weight: 500; width: 80px; flex-shrink: 0; padding-top: 8px; text-align: right;">组织描述:</label>
+                    <textarea id="edit-org-desc" placeholder="请输入组织描述" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; line-height: 1.5; resize: none; overflow: hidden;"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1148,12 +1154,16 @@
             document.getElementById('edit-address').value = '东莞市长安镇振安中路88号';
             document.getElementById('edit-tel').value = '0769-88888888';
             document.getElementById('edit-email').value = 'contact@example.com';
+            document.getElementById('edit-org-desc').value = '深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。';
             
             // 设置组织类型默认选中
             editSelectedOrgTypes = [{level1: 'training', level2: '独立训练基地'}];
             updateEditOrgTypeDisplay();
             
             document.getElementById('editModal').style.display = 'flex';
+            
+            // 初始化组织描述textarea高度
+            adjustTextareaHeight(document.getElementById('edit-org-desc'));
         }
         function hideEditModal() {
             document.getElementById('editModal').style.display = 'none';
@@ -1702,6 +1712,20 @@
             }
         }
 
+        // 调整textarea高度
+        function adjustTextareaHeight(textarea) {
+            if (!textarea) return;
+            // 默认高度为两行
+            var lineHeight = 21; // 约等于1.5 * 14px
+            var minHeight = lineHeight * 2;
+            var maxHeight = lineHeight * 10;
+            
+            textarea.style.height = 'auto';
+            var scrollHeight = textarea.scrollHeight;
+            var height = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
+            textarea.style.height = height + 'px';
+        }
+        
         // 页面加载完成后为静态图标添加hover事件
         document.addEventListener('DOMContentLoaded', function() {
             var infoIcons = document.querySelectorAll('.option-info-icon');
@@ -1709,6 +1733,14 @@
                 icon.addEventListener('mouseenter', showTooltip);
                 icon.addEventListener('mouseleave', hideTooltip);
             });
+            
+            // 为组织描述textarea添加输入事件监听
+            var orgDescTextarea = document.getElementById('edit-org-desc');
+            if (orgDescTextarea) {
+                orgDescTextarea.addEventListener('input', function() {
+                    adjustTextareaHeight(this);
+                });
+            }
         });
 
         document.getElementById('edit-orgTypeDropdown').addEventListener('click', function(e) {

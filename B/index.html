@@ -236,7 +236,7 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            min-width: 220px;
+            min-width: 320px;
             z-index: 1000;
         }
         .user-dropdown .has-submenu {
@@ -287,6 +287,29 @@
         .user-dropdown .org-submenu li a:hover {
             background: #e9ecef;
             color: #0051D9;
+        }
+        .org-status {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 4px;
+            font-weight: 500;
+        }
+        .org-status.pending {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        .org-status.rejected {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .header-org-status {
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 10px;
+            margin-left: 4px;
+            font-weight: 500;
         }
         .user-dropdown ul {
             list-style: none;
@@ -516,9 +539,18 @@
 
         </div>
         <div class="flex items-center space-x-4 relative" id="userMenu" onclick="toggleUserMenu()">
-            <span class="text-gray-300 text-base font-medium cursor-pointer hover:text-white transition-colors" id="currentOrgInfo">东莞市智联科技有限公司[买买提(业务部-总经理)]</span>
+            <div class="text-right cursor-pointer" id="currentOrgInfo">
+                <div class="text-gray-300 text-sm font-medium hover:text-white transition-colors">东莞市智联科技有限公司</div>
+                <div class="text-gray-400 text-xs mt-0.5">
+                    <span class="text-blue-400">买买提</span>
+                    <span class="mx-1">|</span>
+                    <span>业务部</span>
+                    <span class="mx-1">|</span>
+                    <span class="text-yellow-400">总经理</span>
+                </div>
+            </div>
             <i class="fa fa-angle-down text-gray-300 text-xs cursor-pointer hover:text-white transition-colors"></i>
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-medium cursor-pointer">A</div>
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-medium cursor-pointer shadow-lg">A</div>
             <!-- 下拉菜单 -->
             <div class="user-dropdown" id="userDropdown" style="display: none;">
                 <ul>
@@ -530,6 +562,8 @@
                             <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('长安训练中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">长安训练中心(技术部-工程师)</a></li>
                             <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">万江训练中心(技术部-工程师)</a></li>
                             <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞华天设备有限公司', '买买提', '业务部-业务员')" style="padding-left: 24px;">东莞华天设备有限公司(业务部-业务员)</a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞佳佳食品有限公司', '买买提', '', 'pending')" style="padding-left: 24px;">东莞佳佳食品有限公司<span class="org-status pending">审核中</span></a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞金标科技有限公司', '买买提', '', 'rejected')" style="padding-left: 24px;">东莞金标科技有限公司<span class="org-status rejected">已驳回</span></a></li>
                         </ul>
                     </li>
                     <li><a href="#" onclick="event.stopPropagation()">个人中心</a></li>
@@ -851,11 +885,166 @@
             }
         }
 
-        function switchOrg(orgName, userName, role) {
+        const orgData = {
+            '东莞市智联科技有限公司': {
+                name: '东莞市智联科技有限公司',
+                code: 'ORG001',
+                status: '',
+                statusText: '',
+                rejectReason: '',
+                type: '训练基地、专机设备、机器人',
+                address: '广东省东莞市长安镇',
+                phone: '0769-88888888',
+                email: 'contact@training.com',
+                contact: '张经理 / 13800138000',
+                members: '58 名成员',
+                creator: '张三/13826469796',
+                joinDate: '2024-01-15',
+                description: '深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。',
+                children: [
+                    { name: '智能制造培训中心', code: 'SUB001', company: '东莞市长安培训中心', legalPerson: '李蓓佳', creditCode: '91441900MA4U4X2K8R', type: '培训中心', contact: '李明', phone: '13812345678', address: '长安镇振安中路88号A栋', members: '25', creator: '张三', creatorPhone: '13826469575', addTime: '2024-03-15' },
+                    { name: '机器人实训基地', code: 'SUB002', company: '东莞市万江训练中心', legalPerson: '王建华', creditCode: '91441900MA4U5Y3L9S', type: '实训基地', contact: '陈强', phone: '13887654321', address: '万江街道鸿福路123号', members: '33', creator: '李四', creatorPhone: '13826469888', addTime: '2024-05-20' }
+                ]
+            },
+            '东莞华天设备有限公司': {
+                name: '东莞华天设备有限公司',
+                code: 'ORG002',
+                status: '',
+                statusText: '',
+                rejectReason: '',
+                type: '专机设备',
+                address: '广东省东莞市南城街道',
+                phone: '0769-66666666',
+                email: 'info@huatian.com',
+                contact: '李经理 / 13900139000',
+                members: '32 名成员',
+                creator: '李四/13826469888',
+                joinDate: '2024-02-20',
+                description: '东莞华天设备有限公司专注于工业自动化设备研发与制造。',
+                children: []
+            },
+            '东莞佳佳食品有限公司': {
+                name: '东莞佳佳食品有限公司',
+                code: 'ORG003',
+                status: 'pending',
+                statusText: '审核中',
+                rejectReason: '',
+                type: '食品加工',
+                address: '广东省东莞市厚街镇',
+                phone: '0769-55555555',
+                email: 'contact@jiajia.com',
+                contact: '王经理 / 13700137000',
+                members: '15 名成员',
+                creator: '王五/13826469999',
+                joinDate: '2024-06-01',
+                description: '东莞佳佳食品有限公司主要从事食品生产与加工。',
+                children: []
+            },
+            '东莞金标科技有限公司': {
+                name: '东莞金标科技有限公司',
+                code: 'ORG004',
+                status: 'rejected',
+                statusText: '已驳回',
+                rejectReason: '企业资质不符合平台入驻要求，缺少相关行业认证资质，请补充完善后重新提交申请。',
+                type: '科技服务',
+                address: '广东省东莞市松山湖',
+                phone: '0769-44444444',
+                email: 'contact@jinbiao.com',
+                contact: '赵经理 / 13600136000',
+                members: '8 名成员',
+                creator: '赵六/13826469777',
+                joinDate: '2024-05-28',
+                description: '东莞金标科技有限公司提供科技咨询服务。',
+                children: []
+            },
+            '长安训练中心': {
+                name: '长安训练中心',
+                code: 'SUB001',
+                status: '',
+                statusText: '',
+                rejectReason: '',
+                type: '培训中心',
+                address: '长安镇振安中路88号A栋',
+                phone: '0769-33333333',
+                email: 'changan@training.com',
+                contact: '李明 / 13812345678',
+                members: '25 名成员',
+                creator: '张三/13826469575',
+                joinDate: '2024-03-15',
+                description: '长安训练中心提供智能制造培训服务。',
+                children: []
+            },
+            '万江训练中心': {
+                name: '万江训练中心',
+                code: 'SUB002',
+                status: '',
+                statusText: '',
+                rejectReason: '',
+                type: '实训基地',
+                address: '万江街道鸿福路123号',
+                phone: '0769-22222222',
+                email: 'wanjiang@training.com',
+                contact: '陈强 / 13887654321',
+                members: '33 名成员',
+                creator: '李四/13826469888',
+                joinDate: '2024-05-20',
+                description: '万江训练中心提供机器人实训服务。',
+                children: []
+            },
+            '新增组织': {
+                name: '新增组织',
+                code: '',
+                status: '',
+                statusText: '',
+                rejectReason: '',
+                type: '',
+                address: '',
+                phone: '',
+                email: '',
+                contact: '',
+                members: '',
+                creator: '',
+                joinDate: '',
+                description: '',
+                children: []
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const defaultOrg = orgData['东莞市智联科技有限公司'];
+            localStorage.setItem('currentOrgData', JSON.stringify(defaultOrg));
+            localStorage.setItem('currentOrgTimestamp', Date.now().toString());
+        });
+
+        function switchOrg(orgName, userName, role, status) {
+            const org = orgData[orgName] || orgData['东莞市智联科技有限公司'];
+            
             const currentOrgInfo = document.getElementById('currentOrgInfo');
             if (currentOrgInfo) {
-                currentOrgInfo.textContent = orgName + '[' + userName + '(' + role + ')]';
+                const [department, position] = role ? role.split('-') : ['', ''];
+                const statusText = org.status === 'pending' ? '审核中' : org.status === 'rejected' ? '已驳回' : '';
+                const statusClass = org.status === 'pending' ? 'bg-orange-100 text-orange-600' : org.status === 'rejected' ? 'bg-red-100 text-red-600' : '';
+                currentOrgInfo.innerHTML = `
+                    <div class="text-gray-300 text-sm font-medium hover:text-white transition-colors">${orgName}${statusText ? '<span class="header-org-status ' + statusClass + '">' + statusText + '</span>' : ''}</div>
+                    <div class="text-gray-400 text-xs mt-0.5">
+                        <span class="text-blue-400">${userName}</span>
+                        <span class="mx-1">|</span>
+                        <span>${department || '-'}</span>
+                        <span class="mx-1">|</span>
+                        <span class="text-yellow-400">${position || '-'}</span>
+                    </div>
+                `;
             }
+            
+            localStorage.setItem('currentOrgData', JSON.stringify(org));
+            localStorage.setItem('currentOrgTimestamp', Date.now().toString());
+
+            setTimeout(() => {
+                const iframe = document.querySelector('iframe[src="workspace.html"]');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({ type: 'updateOrg' }, '*');
+                }
+            }, 100);
 
             const orgLinks = document.querySelectorAll('.org-submenu li a');
             orgLinks.forEach(link => {

@@ -40,6 +40,72 @@
             overflow: hidden;
             margin-bottom: 12px;
         }
+        .org-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        .org-status-pending {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        .org-status-rejected {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .org-status-badge .fa {
+            display: inline-block;
+            font-size: 12px;
+            color: inherit;
+            margin-left: 2px;
+        }
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .tooltip-container .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 9999;
+            top: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 13px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+        .tooltip-container .tooltip-text::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #1e293b transparent;
+        }
+        .tooltip-container:hover .tooltip-text,
+        .tooltip-container:focus-within .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tooltip-container:hover {
+            cursor: help;
+        }
         .section-header {
             display: flex;
             align-items: center;
@@ -366,7 +432,8 @@
                             <div style="flex: 1; min-width: 0;">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
                                     <div style="font-size: 18px; font-weight: 700; color: #1e293b;">
-                                        <span>东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                                        <span id="workspace-org-name">东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                                        <span id="workspace-org-status" class="org-status-badge"></span>
                                     </div>
                                     <button style="padding: 6px 14px; background: transparent; color: #2563eb; border: 1px solid #2563eb; border-radius: 4px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
                                         <i class="fa fa-shield"></i> 权限中心
@@ -376,12 +443,12 @@
                                     <span style="color: #64748b;">组织类型：</span>
                                     <span style="color: #1e293b;font-weight: 600;">训练基地、专机设备、机器人</span>
                                 </div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
+                                <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #64748b;margin-bottom: 6px;">
                                     <span><i class="fa fa-map-marker" style="color: #94a3b8;"></i> 广东省东莞市长安镇</span>
                                     <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 0769-88888888</span>
                                     <span><i class="fa fa-envelope" style="color: #94a3b8;"></i> contact@training.com</span>
                                 </div>
-                                <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 6px;">
+                                <div style="display: flex; gap: 12px; font-size: 13px; color: #64748b; margin-bottom: 6px;">
                                     <span><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
                                     <span><i class="fa fa-users" style="color: #94a3b8;"></i> 58 名成员</span>
                                     <span><i class="fa fa-user" style="color: #94a3b8;"></i> 创建者：张三/13826469796</span>
@@ -393,14 +460,14 @@
                             </div>
                         </div>
                        
-                        <div style="padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+                        <div style="padding-top: 12px; border-top: 1px dashed #e2e8f0;">
                             <div style="font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
                                 <i class="fa fa-info-circle" style="color: #64748b;"></i> 企业信息
                                 <button style="padding: 2px 8px; font-size: 12px; color: #64748b; background: transparent; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="showLicense()">
                                     <i class="fa fa-external-link" style="font-size: 10px;"></i> 查看营业执照
                                 </button>
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-left: 12px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding-left: 12px;">
                                 <div style="font-size: 13px;">
                                     <span style="color: #64748b;">企业名称：</span>
                                     <span style="color: #1e293b;">深圳智控机器人科技有限公司</span>
@@ -438,7 +505,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" id="children-org-section">
                     <div class="section-header">
                         <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
                     </div>
@@ -560,8 +627,10 @@
 
     <script>
         // 成员增长趋势图表
-        const growthCtx = document.getElementById('growthChart').getContext('2d');
-        const growthChart = new Chart(growthCtx, {
+        const growthChartEl = document.getElementById('growthChart');
+        if (growthChartEl) {
+            const growthCtx = growthChartEl.getContext('2d');
+            const growthChart = new Chart(growthCtx, {
             type: 'line',
             data: {
                 labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
@@ -607,10 +676,13 @@
                 }
             }
         });
+        }
 
         // 培训类型分布图表
-        const typeCtx = document.getElementById('typeChart').getContext('2d');
-        const typeChart = new Chart(typeCtx, {
+        const typeChartEl = document.getElementById('typeChart');
+        if (typeChartEl) {
+            const typeCtx = typeChartEl.getContext('2d');
+            const typeChart = new Chart(typeCtx, {
             type: 'doughnut',
             data: {
                 labels: ['技能培训', '企业内训', '职业认证', '管理培训', '其他'],
@@ -652,6 +724,7 @@
                 }
             }
         });
+        }
 
         // 营业执照弹窗功能
         function showLicense() {
@@ -698,8 +771,10 @@
         }
 
         // 成员活跃度图表
-        const activityCtx = document.getElementById('activityChart').getContext('2d');
-        const activityChart = new Chart(activityCtx, {
+        const activityChartEl = document.getElementById('activityChart');
+        if (activityChartEl) {
+            const activityCtx = activityChartEl.getContext('2d');
+            const activityChart = new Chart(activityCtx, {
             type: 'bar',
             data: {
                 labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -747,6 +822,132 @@
                 }
             }
         });
+        }
+
+        function getDefaultOrg() {
+            return {
+                name: '东莞市智联科技有限公司',
+                code: 'ORG001',
+                status: '',
+                statusText: '',
+                rejectReason: '',
+                type: '训练基地、专机设备、机器人',
+                address: '广东省东莞市长安镇',
+                phone: '0769-88888888',
+                email: 'contact@training.com',
+                contact: '张经理 / 13800138000',
+                members: '58 名成员',
+                creator: '张三/13826469796',
+                joinDate: '2024-01-15',
+                description: '深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。',
+                children: [
+                    { name: '智能制造培训中心', code: 'SUB001', company: '东莞市长安培训中心', legalPerson: '李蓓佳', creditCode: '91441900MA4U4X2K8R', type: '培训中心', contact: '李明', phone: '13812345678', address: '长安镇振安中路88号A栋', members: '25', creator: '张三', creatorPhone: '13826469575', addTime: '2024-03-15' },
+                    { name: '机器人实训基地', code: 'SUB002', company: '东莞市万江训练中心', legalPerson: '王建华', creditCode: '91441900MA4U5Y3L9S', type: '实训基地', contact: '陈强', phone: '13887654321', address: '万江街道鸿福路123号', members: '33', creator: '李四', creatorPhone: '13826469888', addTime: '2024-05-20' }
+                ]
+            };
+        }
+
+        function getCurrentOrgData() {
+            try {
+                const data = localStorage.getItem('currentOrgData');
+                if (data) {
+                    return JSON.parse(data);
+                }
+            } catch (e) {
+                console.error('Failed to parse currentOrgData:', e);
+            }
+            return getDefaultOrg();
+        }
+
+        window.updateWorkspaceOrg = function() {
+            const org = getCurrentOrgData();
+            
+            const orgNameEl = document.getElementById('workspace-org-name');
+            if (orgNameEl) {
+                orgNameEl.textContent = org.name;
+            }
+            
+            const statusBadge = document.getElementById('workspace-org-status');
+            if (statusBadge) {
+                if (org.status) {
+                    if (org.status === 'rejected') {
+                        statusBadge.innerHTML = `<span class="tooltip-container">
+                            ${org.statusText} <i class="fa fa-info-circle"></i>
+                            <span class="tooltip-text">驳回原因：${org.rejectReason}</span>
+                        </span>`;
+                        statusBadge.className = 'org-status-badge org-status-rejected';
+                    } else if (org.status === 'pending') {
+                        statusBadge.textContent = org.statusText;
+                        statusBadge.className = 'org-status-badge org-status-pending';
+                    }
+                    statusBadge.style.display = 'inline-flex';
+                } else {
+                    statusBadge.style.display = 'none';
+                }
+            }
+
+            const childrenSection = document.getElementById('children-org-section');
+            if (childrenSection) {
+                if (org.children && org.children.length > 0) {
+                    childrenSection.style.display = 'block';
+                    const tableBody = document.querySelector('#orgTableContainer tbody');
+                    if (tableBody) {
+                        tableBody.innerHTML = '';
+                        org.children.forEach(child => {
+                            const row = document.createElement('tr');
+                            row.style.borderBottom = '1px solid #f1f5f9';
+                            row.innerHTML = `
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569; font-weight: 500;">${child.name}</div>
+                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">${child.code}</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
+                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">${child.company}</a></div>
+                                    <div style="margin-top: 4px; color: #64748b;">法人：${child.legalPerson}</div>
+                                    <div style="color: #64748b;">信用代码：${child.creditCode}</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${child.type}</td>
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569;">${child.contact}</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">${child.phone}</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569;">${child.address}</td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${child.members}</td>
+                                <td style="padding: 10px 12px;">
+                                    <div style="font-size: 14px; color: #475569;">${child.creator}</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">${child.creatorPhone}</div>
+                                </td>
+                                <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${child.addTime}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                        const countEl = document.querySelector('.section-count');
+                        if (countEl) {
+                            countEl.textContent = `(${org.children.length}个)`;
+                        }
+                    }
+                } else {
+                    childrenSection.style.display = 'none';
+                }
+            }
+        }
+
+        let lastTimestamp = localStorage.getItem('currentOrgTimestamp');
+        setInterval(function() {
+            const currentTimestamp = localStorage.getItem('currentOrgTimestamp');
+            if (currentTimestamp !== lastTimestamp) {
+                lastTimestamp = currentTimestamp;
+                updateWorkspaceOrg();
+            }
+        }, 300);
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'updateOrg') {
+                updateWorkspaceOrg();
+            }
+        });
+
+        updateWorkspaceOrg();
     </script>
 </body>
 </html>
