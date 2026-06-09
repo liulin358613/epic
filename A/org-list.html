@@ -677,7 +677,6 @@
                     <option>待审核</option>
                     <option>审核通过</option>
                     <option>已驳回</option>
-                    <option>已禁用</option>
                 </select>
                 <button class="btn btn-outline"><i class="fa fa-search"></i> 搜索</button>
                 <button class="btn btn-outline"><i class="fa fa-refresh"></i> 重置</button>
@@ -879,15 +878,7 @@
                                 </div>
                             </td>
                             <td><span class="badge badge-level">Lv.1</span></td>
-                            <td>
-                                <span class="badge badge-audit-disabled">
-                                    已禁用
-                                    <span class="tooltip">
-                                        <i class="fa fa-question-circle badge-icon"></i>
-                                        <span class="tooltip-text">组织违规，资质过期，被限制入驻资格</span>
-                                    </span>
-                                </span>
-                            </td>
+                            <td><span class="badge badge-audit-approved">审核通过</span></td>
                             <td>2023-09-05</td>
                             <td><span class="action-link" onclick="showOrgDetail('ORG004')">详情</span></td>
                         </tr>

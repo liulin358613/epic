@@ -782,7 +782,7 @@
                                 <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 入驻时间：2024-01-15</span>
                             </div>
                             <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
-                                <span id="org-phone"><i class="fa fa-info-circle" style="color: #94a3b8;"></i> 组织描述：深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。</span>
+                                <span id="org-phone"><i class="fa fa-file-text-o" style="color: #64748b;"></i> 组织描述：深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。</span>
                             </div>
                         </div>
                     </div>
@@ -1459,7 +1459,7 @@
                 'pending': { text: '待审核', class: 'badge-audit-pending', showTooltip: false },
                 'approved': { text: '审核通过', class: 'badge-audit-approved', showTooltip: false },
                 'rejected': { text: '已驳回', class: 'badge-audit-rejected', showTooltip: true },
-                'disabled': { text: '已禁用', class: 'badge-audit-disabled', showTooltip: true }
+                'disabled': { text: '审核通过', class: 'badge-audit-approved', showTooltip: false }
             };
             const info = statusMap[status] || statusMap['pending'];
             badge.className = 'badge ' + info.class + ' badge-with-tooltip';
@@ -1641,9 +1641,6 @@
             switch (status) {
                 case 'pending':
                     if (btnAudit) btnAudit.style.display = 'inline-flex';
-                    break;
-                case 'approved':
-                    if (btnDisable) btnDisable.style.display = 'inline-flex';
                     break;
             }
         }

@@ -8,10 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
-        // 页面加载时从URL参数获取组织名称并更新显示
+        // 页面加载时从URL参数获取组织名称和状态并更新显示
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const orgName = urlParams.get('orgName');
+            const orgStatus = urlParams.get('orgStatus');
             
             if (orgName) {
                 // 更新组织信息区域的组织名称
@@ -30,6 +31,39 @@
                 const selectedOrgName = document.getElementById('selected-org-name');
                 if (selectedOrgName) {
                     selectedOrgName.textContent = orgName;
+                }
+            }
+            
+            // 更新组织状态显示
+            if (orgStatus && orgStatus.trim()) {
+                const statusElement = document.getElementById('org-status');
+                const statusIcon = document.getElementById('org-status-icon');
+                if (statusElement) {
+                    // 保留子元素，只更新文本内容
+                    const textNode = statusElement.firstChild;
+                    if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                        textNode.textContent = orgStatus;
+                    } else {
+                        // 如果没有文本节点，插入一个
+                        statusElement.insertBefore(document.createTextNode(orgStatus), statusIcon);
+                    }
+                    statusElement.style.display = 'inline-block';
+                    
+                    // 如果状态是"已驳回"，显示说明图标
+                    if (orgStatus === '已驳回') {
+                        if (statusIcon) {
+                            statusIcon.style.display = 'inline-block';
+                            statusIcon.setAttribute('data-tooltip', '驳回原因：企业资质审核未通过，缺少必要的营业执照信息');
+                            // 添加hover事件
+                            statusIcon.addEventListener('mouseenter', showTooltip);
+                            statusIcon.addEventListener('mouseleave', hideTooltip);
+                        }
+                    } else {
+                        // 其他状态隐藏图标
+                        if (statusIcon) {
+                            statusIcon.style.display = 'none';
+                        }
+                    }
                 }
             }
         });
@@ -91,6 +125,19 @@
         .badge-level {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             color: #d97706;
+        }
+        .badge-status {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: #e76b0d;
+        }
+        .status-info-icon {
+            display: inline-block;
+            font-size: 12px;
+            color: #e76b0d;
+            cursor: help;
+            flex-shrink: 0;
+            vertical-align: middle;
+            margin-top: -1px;
         }
         .section-count {
             font-size: 12px;
@@ -636,6 +683,14 @@
             font-size: 13px;
             color: #475569;
             transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .org-tree-item span:first-of-type {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 8px;
         }
         .org-tree-item:hover {
             background: rgba(59, 130, 246, 0.05);
@@ -868,12 +923,12 @@
             </div>
             <div class="section-content" style="padding: 16px; position: relative;">
                 <div style="display: flex; gap: 16px;">
-                    <div style="width: 100px; height: 100px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <div style="width: 146px; height: 146px; border-radius: 8px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fa fa-building" style="font-size: 24px; color: #94a3b8;"></i>
                     </div>
                     <div style="flex: 1; min-width: 0;">
                         <div style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
-                            <span id="org-info-name">东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span>
+                            <span id="org-info-name">东莞市智联科技有限公司</span> <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 4px;">(ORG001)</span> <span class="badge badge-level">Lv.3</span> <span id="org-status" class="badge badge-status" style="display: none;">审核中<i id="org-status-icon" class="fa fa-info-circle status-info-icon" style="display: none; margin-left: 4px;"></i></span>
                         </div>
                         <div style="font-size: 13px; color: #64748b; margin-bottom: 6px;">
                             <span style="color: #64748b;">组织类型：</span>
@@ -884,10 +939,13 @@
                             <span><i class="fa fa-phone" style="color: #94a3b8;"></i> 0769-88888888</span>
                             <span><i class="fa fa-envelope" style="color: #94a3b8;"></i> contact@training.com</span>
                         </div>
-                        <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 12px;">
-                            <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 入驻时间：2024-01-15</span>
+                        <div style="display: flex; gap: 20px; font-size: 13px; color: #64748b; margin-bottom: 6px;">
                             <span><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：张经理 / 13800138000</span>
                             <span><i class="fa fa-users" style="color: #94a3b8;"></i> 58 名成员</span>
+                            <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 入驻时间：2024-01-15</span>
+                        </div>
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 12px;">
+                            <span><i class="fa fa-file-text-o" style="color: #94a3b8;"></i> 组织描述：专注于工业机器人及自动化设备的研发、生产和销售，致力于为客户提供高品质的智能装备解决方案。</span>
                         </div>
                     </div>
                 </div>
