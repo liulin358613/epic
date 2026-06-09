@@ -558,12 +558,14 @@
                     <li class="has-submenu">
                         <a href="#" onclick="event.stopPropagation(); toggleOrgSubmenu()">切换组织 <i class="fa fa-angle-up" id="orgArrow" style="float: right;"></i></a>
                         <ul class="org-submenu">
-                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞嘉东科技有限公司', '买买提', '业务部-总经理')" class="active" style="padding-left: 24px;">东莞市智联科技有限公司(业务部-总经理)</a></li>
-                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('长安训练中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">长安训练中心(技术部-工程师)</a></li>
-                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">万江训练中心(技术部-工程师)</a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞市智联科技有限公司', '买买提', '业务部-总经理')" class="active" style="padding-left: 24px;">东莞市智联科技有限公司(业务部-总经理)</a></li>
+                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('智能制造培训中心', '买买提', '技术部-工程师')" style="padding-left: 44px;">智能制造培训中心(技术部-工程师)</a></li>
+                            <li class="child-org"><a href="#" onclick="event.stopPropagation(); switchOrg('机器人实训基地', '买买提', '技术部-工程师')" style="padding-left: 44px;">机器人实训基地(技术部-工程师)</a></li>
                             <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞华天设备有限公司', '买买提', '业务部-业务员')" style="padding-left: 24px;">东莞华天设备有限公司(业务部-业务员)</a></li>
                             <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞佳佳食品有限公司', '买买提', '', 'pending')" style="padding-left: 24px;">东莞佳佳食品有限公司<span class="org-status pending">审核中</span></a></li>
                             <li><a href="#" onclick="event.stopPropagation(); switchOrg('东莞金标科技有限公司', '买买提', '', 'rejected')" style="padding-left: 24px;">东莞金标科技有限公司<span class="org-status rejected">已驳回</span></a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('长安训练中心', '买买提', '技术部-工程师')" style="padding-left: 24px;">长安训练中心(技术部-工程师)</a></li>
+                            <li><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '技术部-工程师')" style="padding-left: 24px;">万江训练中心(技术部-工程师)</a></li>
                         </ul>
                     </li>
                     <li><a href="#" onclick="event.stopPropagation()">个人中心</a></li>
@@ -902,8 +904,8 @@
                 joinDate: '2024-01-15',
                 description: '深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。',
                 children: [
-                    { name: '智能制造培训中心', code: 'SUB001', company: '东莞市长安培训中心', legalPerson: '李蓓佳', creditCode: '91441900MA4U4X2K8R', type: '培训中心', contact: '李明', phone: '13812345678', address: '长安镇振安中路88号A栋', members: '25', creator: '张三', creatorPhone: '13826469575', addTime: '2024-03-15' },
-                    { name: '机器人实训基地', code: 'SUB002', company: '东莞市万江训练中心', legalPerson: '王建华', creditCode: '91441900MA4U5Y3L9S', type: '实训基地', contact: '陈强', phone: '13887654321', address: '万江街道鸿福路123号', members: '33', creator: '李四', creatorPhone: '13826469888', addTime: '2024-05-20' }
+                    { name: '智能制造培训中心', code: 'SUB001', company: '智能制造培训中心', legalPerson: '李蓓佳', creditCode: '91441900MA4U4X2K8R', type: '培训中心', contact: '李明', phone: '13812345678', address: '长安镇振安中路88号A栋', members: '25', creator: '张三', creatorPhone: '13826469575', addTime: '2024-03-15' },
+                    { name: '机器人实训基地', code: 'SUB002', company: '', legalPerson: '', creditCode: '', type: '实训基地', contact: '陈强', phone: '13887654321', address: '万江街道鸿福路123号', members: '33', creator: '李四', creatorPhone: '13826469888', addTime: '2024-05-20' }
                 ]
             },
             '东莞华天设备有限公司': {
@@ -1017,7 +1019,42 @@
         });
 
         function switchOrg(orgName, userName, role, status) {
-            const org = orgData[orgName] || orgData['东莞市智联科技有限公司'];
+            let org = orgData[orgName];
+            
+            if (!org) {
+                const parentOrg = Object.values(orgData).find(o => 
+                    o.children && o.children.some(c => c.name === orgName)
+                );
+                if (parentOrg) {
+                    const childOrg = parentOrg.children.find(c => c.name === orgName);
+                    if (childOrg) {
+                        const creatorFull = childOrg.creatorPhone ? 
+                            `${childOrg.creator}/${childOrg.creatorPhone}` : 
+                            (childOrg.creator || '-');
+                        org = {
+                            name: childOrg.name,
+                            code: childOrg.code,
+                            status: '',
+                            statusText: '',
+                            rejectReason: '',
+                            type: childOrg.type,
+                            address: childOrg.address,
+                            phone: childOrg.phone || '-',
+                            email: '-',
+                            contact: `${childOrg.contact}${childOrg.phone ? ' / ' + childOrg.phone : ''}`,
+                            members: childOrg.members + ' 名成员',
+                            creator: creatorFull,
+                            joinDate: childOrg.addTime || '-',
+                            description: '',
+                            children: []
+                        };
+                    }
+                }
+            }
+            
+            if (!org) {
+                org = orgData['东莞市智联科技有限公司'];
+            }
             
             const currentOrgInfo = document.getElementById('currentOrgInfo');
             if (currentOrgInfo) {

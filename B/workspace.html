@@ -841,8 +841,8 @@
                 joinDate: '2024-01-15',
                 description: '深圳智控机器人科技有限公司是一家专业从事机器人研发、销售、服务的公司，主要产品包括智能机器人、智能设备、智能系统等。',
                 children: [
-                    { name: '智能制造培训中心', code: 'SUB001', company: '东莞市长安培训中心', legalPerson: '李蓓佳', creditCode: '91441900MA4U4X2K8R', type: '培训中心', contact: '李明', phone: '13812345678', address: '长安镇振安中路88号A栋', members: '25', creator: '张三', creatorPhone: '13826469575', addTime: '2024-03-15' },
-                    { name: '机器人实训基地', code: 'SUB002', company: '东莞市万江训练中心', legalPerson: '王建华', creditCode: '91441900MA4U5Y3L9S', type: '实训基地', contact: '陈强', phone: '13887654321', address: '万江街道鸿福路123号', members: '33', creator: '李四', creatorPhone: '13826469888', addTime: '2024-05-20' }
+                    { name: '智能制造培训中心', code: 'SUB001', company: '智能制造培训中心', legalPerson: '李蓓佳', creditCode: '91441900MA4U4X2K8R', type: '培训中心', contact: '李明', phone: '13812345678', address: '长安镇振安中路88号A栋', members: '25', creator: '张三', creatorPhone: '13826469575', addTime: '2024-03-15' },
+                    { name: '机器人实训基地', code: 'SUB002', company: '', legalPerson: '', creditCode: '', type: '实训基地', contact: '陈强', phone: '13887654321', address: '万江街道鸿福路123号', members: '33', creator: '李四', creatorPhone: '13826469888', addTime: '2024-05-20' }
                 ]
             };
         }
@@ -859,12 +859,34 @@
             return getDefaultOrg();
         }
 
+        function findElementByIconClass(className) {
+            const orgNameEl = document.getElementById('workspace-org-name');
+            if (!orgNameEl) return null;
+            
+            const orgInfoCard = orgNameEl.closest('.card');
+            if (!orgInfoCard) return null;
+            
+            const icons = orgInfoCard.querySelectorAll(`i.${className}`);
+            for (let icon of icons) {
+                const parentSpan = icon.parentElement;
+                if (parentSpan && parentSpan.tagName === 'SPAN') {
+                    return parentSpan;
+                }
+            }
+            return null;
+        }
+
         window.updateWorkspaceOrg = function() {
             const org = getCurrentOrgData();
             
             const orgNameEl = document.getElementById('workspace-org-name');
-            if (orgNameEl) {
-                orgNameEl.textContent = org.name;
+            if (!orgNameEl) return;
+            
+            orgNameEl.textContent = org.name;
+
+            const orgCodeEl = document.querySelector('#workspace-org-name + span');
+            if (orgCodeEl && org.code) {
+                orgCodeEl.textContent = `(${org.code})`;
             }
             
             const statusBadge = document.getElementById('workspace-org-status');
@@ -886,13 +908,83 @@
                 }
             }
 
+            const orgInfoCard = orgNameEl.closest('.card');
+            
+            const typeSpans = orgInfoCard.querySelectorAll('.section-content div span');
+            for (let span of typeSpans) {
+                if (span.textContent && span.textContent.includes('组织类型：')) {
+                    const nextSpan = span.nextElementSibling;
+                    if (nextSpan && org.type) {
+                        nextSpan.textContent = org.type;
+                    }
+                    break;
+                }
+            }
+
+            const orgInfoDiv = orgInfoCard.querySelector('.section-content > div > div > div:last-child');
+            if (orgInfoDiv) {
+                const contactInfo = org.contact || '-';
+                const membersInfo = org.members || '-';
+                const creatorInfo = org.creator || '-';
+                const joinDateInfo = org.joinDate || org.addTime || '-';
+                
+                orgInfoDiv.innerHTML = `
+                    <span><i class="fa fa-user-circle-o" style="color: #94a3b8;"></i> 联系人：${contactInfo}</span>
+                    <span><i class="fa fa-users" style="color: #94a3b8;"></i> ${membersInfo}</span>
+                    <span><i class="fa fa-user" style="color: #94a3b8;"></i> 创建者：${creatorInfo}</span>
+                    <span><i class="fa fa-calendar" style="color: #94a3b8;"></i> 入驻时间：${joinDateInfo}</span>
+                `;
+            }
+
+            const descriptionEl = document.getElementById('org-phone');
+            if (descriptionEl) {
+                descriptionEl.innerHTML = `<i class="fa fa-file-text-o" style="color: #64748b;"></i> 组织描述：${org.description || '-'}`;
+            }
+
+            const locationSpan = findElementByIconClass('fa-map-marker');
+            if (locationSpan && org.address) {
+                locationSpan.innerHTML = `<i class="fa fa-map-marker" style="color: #94a3b8;"></i> ${org.address}`;
+            }
+
+            const phoneSpan = findElementByIconClass('fa-phone');
+            if (phoneSpan && org.phone) {
+                phoneSpan.innerHTML = `<i class="fa fa-phone" style="color: #94a3b8;"></i> ${org.phone}`;
+            }
+
+            const emailSpan = findElementByIconClass('fa-envelope');
+            if (emailSpan && org.email) {
+                emailSpan.innerHTML = `<i class="fa fa-envelope" style="color: #94a3b8;"></i> ${org.email}`;
+            }
+
             const childrenSection = document.getElementById('children-org-section');
             if (childrenSection) {
-                if (org.children && org.children.length > 0) {
-                    childrenSection.style.display = 'block';
-                    const tableBody = document.querySelector('#orgTableContainer tbody');
-                    if (tableBody) {
-                        tableBody.innerHTML = '';
+                childrenSection.style.display = 'block';
+                const countEl = document.querySelector('.section-count');
+                if (countEl) {
+                    countEl.style.display = 'none';
+                }
+                
+                const tableContainer = document.getElementById('orgTableContainer');
+                if (tableContainer) {
+                    if (org.children && org.children.length > 0) {
+                        tableContainer.innerHTML = `
+                            <table style="width: 100%; border-collapse: collapse; min-width: max-content;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">名称(编号)</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">企业信息</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">类型</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">联系人/电话</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0;">地址</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">人数</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">创建者</th>
+                                        <th style="padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap;">添加时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        `;
+                        const tableBody = tableContainer.querySelector('tbody');
                         org.children.forEach(child => {
                             const row = document.createElement('tr');
                             row.style.borderBottom = '1px solid #f1f5f9';
@@ -902,9 +994,9 @@
                                     <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">${child.code}</div>
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 13px; color: #475569;">
-                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">${child.company}</a></div>
-                                    <div style="margin-top: 4px; color: #64748b;">法人：${child.legalPerson}</div>
-                                    <div style="color: #64748b;">信用代码：${child.creditCode}</div>
+                                    <div><a href="#" onclick="showLicense()" style="font-weight: 500; color: #3b82f6; text-decoration: none; cursor: pointer;">${child.company || '-'}</a></div>
+                                    <div style="margin-top: 4px; color: #64748b;">法人：${child.legalPerson || '-'}</div>
+                                    <div style="color: #64748b;">信用代码：${child.creditCode || '-'}</div>
                                 </td>
                                 <td style="padding: 10px 12px; font-size: 14px; color: #475569; white-space: nowrap;">${child.type}</td>
                                 <td style="padding: 10px 12px;">
@@ -921,13 +1013,9 @@
                             `;
                             tableBody.appendChild(row);
                         });
-                        const countEl = document.querySelector('.section-count');
-                        if (countEl) {
-                            countEl.textContent = `(${org.children.length}个)`;
-                        }
+                    } else {
+                        tableContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: #94a3b8; font-size: 14px;">暂无下级组织</div>';
                     }
-                } else {
-                    childrenSection.style.display = 'none';
                 }
             }
         }
