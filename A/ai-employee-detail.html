@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AI员工详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         * {
@@ -1303,6 +1304,7 @@
                 <div class="section-header" style="justify-content: space-between;">
                     <div class="section-title"><i class="fa fa-info-circle"></i> 基本信息</div>
                     <div class="action-buttons">
+                        <button class="btn btn-outline btn-with-text" onclick="showOperationDataModal()"><i class="fa fa-bar-chart"></i>运营数据</button>
                         <button class="btn btn-outline btn-with-text" onclick="showVersionModal()"><i class="fa fa-history"></i>版本管理</button>
                         <button class="btn btn-outline btn-with-text" onclick="showOperationLogModal()"><i class="fa fa-list"></i>操作记录</button>
                     </div>
@@ -3463,7 +3465,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             display: flex;
         }
         .modal {
-            width: 1000px;
+            width: 500px;
             max-height: 92vh;
             background: white;
             border-radius: 12px;
@@ -3926,7 +3928,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
     </style>
 
     <div class="drawer-overlay" id="edit-employee-modal" onclick="closeEditModal()">
-        <div class="drawer" style="width: 1000px;" onclick="event.stopPropagation()">
+        <div class="drawer" style="width: 1200px;" onclick="event.stopPropagation()">
             <div class="drawer-header">
                 <h2 class="drawer-title">编辑AI员工</h2>
                 <button class="drawer-close" onclick="closeEditModal()">
@@ -4481,9 +4483,214 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         </div>
     </div>
 
-    <!-- 版本管理抽屉 -->
+    <!-- 运营数据抽屉 -->
+    <div class="drawer-overlay" id="operation-data-modal" onclick="closeOperationDataModal()">
+        <div class="drawer operation-data-drawer" onclick="event.stopPropagation()" style="width: 80%;">
+            <div class="drawer-header">
+                <h2 class="drawer-title">运营数据</h2>
+                <button class="drawer-close" onclick="closeOperationDataModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="drawer-body" style="padding: 0;">
+                <div class="operation-data-body">
+                    <div class="data-main-tabs">
+                        <div class="main-tab active" data-tab="call-data" onclick="switchMainTab('call-data')">
+                            <i class="fa fa-bar-chart"></i>
+                            <span>调用数据</span>
+                        </div>
+                        <div class="main-tab" data-tab="performance" onclick="switchMainTab('performance')">
+                            <i class="fa fa-tachometer"></i>
+                            <span>性能监控</span>
+                        </div>
+                    </div>
+                    
+                    <div class="data-content-wrapper">
+                        <div class="main-tab-content active" id="call-data-content">
+                            <div class="call-data-grid">
+                                <div class="grid-row">
+                                    <div class="section-block wide-block">
+                                        <div class="section-header-block">
+                                            <i class="fa fa-dashboard"></i>
+                                            <span>数据概况</span>
+                                        </div>
+                                        <div class="section-body-block overview-content">
+                                            <div class="overview-left">
+                                                <div class="stat-card-vertical">
+                                                    <div class="stat-icon-small blue">
+                                                        <i class="fa fa-users"></i>
+                                                    </div>
+                                                    <div class="stat-info-small">
+                                                        <div class="stat-value-small">12,345</div>
+                                                        <div class="stat-label-small">使用人数</div>
+                                                    </div>
+                                                </div>
+                                                <div class="stat-card-vertical">
+                                                    <div class="stat-icon-small green">
+                                                        <i class="fa fa-comments"></i>
+                                                    </div>
+                                                    <div class="stat-info-small">
+                                                        <div class="stat-value-small">89,012</div>
+                                                        <div class="stat-label-small">总会话次数</div>
+                                                    </div>
+                                                </div>
+                                                <div class="stat-card-vertical">
+                                                    <div class="stat-icon-small orange">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                    <div class="stat-info-small">
+                                                        <div class="stat-value-small">2,345小时</div>
+                                                        <div class="stat-label-small">总使用时长</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="overview-divider"></div>
+                                            <div class="overview-right">
+                                                <div class="call-stats-grid">
+                                                    <div class="call-stat-item">
+                                                        <div class="call-stat-value">125,890</div>
+                                                        <div class="call-stat-label">累计调用总次数</div>
+                                                    </div>
+                                                    <div class="call-stat-item success">
+                                                        <div class="call-stat-value">120,456</div>
+                                                        <div class="call-stat-label">成功调用</div>
+                                                    </div>
+                                                    <div class="call-stat-item error">
+                                                        <div class="call-stat-value">3,234</div>
+                                                        <div class="call-stat-label">失败调用</div>
+                                                    </div>
+                                                    <div class="call-stat-item cancel">
+                                                        <div class="call-stat-value">2,200</div>
+                                                        <div class="call-stat-label">取消调用</div>
+                                                    </div>
+                                                </div>
+                                                <div class="donut-chart-container">
+                                                    <div class="donut-chart">
+                                                        <canvas id="operationDonutChart" width="140" height="140"></canvas>
+                                                        <div class="donut-center">
+                                                            <div class="donut-value">95.7%</div>
+                                                            <div class="donut-label">成功率</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="donut-legend">
+                                                        <div class="legend-item">
+                                                            <div class="legend-color-block success"></div>
+                                                            <span class="legend-text">成功：120,456</span>
+                                                        </div>
+                                                        <div class="legend-item">
+                                                            <div class="legend-color-block error"></div>
+                                                            <span class="legend-text">失败：3,234</span>
+                                                        </div>
+                                                        <div class="legend-item">
+                                                            <div class="legend-color-block cancel"></div>
+                                                            <span class="legend-text">取消：2,200</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="section-block wide-block">
+                                        <div class="section-header-block">
+                                            <i class="fa fa-line-chart"></i>
+                                            <span>调用趋势</span>
+                                        </div>
+                                        <div class="section-body-block trend-content">
+                                            <div class="date-filter-wrapper">
+                                                <div class="trend-tabs-bar">
+                                                    <div class="trend-tab-mini active" data-trend-type="day" onclick="switchTrendTab('day')">日</div>
+                                                    <div class="trend-tab-mini" data-trend-type="week" onclick="switchTrendTab('week')">周</div>
+                                                </div>
+                                                <div class="date-filter-item" id="dayDateFilter">
+                                                    <label>日期</label>
+                                                    <input type="date" id="trendDayDate" value="2026-06-10">
+                                                </div>
+                                                <div class="date-filter-item" id="weekStartFilter" style="display: none;">
+                                                    <label>开始日期</label>
+                                                    <input type="date" id="trendStartDate" value="2026-06-01">
+                                                </div>
+                                                <div class="date-filter-item" id="weekEndFilter" style="display: none;">
+                                                    <label>结束日期</label>
+                                                    <input type="date" id="trendEndDate" value="2026-06-10">
+                                                </div>
+                                                <button class="btn btn-primary btn-sm" onclick="applyDateFilter()">查询</button>
+                                            </div>
+                                            <div class="chart-container">
+                                                <canvas id="trendChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid-row">
+                                    <div class="section-block narrow-block">
+                                        <div class="section-header-block">
+                                            <i class="fa fa-cube"></i>
+                                            <span>调用模型</span>
+                                        </div>
+                                        <div class="section-body-block">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="section-block narrow-block">
+                                        <div class="section-header-block">
+                                            <i class="fa fa-plug"></i>
+                                            <span>MCP工具</span>
+                                        </div>
+                                        <div class="section-body-block">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="section-block narrow-block">
+                                        <div class="section-header-block">
+                                            <i class="fa fa-wrench"></i>
+                                            <span>Skill技能</span>
+                                        </div>
+                                        <div class="section-body-block">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="main-tab-content" id="performance-content">
+                            <div class="section-block">
+                                <div class="section-header-block">
+                                    <i class="fa fa-clock-o"></i>
+                                    <span>响应时效</span>
+                                </div>
+                                <div class="section-body-block">
+                                </div>
+                            </div>
+                            
+                            <div class="section-block">
+                                <div class="section-header-block">
+                                    <i class="fa fa-server"></i>
+                                    <span>并发负载</span>
+                                </div>
+                                <div class="section-body-block">
+                                </div>
+                            </div>
+                            
+                            <div class="section-block">
+                                <div class="section-header-block">
+                                    <i class="fa fa-check-circle"></i>
+                                    <span>输出质量</span>
+                                </div>
+                                <div class="section-body-block">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="drawer-overlay" id="version-modal" onclick="closeVersionModal()">
-        <div class="drawer" style="width: 1100px;" onclick="event.stopPropagation()">
+        <div class="drawer" style="width: 1200px;" onclick="event.stopPropagation()">
             <div class="drawer-header">
                 <h2 class="drawer-title">版本管理</h2>
                 <button class="drawer-close" onclick="closeVersionModal()">
@@ -5147,6 +5354,476 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             background: #dc2626;
         }
 
+        .operation-data-drawer {
+            max-width: 95vw;
+            height: 90vh;
+        }
+
+        .call-data-grid {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .grid-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .grid-row:first-child {
+            flex-shrink: 0;
+        }
+
+        .grid-row:last-child {
+            flex: 1;
+            min-height: 0;
+        }
+
+        .grid-row .section-block.wide-block {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .grid-row .section-block.narrow-block {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grid-row .section-block.narrow-block .section-body-block {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .operation-data-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .data-main-tabs {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 20px;
+        }
+
+        .main-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .main-tab:hover {
+            background: #e2e8f0;
+        }
+
+        .main-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+            background: white;
+        }
+
+        .main-tab i {
+            font-size: 16px;
+        }
+
+        .data-content-wrapper {
+            flex: 1;
+            background: #f5f7fa;
+            min-height: 0;
+        }
+
+        .main-tab-content {
+            display: none;
+        }
+
+        .main-tab-content.active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .section-block {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header-block {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .section-header-block i {
+            color: #3b82f6;
+            font-size: 16px;
+        }
+
+        .section-body-block {
+            padding: 24px;
+            min-height: 200px;
+            background: #fafafa;
+            border: 1px dashed #cbd5e1;
+            border-radius: 4px;
+            margin: 16px;
+        }
+
+        .model-chart-content {
+            padding: 12px;
+            border: none;
+            margin: 0;
+            background: white;
+            min-height: 220px;
+        }
+
+        .model-chart-container {
+            height: 200px;
+            width: 100%;
+            display: block;
+        }
+
+        .overview-content {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            background: white;
+            border: none;
+            margin: 0;
+            align-items: stretch;
+        }
+
+        .overview-left {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .overview-divider {
+            width: 1px;
+            background: repeating-linear-gradient(
+                to bottom,
+                #cbd5e1 0px,
+                #cbd5e1 4px,
+                transparent 4px,
+                transparent 8px
+            );
+            flex-shrink: 0;
+        }
+
+        .stat-card-vertical {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stat-icon-small {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .stat-icon-small.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .stat-icon-small.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .stat-icon-small.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .stat-info-small {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value-small {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .stat-label-small {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .overview-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .call-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .call-stat-item {
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .call-stat-item.success .call-stat-value {
+            color: #10b981;
+        }
+
+        .call-stat-item.error .call-stat-value {
+            color: #ef4444;
+        }
+
+        .call-stat-item.cancel .call-stat-value {
+            color: #f59e0b;
+        }
+
+        .call-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .call-stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .donut-chart-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            flex: 1;
+        }
+
+        .donut-chart {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            flex-shrink: 0;
+        }
+
+        .donut-chart canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-value {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .donut-label {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color-block {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .legend-color-block.success {
+            background-color: #10b981;
+        }
+
+        .legend-color-block.error {
+            background-color: #ef4444;
+        }
+
+        .legend-color-block.cancel {
+            background-color: #f59e0b;
+        }
+
+        .legend-text {
+            font-size: 0.8125rem;
+            color: #333;
+        }
+
+        .section-header-block {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-header-block i {
+            color: #3b82f6;
+            font-size: 16px;
+        }
+
+        .trend-tabs-bar {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 6px;
+            padding: 3px;
+            width: fit-content;
+        }
+
+        .trend-tab-mini {
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            border: none;
+            color: #64748b;
+        }
+
+        .trend-tab-mini:hover {
+            color: #3b82f6;
+        }
+
+        .trend-tab-mini.active {
+            background: white;
+            color: #3b82f6;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .date-filter-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .date-filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .date-filter-item label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .date-filter-item input[type="date"] {
+            padding: 6px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 12px;
+            background: white;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .date-filter-item input[type="date"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-primary.btn-sm {
+            padding: 6px 16px;
+            font-size: 12px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary.btn-sm:hover {
+            background: #2563eb;
+        }
+
+        .trend-content {
+            padding: 16px;
+            border: none;
+            margin: 0;
+            background: white;
+        }
+
+        .chart-container {
+            padding: 24px;
+            height: 320px;
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
         .version-modal {
             width: 1100px;
             max-width: 90vw;
@@ -5402,7 +6079,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             position: fixed;
             top: 0;
             right: 0;
-            width: 420px;
+            /* width: 1000px; */
             height: 100vh;
             background: white;
             box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
@@ -5565,7 +6242,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
 
     <!-- 操作记录抽屉 -->
     <div class="drawer-overlay" id="operation-log-modal" onclick="closeOperationLogModal()">
-        <div class="drawer" onclick="event.stopPropagation()">
+        <div class="drawer" onclick="event.stopPropagation()" style="width: 500px;">
             <div class="drawer-header">
                 <h2 class="drawer-title">操作记录</h2>
                 <button class="drawer-close" onclick="closeOperationLogModal()">
@@ -5778,6 +6455,267 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             setTimeout(() => {
                 window.location.href = 'ai-employee.html';
             }, 1500);
+        }
+
+        function showOperationDataModal() {
+            const modal = document.getElementById('operation-data-modal');
+            modal.classList.add('show');
+            setTimeout(() => {
+                drawOperationDonutChart();
+                drawTrendChart('day');
+            }, 100);
+        }
+
+        function drawOperationDonutChart() {
+            const canvas = document.getElementById('operationDonutChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['成功', '失败', '取消'],
+                    datasets: [{
+                        data: [95.7, 2.6, 1.7],
+                        backgroundColor: [
+                            '#10b981', // 成功 绿色
+                            '#ef4444', // 失败 红色
+                            '#f59e0b'  // 取消 橙色
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#333',
+                            bodyColor: '#666',
+                            borderColor: '#e0e0e0',
+                            borderWidth: 1,
+                            padding: 12,
+                            boxPadding: 6,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}：${context.parsed}%`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%',
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+        }
+
+        function closeOperationDataModal() {
+            const modal = document.getElementById('operation-data-modal');
+            modal.classList.remove('show');
+        }
+
+        function switchMainTab(tabName) {
+            const tabs = document.querySelectorAll('.main-tab');
+            const contents = document.querySelectorAll('.main-tab-content');
+            
+            tabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+            
+            contents.forEach(content => {
+                content.classList.toggle('active', content.id === `${tabName}-content`);
+            });
+            
+            if (tabName === 'call-data') {
+                setTimeout(() => {
+                    drawTrendChart('day');
+                }, 150);
+            }
+        }
+
+        let trendChartInstance = null;
+
+        function applyDateFilter() {
+            const startDate = document.getElementById('trendStartDate').value;
+            const endDate = document.getElementById('trendEndDate').value;
+            const activeTab = document.querySelector('.trend-tab-mini.active');
+            
+            if (activeTab && activeTab.dataset.trendType === 'week') {
+                drawTrendChart('week', startDate, endDate);
+            }
+        }
+
+        function switchTrendTab(type) {
+            const tabs = document.querySelectorAll('.trend-tab-mini');
+            tabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.trendType === type);
+            });
+            
+            const dayFilter = document.getElementById('dayDateFilter');
+            const weekStartFilter = document.getElementById('weekStartFilter');
+            const weekEndFilter = document.getElementById('weekEndFilter');
+            
+            if (dayFilter) dayFilter.style.display = type === 'day' ? 'flex' : 'none';
+            if (weekStartFilter) weekStartFilter.style.display = type === 'week' ? 'flex' : 'none';
+            if (weekEndFilter) weekEndFilter.style.display = type === 'week' ? 'flex' : 'none';
+            
+            drawTrendChart(type);
+        }
+
+        function drawTrendChart(type, startDate = null, endDate = null) {
+            const canvas = document.getElementById('trendChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            if (trendChartInstance) {
+                trendChartInstance.destroy();
+            }
+            
+            let labels, data;
+            
+            if (type === 'day') {
+                labels = Array.from({length: 24}, (_, i) => `${i}:00`);
+                data = [
+                    120, 85, 65, 45, 35, 42, 88, 156, 234, 312, 
+                    389, 445, 420, 398, 376, 345, 401, 456, 512, 
+                    489, 412, 325, 245, 168
+                ];
+            } else {
+                if (startDate && endDate) {
+                    labels = generateDateLabels(startDate, endDate);
+                    data = generateWeekData(labels.length);
+                } else {
+                    labels = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+                    data = [1856, 4235, 4892, 5102, 4785, 3921, 2156];
+                }
+            }
+            
+            function generateDateLabels(start, end) {
+                const labels = [];
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+                
+                while (startDate <= endDate) {
+                    const month = startDate.getMonth() + 1;
+                    const day = startDate.getDate();
+                    labels.push(`${month}月${day}日`);
+                    startDate.setDate(startDate.getDate() + 1);
+                }
+                return labels;
+            }
+            
+            function generateWeekData(count) {
+                const data = [];
+                for (let i = 0; i < count; i++) {
+                    data.push(Math.floor(Math.random() * 4000) + 1500);
+                }
+                return data;
+            }
+            
+            trendChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '调用总量',
+                        data: data,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#333',
+                            bodyColor: '#666',
+                            borderColor: '#e0e0e0',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `调用总量：${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            // title: {
+                            //     display: true,
+                            //     text: type === 'day' ? '时间（小时）' : '日期',
+                            //     color: '#64748b',
+                            //     font: {
+                            //         size: 12
+                            //     }
+                            // }
+                        },
+                        y: {
+                            grid: {
+                                color: '#f1f5f9'
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: '调用总量',
+                                color: '#64748b',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
 
         function showVersionModal() {
