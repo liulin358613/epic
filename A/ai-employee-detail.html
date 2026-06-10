@@ -38,9 +38,9 @@
             flex: 1;
         }
         .btn {
-            padding: 8px 20px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             border: none;
@@ -75,6 +75,19 @@
             border-color: #3b82f6;
             color: #3b82f6;
             background: #eff6ff;
+        }
+        .btn-default {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        .btn-default:hover {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #475569;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         }
         .btn-icon-only {
             width: 32px;
@@ -4616,6 +4629,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                                                     <input type="date" id="trendEndDate" value="2026-06-10">
                                                 </div>
                                                 <button class="btn btn-primary btn-sm" onclick="applyDateFilter()">查询</button>
+                                                <button class="btn btn-default btn-sm" onclick="resetTrendChart()">重置</button>
                                             </div>
                                             <div class="chart-container">
                                                 <canvas id="trendChart"></canvas>
@@ -4628,9 +4642,12 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                                     <div class="section-block narrow-block">
                                         <div class="section-header-block">
                                             <i class="fa fa-cube"></i>
-                                            <span>调用模型</span>
+                                            <span>模型</span>
                                         </div>
-                                        <div class="section-body-block">
+                                        <div class="section-body-block model-call-body">
+                                            <div class="model-call-chart-wrap">
+                                                <canvas id="modelCallChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -4639,7 +4656,10 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                                             <i class="fa fa-plug"></i>
                                             <span>MCP工具</span>
                                         </div>
-                                        <div class="section-body-block">
+                                        <div class="section-body-block mcp-call-body">
+                                            <div class="model-call-chart-wrap">
+                                                <canvas id="mcpCallChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -4648,7 +4668,10 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
                                             <i class="fa fa-wrench"></i>
                                             <span>Skill技能</span>
                                         </div>
-                                        <div class="section-body-block">
+                                        <div class="section-body-block skill-call-body">
+                                            <div class="model-call-chart-wrap">
+                                                <canvas id="skillCallChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -5362,18 +5385,19 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         .call-data-grid {
             display: flex;
             flex-direction: column;
-            padding: 16px;
+            padding: 10px;
             flex: 1;
             min-height: 0;
         }
 
         .grid-row {
             display: flex;
-            gap: 20px;
+            gap: 12px;
         }
 
         .grid-row:first-child {
             flex-shrink: 0;
+            margin-bottom: 12px;
         }
 
         .grid-row:last-child {
@@ -5409,18 +5433,18 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             display: flex;
             background: #f8fafc;
             border-bottom: 1px solid #e5e7eb;
-            padding: 0 20px;
+            padding: 0 14px;
         }
 
         .main-tab {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 16px 24px;
+            gap: 6px;
+            padding: 10px 18px;
             cursor: pointer;
             transition: all 0.2s ease;
             border-bottom: 2px solid transparent;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             color: #64748b;
         }
@@ -5466,26 +5490,26 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 16px 20px;
+            padding: 10px 14px;
             background: #f8fafc;
             border-bottom: 1px solid #e5e7eb;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #1e293b;
         }
 
         .section-header-block i {
             color: #3b82f6;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .section-body-block {
-            padding: 24px;
-            min-height: 200px;
-            background: #fafafa;
-            border: 1px dashed #cbd5e1;
-            border-radius: 4px;
-            margin: 16px;
+            padding: 20px;
+            min-height: 160px;
+            background: white;
+            border: none;
+            border-radius: 0;
+            margin: 0;
         }
 
         .model-chart-content {
@@ -5502,10 +5526,46 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             display: block;
         }
 
+        .model-call-body {
+            padding: 8px 12px 12px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 270px;
+        }
+
+        .mcp-call-body {
+            padding: 8px 12px 12px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 270px;
+        }
+
+        .skill-call-body {
+            padding: 8px 12px 12px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 270px;
+        }
+
+        .model-call-chart-wrap {
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            width: 100%;
+        }
+
+        .model-call-chart-wrap canvas {
+            display: block;
+            width: 100% !important;
+        }
+
         .overview-content {
             display: flex;
-            gap: 24px;
-            padding: 24px;
+            gap: 16px;
+            padding: 14px 16px;
             background: white;
             border: none;
             margin: 0;
@@ -5516,7 +5576,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             width: 35%;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
         }
 
         .overview-divider {
@@ -5534,21 +5594,21 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         .stat-card-vertical {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px;
+            gap: 10px;
+            padding: 10px 12px;
             background: #f8fafc;
             border-radius: 8px;
             border: 1px solid #e5e7eb;
         }
 
         .stat-icon-small {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
             flex-shrink: 0;
         }
@@ -5571,7 +5631,7 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         }
 
         .stat-value-small {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             color: #1e293b;
         }
@@ -5585,17 +5645,17 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
         }
 
         .call-stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 8px;
         }
 
         .call-stat-item {
-            padding: 14px;
+            padding: 10px;
             background: #f8fafc;
             border-radius: 8px;
             text-align: center;
@@ -5615,22 +5675,22 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         }
 
         .call-stat-value {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .call-stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #94a3b8;
         }
 
         .donut-chart-container {
             display: flex;
             align-items: center;
-            gap: 30px;
-            padding: 20px;
+            gap: 20px;
+            padding: 12px 16px;
             background-color: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: 8px;
@@ -5639,8 +5699,8 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
 
         .donut-chart {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 120px;
+            height: 120px;
             flex-shrink: 0;
         }
 
@@ -5658,21 +5718,21 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         }
 
         .donut-value {
-            font-size: 1.125rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #333;
         }
 
         .donut-label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: #666;
-            margin-top: 4px;
+            margin-top: 3px;
         }
 
         .donut-legend {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .legend-item {
@@ -5708,13 +5768,13 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 16px 20px;
+            padding: 10px 14px;
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-bottom: 1px solid #e5e7eb;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #1e293b;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
 
         .section-header-block i {
@@ -5756,11 +5816,11 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         .date-filter-wrapper {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-            padding: 12px 16px;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px 10px;
             background: #f8fafc;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e5e7eb;
             flex-wrap: wrap;
         }
@@ -5809,19 +5869,109 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
         }
 
         .trend-content {
-            padding: 16px;
+            padding: 12px;
             border: none;
             margin: 0;
             background: white;
         }
 
         .chart-container {
-            padding: 24px;
-            height: 320px;
-            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-            border-radius: 12px;
+            padding: 16px;
+            height: 280px;
+            background: #fafafa;
+            border-radius: 8px;
             border: 1px solid #e5e7eb;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ========== 运营数据弹窗 响应式 ========== */
+        @media (max-width: 1400px) {
+            .operation-data-drawer {
+                width: 88vw !important;
+            }
+            .call-data-grid { padding: 8px; }
+            .grid-row { gap: 10px; }
+            .section-header-block { padding: 8px 12px; font-size: 12px; }
+            .section-header-block i { font-size: 14px; }
+            .overview-content { padding: 10px 12px; gap: 12px; }
+            .overview-left { width: 38%; }
+            .call-stats-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+            .call-stat-item { padding: 8px 6px; }
+            .call-stat-value { font-size: 14px; }
+            .call-stat-label { font-size: 10px; }
+            .donut-chart-container { padding: 10px 12px; gap: 14px; }
+            .donut-chart { width: 100px; height: 100px; }
+            .donut-value { font-size: 0.9rem; }
+            .donut-label { font-size: 0.7rem; }
+            .trend-content { padding: 10px; }
+            .chart-container { padding: 12px; height: 250px; }
+            .date-filter-wrapper { padding: 6px 8px; gap: 8px; margin-bottom: 10px; }
+            .model-call-body, .mcp-call-body, .skill-call-body { min-height: 240px; padding: 6px 10px 10px; }
+        }
+
+        @media (max-width: 1200px) {
+            .operation-data-drawer {
+                width: 92vw !important;
+            }
+            .grid-row:first-child {
+                flex-direction: column;
+            }
+            .grid-row:first-child .section-block.wide-block {
+                flex: none;
+            }
+            .overview-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .overview-left {
+                width: 100%;
+                flex-direction: row;
+                gap: 8px;
+            }
+            .overview-left .stat-card-vertical {
+                flex: 1;
+                min-width: 0;
+            }
+            .overview-divider {
+                width: 100%;
+                height: 1px;
+                background: #e5e7eb;
+            }
+            .overview-right {
+                gap: 8px;
+            }
+            .donut-chart-container {
+                flex-direction: row;
+            }
+            .grid-row:last-child {
+                flex-wrap: wrap;
+            }
+            .grid-row:last-child .section-block.narrow-block {
+                flex: 1 1 calc(33.33% - 8px);
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .operation-data-drawer {
+                width: 96vw !important;
+                height: 85vh;
+                border-radius: 12px 12px 0 0;
+            }
+            .data-main-tabs { padding: 0 8px; }
+            .main-tab { padding: 8px 12px; font-size: 12px; gap: 4px; }
+            .main-tab i { font-size: 13px; }
+            .call-data-grid { padding: 6px; }
+            .grid-row { gap: 6px; }
+            .overview-left { flex-direction: column; }
+            .call-stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .donut-chart-container { flex-direction: column; align-items: center; }
+            .donut-legend { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+            .grid-row:last-child .section-block.narrow-block {
+                flex: 1 1 100%;
+                min-width: 0;
+            }
+            .chart-container { height: 200px; }
+            .model-call-body, .mcp-call-body, .skill-call-body { min-height: 200px; }
         }
 
         .version-modal {
@@ -6463,7 +6613,398 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             setTimeout(() => {
                 drawOperationDonutChart();
                 drawTrendChart('day');
+                drawModelCallChart();
+                drawMcpCallChart();
+                drawSkillCallChart();
             }, 100);
+        }
+
+        let modelCallChartInstance = null;
+
+        function drawModelCallChart() {
+            const canvas = document.getElementById('modelCallChart');
+            if (!canvas) return;
+
+            if (modelCallChartInstance) {
+                modelCallChartInstance.destroy();
+            }
+
+            // 模型数据：name=模型名称, deploy=部署方式, value=调用次数
+            const models = [
+                { name: 'DeepSeek-R1',      deploy: '私有化部署', value: 42380 },
+                { name: 'GPT-4o',           deploy: 'API调用',    value: 31560 },
+                { name: 'Claude 3.5 Sonnet',deploy: 'API调用',    value: 25890 },
+                { name: 'Qwen2.5-72B',      deploy: '私有化部署', value: 18740 },
+                { name: 'GLM-4-Plus',       deploy: '混合部署',   value: 14320 },
+                { name: 'Gemini 1.5 Pro',   deploy: 'API调用',    value: 11870 },
+                { name: 'Mistral-Large',    deploy: 'API调用',    value: 9540  },
+                { name: 'DeepSeek-V3',      deploy: '私有化部署', value: 7230  }
+            ];
+
+            const BAR_COLORS = [
+                'rgba(59,  130, 246, 0.82)',
+                'rgba(99,  102, 241, 0.82)',
+                'rgba(16,  185, 129, 0.82)',
+                'rgba(245, 158,  11, 0.82)',
+                'rgba(239,  68,  68, 0.82)',
+                'rgba(20,  184, 166, 0.82)',
+                'rgba(168,  85, 247, 0.82)',
+                'rgba(251, 113,  94, 0.82)'
+            ];
+            const BORDER_COLORS = ['#3b82f6','#6366f1','#10b981','#f59e0b','#ef4444','#14b8a6','#a855f7','#fb714e'];
+
+            const Y_AXIS_WIDTH = 110; // 给左侧标签区域留的宽度
+
+            const ctx = canvas.getContext('2d');
+            modelCallChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    // 使用纯字符串标签（隐藏后由自定义插件重新绘制）
+                    labels: models.map(m => m.name),
+                    datasets: [{
+                        label: '调用次数',
+                        data: models.map(m => m.value),
+                        backgroundColor: BAR_COLORS,
+                        borderColor: BORDER_COLORS,
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false,
+                        barThickness: 14
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: { right: 16, top: 4, bottom: 4 }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255,255,255,0.96)',
+                            titleColor: '#1e293b',
+                            bodyColor: '#475569',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 10,
+                            boxPadding: 4,
+                            usePointStyle: true,
+                            callbacks: {
+                                title: function(items) {
+                                    return models[items[0].dataIndex].name;
+                                },
+                                label: function(c) {
+                                    return `调用次数：${c.parsed.x.toLocaleString()}`;
+                                },
+                                afterLabel: function(c) {
+                                    return `部署方式：${models[c.dataIndex].deploy}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '调用次数',
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(148,163,184,0.15)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 10 },
+                                maxTicksLimit: 5,
+                                callback: function(value) {
+                                    if (value >= 10000) return (value / 10000).toFixed(1) + 'w';
+                                    return value.toLocaleString();
+                                }
+                            },
+                            border: { display: false }
+                        },
+                        y: {
+                            grid: { display: false },
+                            border: { display: false },
+                            afterFit: function(axis) {
+                                // 固定左侧宽度，给自定义两行文字留空间
+                                axis.width = Y_AXIS_WIDTH;
+                            },
+                            ticks: {
+                                // 隐藏默认 tick 文字，由自定义插件接管绘制
+                                color: 'rgba(0,0,0,0)',
+                                font: { size: 0 },
+                                padding: 0
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    }
+                },
+                plugins: [{
+                    // 自定义插件：在每条 bar 的 Y 位置绘制两行文字
+                    id: 'modelCallTick',
+                    afterDraw(chart) {
+                        const yAxis = chart.scales.y;
+                        const c = chart.ctx;
+                        const meta = chart.getDatasetMeta(0);
+
+                        models.forEach((m, i) => {
+                            const bar = meta.data[i];
+                            if (!bar) return;
+                            const y = bar.y;
+                            const xRight = yAxis.right - 8;
+
+                            c.save();
+                            c.textAlign = 'right';
+                            c.textBaseline = 'middle';
+
+                            // 第一行：模型名称（深色，12px，500weight）
+                            c.fillStyle = '#1e293b';
+                            c.font = '500 12px system-ui,-apple-system,PingFang SC,sans-serif';
+                            c.fillText(m.name, xRight, y - 8);
+
+                            // 第二行：部署方式（浅灰，10px，弱化）
+                            c.fillStyle = '#94a3b8';
+                            c.font = '400 10px system-ui,-apple-system,PingFang SC,sans-serif';
+                            c.fillText(m.deploy, xRight, y + 7);
+
+                            c.restore();
+                        });
+                    }
+                }]
+            });
+        }
+
+        let mcpCallChartInstance = null;
+
+        function drawMcpCallChart() {
+            const canvas = document.getElementById('mcpCallChart');
+            if (!canvas) return;
+
+            if (mcpCallChartInstance) {
+                mcpCallChartInstance.destroy();
+            }
+
+            const tools = [
+                { name: 'TAPD',           value: 52180 },
+                { name: 'iWiki',          value: 38940 },
+                { name: '腾讯文档',        value: 35620 },
+                { name: 'GitHub',         value: 28730 },
+                { name: '飞书',            value: 24150 },
+                { name: '蓝盾CI/CD',       value: 18960 },
+                { name: '企业微信',         value: 15340 }
+            ];
+
+            const COLORS = [
+                'rgba(59,  130, 246, 0.82)',
+                'rgba(16,  185, 129, 0.82)',
+                'rgba(245, 158,  11, 0.82)',
+                'rgba(99,  102, 241, 0.82)',
+                'rgba(239,  68,  68, 0.82)',
+                'rgba(20,  184, 166, 0.82)',
+                'rgba(168,  85, 247, 0.82)'
+            ];
+            const BORDERS = ['#3b82f6','#10b981','#f59e0b','#6366f1','#ef4444','#14b8a6','#a855f7'];
+
+            const ctx = canvas.getContext('2d');
+            mcpCallChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: tools.map(t => t.name),
+                    datasets: [{
+                        label: '调用次数',
+                        data: tools.map(t => t.value),
+                        backgroundColor: COLORS,
+                        borderColor: BORDERS,
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false,
+                        barThickness: 14
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: { right: 16, top: 4, bottom: 4 }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255,255,255,0.96)',
+                            titleColor: '#1e293b',
+                            bodyColor: '#475569',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 10,
+                            boxPadding: 4,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(c) {
+                                    return `调用次数：${c.parsed.x.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '调用次数',
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(148,163,184,0.15)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 10 },
+                                maxTicksLimit: 5,
+                                callback: function(value) {
+                                    if (value >= 10000) return (value / 10000).toFixed(1) + 'w';
+                                    return value.toLocaleString();
+                                }
+                            },
+                            border: { display: false }
+                        },
+                        y: {
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: {
+                                color: '#1e293b',
+                                font: { size: 11, weight: '500' },
+                                padding: 6
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+
+        let skillCallChartInstance = null;
+
+        function drawSkillCallChart() {
+            const canvas = document.getElementById('skillCallChart');
+            if (!canvas) return;
+
+            if (skillCallChartInstance) {
+                skillCallChartInstance.destroy();
+            }
+
+            const skills = [
+                { name: '代码审查',         value: 46320 },
+                { name: 'PDF处理',          value: 38750 },
+                { name: 'Excel数据分析',     value: 31240 },
+                { name: 'PPT演示生成',       value: 26890 },
+                { name: '浏览器自动化',       value: 21560 },
+                { name: '金融数据查询',       value: 18430 },
+                { name: '多模态内容生成',     value: 12980 }
+            ];
+
+            const COLORS = [
+                'rgba(59,  130, 246, 0.82)',
+                'rgba(16,  185, 129, 0.82)',
+                'rgba(245, 158,  11, 0.82)',
+                'rgba(99,  102, 241, 0.82)',
+                'rgba(239,  68,  68, 0.82)',
+                'rgba(20,  184, 166, 0.82)',
+                'rgba(168,  85, 247, 0.82)'
+            ];
+            const BORDERS = ['#3b82f6','#10b981','#f59e0b','#6366f1','#ef4444','#14b8a6','#a855f7'];
+
+            const ctx = canvas.getContext('2d');
+            skillCallChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: skills.map(s => s.name),
+                    datasets: [{
+                        label: '调用次数',
+                        data: skills.map(s => s.value),
+                        backgroundColor: COLORS,
+                        borderColor: BORDERS,
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false,
+                        barThickness: 14
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: { right: 16, top: 4, bottom: 4 }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255,255,255,0.96)',
+                            titleColor: '#1e293b',
+                            bodyColor: '#475569',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 10,
+                            boxPadding: 4,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(c) {
+                                    return `调用次数：${c.parsed.x.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '调用次数',
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(148,163,184,0.15)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 10 },
+                                maxTicksLimit: 5,
+                                callback: function(value) {
+                                    if (value >= 10000) return (value / 10000).toFixed(1) + 'w';
+                                    return value.toLocaleString();
+                                }
+                            },
+                            border: { display: false }
+                        },
+                        y: {
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: {
+                                color: '#1e293b',
+                                font: { size: 11, weight: '500' },
+                                padding: 6
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
         }
 
         function drawOperationDonutChart() {
@@ -6551,6 +7092,13 @@ MCP Server 由第三方构建和维护。TRAE 不审查或认可这些服务器�
             
             if (activeTab && activeTab.dataset.trendType === 'week') {
                 drawTrendChart('week', startDate, endDate);
+            }
+        }
+
+        function resetTrendChart() {
+            const activeTab = document.querySelector('.trend-tab-mini.active');
+            if (activeTab) {
+                drawTrendChart(activeTab.dataset.trendType);
             }
         }
 
