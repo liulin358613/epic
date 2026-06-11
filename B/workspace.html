@@ -316,25 +316,30 @@
             color: #94a3b8;
         }
 
-        /* 美化横向滚动条 */
-        #orgTableContainer::-webkit-scrollbar {
-            height: 6px;
+        /* 美化滚动条 */
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
         }
-        #orgTableContainer::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 1.5px;
         }
-        #orgTableContainer::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 1.5px;
             cursor: pointer;
+            transition: background 0.2s ease;
         }
-        #orgTableContainer::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
         }
-        #orgTableContainer {
+        ::-webkit-scrollbar-thumb:active {
+            background: rgba(148, 163, 184, 0.7);
+        }
+        body {
             scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
+            scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
         }
     </style>
 </head>

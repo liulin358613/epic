@@ -659,6 +659,32 @@
             background-color: #0044b3;
             border-color: #0044b3;
         }
+
+        /* 美化滚动条 */
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 1.5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 1.5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+        ::-webkit-scrollbar-thumb:active {
+            background: rgba(148, 163, 184, 0.7);
+        }
+        body {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+        }
     </style>
 </head>
 <body>

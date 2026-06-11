@@ -425,6 +425,32 @@
                 padding: 30px 20px;
             }
         }
+
+        /* 美化滚动条 */
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 1.5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1.5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        ::-webkit-scrollbar-thumb:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        body {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+        }
     </style>
 </head>
 <body>
