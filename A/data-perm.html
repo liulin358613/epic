@@ -269,11 +269,6 @@
             overflow-y: auto;
             min-height: 0;
         }
-        .basic-info {
-            padding: 0;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 14px;
-        }
         .form-row {
             display: flex;
             gap: 40px;
@@ -1343,8 +1338,8 @@
             <div class="content-area">
                 <div class="content-header">组织详情</div>
                 <div class="content-body">
-                    <div class="content-left">
-                        <div class="basic-info">
+                    <div class="content-left" style="display: flex; gap: 40px; border-bottom: 1px solid #e5e7eb; margin-bottom: 14px;">
+                        <div class="basic-info" >
                             <div class="form-row">
                                 <div class="form-group">
                                     <label><span style="color: #ef4444; margin-right: 4px;">*</span>组织名称：</label>
@@ -1366,12 +1361,6 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>备注说明：</label>
-                                    <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
                                     <label>是否需要审核：</label>
                                     <div class="radio-group">
                                         <div class="radio-item">
@@ -1383,6 +1372,14 @@
                                             <span>是</span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>备注说明：</label>
+                                    <textarea class="form-control form-textarea" placeholder="请输入" id="org-remark-input"></textarea>
                                 </div>
                             </div>
                         </div>
