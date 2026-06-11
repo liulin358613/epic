@@ -2290,7 +2290,7 @@
                 if (permissionSection) {
                     permissionSection.style.display = 'block';
                     if (permissionTitle) {
-                        permissionTitle.textContent = `【${selectedOrgType} - ${selectedRole}】绑定菜单/功能权限`;
+                        permissionTitle.innerHTML = `<span style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #f97316; padding: 2px 8px; border-radius: 4px; font-weight: 600;">【${selectedOrgType} - ${selectedRole}】</span>绑定菜单/功能权限`;
                     }
                 } else {
                     console.log('permissionSection not found');
