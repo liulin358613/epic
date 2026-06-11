@@ -148,7 +148,7 @@
         }
         .content-body {
             flex: 1;
-            padding: 12px;
+            padding: 12px 12px 0 12px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -271,7 +271,7 @@
             flex-direction: column;
             background: white;
             border: 1px solid #e5e7eb;
-            border-radius: 8px;
+            border-bottom: 0;
             flex-direction: column;
             min-height: 0;
         }
@@ -317,7 +317,7 @@
             border-bottom-color: #3b82f6;
         }
         .permission-group {
-            margin-bottom: 4px;
+            /* margin-bottom: 4px; */
         }
         .permission-label {
             display: flex;
@@ -684,7 +684,7 @@
                         </div>
                     </div>
 
-                    <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 16px 6px;">绑定菜单/功能权限</h3>
+                    <h3 style="font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 16px 6px; padding-top: 16px; border-top: 1px solid #e5e7eb;">绑定菜单/功能权限</h3>  
                     <div class="triple-panel-container">
                         <div class="panel panel-function">
                             <div class="panel-header">功能权限</div>
@@ -909,8 +909,13 @@
                         <div class="panel panel-data">
                             <div class="panel-header">数据权限</div>
                             <div class="panel-content">
-                                <div class="permission-group" style="margin-bottom: 10px; height: 100%;">
-                                    <div style="margin-bottom: 8px; padding: 10px; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px; font-size: 14px; font-weight: 600; color: #1e40af;">
+                                <div class="permission-group" style="height: 100%;">
+                                    <div style="    color: #f59e0b;
+    font-size: 14px;
+    margin-bottom: 12px;
+    background: #f0f9ff;
+    padding: 8px 12px;
+    border-left: 4px solid #3b82f6;">
                                         提示：不设置，默认全部数据
                                     </div>
                                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2; white-space: nowrap;">
@@ -1045,10 +1050,15 @@
                             <div class="panel-header">字段权限</div>
                             <div class="panel-content">
                                 <div class="permission-group" style="height: 100%;">
-                                    <div style="margin-bottom: 12px; padding: 10px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 4px; font-size: 14px; font-weight: 600; color: #92400e;">
+                                    <div style=" color: #f59e0b;
+    font-size: 14px;
+    margin-bottom: 12px;
+    background: #fffbeb;
+    padding: 8px 12px;
+    border-left: 4px solid #f59e0b;">
                                         提示：不设置，默认全部字段【可操作、可见】
                                     </div>
-                                    <table style="width: 100%; border-collapse: collapse; flex: 1; white-space: nowrap;">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.2; white-space: nowrap;">
                                         <thead>
                                             <tr>
                                                 <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; background: #f8fafc; white-space: nowrap;">
@@ -1061,11 +1071,9 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">设备售价(设备管理)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">设备售价(设备管理)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-all" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>
@@ -1082,11 +1090,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">订单编号(订单模块)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">订单编号(订单模块)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-order-number" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>
@@ -1103,11 +1109,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">产品成本(订单模块)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">产品成本(订单模块)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-product-cost" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>
@@ -1124,11 +1128,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">供应商报价(采购模块)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">供应商报价(采购模块)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-supplier-price" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>
@@ -1145,11 +1147,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">销售金额(订单模块)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">销售金额(订单模块)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-sales-amount" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>
@@ -1166,11 +1166,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">库存数量(仓储模块)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">库存数量(仓储模块)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-inventory-quantity" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>
@@ -1187,11 +1185,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <span style="color: #475569; white-space: nowrap;">客户联系方式(客户模块)</span>
-                                                </td>
-                                                <td style="padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
-                                                    <div style="display: flex; gap: 12px; white-space: nowrap;">
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap;">客户联系方式(客户模块)</td>
+                                                <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; white-space: nowrap;">
+                                                    <div style="display: flex; gap: 20px; white-space: nowrap;">
                                                         <label style="display: flex; align-items: center; cursor: pointer; white-space: nowrap;">
                                                             <input type="radio" name="field-permission-customer-contact" value="hidden" style="margin-right: 4px;">
                                                             <span style="color: #475569; white-space: nowrap;">隐藏</span>

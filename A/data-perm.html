@@ -1611,7 +1611,7 @@
             <div class="content-area">
                 <div class="content-header">组织详情</div>
                 <div class="content-body">
-                    <div class="content-left" style="display: flex; gap: 40px; border-bottom: 1px solid var(--color-border); margin-bottom: 16px; padding-bottom: 16px;">
+                    <div class="content-left" style="display: flex; gap: 40px; border-bottom: 1px solid var(--color-border); margin-bottom: 16px;">
                         <div class="basic-info">
                             <div class="form-row">
                                 <div class="form-group">
@@ -3625,7 +3625,8 @@
             menu.style.borderRadius = '6px';
             menu.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
             menu.style.zIndex = '1000';
-            menu.style.minWidth = '120px';
+            menu.style.width = '120px';
+            menu.style.maxWidth = '200px';
             
             // 定位菜单
             const button = event.currentTarget;
