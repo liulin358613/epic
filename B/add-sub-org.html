@@ -56,10 +56,8 @@
             align-items: center;
             justify-content: center;
             padding: 20px 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            /* border-radius: 8px; */
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            background: transparent;
+            border-bottom: 1px solid #e2e8f0;
         }
         .steps {
             display: flex;
@@ -72,6 +70,7 @@
             align-items: center;
             gap: 10px;
             position: relative;
+            cursor: pointer;
         }
         .step:not(:last-child)::after {
             content: '';
@@ -100,22 +99,22 @@
             justify-content: center;
             font-size: 16px;
             font-weight: 600;
-            background: #e2e8f0;
+            background: transparent;
             color: #94a3b8;
+            border: 2px solid #e2e8f0;
             z-index: 1;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         .step.active .step-circle {
-            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
-            color: white;
-            box-shadow: 0 4px 16px rgba(0, 81, 217, 0.4);
+            background: transparent;
+            color: #0051D9;
+            border: 1px solid #0051D9;
             transform: scale(1.05);
         }
         .step.completed .step-circle {
-            background: linear-gradient(135deg, #00b42a 0%, #00d936 100%);
-            color: white;
-            box-shadow: 0 4px 16px rgba(0, 180, 42, 0.4);
+            background: transparent;
+            color: #00b42a;
+            border: 1px solid #00b42a;
         }
         .step-label {
             font-size: 14px;
@@ -173,22 +172,28 @@
         }
         .form-group {
             flex: 1;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
         .form-group.full-width {
             flex: 2;
         }
         .form-group label {
-            display: block;
+            display: inline-block;
             font-size: 14px;
             color: #64748b;
             font-weight: 500;
-            margin-bottom: 8px;
             line-height: 1.4;
+            width: 100px;
+            text-align: right;
+            flex-shrink: 0;
+            padding-top: 8px;
         }
-        .form-group label.required::after {
+        .form-group label.required::before {
             content: '*';
             color: #ef4444;
-            margin-left: 4px;
+            margin-right: 4px;
         }
         .form-group input,
         .form-group select,
@@ -302,10 +307,8 @@
             justify-content: flex-end;
             gap: 12px;
             padding: 16px 24px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            background: transparent;
+            border-top: 1px solid #e2e8f0;
         }
         .btn {
             padding: 10px 24px;
@@ -321,23 +324,23 @@
             line-height: 1.4;
         }
         .btn-cancel {
-            background: #f1f5f9;
+            background: transparent;
             color: #64748b;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #cbd5e1;
         }
         .btn-cancel:hover {
-            background: #e2e8f0;
-            border-color: #cbd5e1;
+            background: #f8fafc;
+            border-color: #94a3b8;
         }
         .btn-confirm {
-            background: linear-gradient(135deg, #0051D9 0%, #0066FF 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.3);
+            background: transparent;
+            color: #0051D9;
+            border: 1px solid #0051D9;
         }
         .btn-confirm:hover {
-            background: linear-gradient(135deg, #0047c9 0%, #005ce6 100%);
-            box-shadow: 0 6px 20px rgba(0, 81, 217, 0.4);
-            transform: translateY(-1px);
+            background: rgba(0, 81, 217, 0.05);
+            color: #0051D9;
+            border-color: #0051D9;
         }
 
         /* Toast提示 */
@@ -698,6 +701,43 @@
         .contact-panel.show {
             display: block;
         }
+        .contact-search {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .contact-search input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 13px;
+            background: #f8fafc;
+        }
+        .search-clear {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            line-height: 16px;
+            text-align: center;
+            font-size: 16px;
+            color: #94a3b8;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 50%;
+        }
+        .search-clear:hover {
+            color: #64748b;
+            background: #cbd5e1;
+        }
+        .contact-search input:focus {
+            outline: none;
+            border-color: #0051D9;
+            background: white;
+        }
         .contact-list {
             max-height: 200px;
             overflow-y: auto;
@@ -727,6 +767,12 @@
         .contact-item .contact-phone {
             font-size: 13px;
             color: #64748b;
+        }
+        .contact-empty {
+            padding: 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
         }
         .contact-footer {
             padding: 10px;
@@ -828,13 +874,6 @@
 </head>
 <body>
     <div class="main-content">
-        <!-- 面包屑导航 -->
-        <div class="breadcrumb" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 14px; color: #64748b;">
-            <a href="org-manage.html" style="color: #64748b; text-decoration: none; transition: color 0.2s;">组织管理</a>
-            <i class="fa fa-angle-right" style="font-size: 12px; color: #cbd5e1;"></i>
-            <span style="color: #0051D9; font-weight: 500;">添加下级组织</span>
-        </div>
-        
         <!-- 页面标题 -->
         <div class="page-header">
             <h1 class="page-title">添加下级组织</h1>
@@ -844,15 +883,15 @@
         <!-- 步骤指示器 -->
         <div class="steps-container">
             <div class="steps">
-                <div class="step active" id="step1">
+                <div class="step active" id="step1" onclick="goToStep(1)">
                     <div class="step-circle">1</div>
                     <span class="step-label">组织基本信息</span>
                 </div>
-                <div class="step" id="step2">
+                <div class="step" id="step2" onclick="goToStep(2)">
                     <div class="step-circle">2</div>
                     <span class="step-label">企业信息</span>
                 </div>
-                <div class="step" id="step3">
+                <div class="step" id="step3" onclick="goToStep(3)">
                     <div class="step-circle">3</div>
                     <span class="step-label">组织授权</span>
                 </div>
@@ -866,9 +905,10 @@
                 <h3>组织基本信息</h3>
                 
                 <!-- 组织图片 -->
-                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
-                    <label class="required" style="flex-shrink: 0; padding-top: 8px;">组织图片</label>
-                    <div class="upload-area">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>组织图片</label>
+                        <div class="upload-area">
                         <div class="upload-box" onclick="document.getElementById('org-image-input').click()">
                             <i class="fa fa-plus"></i>
                             <span>上传</span>
@@ -878,6 +918,7 @@
                         <div id="org-image-actions" class="upload-actions" style="display: none;">
                             <button onclick="document.getElementById('org-image-input').click()">重新上传</button>
                             <button onclick="removeOrgImage()">移出</button>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -955,11 +996,12 @@
                                 <span class="contact-arrow">▼</span>
                             </div>
                             <div class="contact-panel" id="contactPanel">
+                                <div class="contact-search">
+                                    <input type="text" id="contactSearchInput" placeholder="搜索联系人..." oninput="filterContactList()">
+                                    <span class="search-clear" id="searchClearBtn" style="display: none;" onclick="clearSearch()">×</span>
+                                </div>
                                 <div class="contact-list" id="contactList">
                                     <!-- 联系人列表将通过JS动态生成 -->
-                                </div>
-                                <div class="contact-footer">
-                                    <button type="button" class="contact-add-btn" onclick="showAddContactModal()">+ 添加联系人</button>
                                 </div>
                             </div>
                         </div>
@@ -989,6 +1031,13 @@
                         <input type="text" placeholder="请输入邮箱">
                     </div>
                 </div>
+                <!-- 组织描述 -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>组织描述</label>
+                        <textarea placeholder="请输入组织描述"></textarea>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -998,9 +1047,10 @@
                 <h3>企业信息</h3>
                 
                 <!-- 营业执照 -->
-                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
-                    <label style="flex-shrink: 0; padding-top: 8px;">营业执照</label>
-                    <div class="upload-area">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>营业执照</label>
+                        <div class="upload-area">
                         <div class="upload-box" onclick="document.getElementById('license-input').click()">
                             <i class="fa fa-plus"></i>
                             <span>上传</span>
@@ -1026,6 +1076,7 @@
                                 <i class="fa fa-check-circle" style="color: #00b42a;"></i>
                                 <span style="font-size: 13px; color: #00b42a;">AI识别完成，已自动填充表单</span>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -1101,9 +1152,6 @@
 
         <!-- 操作按钮 -->
         <div class="form-actions">
-            <button class="btn btn-cancel" onclick="goBack()">
-                <i class="fa fa-arrow-left"></i> 返回
-            </button>
             <button class="btn btn-confirm" id="btnPrev" style="display: none;" onclick="prevStep()">
                 <i class="fa fa-arrow-left"></i> 上一步
             </button>
@@ -1138,28 +1186,6 @@
 
     <!-- tooltip元素 -->
     <div id="addOrgTooltip"></div>
-
-    <!-- 弹窗遮罩 -->
-    <div class="modal-overlay" id="modalOverlay" onclick="hideAddContactModal()"></div>
-
-    <!-- 添加联系人弹窗 -->
-    <div id="addContactModal">
-        <div class="modal-title">添加联系人</div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label class="required">联系人姓名</label>
-                <input type="text" id="newContactName" placeholder="请输入联系人姓名">
-            </div>
-            <div class="form-group">
-                <label class="required">手机号</label>
-                <input type="text" id="newContactPhone" placeholder="请输入手机号">
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-cancel" onclick="hideAddContactModal()">取消</button>
-            <button type="button" class="btn btn-primary" onclick="confirmAddContact()">确定</button>
-        </div>
-    </div>
 
     <script>
         // 组织类型数据
@@ -1465,6 +1491,36 @@
             }
         }
 
+        function goToStep(targetStep) {
+            // 隐藏当前步骤内容和状态
+            document.getElementById('content' + currentStep).classList.remove('active');
+            document.getElementById('step' + currentStep).classList.remove('active');
+            
+            // 更新所有步骤的状态
+            for (var i = 1; i <= totalSteps; i++) {
+                var stepEl = document.getElementById('step' + i);
+                var contentEl = document.getElementById('content' + i);
+                
+                if (i < targetStep) {
+                    stepEl.classList.remove('active');
+                    stepEl.classList.add('completed');
+                    contentEl.classList.remove('active');
+                } else if (i === targetStep) {
+                    stepEl.classList.add('active');
+                    stepEl.classList.remove('completed');
+                    contentEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active');
+                    stepEl.classList.remove('completed');
+                    contentEl.classList.remove('active');
+                }
+            }
+            
+            // 更新当前步骤
+            currentStep = targetStep;
+            updateButtons();
+        }
+
         function updateButtons() {
             var btnPrev = document.getElementById('btnPrev');
             var btnNext = document.getElementById('btnNext');
@@ -1613,51 +1669,51 @@
         function fillFormWithAI() {
             var formRows = document.querySelectorAll('#content2 .form-row');
             
-            if (formRows.length >= 6) {
-                // 企业名称 (第1个form-row)
-                var companyNameInput = formRows[0].querySelector('input');
+            if (formRows.length >= 7) {
+                // 企业名称 (第2个form-row，第1个是营业执照上传)
+                var companyNameInput = formRows[1].querySelector('input');
                 if (companyNameInput) {
                     companyNameInput.value = aiRecognizeData.companyName;
                 }
                 
-                // 统一社会信用代码 (第2个form-row)
-                var creditCodeInput = formRows[1].querySelector('input');
+                // 统一社会信用代码 (第3个form-row)
+                var creditCodeInput = formRows[2].querySelector('input');
                 if (creditCodeInput) {
                     creditCodeInput.value = aiRecognizeData.creditCode;
                 }
                 
-                // 法定代表人 (第3个form-row, 第1个form-group)
-                var legalPersonInput = formRows[2].querySelector('.form-group:first-child input');
+                // 法定代表人 (第4个form-row, 第1个form-group)
+                var legalPersonInput = formRows[3].querySelector('.form-group:first-child input');
                 if (legalPersonInput) {
                     legalPersonInput.value = aiRecognizeData.legalPerson;
                 }
                 
-                // 注册资本 (第3个form-row, 第2个form-group)
-                var capitalInput = formRows[2].querySelector('.form-group:last-child input');
+                // 注册资本 (第4个form-row, 第2个form-group)
+                var capitalInput = formRows[3].querySelector('.form-group:last-child input');
                 if (capitalInput) {
                     capitalInput.value = aiRecognizeData.registeredCapital;
                 }
                 
-                // 成立日期 (第4个form-row, 第1个form-group)
-                var dateInput = formRows[3].querySelector('.form-group:first-child input');
+                // 成立日期 (第5个form-row, 第1个form-group)
+                var dateInput = formRows[4].querySelector('.form-group:first-child input');
                 if (dateInput) {
                     dateInput.value = aiRecognizeData.establishDate;
                 }
                 
-                // 营业期限 (第4个form-row, 第2个form-group)
-                var termInput = formRows[3].querySelector('.form-group:last-child input');
+                // 营业期限 (第5个form-row, 第2个form-group)
+                var termInput = formRows[4].querySelector('.form-group:last-child input');
                 if (termInput) {
                     termInput.value = aiRecognizeData.businessTerm;
                 }
                 
-                // 注册地址 (第5个form-row)
-                var addressInput = formRows[4].querySelector('input');
+                // 注册地址 (第6个form-row)
+                var addressInput = formRows[5].querySelector('input');
                 if (addressInput) {
                     addressInput.value = aiRecognizeData.registeredAddress;
                 }
                 
-                // 经营范围 (第6个form-row)
-                var scopeTextarea = formRows[5].querySelector('textarea');
+                // 经营范围 (第7个form-row)
+                var scopeTextarea = formRows[6].querySelector('textarea');
                 if (scopeTextarea) {
                     scopeTextarea.value = aiRecognizeData.businessScope;
                 }
@@ -1668,51 +1724,51 @@
         function clearEnterpriseForm() {
             var formRows = document.querySelectorAll('#content2 .form-row');
             
-            if (formRows.length >= 6) {
-                // 企业名称
-                var companyNameInput = formRows[0].querySelector('input');
+            if (formRows.length >= 7) {
+                // 企业名称 (第2个form-row，第1个是营业执照上传)
+                var companyNameInput = formRows[1].querySelector('input');
                 if (companyNameInput) {
                     companyNameInput.value = '';
                 }
                 
-                // 统一社会信用代码
-                var creditCodeInput = formRows[1].querySelector('input');
+                // 统一社会信用代码 (第3个form-row)
+                var creditCodeInput = formRows[2].querySelector('input');
                 if (creditCodeInput) {
                     creditCodeInput.value = '';
                 }
                 
-                // 法定代表人
-                var legalPersonInput = formRows[2].querySelector('.form-group:first-child input');
+                // 法定代表人 (第4个form-row)
+                var legalPersonInput = formRows[3].querySelector('.form-group:first-child input');
                 if (legalPersonInput) {
                     legalPersonInput.value = '';
                 }
                 
-                // 注册资本
-                var capitalInput = formRows[2].querySelector('.form-group:last-child input');
+                // 注册资本 (第4个form-row)
+                var capitalInput = formRows[3].querySelector('.form-group:last-child input');
                 if (capitalInput) {
                     capitalInput.value = '';
                 }
                 
-                // 成立日期
-                var dateInput = formRows[3].querySelector('.form-group:first-child input');
+                // 成立日期 (第5个form-row)
+                var dateInput = formRows[4].querySelector('.form-group:first-child input');
                 if (dateInput) {
                     dateInput.value = '';
                 }
                 
-                // 营业期限
-                var termInput = formRows[3].querySelector('.form-group:last-child input');
+                // 营业期限 (第5个form-row)
+                var termInput = formRows[4].querySelector('.form-group:last-child input');
                 if (termInput) {
                     termInput.value = '';
                 }
                 
-                // 注册地址
-                var addressInput = formRows[4].querySelector('input');
+                // 注册地址 (第6个form-row)
+                var addressInput = formRows[5].querySelector('input');
                 if (addressInput) {
                     addressInput.value = '';
                 }
                 
-                // 经营范围
-                var scopeTextarea = formRows[5].querySelector('textarea');
+                // 经营范围 (第7个form-row)
+                var scopeTextarea = formRows[6].querySelector('textarea');
                 if (scopeTextarea) {
                     scopeTextarea.value = '';
                 }
@@ -1782,22 +1838,51 @@
 
         // 联系人数据
         var contactData = [
-            { id: 1, name: '张三', phone: '13800138001' },
-            { id: 2, name: '李四', phone: '13800138002' },
-            { id: 5, name: '钱七', phone: '13800138005' }
+            { id: 1, name: '张三', dept: '业务部', role: '业务员', phone: '13826469793' },
+            { id: 2, name: '李四', dept: '技术部', role: '工程师', phone: '13826469794' },
+            { id: 3, name: '王五', dept: '财务部', role: '会计', phone: '13826469795' },
+            { id: 4, name: '赵六', dept: '人事部', role: '主管', phone: '13826469796' },
+            { id: 5, name: '钱七', phone: '13826469797' },
+            { id: 6, name: '孙八', dept: '业务部', phone: '13826469798' },
+            { id: 7, name: '周九', dept: '技术部', role: '架构师', phone: '13826469799' },
+            { id: 8, name: '吴十', role: '经理', phone: '13826469800' }
         ];
 
         // 渲染联系人列表
-        function renderContactList() {
+        function renderContactList(filterKeyword) {
             var contactList = document.getElementById('contactList');
             contactList.innerHTML = '';
             
-            contactData.forEach(function(contact) {
+            var filteredData = contactData;
+            if (filterKeyword && filterKeyword.trim()) {
+                var keyword = filterKeyword.toLowerCase().trim();
+                filteredData = contactData.filter(function(contact) {
+                    var searchText = contact.name + (contact.dept || '') + (contact.role || '') + contact.phone;
+                    return searchText.toLowerCase().includes(keyword);
+                });
+            }
+            
+            if (filteredData.length === 0) {
+                contactList.innerHTML = '<div class="contact-empty">暂无匹配的联系人</div>';
+                return;
+            }
+            
+            filteredData.forEach(function(contact) {
                 var item = document.createElement('div');
                 item.className = 'contact-item';
                 item.setAttribute('data-id', contact.id);
+                
+                var nameWithInfo = contact.name;
+                if (contact.dept && contact.role) {
+                    nameWithInfo = contact.name + '(' + contact.dept + '-' + contact.role + ')';
+                } else if (contact.dept) {
+                    nameWithInfo = contact.name + '(' + contact.dept + ')';
+                } else if (contact.role) {
+                    nameWithInfo = contact.name + '(' + contact.role + ')';
+                }
+                
                 item.innerHTML = `
-                    <span class="contact-name">${contact.name}</span>
+                    <span class="contact-name">${nameWithInfo}</span>
                     <span class="contact-phone">${contact.phone}</span>
                 `;
                 item.addEventListener('click', function() {
@@ -1805,6 +1890,23 @@
                 });
                 contactList.appendChild(item);
             });
+        }
+
+        // 过滤联系人列表
+        function filterContactList() {
+            var keyword = document.getElementById('contactSearchInput').value;
+            var clearBtn = document.getElementById('searchClearBtn');
+            clearBtn.style.display = keyword.trim() ? 'block' : 'none';
+            renderContactList(keyword);
+        }
+
+        // 清除搜索
+        function clearSearch() {
+            var input = document.getElementById('contactSearchInput');
+            var clearBtn = document.getElementById('searchClearBtn');
+            input.value = '';
+            clearBtn.style.display = 'none';
+            renderContactList('');
         }
 
         // 选择联系人
@@ -1865,49 +1967,6 @@
                 hideContactPanel();
             }
         });
-
-        // 显示添加联系人弹窗
-        function showAddContactModal() {
-            hideContactPanel();
-            document.getElementById('addContactModal').classList.add('show');
-            document.getElementById('modalOverlay').style.display = 'flex';
-        }
-
-        // 隐藏添加联系人弹窗
-        function hideAddContactModal() {
-            document.getElementById('addContactModal').classList.remove('show');
-            document.getElementById('modalOverlay').style.display = 'none';
-            document.getElementById('newContactName').value = '';
-            document.getElementById('newContactPhone').value = '';
-        }
-
-        // 确认添加联系人
-        function confirmAddContact() {
-            var name = document.getElementById('newContactName').value.trim();
-            var phone = document.getElementById('newContactPhone').value.trim();
-            
-            if (!name) {
-                alert('请输入联系人姓名');
-                return;
-            }
-            if (!phone) {
-                alert('请输入手机号');
-                return;
-            }
-            
-            var newContact = {
-                id: contactData.length + 1,
-                name: name,
-                phone: phone
-            };
-            
-            contactData.push(newContact);
-            renderContactList();
-            hideAddContactModal();
-            
-            // 自动选中新添加的联系人
-            selectContact(newContact);
-        }
 
         // 初始化联系人列表
         renderContactList();

@@ -755,7 +755,7 @@
         <div class="card" id="children-org-section">
             <div class="section-header">
                 <div class="section-title"><i class="fa fa-sitemap"></i> 下级组织 <span class="section-count">(2个)</span></div>
-                <button class="btn-outline-blue" onclick="window.location.href='add-sub-org.html'">
+                <button class="btn-outline-blue" onclick="addSubOrgInParent()">
                     <i class="fa fa-plus"></i> 添加
                 </button>
             </div>
@@ -2259,6 +2259,19 @@
                 updateOrgInfo();
             }
         });
+
+        function addSubOrgInParent() {
+            if (window.parent && window.parent.postMessage) {
+                window.parent.postMessage({ 
+                    type: 'addTab', 
+                    module: 'add-sub-org',
+                    title: '添加下级组织',
+                    icon: 'fa fa-plus'
+                }, '*');
+            } else {
+                window.location.href = 'add-sub-org.html';
+            }
+        }
 
         updateOrgInfo();
     </script>
