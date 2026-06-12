@@ -167,6 +167,32 @@
             height: 2px;
             background-color: #e2e8f0;
         }
+        .org-item .org-status {
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 4px;
+            font-weight: 500;
+        }
+        .org-item .org-status.status-pending {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        .org-item .org-status.status-rejected {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .org-item .org-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .org-item .org-members {
+            flex-shrink: 0;
+            margin-left: 4px;
+            color: #64748b;
+        }
         /* 右侧面板 */
         .right-panel {
             flex: 1;
@@ -686,15 +712,6 @@
                         </div>
                         <div class="section-content">
                             <ul class="org-list" id="org-list">
-                                <li class="org-item active" data-org-id="main">
-                                    <i class="fa fa-building"></i> 东莞长安训练基地(20)
-                                </li>
-                                <li class="org-item child" data-org-id="sub1">
-                                    <i class="fa fa-building-o"></i> 智能制造培训中心(12)
-                                </li>
-                                <li class="org-item child" data-org-id="sub2">
-                                    <i class="fa fa-building-o"></i> 机器人实训基地(8)
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -980,19 +997,40 @@
     <div id="toast-container" class="toast-container"></div>
 
     <script>
-        // 成员数据
-        const memberData = [
-            { id: 'M0001', name: '工元0001', avatar: '../A/images/tx-1.png', phone: '13826469793', org: '东莞长安训练基地', department: '管理部', role: '总经理', account: 'gongyuan0001', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '管理员账户', createTime: '2024-01-15 10:30:45' },
-            { id: 'M0002', name: '张伟', avatar: '../A/images/tx-2.png', phone: '13912345678', org: '东莞长安训练基地', department: '培训部', role: '培训总监', account: 'zhangwei', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-02-20 14:20:15' },
-            { id: 'M0003', name: '李娜', avatar: '../A/images/tx-1.png', phone: '13698765432', org: '智能制造培训中心', department: '培训部', role: '高级培训师', account: 'lina', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-03-10 09:15:30' },
-            { id: 'M0004', name: '王芳', avatar: '../A/images/tx-2.png', phone: '13523456789', org: '机器人实训基地', department: '行政部', role: '行政主管', account: 'wangfang', wechat: '未绑定', alipay: '未绑定', status: 'disabled', remark: '已离职', createTime: '2024-04-05 16:45:00' },
-            { id: 'M0005', name: '陈强', avatar: '../A/images/tx-3.png', phone: '15834567890', org: '东莞长安训练基地', department: '技术部', role: '技术主管', account: 'chenqiang', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '技术骨干', createTime: '2024-05-18 11:20:55' },
-            { id: 'M0006', name: '刘刚', avatar: '../A/images/tx-2.png', phone: '18612345678', org: '智能制造培训中心', department: '销售部', role: '业务员', account: 'liugang', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-06-01 08:30:20' },
-            { id: 'M0007', name: '周杰', avatar: '../A/images/tx-1.png', phone: '15934567890', org: '机器人实训基地', department: '销售部', role: '区域经理', account: 'zhoujie', wechat: '未绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-07-01 13:15:40' },
-            { id: 'M0008', name: '吴敏', avatar: '../A/images/tx-3.png', phone: '13745678901', org: '东莞长安训练基地', department: '售后部', role: '售后工程师', account: 'wumin', wechat: '已绑定', alipay: '未绑定', status: 'disabled', remark: '试用期', createTime: '2024-07-15 17:50:10' },
-            { id: 'M0009', name: '郑涛', avatar: '../A/images/tx-3.png', phone: '13856789012', org: '智能制造培训中心', department: '采购部', role: '采购主管', account: 'zhengt', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-08-01 10:00:35' },
-            { id: 'M0010', name: '黄丽', avatar: '../A/images/tx-2.png', phone: '18856789012', org: '机器人实训基地', department: '市场部', role: '大区经理', account: 'huangli', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '负责西南区域', createTime: '2024-08-15 14:30:00' }
-        ];
+        // 成员数据 - 按组织分类
+        const memberData = {
+            'main': [
+                { id: 'M0001', name: '工元0001', avatar: '../A/images/tx-1.png', phone: '13826469793', org: '东莞市智联科技有限公司', department: '管理部', role: '总经理', account: 'gongyuan0001', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '管理员账户', createTime: '2024-01-15 10:30:45' },
+                { id: 'M0002', name: '张伟', avatar: '../A/images/tx-2.png', phone: '13912345678', org: '东莞市智联科技有限公司', department: '市场部', role: '市场总监', account: 'zhangwei', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-02-20 14:20:15' },
+                { id: 'M0003', name: '李娜', avatar: '../A/images/tx-1.png', phone: '13698765432', org: '东莞市智联科技有限公司', department: '财务部', role: '财务主管', account: 'lina', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-03-10 09:15:30' },
+                { id: 'M0004', name: '王芳', avatar: '../A/images/tx-2.png', phone: '13523456789', org: '东莞市智联科技有限公司', department: '行政部', role: '行政主管', account: 'wangfang', wechat: '未绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-04-05 16:45:00' },
+                { id: 'M0005', name: '陈强', avatar: '../A/images/tx-3.png', phone: '15834567890', org: '东莞市智联科技有限公司', department: '业务部', role: '业务经理', account: 'chenqiang', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '业务骨干', createTime: '2024-05-18 11:20:55' },
+                { id: 'M0006', name: '刘刚', avatar: '../A/images/tx-2.png', phone: '18612345678', org: '东莞市智联科技有限公司', department: '业务部', role: '业务员', account: 'liugang', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-06-01 08:30:20' },
+                { id: 'M0007', name: '周杰', avatar: '../A/images/tx-1.png', phone: '15934567890', org: '东莞市智联科技有限公司', department: '市场部', role: '市场专员', account: 'zhoujie', wechat: '未绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-07-01 13:15:40' },
+                { id: 'M0008', name: '吴敏', avatar: '../A/images/tx-3.png', phone: '13745678901', org: '东莞市智联科技有限公司', department: '财务部', role: '会计', account: 'wumin', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-07-15 17:50:10' }
+            ],
+            'sub1': [
+                { id: 'S1001', name: '赵磊', avatar: '../A/images/tx-1.png', phone: '13811112222', org: '智能制造培训中心', department: '培训部', role: '培训总监', account: 'zhaolei', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '负责人', createTime: '2024-01-10 09:00:00' },
+                { id: 'S1002', name: '孙丽', avatar: '../A/images/tx-2.png', phone: '13922223333', org: '智能制造培训中心', department: '培训部', role: '高级培训师', account: 'sunli', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-02-15 10:30:00' },
+                { id: 'S1003', name: '钱浩', avatar: '../A/images/tx-3.png', phone: '13633334444', org: '智能制造培训中心', department: '技术部', role: '技术主管', account: 'qianhao', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-03-20 14:00:00' },
+                { id: 'S1004', name: '冯婷', avatar: '../A/images/tx-1.png', phone: '13544445555', org: '智能制造培训中心', department: '课程研发部', role: '课程设计师', account: 'fengting', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-04-05 11:00:00' },
+                { id: 'S1005', name: '杨波', avatar: '../A/images/tx-2.png', phone: '15855556666', org: '智能制造培训中心', department: '技术部', role: '前端开发', account: 'yangbo', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-05-10 09:30:00' },
+                { id: 'S1006', name: '许萌', avatar: '../A/images/tx-3.png', phone: '18666667777', org: '智能制造培训中心', department: '培训部', role: '培训师', account: 'xumeng', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-06-15 13:00:00' }
+            ],
+            'sub2': [
+                { id: 'S2001', name: '林涛', avatar: '../A/images/tx-2.png', phone: '13977778888', org: '机器人实训基地', department: '实训部', role: '实训总监', account: 'lintao', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '负责人', createTime: '2024-01-08 08:30:00' },
+                { id: 'S2002', name: '何芳', avatar: '../A/images/tx-1.png', phone: '13888889999', org: '机器人实训基地', department: '设备部', role: '设备主管', account: 'hefang', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-02-12 10:00:00' },
+                { id: 'S2003', name: '陈明', avatar: '../A/images/tx-3.png', phone: '13799990000', org: '机器人实训基地', department: '实训部', role: '实训讲师', account: 'chenming', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-03-18 14:30:00' },
+                { id: 'S2004', name: '赵丽', avatar: '../A/images/tx-2.png', phone: '15900001111', org: '机器人实训基地', department: '实训部', role: '实训讲师', account: 'zhaoli', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-04-22 11:00:00' },
+                { id: 'S2005', name: '徐杰', avatar: '../A/images/tx-1.png', phone: '18611112222', org: '机器人实训基地', department: '设备部', role: '设备维护', account: 'xuji', wechat: '未绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-05-28 09:00:00' }
+            ],
+            'other': [
+                { id: 'O0001', name: '周伟', avatar: '../A/images/tx-3.png', phone: '13933334444', org: '东莞华天设备有限公司', department: '生产部', role: '厂长', account: 'zhouwei', wechat: '已绑定', alipay: '已绑定', status: 'active', remark: '', createTime: '2024-01-10 08:00:00' },
+                { id: 'O0002', name: '吴丽', avatar: '../A/images/tx-1.png', phone: '13844445555', org: '东莞华天设备有限公司', department: '质检部', role: '质检主管', account: 'wuli', wechat: '已绑定', alipay: '未绑定', status: 'active', remark: '', createTime: '2024-02-15 09:30:00' },
+                { id: 'O0003', name: '郑强', avatar: '../A/images/tx-2.png', phone: '13755556666', org: '东莞佳佳食品有限公司', department: '研发部', role: '研发经理', account: 'zhengqiang', wechat: '未绑定', alipay: '已绑定', status: 'active', remark: '审核中', createTime: '2024-03-20 10:00:00' },
+                { id: 'O0004', name: '黄明', avatar: '../A/images/tx-3.png', phone: '15866667777', org: '东莞金标科技有限公司', department: '销售部', role: '销售经理', account: 'huangming', wechat: '已绑定', alipay: '已绑定', status: 'disabled', remark: '已驳回', createTime: '2024-04-25 14:00:00' }
+            ]
+        };
 
         // 部门数据
         const deptData = [
@@ -1020,8 +1058,243 @@
         let currentEditId = null;
         let currentTab = 'member';
 
+        // 组织数据（从index.html同步）
+        const orgData = {
+            '东莞市智联科技有限公司': {
+                name: '东莞市智联科技有限公司',
+                code: 'ORG001',
+                members: '58',
+                children: [
+                    { name: '智能制造培训中心', code: 'SUB001', members: '12' },
+                    { name: '机器人实训基地', code: 'SUB002', members: '33' }
+                ]
+            },
+            '东莞华天设备有限公司': {
+                name: '东莞华天设备有限公司',
+                code: 'ORG002',
+                members: '32',
+                children: []
+            },
+            '东莞佳佳食品有限公司': {
+                name: '东莞佳佳食品有限公司',
+                code: 'ORG003',
+                members: '15',
+                children: [],
+                status: 'pending'
+            },
+            '东莞金标科技有限公司': {
+                name: '东莞金标科技有限公司',
+                code: 'ORG004',
+                members: '8',
+                children: [],
+                status: 'rejected'
+            },
+            '长安训练中心': {
+                name: '长安训练中心',
+                code: 'SUB001',
+                members: '25',
+                children: []
+            },
+            '万江训练中心': {
+                name: '万江训练中心',
+                code: 'SUB002',
+                members: '33',
+                children: []
+            }
+        };
+
+        // 获取当前选中的组织数据
+        function getCurrentOrgData() {
+            try {
+                const currentOrgData = localStorage.getItem('currentOrgData');
+                if (currentOrgData) {
+                    return JSON.parse(currentOrgData);
+                }
+            } catch (e) {
+                console.error('读取当前组织失败:', e);
+            }
+            return orgData['东莞市智联科技有限公司'];
+        }
+
+        // 获取当前选中的组织名称
+        function getCurrentOrgName() {
+            const org = getCurrentOrgData();
+            return org ? org.name : '东莞市智联科技有限公司';
+        }
+
+        // 组织ID映射（将ORG/SUB格式转换为main/sub1/sub2格式）
+        function getOrgKey(orgId) {
+            const orgKeyMap = {
+                'ORG001': 'main',
+                'ORG002': 'main',
+                'ORG003': 'main',
+                'ORG004': 'main',
+                'SUB001': 'sub1',
+                'SUB002': 'sub2',
+                'main': 'main',
+                'sub1': 'sub1',
+                'sub2': 'sub2'
+            };
+            return orgKeyMap[orgId] || 'main';
+        }
+
+        // 获取所有成员数据（扁平化）
+        function getAllMembers() {
+            return Object.values(memberData).flat();
+        }
+
+        // 根据ID查找成员
+        function findMemberById(id) {
+            for (const orgKey of Object.keys(memberData)) {
+                const member = memberData[orgKey].find(m => m.id === id);
+                if (member) return member;
+            }
+            return null;
+        }
+
+        // 根据ID删除成员
+        function deleteMemberById(id) {
+            for (const orgKey of Object.keys(memberData)) {
+                const index = memberData[orgKey].findIndex(m => m.id === id);
+                if (index > -1) {
+                    memberData[orgKey].splice(index, 1);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // 获取父组织（如果当前是子组织）
+        function getParentOrg(orgName) {
+            for (const key of Object.keys(orgData)) {
+                const org = orgData[key];
+                if (org.children && org.children.some(child => child.name === orgName)) {
+                    return org;
+                }
+            }
+            return null;
+        }
+
+        // 渲染组织列表（只显示当前组织及其下级）
+        function renderOrgList() {
+            const orgList = document.getElementById('org-list');
+            if (!orgList) return;
+
+            let html = '';
+            const currentOrgName = getCurrentOrgName();
+            
+            // 查找当前组织
+            let currentOrg = orgData[currentOrgName];
+            
+            // 如果找不到当前组织，尝试从父组织的子组织中查找
+            if (!currentOrg) {
+                const parentOrg = getParentOrg(currentOrgName);
+                if (parentOrg) {
+                    currentOrg = parentOrg.children.find(child => child.name === currentOrgName);
+                }
+            }
+
+            // 如果仍然找不到，使用默认组织
+            if (!currentOrg) {
+                currentOrg = { name: currentOrgName, members: '-', code: 'UNKNOWN' };
+            }
+
+            // 显示当前组织（不展示状态）
+            html += `<li class="org-item active" data-org-id="${currentOrg.code}" data-org-name="${currentOrg.name}">
+                <i class="fa fa-building"></i> 
+                <span class="org-name">${currentOrg.name}</span>
+                <span class="org-members">(${currentOrg.members})</span>
+            </li>`;
+
+            // 如果当前组织有子级组织，显示子组织（带层级关系，不展示状态）
+            if (currentOrg.children && currentOrg.children.length > 0) {
+                currentOrg.children.forEach(child => {
+                    html += `<li class="org-item child" data-org-id="${child.code}" data-org-name="${child.name}">
+                        <i class="fa fa-building-o"></i> 
+                        <span class="org-name">${child.name}</span>
+                        <span class="org-members">(${child.members})</span>
+                    </li>`;
+                });
+            }
+
+            orgList.innerHTML = html;
+
+            // 绑定点击事件
+            const orgItems = document.querySelectorAll('.org-item');
+            orgItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    orgItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const orgId = this.getAttribute('data-org-id');
+                    const orgName = this.getAttribute('data-org-name');
+                    console.log('点击了组织:', orgId, orgName);
+
+                    // 根据当前tab动态更新对应内容
+                    if (currentTab === 'member') {
+                        // 更新成员列表
+                        renderMembers();
+                    } else if (currentTab === 'department') {
+                        // 更新部门列表
+                        const deptOrgId = getOrgKey(orgId);
+                        renderDepts(deptData, deptOrgId);
+                    } else if (currentTab === 'role') {
+                        // 更新角色管理
+                        const roleOrgId = getOrgKey(orgId);
+                        renderRoleManagement(roleOrgId);
+                    }
+                });
+            });
+        }
+
+        // 监听localStorage变化
+        function setupOrgSync() {
+            // 监听storage事件（当同源页面修改localStorage时触发）
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'currentOrgData' || e.key === 'currentOrgTimestamp') {
+                    console.log('组织信息已更新，重新渲染组织列表');
+                    renderOrgList();
+                    // 根据当前tab更新对应内容
+                    updateContentByTab();
+                }
+            });
+
+            // 监听来自父页面的消息
+            window.addEventListener('message', function(e) {
+                if (e.data && e.data.type === 'updateOrg') {
+                    console.log('收到父页面的组织更新消息');
+                    renderOrgList();
+                    // 根据当前tab更新对应内容
+                    updateContentByTab();
+                }
+            });
+        }
+
+        // 根据当前tab更新内容
+        function updateContentByTab() {
+            // 获取当前选中的组织
+            const activeOrg = document.querySelector('.org-item.active');
+            const orgId = activeOrg ? activeOrg.getAttribute('data-org-id') : 'main';
+            
+            if (currentTab === 'member') {
+                renderMembers();
+            } else if (currentTab === 'department') {
+                const deptOrgId = getOrgKey(orgId);
+                renderDepts(deptData, deptOrgId);
+            } else if (currentTab === 'role') {
+                const roleOrgId = getOrgKey(orgId);
+                renderRoleManagement(roleOrgId);
+            }
+        }
+
         // 页面初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 渲染组织列表
+            renderOrgList();
+            
+            // 设置组织同步监听
+            setupOrgSync();
+            
             renderMembers();
             initTabs();
             initCustomSelects();
@@ -1031,32 +1304,27 @@
             console.log('Main org departments:', deptData.filter(d => d.org === 'main' && !d.parentId).length);
             console.log('Sub1 org departments:', deptData.filter(d => d.org === 'sub1' && !d.parentId).length);
             console.log('Sub2 org departments:', deptData.filter(d => d.org === 'sub2' && !d.parentId).length);
-            
-            // 初始化组织列表点击事件
-            const orgItems = document.querySelectorAll('.org-item');
-            orgItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // 移除其他组织的激活状态
-                    orgItems.forEach(i => i.classList.remove('active'));
-                    // 添加当前组织的激活状态
-                    this.classList.add('active');
-                    
-                    // 获取当前选中的组织ID
-                    const orgId = this.getAttribute('data-org-id');
-                    console.log('点击了组织:', orgId);
-                    
-                    // 如果当前在角色管理标签页，更新角色列表
-                    if (currentTab === 'role') {
-                        renderRoleManagement(orgId);
-                    }
-                });
-            });
         });
 
         // 渲染成员列表
-        function renderMembers(data = memberData) {
+        function renderMembers() {
+            // 获取当前选中的组织
+            const activeOrg = document.querySelector('.org-item.active');
+            const orgId = activeOrg ? activeOrg.getAttribute('data-org-id') : 'main';
+            
+            // 转换为成员数据使用的org key
+            const memberOrgKey = getOrgKey(orgId);
+            
+            // 根据组织获取对应的成员数据
+            let currentData = memberData[memberOrgKey];
+            
+            // 如果没有找到对应组织的数据，使用other或main作为默认
+            if (!currentData || currentData.length === 0) {
+                currentData = memberData['other'] || memberData['main'] || [];
+            }
+            
             const tbody = document.getElementById('member-table-body');
-            tbody.innerHTML = data.map(member => `
+            tbody.innerHTML = currentData.map(member => `
                 <tr>
                     <td>${member.id}</td>
                     <td>
@@ -1185,7 +1453,9 @@
                 const activeOrg = document.querySelector('.org-item.active');
                 if (activeOrg) {
                     const orgId = activeOrg.getAttribute('data-org-id');
-                    renderDepts(deptData, orgId);
+                    // 转换为部门数据使用的org key
+                    const deptOrgId = getOrgKey(orgId);
+                    renderDepts(deptData, deptOrgId);
                 } else {
                     renderDepts(deptData);
                 }
@@ -1208,7 +1478,15 @@
             const index = deptData.findIndex(d => d.id === id);
             if (index > -1) {
                 deptData.splice(index, 1);
-                renderDepts();
+                // 获取当前选中的组织并重新渲染
+                const activeOrg = document.querySelector('.org-item.active');
+                if (activeOrg) {
+                    const orgId = activeOrg.getAttribute('data-org-id');
+                    const deptOrgId = getOrgKey(orgId);
+                    renderDepts(deptData, deptOrgId);
+                } else {
+                    renderDepts(deptData);
+                }
                 showToast('部门已删除', 'success');
             }
         }
@@ -1432,13 +1710,9 @@
                 const activeOrg = document.querySelector('.org-item.active');
                 if (activeOrg) {
                     const orgId = activeOrg.getAttribute('data-org-id');
-                    let filteredDepts = deptData;
-                    
-                    if (orgId !== 'main') {
-                        filteredDepts = deptData.filter(dept => dept.org === orgId);
-                    }
-                    
-                    renderDepts(filteredDepts);
+                    // 转换为部门数据使用的org key
+                    const deptOrgId = getOrgKey(orgId);
+                    renderDepts(deptData, deptOrgId);
                 } else {
                     renderDepts();
                 }
@@ -1458,7 +1732,7 @@
 
         // 切换状态
         function toggleStatus(id, checkbox) {
-            const member = memberData.find(m => m.id === id);
+            const member = findMemberById(id);
             if (member) {
                 member.status = checkbox.checked ? 'active' : 'disabled';
                 showToast(member.status === 'active' ? '已启用账号' : '已禁用账号', 'success');
@@ -1471,14 +1745,58 @@
             const dept = document.getElementById('filter-dept').value;
             const role = document.getElementById('filter-role').value;
 
-            const filtered = memberData.filter(member => {
+            // 获取当前组织的成员数据进行搜索
+            const activeOrg = document.querySelector('.org-item.active');
+            const orgId = activeOrg ? activeOrg.getAttribute('data-org-id') : 'main';
+            const memberOrgKey = getOrgKey(orgId);
+            const currentData = memberData[memberOrgKey] || memberData['other'] || [];
+            
+            const filtered = currentData.filter(member => {
                 const matchKeyword = member.name.toLowerCase().includes(keyword) || member.phone.includes(keyword);
                 const matchDept = !dept || member.department === dept;
                 const matchRole = !role || member.role === role;
                 return matchKeyword && matchDept && matchRole;
             });
-
-            renderMembers(filtered);
+            
+            // 直接渲染过滤后的数据
+            const tbody = document.getElementById('member-table-body');
+            tbody.innerHTML = filtered.map(member => `
+                <tr>
+                    <td>${member.id}</td>
+                    <td>
+                        <div class="avatar">
+                            ${member.avatar ? `<img src="${member.avatar}" alt="${member.name}">` : '<i class="fa fa-user"></i>'}
+                        </div>
+                    </td>
+                    <td>${member.name}</td>
+                    <td>${member.phone}</td>
+                    <td>${member.department}</td>
+                    <td>${member.role}</td>
+                    <td>${member.account}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 8px;"><span>微信：</span>${member.wechat === '已绑定' ? `<img src="${member.avatar || '../A/images/tx-1.png'}" alt="微信" style="width:20px;height:20px;"><span>${member.name}</span>` : '<span>未绑定</span>'}</div>
+                        <div style="display: flex; align-items: center; gap: 5px;"><span>支付宝：</span>${member.alipay === '已绑定' ? `<img src="${member.avatar || '../A/images/tx-1.png'}" alt="支付宝" style="width:20px;height:20px;"><span>${member.name}</span>` : '<span>未绑定</span>'}</div>
+                    </td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" ${member.status === 'active' ? 'checked' : ''} onchange="toggleStatus('${member.id}', this)">
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </label>
+                    </td>
+                    <td>${member.remark || '-'}</td>
+                    <td>${member.createTime}</td>
+                    <td>
+                        <button class="action-btn edit" onclick="openEditModal('${member.id}')">
+                            <i class="fa fa-pencil"></i> 编辑
+                        </button>
+                        <button class="action-btn delete" onclick="openConfirmModal('${member.id}')">
+                            <i class="fa fa-trash"></i> 删除
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
         // 重置搜索
@@ -1503,7 +1821,7 @@
 
         // 打开编辑弹窗
         function openEditModal(id) {
-            const member = memberData.find(m => m.id === id);
+            const member = findMemberById(id);
             if (member) {
                 currentEditId = id;
                 document.getElementById('modal-title').innerHTML = '<span style="width: 8px; height: 16px; background: #3b82f6; border-radius: 4px; margin-right: 8px;"></span>编辑成员';
@@ -1955,7 +2273,7 @@
 
             if (currentEditId) {
                 // 编辑现有成员
-                const member = memberData.find(m => m.id === currentEditId);
+                const member = findMemberById(currentEditId);
                 if (member) {
                     member.name = name;
                     member.phone = phone;
@@ -1964,15 +2282,20 @@
                 }
                 showToast('成员信息已更新', 'success');
             } else {
-                // 添加新成员
+                // 添加新成员到当前组织
+                const activeOrg = document.querySelector('.org-item.active');
+                const orgId = activeOrg ? activeOrg.getAttribute('data-org-id') : 'main';
+                const memberOrgKey = getOrgKey(orgId);
+                const orgName = activeOrg ? activeOrg.getAttribute('data-org-name') : '东莞市智联科技有限公司';
+                
                 const newMember = {
-                    id: `M${String(memberData.length + 1).padStart(4, '0')}`,
+                    id: `M${String(getAllMembers().length + 1).padStart(4, '0')}`,
                     name: name,
                     avatar: '',
                     phone: phone,
-                    org: '东莞长安训练基地',
+                    org: orgName,
                     department: '管理部',
-                    role: '总经理',
+                    role: '员工',
                     account: account,
                     wechat: '未绑定',
                     alipay: '未绑定',
@@ -1980,7 +2303,7 @@
                     remark: remark,
                     createTime: new Date().toISOString().replace('T', ' ').substring(0, 19)
                 };
-                memberData.push(newMember);
+                memberData[memberOrgKey].push(newMember);
                 showToast('成员已添加', 'success');
             }
 
@@ -1990,9 +2313,7 @@
 
         // 删除成员
         function deleteMember(id) {
-            const index = memberData.findIndex(m => m.id === id);
-            if (index > -1) {
-                memberData.splice(index, 1);
+            if (deleteMemberById(id)) {
                 renderMembers();
                 showToast('成员已删除', 'success');
             }
@@ -2041,8 +2362,10 @@ function initTabs() {
                 // 获取当前选中的组织
                 const activeOrg = document.querySelector('.org-item.active');
                 const orgId = activeOrg ? activeOrg.getAttribute('data-org-id') : 'main';
+                // 转换为部门数据使用的org key
+                const deptOrgId = getOrgKey(orgId);
                 // 然后渲染数据
-                renderDepts(deptData, orgId);
+                renderDepts(deptData, deptOrgId);
                 updateSectionTitle('department');
                 updateSearchBar('department');
                 console.log('部门列表渲染完成');
@@ -2052,7 +2375,9 @@ function initTabs() {
                 // 获取当前选中的组织
                 const activeOrg = document.querySelector('.org-item.active');
                 const orgId = activeOrg ? activeOrg.getAttribute('data-org-id') : 'main';
-                renderRoleManagement(orgId);
+                // 转换为角色数据使用的org key
+                const roleOrgId = getOrgKey(orgId);
+                renderRoleManagement(roleOrgId);
                 updateSectionTitle('role');
                 console.log('角色管理渲染完成');
             }
@@ -3360,9 +3685,7 @@ function updateTableHeader(type) {
         
         function confirmDelete() {
             if (currentDeleteId) {
-                const index = memberData.findIndex(m => m.id === currentDeleteId);
-                if (index > -1) {
-                    memberData.splice(index, 1);
+                if (deleteMemberById(currentDeleteId)) {
                     renderMembers();
                     showToast('成员已删除', 'success');
                 }

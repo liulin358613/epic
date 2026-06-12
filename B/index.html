@@ -1149,10 +1149,13 @@
             localStorage.setItem('currentOrgTimestamp', Date.now().toString());
 
             setTimeout(() => {
-                const iframe = document.querySelector('iframe[src="workspace.html"]');
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.postMessage({ type: 'updateOrg' }, '*');
-                }
+                // 通知所有iframe组织已更新
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({ type: 'updateOrg' }, '*');
+                    }
+                });
             }, 100);
 
             const orgLinks = document.querySelectorAll('.org-submenu li a');
