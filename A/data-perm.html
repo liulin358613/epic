@@ -287,6 +287,9 @@
         .expand-icon:hover {
             color: var(--color-text-secondary);
         }
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
         .tree-item.active .expand-icon {
             color: var(--color-primary);
         }
@@ -1686,23 +1689,23 @@
                                         <div style="flex: 1; overflow-y: auto;">
                                         <div class="permission-group">
                                             <label class="permission-label">
-                                                <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                                                <span class="expand-icon expanded" data-target="org-type-order-center-children">▶</span>
                                                 <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
                                                 <span>订单中心</span>
                                             </label>
-                                            <div class="permission-children" id="order-center-children">
+                                            <div class="permission-children" id="org-type-order-center-children">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                                    <span class="expand-icon expanded" data-target="org-type-order-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
                                                     <span>订单管理</span>
                                                 </label>
-                                                <div class="permission-children" id="order-children">
+                                                <div class="permission-children" id="org-type-order-children">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                                        <span class="expand-icon expanded" data-target="org-type-purchase-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
                                                         <span>采购订单</span>
                                                     </label>
-                                                    <div class="permission-children" id="purchase-children">
+                                                    <div class="permission-children" id="org-type-purchase-children">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                             <span>查看</span>
@@ -1725,11 +1728,11 @@
                                                         </label>
                                                     </div>
                                                     <label class="permission-label">
-                                                        <span class="expand-icon expanded" data-target="sales-children">▶</span>
+                                                        <span class="expand-icon expanded" data-target="org-type-sales-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="sales">
                                                         <span>销售订单</span>
                                                     </label>
-                                                    <div class="permission-children" id="sales-children">
+                                                    <div class="permission-children" id="org-type-sales-children">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                             <span>查看</span>
@@ -1756,23 +1759,23 @@
                                         </div>
                                         <div class="permission-group">
                                             <label class="permission-label">
-                                                <span class="expand-icon" data-target="warehouse-center-children">▶</span>
+                                                <span class="expand-icon" data-target="org-type-warehouse-center-children">▶</span>
                                                 <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="warehouse-center">
                                                 <span>仓储中心</span>
                                             </label>
-                                            <div class="permission-children" id="warehouse-center-children" style="display: none;">
+                                            <div class="permission-children" id="org-type-warehouse-center-children" style="display: none;">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon" data-target="warehouse-children">▶</span>
+                                                    <span class="expand-icon" data-target="org-type-warehouse-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse-center" data-group="warehouse">
                                                     <span>仓库管理</span>
                                                 </label>
-                                                <div class="permission-children" id="warehouse-children" style="display: none;">
+                                                <div class="permission-children" id="org-type-warehouse-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="inventory-children">▶</span>
+                                                        <span class="expand-icon" data-target="org-type-inventory-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="inventory">
                                                         <span>库存管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="inventory-children" style="display: none;">
+                                                    <div class="permission-children" id="org-type-inventory-children" style="display: none;">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
                                                             <span>查看</span>
@@ -1791,11 +1794,11 @@
                                                         </label>
                                                     </div>
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="location-children">▶</span>
+                                                        <span class="expand-icon" data-target="org-type-location-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="location">
                                                         <span>货位管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="location-children" style="display: none;">
+                                                    <div class="permission-children" id="org-type-location-children" style="display: none;">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
                                                             <span>查看</span>
@@ -1814,17 +1817,17 @@
                                         </div>
                                         <div class="permission-group">
                                             <label class="permission-label">
-                                                <span class="expand-icon" data-target="user-center-children">▶</span>
+                                                <span class="expand-icon" data-target="org-type-user-center-children">▶</span>
                                                 <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="user-center">
                                                 <span>人员中心</span>
                                             </label>
-                                            <div class="permission-children" id="user-center-children" style="display: none;">
+                                            <div class="permission-children" id="org-type-user-center-children" style="display: none;">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon" data-target="user-children">▶</span>
+                                                    <span class="expand-icon" data-target="org-type-user-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="user-center" data-group="user">
                                                     <span>用户管理</span>
                                                 </label>
-                                                <div class="permission-children" id="user-children" style="display: none;">
+                                                <div class="permission-children" id="org-type-user-children" style="display: none;">
                                                     <label class="permission-label">
                                                         <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                         <span>查看</span>
@@ -1846,23 +1849,23 @@
                                         </div>
                                         <div class="permission-group">
                                             <label class="permission-label">
-                                                <span class="expand-icon" data-target="system-center-children">▶</span>
+                                                <span class="expand-icon" data-target="org-type-system-center-children">▶</span>
                                                 <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="system-center">
                                                 <span>系统中心</span>
                                             </label>
-                                            <div class="permission-children" id="system-center-children" style="display: none;">
+                                            <div class="permission-children" id="org-type-system-center-children" style="display: none;">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon" data-target="system-children">▶</span>
+                                                    <span class="expand-icon" data-target="org-type-system-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system-center" data-group="system">
                                                     <span>系统设置</span>
                                                 </label>
-                                                <div class="permission-children" id="system-children" style="display: none;">
+                                                <div class="permission-children" id="org-type-system-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="config-children">▶</span>
+                                                        <span class="expand-icon" data-target="org-type-config-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="config">
                                                         <span>基础配置</span>
                                                     </label>
-                                                    <div class="permission-children" id="config-children" style="display: none;">
+                                                    <div class="permission-children" id="org-type-config-children" style="display: none;">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
                                                             <span>查看</span>
@@ -1873,11 +1876,11 @@
                                                         </label>
                                                     </div>
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="log-children">▶</span>
+                                                        <span class="expand-icon" data-target="org-type-log-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="log">
                                                         <span>日志管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="log-children" style="display: none;">
+                                                    <div class="permission-children" id="org-type-log-children" style="display: none;">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="log">
                                                             <span>查看</span>
@@ -2744,23 +2747,23 @@
                                             <div style="flex: 1; overflow-y: auto;">
                                             <div class="permission-group">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon expanded" data-target="order-center-children">▶</span>
+                                                    <span class="expand-icon expanded" data-target="role-order-center-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="order-center">
                                                     <span>订单中心</span>
                                                 </label>
-                                                <div class="permission-children" id="order-center-children">
+                                                <div class="permission-children" id="role-order-center-children">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon expanded" data-target="order-children">▶</span>
+                                                        <span class="expand-icon expanded" data-target="role-order-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order-center" data-group="order">
                                                         <span>订单管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="order-children">
+                                                    <div class="permission-children" id="role-order-children">
                                                         <label class="permission-label">
-                                                            <span class="expand-icon expanded" data-target="purchase-children">▶</span>
+                                                            <span class="expand-icon expanded" data-target="role-purchase-children">▶</span>
                                                             <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="purchase">
                                                             <span>采购订单</span>
                                                         </label>
-                                                        <div class="permission-children" id="purchase-children">
+                                                        <div class="permission-children" id="role-purchase-children">
                                                             <label class="permission-label">
                                                                 <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="purchase">
                                                                 <span>查看</span>
@@ -2783,11 +2786,11 @@
                                                             </label>
                                                         </div>
                                                         <label class="permission-label">
-                                                            <span class="expand-icon expanded" data-target="sales-children">▶</span>
+                                                            <span class="expand-icon expanded" data-target="role-sales-children">▶</span>
                                                             <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="order" data-group="sales">
                                                             <span>销售订单</span>
                                                         </label>
-                                                        <div class="permission-children" id="sales-children">
+                                                        <div class="permission-children" id="role-sales-children">
                                                             <label class="permission-label">
                                                                 <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="sales">
                                                                 <span>查看</span>
@@ -2814,23 +2817,23 @@
                                             </div>
                                             <div class="permission-group">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon" data-target="warehouse-center-children">▶</span>
+                                                    <span class="expand-icon" data-target="role-warehouse-center-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="warehouse-center">
                                                     <span>仓储中心</span>
                                                 </label>
-                                                <div class="permission-children" id="warehouse-center-children" style="display: none;">
+                                                <div class="permission-children" id="role-warehouse-center-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="warehouse-children">▶</span>
+                                                        <span class="expand-icon" data-target="role-warehouse-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse-center" data-group="warehouse">
                                                         <span>仓库管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="warehouse-children" style="display: none;">
+                                                    <div class="permission-children" id="role-warehouse-children" style="display: none;">
                                                         <label class="permission-label">
-                                                            <span class="expand-icon" data-target="inventory-children">▶</span>
+                                                            <span class="expand-icon" data-target="role-inventory-children">▶</span>
                                                             <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="inventory">
                                                             <span>库存管理</span>
                                                         </label>
-                                                        <div class="permission-children" id="inventory-children" style="display: none;">
+                                                        <div class="permission-children" id="role-inventory-children" style="display: none;">
                                                             <label class="permission-label">
                                                                 <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="inventory">
                                                                 <span>查看</span>
@@ -2849,11 +2852,11 @@
                                                             </label>
                                                         </div>
                                                         <label class="permission-label">
-                                                            <span class="expand-icon" data-target="location-children">▶</span>
+                                                            <span class="expand-icon" data-target="role-location-children">▶</span>
                                                             <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="warehouse" data-group="location">
                                                             <span>货位管理</span>
                                                         </label>
-                                                        <div class="permission-children" id="location-children" style="display: none;">
+                                                        <div class="permission-children" id="role-location-children" style="display: none;">
                                                             <label class="permission-label">
                                                                 <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="location">
                                                                 <span>查看</span>
@@ -2872,17 +2875,17 @@
                                             </div>
                                             <div class="permission-group">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon" data-target="user-center-children">▶</span>
+                                                    <span class="expand-icon" data-target="role-user-center-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="user-center">
                                                     <span>人员中心</span>
                                                 </label>
-                                                <div class="permission-children" id="user-center-children" style="display: none;">
+                                                <div class="permission-children" id="role-user-center-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="user-children">▶</span>
+                                                        <span class="expand-icon" data-target="role-user-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="user-center" data-group="user">
                                                         <span>用户管理</span>
                                                     </label>
-                                                    <div class="permission-children" id="user-children" style="display: none;">
+                                                    <div class="permission-children" id="role-user-children" style="display: none;">
                                                         <label class="permission-label">
                                                             <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="user">
                                                             <span>查看</span>
@@ -2904,23 +2907,23 @@
                                             </div>
                                             <div class="permission-group">
                                                 <label class="permission-label">
-                                                    <span class="expand-icon" data-target="system-center-children">▶</span>
+                                                    <span class="expand-icon" data-target="role-system-center-children">▶</span>
                                                     <input type="checkbox" class="perm-checkbox parent-checkbox" data-group="system-center">
                                                     <span>系统中心</span>
                                                 </label>
-                                                <div class="permission-children" id="system-center-children" style="display: none;">
+                                                <div class="permission-children" id="role-system-center-children" style="display: none;">
                                                     <label class="permission-label">
-                                                        <span class="expand-icon" data-target="system-children">▶</span>
+                                                        <span class="expand-icon" data-target="role-system-children">▶</span>
                                                         <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system-center" data-group="system">
                                                         <span>系统设置</span>
                                                     </label>
-                                                    <div class="permission-children" id="system-children" style="display: none;">
+                                                    <div class="permission-children" id="role-system-children" style="display: none;">
                                                         <label class="permission-label">
-                                                            <span class="expand-icon" data-target="config-children">▶</span>
+                                                            <span class="expand-icon" data-target="role-config-children">▶</span>
                                                             <input type="checkbox" class="perm-checkbox child-checkbox" data-parent="system" data-group="config">
                                                             <span>基础配置</span>
                                                         </label>
-                                                        <div class="permission-children" id="config-children" style="display: none;">
+                                                        <div class="permission-children" id="role-config-children" style="display: none;">
                                                             <label class="permission-label">
                                                                 <input type="checkbox" class="perm-checkbox leaf-checkbox" data-parent="config">
                                                                 <span>查看</span>
