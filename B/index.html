@@ -528,6 +528,58 @@
             touch-action: manipulation;
         }
 
+        /* 个人中心弹窗 - 同行布局 */
+        .profile-inline-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .pf-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .pf-row:last-child {
+            border-bottom: none;
+        }
+        .pf-label {
+            flex-shrink: 0;
+            width: 84px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #888;
+            text-align: right;
+        }
+        .pf-value {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+            padding: 7px 12px;
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            word-break: break-all;
+        }
+        @media screen and (max-width: 540px) {
+            .pf-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .pf-label {
+                width: auto;
+                text-align: left;
+            }
+            .pf-value {
+                width: 100%;
+            }
+        }
+
         /* 美化滚动条 */
         ::-webkit-scrollbar {
             width: 3px;
@@ -597,7 +649,7 @@
                             <li><a href="#" onclick="event.stopPropagation(); switchOrg('万江训练中心', '买买提', '技术部-工程师')" style="padding-left: 24px;">万江训练中心(技术部-工程师)</a></li>
                         </ul>
                     </li>
-                    <li><a href="#" onclick="event.stopPropagation()">个人中心</a></li>
+                    <li><a href="#" onclick="event.stopPropagation(); showProfileModal()">个人中心</a></li>
                     <li><a href="#" onclick="event.stopPropagation(); showLogoutModal()">退出登录</a></li>
                 </ul>
             </div>
@@ -616,6 +668,173 @@
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="hideLogoutModal()">取消</button>
                 <button class="btn-confirm" onclick="logout()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人中心弹窗 -->
+    <div class="modal-overlay" id="profileModal" style="display: none;">
+        <div class="modal-content" style="width: clamp(480px, 50vw, 600px); max-width: 96vw;">
+            <!-- 弹窗头部 -->
+            <div class="modal-header" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 4px; height: 18px; background: linear-gradient(180deg, #0051D9, #0066FF); border-radius: 2px;"></div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1a1a2e;">个人中心</h3>
+                </div>
+                <button onclick="hideProfileModal()" style="width: 28px; height: 28px; border-radius: 6px; background: #f5f5f5; border: none; font-size: 16px; cursor: pointer; color: #888; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='#ebebeb'" onmouseout="this.style.background='#f5f5f5'">×</button>
+            </div>
+
+            <div class="modal-body" style="padding: 0 20px 20px; max-height: 72vh; overflow-y: auto;">
+                <!-- 头像区域 -->
+                <div style="display: flex; align-items: center; gap: 16px; padding: 16px 0 18px; border-bottom: 1px solid #f0f0f0; margin-bottom: 16px;">
+                    <div style="position: relative; flex-shrink: 0;">
+                        <img id="profileAvatar" src="../A/images/tx-2.png" alt="头像" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid #e0ebff; box-shadow: 0 2px 10px rgba(0,81,217,0.15);">
+                        <button id="changeAvatarBtn" style="position: absolute; bottom: 0; right: 0; width: 24px; height: 24px; border-radius: 50%; background: #0051D9; color: white; border: 2px solid white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; box-shadow: 0 1px 4px rgba(0,0,0,0.2);">
+                            <i class="fa fa-camera"></i>
+                        </button>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div>
+                        <div style="font-size: 18px; font-weight: 600; color: #1a1a2e; line-height: 1.3;">买买提</div>
+                        <div style="font-size: 13px; color: #888; margin-top: 3px;">东莞市智联科技有限公司 · 业务部 · 总经理</div>
+                        <div style="font-size: 12px; color: #bbb; margin-top: 2px;">点击相机图标更换头像</div>
+                    </div>
+                </div>
+
+                <!-- 信息表单（标题和内容同行） -->
+                <div class="profile-inline-form">
+
+                    <div class="pf-row">
+                        <span class="pf-label">名称</span>
+                        <span class="pf-value">买买提</span>
+                    </div>
+
+                    <div class="pf-row">
+                        <span class="pf-label">所属组织</span>
+                        <span class="pf-value">东莞市智联科技有限公司</span>
+                    </div>
+
+                    <div class="pf-row">
+                        <span class="pf-label">部门</span>
+                        <span class="pf-value">业务部</span>
+                    </div>
+
+                    <div class="pf-row">
+                        <span class="pf-label">角色</span>
+                        <span class="pf-value" style="color: #0051D9; font-weight: 500;">总经理</span>
+                    </div>
+
+                    <div class="pf-row">
+                        <span class="pf-label">账号</span>
+                        <span class="pf-value">maimat@example.com</span>
+                    </div>
+
+                    <!-- 密码行 -->
+                    <div class="pf-row pf-row-top" style="align-items: flex-start;">
+                        <span class="pf-label" style="padding-top: 9px;">密码</span>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="flex: 1; position: relative;">
+                                    <input type="password" id="passwordInput" value="Maimat@123" readonly
+                                        style="width: 100%; padding: 7px 36px 7px 12px; border: 1px solid #e8e8e8; border-radius: 6px; background: #fafafa; color: #666; font-size: 14px; outline: none; font-family: monospace;">
+                                    <button id="togglePasswordBtn" onclick="togglePassword()"
+                                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #aaa; padding: 0;">
+                                        <i class="fa fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                                <button id="changePasswordBtn" onclick="toggleChangePassword()"
+                                    style="flex-shrink: 0; padding: 7px 12px; font-size: 12px; color: #0051D9; background: #f0f5ff; border: 1px solid #c5d9ff; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: all 0.2s;"
+                                    onmouseover="this.style.background='#e0ebff'" onmouseout="this.style.background='#f0f5ff'">修改密码</button>
+                            </div>
+                            <div id="changePasswordFields" style="display: none; margin-top: 10px; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 1px solid #eee;">
+                                <div style="margin-bottom: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <span style="width: 56px; flex-shrink: 0; font-size: 12px; color: #888; text-align: right;">新密码</span>
+                                        <input type="password" placeholder="请输入新密码" style="flex: 1; padding: 7px 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none;">
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <span style="width: 56px; flex-shrink: 0; font-size: 12px; color: #888; text-align: right;">确认密码</span>
+                                        <input type="password" placeholder="请确认新密码" style="flex: 1; padding: 7px 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; outline: none;">
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <button onclick="submitPassword()" style="padding: 6px 20px; font-size: 13px; color: white; background: linear-gradient(135deg, #0051D9, #0066FF); border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,81,217,0.3);">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pf-row pf-row-top" style="align-items: flex-start;">
+                        <span class="pf-label" style="padding-top: 9px;">备注</span>
+                        <textarea readonly style="flex: 1; padding: 7px 12px; border: 1px solid #e8e8e8; border-radius: 6px; background: #fafafa; color: #999; font-size: 14px; resize: none; height: 58px; outline: none; font-family: inherit;">暂无备注信息</textarea>
+                    </div>
+
+                    <!-- 其他登录方式 -->
+                    <div class="pf-row pf-row-top" style="align-items: flex-start; padding-top: 14px; border-top: 1px solid #f0f0f0; margin-top: 4px;">
+                        <span class="pf-label" style="padding-top: 10px;">其他登录方式</span>
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e8e8e8; border-radius: 8px; background: #fafafa;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 13px; color: #333; font-weight: 500; width: 40px;">微信</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <img src="../A/images/tx-1.png" alt="微信头像" style="width: 32px; height: 32px; border-radius: 50%;">
+                                        <span style="font-size: 12px; color: #666;">买买提_wx</span>
+                                    </div>
+                                </div>
+                                <button onclick="unbindSocial('wechat')" style="padding: 4px 10px; font-size: 12px; color: #e53e3e; background: #fff5f5; border: 1px solid #fcc; border-radius: 4px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#ffe8e8'" onmouseout="this.style.background='#fff5f5'">解绑</button>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e8e8e8; border-radius: 8px; background: #fafafa;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 13px; color: #333; font-weight: 500; width: 40px;">支付宝</span>
+                                    <span style="font-size: 12px; color: #aaa;">未绑定</span>
+                                </div>
+                                <button onclick="showBindQRCode('alipay')" style="padding: 4px 10px; font-size: 12px; color: #0051D9; background: #f0f5ff; border: 1px solid #c5d9ff; border-radius: 4px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#e0ebff'" onmouseout="this.style.background='#f0f5ff'">绑定</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer" style="padding: 12px 20px; border-top: 1px solid #f0f0f0;">
+                <button class="btn-cancel" onclick="hideProfileModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 绑定二维码弹窗 -->
+    <div class="modal-overlay" id="qrCodeModal" style="display: none;">
+        <div class="modal-content" style="width: 320px;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="qrCodeTitle">绑定支付宝</h3>
+                <button onclick="hideQRCodeModal()" style="background: none; border: none; font-size: 14px; cursor: pointer; color: #0051D9; padding: 0;">关闭</button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div style="text-align: center;">
+                    <div style="width: 180px; height: 180px; background: white; border: 1px solid #e0e0e0; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=bind-alipay" alt="二维码" style="width: 160px; height: 160px;">
+                    </div>
+                    <p style="color: #666; font-size: 14px;">请使用手机扫码绑定</p>
+                    <p style="color: #999; font-size: 12px; margin-top: 8px;">有效期5分钟</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 解绑确认弹窗 -->
+    <div class="modal-overlay" id="unbindConfirmModal" style="display: none;">
+        <div class="modal-content" style="width: 360px;">
+            <div class="modal-header">
+                <h3>确认解绑</h3>
+            </div>
+            <div class="modal-body">
+                <p>确定要解绑<span id="unbindType" style="color: #0051D9; font-weight: 500;">微信</span>吗？解绑后将无法使用该方式登录。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="cancelUnbind()">取消</button>
+                <button class="btn-confirm" onclick="confirmUnbind()">确定解绑</button>
             </div>
         </div>
     </div>
@@ -877,6 +1096,104 @@
 
         function logout() {
             window.location.href = 'login.html';
+        }
+
+        function showProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = 'none';
+            resetOrgSubmenu();
+            modal.style.display = 'flex';
+        }
+
+        function hideProfileModal() {
+            const modal = document.getElementById('profileModal');
+            modal.style.display = 'none';
+        }
+
+        function changeAvatar() {
+            const input = document.getElementById('avatarInput');
+            input.click();
+        }
+
+        function avatarInputChange() {
+            const input = document.getElementById('avatarInput');
+            const avatar = document.getElementById('profileAvatar');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatar.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('changeAvatarBtn').addEventListener('click', changeAvatar);
+        document.getElementById('avatarInput').addEventListener('change', avatarInputChange);
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleBtn = document.getElementById('togglePasswordBtn');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.innerHTML = '<i class="fa fa-eye"></i>';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.innerHTML = '<i class="fa fa-eye-slash"></i>';
+            }
+        }
+
+        function toggleChangePassword() {
+            const fields = document.getElementById('changePasswordFields');
+            const btn = document.getElementById('changePasswordBtn');
+            if (fields.style.display === 'none') {
+                fields.style.display = 'block';
+                btn.textContent = '取消';
+            } else {
+                fields.style.display = 'none';
+                btn.textContent = '修改密码';
+            }
+        }
+
+        function submitPassword() {
+            alert('密码修改成功！');
+            const fields = document.getElementById('changePasswordFields');
+            fields.style.display = 'none';
+            document.getElementById('changePasswordBtn').textContent = '修改密码';
+        }
+
+        function unbindSocial(type) {
+            const modal = document.getElementById('unbindConfirmModal');
+            const typeText = type === 'wechat' ? '微信' : '支付宝';
+            document.getElementById('unbindType').textContent = typeText;
+            modal.style.display = 'flex';
+        }
+
+        function confirmUnbind() {
+            const modal = document.getElementById('unbindConfirmModal');
+            modal.style.display = 'none';
+            alert('解绑成功！');
+        }
+
+        function cancelUnbind() {
+            const modal = document.getElementById('unbindConfirmModal');
+            modal.style.display = 'none';
+        }
+
+        function showBindQRCode(type) {
+            const modal = document.getElementById('qrCodeModal');
+            const title = document.getElementById('qrCodeTitle');
+            if (type === 'alipay') {
+                title.textContent = '绑定支付宝';
+            } else if (type === 'wechat') {
+                title.textContent = '绑定微信';
+            }
+            modal.style.display = 'flex';
+        }
+
+        function hideQRCodeModal() {
+            const modal = document.getElementById('qrCodeModal');
+            modal.style.display = 'none';
         }
 
         // 点击页面其他地方关闭下拉菜单
