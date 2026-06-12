@@ -580,11 +580,10 @@
                 </div>
             </div>
             <i class="fa fa-angle-down text-gray-300 text-xs cursor-pointer hover:text-white transition-colors"></i>
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-medium cursor-pointer shadow-lg">A</div>
+            <img src="../A/images/tx-2.png" class="w-9 h-9 rounded-full object-cover cursor-pointer shadow-lg" alt="头像">
             <!-- 下拉菜单 -->
             <div class="user-dropdown" id="userDropdown" style="display: none;">
                 <ul>
-                    <li><a href="#" onclick="event.stopPropagation(); showLogoutModal()">退出登录</a></li>
                     <li class="has-submenu">
                         <a href="#" onclick="event.stopPropagation(); toggleOrgSubmenu()">切换组织 <i class="fa fa-angle-up" id="orgArrow" style="float: right;"></i></a>
                         <ul class="org-submenu">
@@ -599,6 +598,7 @@
                         </ul>
                     </li>
                     <li><a href="#" onclick="event.stopPropagation()">个人中心</a></li>
+                    <li><a href="#" onclick="event.stopPropagation(); showLogoutModal()">退出登录</a></li>
                 </ul>
             </div>
         </div>
