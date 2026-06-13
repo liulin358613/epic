@@ -481,6 +481,7 @@
             
             // 初始化拖动功能
             initResizer();
+            initInputResizer();
             
             // 初始化预览区Tab栏，确保+图标显示
             updateTabs();
@@ -2673,6 +2674,22 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            position: relative;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* 输入框上边框hover可拖动效果 */
+        .input-container.resizer-hover {
+            border-top-color: rgba(0, 81, 217, 0.6);
+            border-top-width: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 -1px 4px rgba(0, 81, 217, 0.15);
+        }
+
+        /* 输入框拖动中效果 */
+        .input-container.resizer-dragging {
+            border-top-color: rgba(0, 81, 217, 0.8);
+            border-top-width: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 -2px 6px rgba(0, 81, 217, 0.2);
         }
 
         .input-box textarea {
@@ -5664,7 +5681,7 @@
                 </div>
 
                 <!-- 底部输入框 -->
-                <div class="input-container">
+                <div class="input-container" id="inputContainer">
                     <!-- 引用内容区域 -->
                     <div class="quote-content" id="quoteContent" style="display: none;">
                         <div class="quote-icon">"</div>
@@ -11149,6 +11166,113 @@
                 }
             });
         }
+
+        // 输入框上边框拖动功能
+        function initInputResizer() {
+            const inputContainer = document.getElementById('inputContainer');
+            const textarea = inputContainer ? inputContainer.querySelector('.input-box textarea') : null;
+
+            if (!inputContainer || !textarea) return;
+
+            let isResizing = false;
+            let startY = 0;
+            let startHeight = 0;
+            let isHoveringTopBorder = false;
+
+            // textarea最大高度
+            const maxHeight = 160;
+            // textarea最小高度
+            const minHeight = 24;
+            // 上边框检测区域高度
+            const topBorderThreshold = 5;
+
+            // 检测鼠标是否在上边框区域
+            function checkIfOnTopBorder(e) {
+                const rect = inputContainer.getBoundingClientRect();
+                const mouseY = e.clientY;
+                const topBorderY = rect.top;
+                
+                return mouseY >= topBorderY - topBorderThreshold && mouseY <= topBorderY + topBorderThreshold;
+            }
+
+            // 鼠标移动检测上边框hover
+            inputContainer.addEventListener('mousemove', (e) => {
+                if (isResizing) return;
+                
+                const onTopBorder = checkIfOnTopBorder(e);
+                
+                if (onTopBorder && !isHoveringTopBorder) {
+                    isHoveringTopBorder = true;
+                    inputContainer.classList.add('resizer-hover');
+                    inputContainer.style.cursor = 'row-resize';
+                } else if (!onTopBorder && isHoveringTopBorder) {
+                    isHoveringTopBorder = false;
+                    inputContainer.classList.remove('resizer-hover');
+                    inputContainer.style.cursor = '';
+                }
+            });
+
+            // 鼠标离开输入框区域
+            inputContainer.addEventListener('mouseleave', () => {
+                if (!isResizing) {
+                    isHoveringTopBorder = false;
+                    inputContainer.classList.remove('resizer-hover');
+                    inputContainer.style.cursor = '';
+                }
+            });
+
+            // 鼠标按下开始拖动
+            inputContainer.addEventListener('mousedown', (e) => {
+                if (!checkIfOnTopBorder(e)) return;
+                
+                e.preventDefault();
+                isResizing = true;
+                inputContainer.classList.remove('resizer-hover');
+                inputContainer.classList.add('resizer-dragging');
+                document.body.style.cursor = 'row-resize';
+                document.body.style.userSelect = 'none';
+
+                // 获取当前textarea的高度
+                startHeight = textarea.offsetHeight;
+                startY = e.clientY;
+
+                // 禁用所有iframe的指针事件，防止捕获鼠标事件
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    iframe.style.pointerEvents = 'none';
+                });
+            });
+
+            // 全局鼠标移动（拖动中）
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+
+                // 向上拖动（鼠标向上）增加高度，向下拖动减少高度
+                const deltaY = startY - e.clientY;
+                let newHeight = startHeight + deltaY;
+
+                // 限制范围：最小minHeight，最大maxHeight
+                newHeight = Math.max(minHeight, Math.min(newHeight, maxHeight));
+
+                textarea.style.height = newHeight + 'px';
+            });
+
+            // 鼠标释放结束拖动
+            document.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    inputContainer.classList.remove('resizer-dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+
+                    // 恢复所有iframe的指针事件
+                    const iframes = document.querySelectorAll('iframe');
+                    iframes.forEach(iframe => {
+                        iframe.style.pointerEvents = '';
+                    });
+                }
+            });
+        }
         
         // 为历史对话项的操作按钮添加点击事件
         function initHistoryMenu() {
@@ -11570,6 +11694,7 @@
         // 页面加载完成后初始化
         window.addEventListener('load', () => {
             initResizer();
+            initInputResizer();
             initHistoryMenu();
             showBICenter();//默认打开BI中心
             initSidebarToggle();
