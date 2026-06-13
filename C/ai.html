@@ -6089,6 +6089,22 @@
         const sendBtn = document.querySelector('.send-btn');
         
         textarea.addEventListener('input', () => {
+            // 如果手动调整过高度
+            if (window.textareaManuallyResized) {
+                const currentHeight = textarea.offsetHeight;
+                // 如果内容高度超过当前高度，则自动撑高，最大不超过160
+                if (textarea.scrollHeight > currentHeight) {
+                    textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+                }
+                // 控制发送按钮状态
+                if (textarea.value.trim() || uploadedFiles.length > 0) {
+                    sendBtn.classList.add('active');
+                } else {
+                    sendBtn.classList.remove('active');
+                }
+                return;
+            }
+            
             textarea.style.height = 'auto';
             textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
             
@@ -11174,6 +11190,9 @@
 
             if (!inputContainer || !textarea) return;
 
+            // 初始化全局标记
+            window.textareaManuallyResized = false;
+
             let isResizing = false;
             let startY = 0;
             let startHeight = 0;
@@ -11227,6 +11246,7 @@
                 
                 e.preventDefault();
                 isResizing = true;
+                window.textareaManuallyResized = true; // 标记为手动调整过
                 inputContainer.classList.remove('resizer-hover');
                 inputContainer.classList.add('resizer-dragging');
                 document.body.style.cursor = 'row-resize';
