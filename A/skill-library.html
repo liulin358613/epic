@@ -7,6 +7,8 @@
     <title>Skill技能库</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -64,6 +66,15 @@
             border-color: #3b82f6;
             color: #3b82f6;
             background: #eff6ff;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: 1px solid #ef4444;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+            border-color: #dc2626;
         }
         .form-control {
             padding: 8px 12px;
@@ -173,13 +184,29 @@
             border-radius: 3px;
             font-weight: 500;
         }
-        .skill-badge.status.active {
+        .skill-badge.status.draft {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .skill-badge.status.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .skill-badge.status.approved {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .skill-badge.status.published {
             background: #dcfce7;
             color: #16a34a;
         }
-        .skill-badge.status.inactive {
-            background: #fee2e2;
-            color: #dc2626;
+        .skill-badge.status.offline {
+            background: #fce7f3;
+            color: #db2777;
+        }
+        .skill-badge.status.invalid {
+            background: #f3f4f6;
+            color: #9ca3af;
         }
         .skill-category {
             font-size: 12px;
@@ -339,6 +366,163 @@
             border-top: 1px solid #f1f5f9;
             background: white;
         }
+        .image-upload-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .image-upload-box {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+        }
+        .image-upload-box:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .image-upload-box.has-image {
+            border-style: solid;
+            border-color: #e2e8f0;
+            padding: 8px;
+        }
+        .image-upload-box i {
+            font-size: 24px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .image-upload-box span {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+        .image-delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .image-upload-wrapper:hover .image-delete-btn {
+            opacity: 1;
+        }
+        .image-upload-input {
+            display: none;
+        }
+        .EasyMDEContainer {
+            width: 100%;
+        }
+        .EasyMDEContainer .CodeMirror {
+            min-height: 300px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .EasyMDEContainer .editor-toolbar {
+            border: 1px solid #e2e8f0;
+            border-radius: 4px 4px 0 0;
+            background: #f8fafc;
+        }
+        .EasyMDEContainer .editor-toolbar button {
+            color: #64748b;
+        }
+        .EasyMDEContainer .editor-toolbar button:hover,
+        .EasyMDEContainer .editor-toolbar button.active {
+            background: #e2e8f0;
+        }
+        .EasyMDEContainer .editor-preview {
+            min-height: 300px;
+            padding: 16px;
+            background: #fff;
+        }
+        .basic-info-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .avatar-section {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .avatar-section .form-label {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+        .avatar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .btn-upload {
+            padding: 6px 16px;
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0;
+        }
+        .btn-upload:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .type-name-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .form-item-inline {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .form-item-inline .form-label {
+            margin-bottom: 0;
+            padding-top: 6px;
+            flex: 0 0 80px;
+            text-align: right;
+        }
+        .form-item-inline .form-control {
+            flex: 1;
+            max-width: none;
+        }
+        .input-wrapper {
+            flex: 1;
+            max-width: none;
+        }
+        .input-wrapper .form-control {
+            width: 100%;
+        }
         .pagination-info {
             color: #64748b;
             font-size: 14px;
@@ -435,9 +619,7 @@
             font-size: 14px;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 8px;
         }
         .form-row {
             display: flex;
@@ -518,21 +700,23 @@
             <!-- 顶部标签页 -->
             <div class="tabs-wrapper">
                 <div class="tab-item active" data-tab="all" onclick="switchTab('all')">全部</div>
-                <div class="tab-item" data-tab="writing" onclick="switchTab('writing')">文案写作</div>
-                <div class="tab-item" data-tab="analysis" onclick="switchTab('analysis')">数据分析</div>
-                <div class="tab-item" data-tab="design" onclick="switchTab('design')">设计创意</div>
-                <div class="tab-item" data-tab="research" onclick="switchTab('research')">研究调研</div>
-                <div class="tab-item" data-tab="translation" onclick="switchTab('translation')">翻译</div>
-                <div class="tab-item" data-tab="other" onclick="switchTab('other')">其他</div>
+                <div class="tab-item" data-tab="draft" onclick="switchTab('draft')">草稿</div>
+                <div class="tab-item" data-tab="pending" onclick="switchTab('pending')">待审核</div>
+                <div class="tab-item" data-tab="approved" onclick="switchTab('approved')">审核通过</div>
+                <div class="tab-item" data-tab="invalid" onclick="switchTab('invalid')">已作废</div>
             </div>
 
             <!-- 搜索栏 -->
             <div class="search-bar">
                 <input type="text" class="form-control" placeholder="搜索技能名称..." id="search-input" style="min-width: 200px;">
-                <select class="form-control" id="status-filter">
-                    <option value="">全部状态</option>
-                    <option value="active">启用</option>
-                    <option value="inactive">停用</option>
+                <select class="form-control" id="category-filter">
+                    <option value="">全部分类</option>
+                    <option value="writing">文案写作</option>
+                    <option value="analysis">数据分析</option>
+                    <option value="design">设计创意</option>
+                    <option value="research">研究调研</option>
+                    <option value="translation">翻译</option>
+                    <option value="other">其他</option>
                 </select>
                 <button class="btn btn-outline" onclick="searchSkills()"><i class="fa fa-search"></i> 搜索</button>
                 <button class="btn btn-outline" onclick="resetSearch()"><i class="fa fa-refresh"></i> 重置</button>
@@ -547,6 +731,7 @@
             <!-- 分页 -->
             <div class="pagination-footer">
                 <div style="display: flex; align-items: center; gap: 4px; justify-content: flex-end;">
+                    <span class="text-gray-500 text-sm" id="pagination-info">显示 1-12 条，共 12 条</span>
                     <span class="text-gray-500 text-sm" id="total-count">共 12 条</span>
                     <div class="pagination" id="pagination">
                         <button class="pagination-btn" onclick="prevPage()">
@@ -588,99 +773,68 @@
                 <input type="hidden" id="edit-id" value="">
                 
                 <div class="form-section">
-                    <div class="section-title">基本信息</div>
-                    
-                    <div class="form-row">
-                        <div class="form-item">
-                            <label class="form-label">技能名称 <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="skill-name" placeholder="请输入技能名称">
-                            <div class="error-text" id="name-error">请输入技能名称</div>
+                    <div class="basic-info-row">
+                        <div class="avatar-section">
+                            <label class="form-label">图标<span class="required">*</span></label>
+                            <div class="avatar-col">
+                                <div class="image-upload-box" id="image-upload-box" onclick="document.getElementById('image-upload-input').click()">
+                                    <i class="fa fa-plus"></i>
+                                    <span>上传图标</span>
+                                </div>
+                                <div class="error-text" id="icon-error">请上传技能图标</div>
+                                <button class="btn-upload" id="image-btn" onclick="document.getElementById('image-upload-input').click()" style="display: none;">重新上传</button>
+                                <input type="file" class="image-upload-input" id="image-upload-input" accept="image/*" onchange="handleImageUpload(event)">
+                            </div>
                         </div>
-                        <div class="form-item">
-                            <label class="form-label">技能分类 <span class="required">*</span></label>
-                            <select class="form-control" id="skill-category">
-                                <option value="">请选择技能分类</option>
-                                <option value="writing">文案写作</option>
-                                <option value="analysis">数据分析</option>
-                                <option value="design">设计创意</option>
-                                <option value="research">研究调研</option>
-                                <option value="translation">翻译</option>
-                                <option value="other">其他</option>
-                            </select>
-                            <div class="error-text" id="category-error">请选择技能分类</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-item">
-                            <label class="form-label">技能描述</label>
-                            <textarea class="form-control textarea-control" id="skill-description" placeholder="请输入技能描述"></textarea>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">技能标签</label>
-                            <input type="text" class="form-control" id="skill-tags" placeholder="多个标签用逗号分隔">
+                        
+                        <div class="type-name-section">
+                            <div class="form-item-inline">
+                                <label class="form-label">分类<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <select class="form-control" id="skill-category">
+                                        <option value="">请选择技能分类</option>
+                                        <option value="writing">文案写作</option>
+                                        <option value="analysis">数据分析</option>
+                                        <option value="design">设计创意</option>
+                                        <option value="research">研究调研</option>
+                                        <option value="translation">翻译</option>
+                                        <option value="other">其他</option>
+                                    </select>
+                                    <div class="error-text" id="category-error">请选择技能分类</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">名称<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control" id="skill-name" placeholder="请输入技能名称，2-6个字" maxlength="6">
+                                    <div class="error-text" id="name-error">请输入技能名称，限制2-6个字</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">标签</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control" id="skill-tags" placeholder="多个标签使用|分割，限制30个字" maxlength="30">
+                                    <div class="error-text" id="tags-error">标签限制30个字，多个使用|分割</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-item-inline">
+                                <label class="form-label">描述</label>
+                                <div class="input-wrapper">
+                                    <textarea class="form-control textarea-control" id="skill-description" placeholder="请输入技能描述"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="form-section">
-                    <div class="section-title">配置信息</div>
-                    
-                    <div class="form-row">
-                        <div class="form-item">
-                            <label class="form-label">技能图标</label>
-                            <select class="form-control" id="skill-icon">
-                                <option value="fa-file-text-o">文档图标</option>
-                                <option value="fa-pencil">铅笔图标</option>
-                                <option value="fa-bar-chart">图表图标</option>
-                                <option value="fa-image">图片图标</option>
-                                <option value="fa-search">搜索图标</option>
-                                <option value="fa-language">语言图标</option>
-                                <option value="fa-lightbulb-o">灯泡图标</option>
-                                <option value="fa-cog">齿轮图标</option>
-                            </select>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">图标颜色</label>
-                            <select class="form-control" id="skill-icon-color">
-                                <option value="orange">橙色</option>
-                                <option value="blue">蓝色</option>
-                                <option value="purple">紫色</option>
-                                <option value="green">绿色</option>
-                                <option value="red">红色</option>
-                                <option value="cyan">青色</option>
-                                <option value="pink">粉色</option>
-                                <option value="yellow">黄色</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-item">
-                            <label class="form-label">运行状态 <span class="required">*</span></label>
-                            <select class="form-control" id="skill-status">
-                                <option value="active">启用</option>
-                                <option value="inactive">停用</option>
-                            </select>
-                            <div class="error-text" id="status-error">请选择运行状态</div>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">关联模型</label>
-                            <select class="form-control" id="skill-model">
-                                <option value="">请选择关联模型</option>
-                                <option value="gpt4">GPT-4</option>
-                                <option value="gemini">Gemini</option>
-                                <option value="wenxin">文心一言</option>
-                                <option value="tongyi">通义千问</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-item" style="flex: 1 0 100%;">
-                            <label class="form-label">技能提示词</label>
-                            <textarea class="form-control textarea-control" id="skill-prompt" placeholder="请输入技能的提示词内容"></textarea>
-                        </div>
+                <div class="form-section" style="margin-left: 40px;">
+                    <label class="form-label">执行规则<span class="required">*</span></label>
+                    <div class="input-wrapper" style="flex: 1; margin-top: 8px;">
+                        <textarea class="form-control" id="skill-content" placeholder="请输入执行规则"></textarea>
+                        <div class="error-text" id="content-error">请输入执行规则</div>
                     </div>
                 </div>
             </div>
@@ -692,27 +846,50 @@
         </div>
     </div>
 
+    <!-- 技能详情弹窗 -->
+    <div class="modal-overlay" id="skill-detail-modal" onclick="handleDetailOverlayClick(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title">技能详情</h2>
+                <button class="modal-close" onclick="closeDetailModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="detail-body">
+                <!-- 动态填充技能详情 -->
+            </div>
+            
+            <div class="modal-footer" id="detail-footer">
+                <!-- 动态操作按钮 -->
+            </div>
+        </div>
+    </div>
+
     <script>
         // 模拟数据
         let skills = [
-            { id: 'SKL001', name: 'AI助手写作', description: '利用AI帮助您快速撰写高质量文章，支持多种写作场景，包括：文案撰写、报告生成、邮件写作等', category: 'writing', tags: '写作,AI,文案', icon: 'fa-pencil', iconColor: 'orange', status: 'active', prompt: '作为一名专业文案助手，帮助用户撰写高质量的文章内容。', model: 'gpt4', usageCount: 1256, updateTime: '2026-05-28' },
-            { id: 'SKL002', name: 'PPT文案写作', description: '自动生成PPT演示文稿内容，支持多种主题风格，快速生成专业演示文稿大纲和内容', category: 'writing', tags: 'PPT,演示,文案', icon: 'fa-file-text-o', iconColor: 'blue', status: 'active', prompt: '作为PPT文案专家，帮助用户撰写专业的演示文稿内容。', model: 'gpt4', usageCount: 892, updateTime: '2026-05-27' },
-            { id: 'SKL003', name: '工作总结写作', description: '根据工作内容自动生成工作总结报告，支持周总结、月总结、年终总结等多种格式', category: 'writing', tags: '总结,报告,工作', icon: 'fa-bar-chart', iconColor: 'purple', status: 'active', prompt: '作为工作总结助手，帮助用户撰写专业的工作总结报告。', model: 'wenxin', usageCount: 2134, updateTime: '2026-05-26' },
-            { id: 'SKL004', name: '小红书文案', description: '创作符合小红书风格的种草文案，吸引用户关注和互动', category: 'writing', tags: '小红书,种草,文案', icon: 'fa-image', iconColor: 'pink', status: 'active', prompt: '作为小红书文案专家，创作吸引人的种草文案。', model: 'gpt4', usageCount: 1567, updateTime: '2026-05-25' },
-            { id: 'SKL005', name: '市场分析报告', description: '深度分析市场数据，生成专业的市场分析报告，助力商业决策', category: 'analysis', tags: '分析,报告,市场', icon: 'fa-bar-chart', iconColor: 'green', status: 'active', prompt: '作为市场分析专家，帮助用户分析市场数据并生成专业报告。', model: 'tongyi', usageCount: 456, updateTime: '2026-05-24' },
-            { id: 'SKL006', name: '竞品分析', description: '全面分析竞争对手产品，生成竞品分析报告，发现市场机会', category: 'analysis', tags: '竞品,分析,报告', icon: 'fa-search', iconColor: 'cyan', status: 'active', prompt: '作为竞品分析专家，帮助用户分析竞争对手并生成分析报告。', model: 'gemini', usageCount: 328, updateTime: '2026-05-23' },
-            { id: 'SKL007', name: 'Deep Research', description: '深度研究特定主题，整合多源信息，生成详细的研究报告', category: 'research', tags: '研究,深度,报告', icon: 'fa-search', iconColor: 'purple', status: 'active', prompt: '作为研究助手，帮助用户进行深度研究并生成研究报告。', model: 'gpt4', usageCount: 298, updateTime: '2026-05-22' },
-            { id: 'SKL008', name: '翻译助手', description: '支持多语言互译，提供专业、准确的翻译服务', category: 'translation', tags: '翻译,多语言', icon: 'fa-language', iconColor: 'blue', status: 'active', prompt: '作为专业翻译助手，提供准确的多语言翻译服务。', model: 'gpt4', usageCount: 3421, updateTime: '2026-05-21' },
-            { id: 'SKL009', name: '创意设计灵感', description: '激发设计灵感，生成创意设计方案和概念描述', category: 'design', tags: '设计,创意,灵感', icon: 'fa-lightbulb-o', iconColor: 'yellow', status: 'active', prompt: '作为创意设计助手，帮助用户生成设计灵感和创意方案。', model: 'gemini', usageCount: 678, updateTime: '2026-05-20' },
-            { id: 'SKL010', name: '代码审查', description: '自动化代码审查，发现潜在问题和优化建议', category: 'other', tags: '代码,审查,编程', icon: 'fa-cog', iconColor: 'red', status: 'inactive', prompt: '作为代码审查专家，帮助用户发现代码中的问题和优化建议。', model: 'gpt4', usageCount: 189, updateTime: '2026-05-19' },
-            { id: 'SKL011', name: '邮件撰写', description: '快速撰写专业商务邮件，支持多种邮件模板', category: 'writing', tags: '邮件,商务,写作', icon: 'fa-pencil', iconColor: 'green', status: 'active', prompt: '作为邮件写作助手，帮助用户撰写专业的商务邮件。', model: 'wenxin', usageCount: 2345, updateTime: '2026-05-18' },
-            { id: 'SKL012', name: 'SEO优化建议', description: '分析网站内容，提供SEO优化建议，提升搜索引擎排名', category: 'other', tags: 'SEO,优化,网站', icon: 'fa-search', iconColor: 'orange', status: 'active', prompt: '作为SEO专家，帮助用户优化网站内容以提升搜索排名。', model: 'gpt4', usageCount: 567, updateTime: '2026-05-17' }
+            { id: 'SKL001', name: 'AI助手写作', description: '利用AI帮助您快速撰写高质量文章，支持多种写作场景，包括：文案撰写、报告生成、邮件写作等', category: 'writing', tags: '写作|AI|文案', icon: 'fa-pencil', iconColor: 'orange', status: 'approved', content: '# AI助手写作\n\n这是一个强大的AI写作助手。', model: 'gpt4', usageCount: 1256, updateTime: '2026-05-28' },
+            { id: 'SKL002', name: 'PPT文案写作', description: '自动生成PPT演示文稿内容，支持多种主题风格，快速生成专业演示文稿大纲和内容', category: 'writing', tags: 'PPT|演示|文案', icon: 'fa-file-text-o', iconColor: 'blue', status: 'approved', content: '# PPT文案写作\n\n快速生成专业PPT。', model: 'gpt4', usageCount: 892, updateTime: '2026-05-27' },
+            { id: 'SKL003', name: '工作总结写作', description: '根据工作内容自动生成工作总结报告，支持周总结、月总结、年终总结等多种格式', category: 'writing', tags: '总结|报告|工作', icon: 'fa-bar-chart', iconColor: 'purple', status: 'approved', content: '# 工作总结写作\n\n智能生成工作总结。', model: 'wenxin', usageCount: 2134, updateTime: '2026-05-26' },
+            { id: 'SKL004', name: '小红书文案', description: '创作符合小红书风格的种草文案，吸引用户关注和互动', category: 'writing', tags: '小红书|种草|文案', icon: 'fa-image', iconColor: 'pink', status: 'pending', content: '# 小红书文案\n\n创作吸引人的种草文案。', model: 'gpt4', usageCount: 1567, updateTime: '2026-05-25' },
+            { id: 'SKL005', name: '市场分析报告', description: '深度分析市场数据，生成专业的市场分析报告，助力商业决策', category: 'analysis', tags: '分析|报告|市场', icon: 'fa-line-chart', iconColor: 'green', status: 'approved', content: '# 市场分析报告\n\n专业的市场分析工具。', model: 'tongyi', usageCount: 456, updateTime: '2026-05-24' },
+            { id: 'SKL006', name: '竞品分析', description: '全面分析竞争对手产品，生成竞品分析报告，发现市场机会', category: 'analysis', tags: '竞品|分析|报告', icon: 'fa-search', iconColor: 'cyan', status: 'draft', content: '# 竞品分析\n\n全面的竞品分析工具。', model: 'gemini', usageCount: 328, updateTime: '2026-05-23' },
+            { id: 'SKL007', name: 'Deep Research', description: '深度研究特定主题，整合多源信息，生成详细的研究报告', category: 'research', tags: '研究|深度|报告', icon: 'fa-book', iconColor: 'purple', status: 'approved', content: '# Deep Research\n\n深度研究助手。', model: 'gpt4', usageCount: 298, updateTime: '2026-05-22' },
+            { id: 'SKL008', name: '翻译助手', description: '支持多语言互译，提供专业、准确的翻译服务', category: 'translation', tags: '翻译|多语言', icon: 'fa-language', iconColor: 'blue', status: 'approved', content: '# 翻译助手\n\n多语言翻译服务。', model: 'gpt4', usageCount: 3421, updateTime: '2026-05-21' },
+            { id: 'SKL009', name: '创意设计灵感', description: '激发设计灵感，生成创意设计方案和概念描述', category: 'design', tags: '设计|创意|灵感', icon: 'fa-lightbulb-o', iconColor: 'yellow', status: 'pending', content: '# 创意设计灵感\n\n激发创意灵感。', model: 'gemini', usageCount: 678, updateTime: '2026-05-20' },
+            { id: 'SKL010', name: '代码审查', description: '自动化代码审查，发现潜在问题和优化建议', category: 'other', tags: '代码|审查|编程', icon: 'fa-code', iconColor: 'red', status: 'invalid', content: '# 代码审查\n\n自动化代码审查工具。', model: 'gpt4', usageCount: 189, updateTime: '2026-05-19' },
+            { id: 'SKL011', name: '邮件撰写', description: '快速撰写专业商务邮件，支持多种邮件模板', category: 'writing', tags: '邮件|商务|写作', icon: 'fa-envelope-o', iconColor: 'green', status: 'approved', content: '# 邮件撰写\n\n专业商务邮件助手。', model: 'wenxin', usageCount: 2345, updateTime: '2026-05-18' },
+            { id: 'SKL012', name: 'SEO优化建议', description: '分析网站内容，提供SEO优化建议，提升搜索引擎排名', category: 'other', tags: 'SEO|优化|网站', icon: 'fa-search-plus', iconColor: 'orange', status: 'approved', content: '# SEO优化建议\n\n网站SEO优化工具。', model: 'gpt4', usageCount: 567, updateTime: '2026-05-17' }
         ];
 
         let filteredSkills = [...skills];
         let currentPage = 1;
         let pageSize = 10;
         let currentTab = 'all';
+        // 使用window.easyMDE确保全局访问
+        window.easyMDE = null;
+        let currentImageData = null;
 
         // 获取分类中文名
         function getCategoryName(category) {
@@ -726,6 +903,17 @@
             };
             return names[category] || category;
         }
+        
+        // 获取状态中文名
+        function getStatusLabel(status) {
+            const labels = {
+                'draft': '草稿',
+                'pending': '待审核',
+                'approved': '审核通过',
+                'invalid': '已作废'
+            };
+            return labels[status] || status;
+        }
 
         // 渲染技能卡片
         function renderSkills() {
@@ -734,27 +922,36 @@
             const endIndex = startIndex + pageSize;
             const pageSkills = filteredSkills.slice(startIndex, endIndex);
 
-            grid.innerHTML = pageSkills.map(skill => `
+            grid.innerHTML = pageSkills.map(skill => {
+                const isFontAwesome = skill.icon && skill.icon.startsWith('fa-');
+                const iconHtml = isFontAwesome 
+                    ? `<i class="fa ${skill.icon}" style="font-size:18px;"></i>`
+                    : skill.icon 
+                        ? `<img src="${skill.icon}" class="image-preview" style="width:44px;height:44px;border-radius:6px;object-fit:cover;">` 
+                        : `<i class="fa fa-star" style="font-size:18px;"></i>`;
+                const iconClass = isFontAwesome || !skill.icon ? skill.iconColor : '';
+                
+                return `
                 <div class="skill-card" onclick="viewSkill('${skill.id}')">
-                    <div class="skill-badge status ${skill.status}">${skill.status === 'active' ? '启用' : '停用'}</div>
+                    <div class="skill-badge status ${skill.status}">${getStatusLabel(skill.status)}</div>
                     <div class="skill-header">
-                        <div class="skill-icon ${skill.iconColor}">
-                            <i class="fa ${skill.icon}"></i>
+                        <div class="skill-icon ${iconClass}" style="${skill.icon && !isFontAwesome ? 'background:transparent;' : ''}">
+                            ${iconHtml}
                         </div>
                         <div class="skill-info">
                             <div class="skill-name">${skill.name}<span class="skill-id">(${skill.id})</span><span class="skill-category">${getCategoryName(skill.category)}</span></div>
                             <div class="skill-tags">
-                                ${skill.tags.split(',').slice(0, 4).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                ${skill.tags.split('|').slice(0, 4).map(tag => `<span class="tag">${tag}</span>`).join('')}
                             </div>
                         </div>
                     </div>
                     <div class="skill-desc">${skill.description}</div>
                     <div class="skill-footer">
                         <div class="usage-count"><i class="fa fa-bar-chart"></i>${skill.usageCount}次使用</div>
-                        <div class="btn-add" onclick="addToAgent('${skill.id}'); event.stopPropagation()">添加</div>
+                        <div class="btn-add" onclick="viewSkill('${skill.id}'); event.stopPropagation()">查看</div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             updatePagination();
         }
@@ -790,23 +987,16 @@
             tabs.forEach(t => t.classList.remove('active'));
             document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
 
-            // 筛选技能
-            if (tab === 'all') {
-                filteredSkills = [...skills];
-            } else {
-                filteredSkills = skills.filter(s => s.category === tab);
-            }
-
-            // 应用搜索和状态筛选
+            // 应用搜索和分类筛选
             applyFilters();
         }
 
         // 应用筛选条件
         function applyFilters() {
             const searchText = document.getElementById('search-input').value.toLowerCase();
-            const statusFilter = document.getElementById('status-filter').value;
+            const categoryFilter = document.getElementById('category-filter').value;
 
-            let tempSkills = currentTab === 'all' ? [...skills] : skills.filter(s => s.category === currentTab);
+            let tempSkills = currentTab === 'all' ? [...skills] : skills.filter(s => s.status === currentTab);
 
             if (searchText) {
                 tempSkills = tempSkills.filter(s => 
@@ -815,8 +1005,8 @@
                 );
             }
 
-            if (statusFilter) {
-                tempSkills = tempSkills.filter(s => s.status === statusFilter);
+            if (categoryFilter) {
+                tempSkills = tempSkills.filter(s => s.category === categoryFilter);
             }
 
             filteredSkills = tempSkills;
@@ -887,20 +1077,167 @@
             document.getElementById('skill-category').value = '';
             document.getElementById('skill-description').value = '';
             document.getElementById('skill-tags').value = '';
-            document.getElementById('skill-icon').value = 'fa-file-text-o';
-            document.getElementById('skill-icon-color').value = 'orange';
-            document.getElementById('skill-status').value = 'active';
-            document.getElementById('skill-prompt').value = '';
-            document.getElementById('skill-model').value = '';
+            
+            // 重置图片上传
+            currentImageData = null;
+            resetImageUpload();
+            
+            // 重置markdown编辑器
+            if (window.easyMDE) {
+                window.easyMDE.value('');
+            }
             
             // 隐藏错误提示
             document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
             
             document.getElementById('skill-modal').classList.add('show');
+            
+            // 弹窗显示后初始化markdown编辑器
+            setTimeout(() => {
+                initEasyMDE();
+                if (window.easyMDE) {
+                    window.easyMDE.value('');
+                }
+            }, 200);
         }
 
         // 查看技能详情
         function viewSkill(id) {
+            const skill = skills.find(s => s.id === id);
+            if (skill) {
+                const detailBody = document.getElementById('detail-body');
+                const isFontAwesome = skill.icon && skill.icon.startsWith('fa-');
+                const iconHtml = isFontAwesome 
+                    ? `<i class="fa ${skill.icon}" style="font-size:24px;"></i>`
+                    : skill.icon 
+                        ? `<img src="${skill.icon}" class="image-preview" style="width:120px;height:120px;border-radius:8px;object-fit:cover;">` 
+                        : `<i class="fa fa-star" style="font-size:24px;"></i>`;
+                
+                detailBody.innerHTML = `
+                    <div style="background: white; padding: 0 16px 16px 16px; border-bottom: 1px solid #e5e7eb; margin-bottom: 20px;">
+                        <div style="display: flex; gap: 16px;">
+                            <div class="skill-icon ${skill.iconColor}" style="margin-top: 30px; width: 80px; height: 80px; border-radius: 8px; height: 80px; border-radius: 8px; flex-shrink: 0; ${skill.icon && !isFontAwesome ? 'background:transparent;' : ''}">
+                                ${iconHtml}
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; justify-content: flex-end;align-items: center;">
+                                    <span style="font-size: 12px; padding: 3px 10px; border-radius: 4px; font-weight: 500; background: ${skill.status === 'draft' ? '#f1f5f9' : skill.status === 'pending' ? '#fef3c7' : skill.status === 'approved' ? '#dbeafe' : skill.status === 'published' ? '#dcfce7' : skill.status === 'offline' ? '#fce7f3' : '#f3f4f6'}; color: ${skill.status === 'draft' ? '#64748b' : skill.status === 'pending' ? '#d97706' : skill.status === 'approved' ? '#2563eb' : skill.status === 'published' ? '#16a34a' : skill.status === 'offline' ? '#db2777' : '#9ca3af'};">${getStatusLabel(skill.status)}</span>
+                                    <span style="font-size: 12px; color: #3b82f6; cursor: pointer; font-weight: 500; margin-left: 12px;" onclick="showOperationLog('${skill.id}')">操作记录</span>
+                                </div>
+                                <div style="margin-bottom: 6px;">
+                                    <span style="font-size: 20px; font-weight: 600; color: #1e293b;">${skill.name}</span>
+                                    <span style="font-size: 14px; font-weight: 400; color: #94a3b8; margin-left: 8px;">(${skill.id})</span>
+                                    <span class="skill-category" style="margin-left: 8px;">${getCategoryName(skill.category)}</span>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; overflow: hidden;">
+                                    ${skill.tags.split('|').map(tag => `<span class="tag" style="padding: 3px 8px; background: #f1f5f9; border-radius: 4px; font-size: 12px; color: #64748b;">${tag}</span>`).join('')}
+                                </div>
+                                <div style="font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 12px;">${skill.description}</div>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div class="usage-count" style="font-size: 13px; color: #64748b;"><i class="fa fa-bar-chart"></i>${skill.usageCount}次使用</div>
+                                    <div style="font-size: 12px; color: #94a3b8;">创建时间：${skill.createTime || skill.updateTime} 10:10　|　最后更新：${skill.updateTime} 10:52</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section" style="margin-left: 20px;">
+                        <h4 class="section-title">执行规则</h4>
+                        <div style="padding: 16px; background: #f8fafc; border-radius: 6px; font-family: monospace; font-size: 14px; white-space: pre-wrap; word-break: break-all; color: #374151;">${skill.content || '-'}</div>
+                    </div>
+                `;
+                
+                // 根据状态生成操作按钮
+                const footer = document.getElementById('detail-footer');
+                let buttonsHtml = '';
+                switch(skill.status) {
+                    case 'draft':
+                        buttonsHtml = `
+                            <button class="btn btn-outline" onclick="editSkill('${skill.id}')"><i class="fa fa-edit"></i> 编辑</button>
+                            <button class="btn btn-primary" onclick="submitForReview('${skill.id}')"><i class="fa fa-upload"></i> 提交审核</button>
+                            <button class="btn btn-danger" onclick="markInvalid('${skill.id}')"><i class="fa fa-ban"></i> 作废</button>
+                        `;
+                        break;
+                    case 'pending':
+                        buttonsHtml = `
+                            <button class="btn btn-outline" onclick="withdrawReview('${skill.id}')"><i class="fa fa-arrow-left"></i> 撤回审核</button>
+                            <button class="btn btn-primary" onclick="approveSkill('${skill.id}')"><i class="fa fa-check-circle"></i> 审核</button>
+                        `;
+                        break;
+                    case 'approved':
+                        buttonsHtml = `
+                            <button class="btn btn-outline" onclick="rejectSkill('${skill.id}')"><i class="fa fa-undo"></i> 退回重调</button>
+                        `;
+                        break;
+                    case 'invalid':
+                        buttonsHtml = `
+                            <button class="btn btn-danger" onclick="deleteSkill('${skill.id}')"><i class="fa fa-trash"></i> 删除</button>
+                        `;
+                        break;
+                    default:
+                        buttonsHtml = '';
+                }
+                footer.innerHTML = buttonsHtml;
+                
+                document.getElementById('skill-detail-modal').classList.add('show');
+            }
+        }
+        
+        // 关闭详情弹窗
+        function closeDetailModal() {
+            document.getElementById('skill-detail-modal').classList.remove('show');
+        }
+        
+        // 点击详情弹窗遮罩层关闭
+        function handleDetailOverlayClick(event) {
+            if (event.target === document.getElementById('skill-detail-modal')) {
+                closeDetailModal();
+            }
+        }
+        
+        // 编辑技能
+        function editSkill(id) {
+            closeDetailModal();
+            viewSkillForEdit(id);
+        }
+        
+        // 提交审核
+        function submitForReview(id) {
+            alert(`技能 ${id} 提交审核`);
+        }
+        
+        // 作废技能
+        function markInvalid(id) {
+            alert(`技能 ${id} 已作废`);
+        }
+        
+        // 显示操作记录
+        function showOperationLog(id) {
+            alert(`显示技能 ${id} 的操作记录`);
+        }
+        
+        // 撤回审核
+        function withdrawReview(id) {
+            alert(`技能 ${id} 撤回审核`);
+        }
+        
+        // 审核通过
+        function approveSkill(id) {
+            alert(`技能 ${id} 审核通过`);
+        }
+        
+        // 退回重调
+        function rejectSkill(id) {
+            alert(`技能 ${id} 退回重调`);
+        }
+        
+        // 删除技能
+        function deleteSkill(id) {
+            alert(`技能 ${id} 删除`);
+        }
+        
+        // 查看技能用于编辑
+        function viewSkillForEdit(id) {
             const skill = skills.find(s => s.id === id);
             if (skill) {
                 document.getElementById('modal-title').textContent = '编辑技能';
@@ -909,16 +1246,113 @@
                 document.getElementById('skill-category').value = skill.category;
                 document.getElementById('skill-description').value = skill.description;
                 document.getElementById('skill-tags').value = skill.tags;
-                document.getElementById('skill-icon').value = skill.icon;
-                document.getElementById('skill-icon-color').value = skill.iconColor;
-                document.getElementById('skill-status').value = skill.status;
-                document.getElementById('skill-prompt').value = skill.prompt;
-                document.getElementById('skill-model').value = skill.model;
+                
+                currentImageData = skill.icon || null;
+                updateImageUploadPreview(skill.icon);
                 
                 document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
                 
                 document.getElementById('skill-modal').classList.add('show');
+                
+                setTimeout(() => {
+                    initEasyMDE();
+                    if (window.easyMDE) {
+                        window.easyMDE.value(skill.content || '');
+                    }
+                }, 200);
             }
+        }
+        
+        // 初始化EasyMDE编辑器
+        function initEasyMDE() {
+            const textarea = document.getElementById('skill-content');
+            if (!textarea) {
+                console.log('textarea not found');
+                return;
+            }
+            
+            // 如果已经初始化过，先销毁
+            if (window.easyMDE) {
+                try {
+                    window.easyMDE.toTextArea();
+                } catch(e) {
+                    console.log('Error destroying EasyMDE:', e);
+                }
+                window.easyMDE = null;
+            }
+            
+            try {
+                window.easyMDE = new EasyMDE({
+                    element: textarea,
+                    spellChecker: false,
+                    status: false,
+                    placeholder: '请输入执行规则',
+                    autosave: {
+                        enabled: false
+                    },
+                    minHeight: '300px',
+                    toolbar: [
+                        'bold', 'italic', 'heading', '|',
+                        'quote', 'unordered-list', 'ordered-list', '|',
+                        'link', 'image', '|',
+                        'preview', 'side-by-side', 'fullscreen', '|',
+                        'guide'
+                    ]
+                });
+                console.log('EasyMDE initialized successfully');
+            } catch(e) {
+                console.error('Error initializing EasyMDE:', e);
+            }
+        }
+        
+        // 处理图片上传
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                alert('请上传图片文件');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImageData = e.target.result;
+                updateImageUploadPreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // 更新图片上传预览
+        function updateImageUploadPreview(imageData) {
+            const uploadBox = document.getElementById('image-upload-box');
+            const uploadBtn = document.getElementById('image-btn');
+            
+            if (imageData) {
+                uploadBox.innerHTML = `<img src="${imageData}" class="image-preview">`;
+                uploadBox.classList.add('has-image');
+                uploadBtn.style.display = 'block';
+            } else {
+                resetImageUpload();
+            }
+        }
+        
+        // 重置图片上传
+        function resetImageUpload() {
+            const uploadBox = document.getElementById('image-upload-box');
+            const uploadBtn = document.getElementById('image-btn');
+            const input = document.getElementById('image-upload-input');
+            
+            uploadBox.innerHTML = '<i class="fa fa-plus"></i><span>上传图标</span>';
+            uploadBox.classList.remove('has-image');
+            uploadBtn.style.display = 'none';
+            input.value = '';
+        }
+        
+        // 删除图片
+        function deleteImage() {
+            currentImageData = null;
+            resetImageUpload();
         }
 
         // 关闭弹窗
@@ -938,18 +1372,22 @@
             const id = document.getElementById('edit-id').value;
             const name = document.getElementById('skill-name').value.trim();
             const category = document.getElementById('skill-category').value;
-            const status = document.getElementById('skill-status').value;
+            const tags = document.getElementById('skill-tags').value.trim();
+            const description = document.getElementById('skill-description').value;
+            const content = window.easyMDE ? window.easyMDE.value() : '';
 
             // 验证
             let isValid = true;
             
-            if (!name) {
-                document.getElementById('name-error').classList.add('show');
+            // 验证技能图标
+            if (!currentImageData) {
+                document.getElementById('icon-error').classList.add('show');
                 isValid = false;
             } else {
-                document.getElementById('name-error').classList.remove('show');
+                document.getElementById('icon-error').classList.remove('show');
             }
             
+            // 验证技能分类
             if (!category) {
                 document.getElementById('category-error').classList.add('show');
                 isValid = false;
@@ -957,11 +1395,28 @@
                 document.getElementById('category-error').classList.remove('show');
             }
             
-            if (!status) {
-                document.getElementById('status-error').classList.add('show');
+            // 验证技能名称：2-6个字
+            if (!name || name.length < 2 || name.length > 6) {
+                document.getElementById('name-error').classList.add('show');
                 isValid = false;
             } else {
-                document.getElementById('status-error').classList.remove('show');
+                document.getElementById('name-error').classList.remove('show');
+            }
+            
+            // 验证技能标签：限制30个字
+            if (tags.length > 30) {
+                document.getElementById('tags-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('tags-error').classList.remove('show');
+            }
+            
+            // 验证执行规则：必填
+            if (!content || content.trim() === '') {
+                document.getElementById('content-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('content-error').classList.remove('show');
             }
 
             if (!isValid) return;
@@ -969,14 +1424,14 @@
             const skillData = {
                 id: id || 'SKL' + String(skills.length + 1).padStart(3, '0'),
                 name: name,
-                description: document.getElementById('skill-description').value,
+                description: description,
                 category: category,
-                tags: document.getElementById('skill-tags').value,
-                icon: document.getElementById('skill-icon').value,
-                iconColor: document.getElementById('skill-icon-color').value,
-                status: status,
-                prompt: document.getElementById('skill-prompt').value,
-                model: document.getElementById('skill-model').value,
+                tags: tags,
+                icon: currentImageData,
+                iconColor: 'blue',
+                status: 'draft',
+                content: content,
+                model: '',
                 usageCount: id ? skills.find(s => s.id === id)?.usageCount || 0 : 0,
                 updateTime: new Date().toISOString().split('T')[0]
             };
