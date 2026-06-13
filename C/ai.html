@@ -2680,16 +2680,16 @@
 
         /* 输入框上边框hover可拖动效果 */
         .input-container.resizer-hover {
-            border-top-color: rgba(0, 81, 217, 0.6);
+            border-top-color: rgba(6, 182, 212, 0.6);
             border-top-width: 2px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 -1px 4px rgba(0, 81, 217, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 -1px 4px rgba(6, 182, 212, 0.15);
         }
 
         /* 输入框拖动中效果 */
         .input-container.resizer-dragging {
-            border-top-color: rgba(0, 81, 217, 0.8);
+            border-top-color: rgba(6, 182, 212, 0.8);
             border-top-width: 2px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 -2px 6px rgba(0, 81, 217, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 -2px 6px rgba(6, 182, 212, 0.2);
         }
 
         .input-box textarea {
@@ -11182,7 +11182,7 @@
             // textarea最大高度
             const maxHeight = 160;
             // textarea最小高度
-            const minHeight = 24;
+            const minHeight = 56;
             // 上边框检测区域高度
             const topBorderThreshold = 5;
 
@@ -11251,7 +11251,7 @@
                 const deltaY = startY - e.clientY;
                 let newHeight = startHeight + deltaY;
 
-                // 限制范围：最小minHeight，最大maxHeight
+                // 限制范围：最小默认高度24，最大maxHeight
                 newHeight = Math.max(minHeight, Math.min(newHeight, maxHeight));
 
                 textarea.style.height = newHeight + 'px';
