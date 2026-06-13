@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Skill技能库</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+            height: calc(100vh - 100px);
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e5e7eb;
+        }
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #eff6ff;
+        }
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .page-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .tabs-wrapper {
+            display: flex;
+            gap: 0;
+            padding: 0 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+        }
+        .tab-item {
+            padding: 12px 20px;
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #64748b;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-item:hover {
+            color: #6366f1;
+        }
+        .tab-item.active {
+            color: #6366f1;
+            border-bottom-color: #6366f1;
+            background: transparent;
+        }
+        .search-bar {
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+        }
+        .skill-grid {
+            flex: 1;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            grid-auto-rows: min-content;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .skill-card {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .skill-card:hover {
+            border-color: #cbd5e1;
+            background: #fafafa;
+        }
+        .skill-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 11px;
+            color: #64748b;
+            background: #e2e2e2;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        .skill-badge.status.active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .skill-badge.status.inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .skill-category {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6366f1;
+            margin-left: 6px;
+            padding: 2px 8px;
+            background: #eef2ff;
+            border-radius: 4px;
+            border: 1px solid #ddd6fe;
+        }
+        .skill-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .skill-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+        .skill-icon.orange {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+        .skill-icon.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        .skill-icon.purple {
+            background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+        }
+        .skill-icon.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .skill-icon.red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        .skill-icon.cyan {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        }
+        .skill-icon.pink {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+        .skill-icon.yellow {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+        }
+        .skill-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .skill-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .skill-id {
+            font-size: 11px;
+            font-weight: normal;
+            color: #94a3b8;
+            margin-left: 4px;
+        }
+        .skill-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 36px;
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            overflow: hidden;
+        }
+        .tag {
+            padding: 2px 6px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .skill-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .usage-count {
+            font-size: 12px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .usage-count i {
+            color: #94a3b8;
+        }
+        .btn-add {
+            padding: 3px 12px;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-add:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .pagination-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            background: white;
+        }
+        .pagination-info {
+            color: #64748b;
+            font-size: 14px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            right: -1000px;
+            width: 1000px;
+            height: 100vh;
+            background: white;
+            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: right 0.3s ease;
+            z-index: 1001;
+        }
+        .modal-overlay.show .modal {
+            right: 0;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .modal-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-close:hover {
+            color: #64748b;
+        }
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            gap: 10px;
+            background: #fafafa;
+        }
+        .form-section {
+            margin-bottom: 24px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-item {
+            flex: 1;
+            min-width: 0;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .modal .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #475569;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .modal .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .textarea-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .error-text {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 4px;
+            display: none;
+            width: 100%;
+        }
+        .error-text.show {
+            display: block;
+        }
+        @media screen and (max-width: 768px) {
+            .main-content {
+                padding: 8px;
+            }
+            .search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-control {
+                width: 100%;
+            }
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Skill技能库</h1>
+            <p class="page-subtitle">管理和配置AI技能</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <!-- 顶部标签页 -->
+            <div class="tabs-wrapper">
+                <div class="tab-item active" data-tab="all" onclick="switchTab('all')">全部</div>
+                <div class="tab-item" data-tab="writing" onclick="switchTab('writing')">文案写作</div>
+                <div class="tab-item" data-tab="analysis" onclick="switchTab('analysis')">数据分析</div>
+                <div class="tab-item" data-tab="design" onclick="switchTab('design')">设计创意</div>
+                <div class="tab-item" data-tab="research" onclick="switchTab('research')">研究调研</div>
+                <div class="tab-item" data-tab="translation" onclick="switchTab('translation')">翻译</div>
+                <div class="tab-item" data-tab="other" onclick="switchTab('other')">其他</div>
+            </div>
+
+            <!-- 搜索栏 -->
+            <div class="search-bar">
+                <input type="text" class="form-control" placeholder="搜索技能名称..." id="search-input" style="min-width: 200px;">
+                <select class="form-control" id="status-filter">
+                    <option value="">全部状态</option>
+                    <option value="active">启用</option>
+                    <option value="inactive">停用</option>
+                </select>
+                <button class="btn btn-outline" onclick="searchSkills()"><i class="fa fa-search"></i> 搜索</button>
+                <button class="btn btn-outline" onclick="resetSearch()"><i class="fa fa-refresh"></i> 重置</button>
+                <button class="btn btn-primary" onclick="addSkill()"><i class="fa fa-plus"></i> 添加技能</button>
+            </div>
+
+            <!-- 技能网格 -->
+            <div class="skill-grid" id="skill-grid">
+                <!-- 动态生成 -->
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination-footer">
+                <div style="display: flex; align-items: center; gap: 4px; justify-content: flex-end;">
+                    <span class="text-gray-500 text-sm" id="total-count">共 12 条</span>
+                    <div class="pagination" id="pagination">
+                        <button class="pagination-btn" onclick="prevPage()">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+                        <button class="pagination-btn" onclick="goToPage(2)">2</button>
+                        <button class="pagination-btn" onclick="goToPage(3)">3</button>
+                        <button class="pagination-btn" onclick="goToPage(4)">4</button>
+                        <button class="pagination-btn" onclick="goToPage(5)">5</button>
+                        <button class="pagination-btn" onclick="nextPage()">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                    </div>
+                    <select class="form-control" style="width: auto; margin-left: 8px;" id="page-size">
+                        <option>10条/页</option>
+                        <option>20条/页</option>
+                        <option>50条/页</option>
+                    </select>
+                    <span style="color: #64748b; font-size: 14px; margin-left: 8px;">跳至</span>
+                    <input type="text" class="form-control" style="width: 50px; margin-left: 8px;" id="page-input" value="1">
+                    <span style="color: #64748b; font-size: 14px; margin-left: 8px;">页</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 添加/编辑技能弹窗 -->
+    <div class="modal-overlay" id="skill-modal" onclick="handleOverlayClick(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">添加技能</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <input type="hidden" id="edit-id" value="">
+                
+                <div class="form-section">
+                    <div class="section-title">基本信息</div>
+                    
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">技能名称 <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="skill-name" placeholder="请输入技能名称">
+                            <div class="error-text" id="name-error">请输入技能名称</div>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">技能分类 <span class="required">*</span></label>
+                            <select class="form-control" id="skill-category">
+                                <option value="">请选择技能分类</option>
+                                <option value="writing">文案写作</option>
+                                <option value="analysis">数据分析</option>
+                                <option value="design">设计创意</option>
+                                <option value="research">研究调研</option>
+                                <option value="translation">翻译</option>
+                                <option value="other">其他</option>
+                            </select>
+                            <div class="error-text" id="category-error">请选择技能分类</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">技能描述</label>
+                            <textarea class="form-control textarea-control" id="skill-description" placeholder="请输入技能描述"></textarea>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">技能标签</label>
+                            <input type="text" class="form-control" id="skill-tags" placeholder="多个标签用逗号分隔">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">配置信息</div>
+                    
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">技能图标</label>
+                            <select class="form-control" id="skill-icon">
+                                <option value="fa-file-text-o">文档图标</option>
+                                <option value="fa-pencil">铅笔图标</option>
+                                <option value="fa-bar-chart">图表图标</option>
+                                <option value="fa-image">图片图标</option>
+                                <option value="fa-search">搜索图标</option>
+                                <option value="fa-language">语言图标</option>
+                                <option value="fa-lightbulb-o">灯泡图标</option>
+                                <option value="fa-cog">齿轮图标</option>
+                            </select>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">图标颜色</label>
+                            <select class="form-control" id="skill-icon-color">
+                                <option value="orange">橙色</option>
+                                <option value="blue">蓝色</option>
+                                <option value="purple">紫色</option>
+                                <option value="green">绿色</option>
+                                <option value="red">红色</option>
+                                <option value="cyan">青色</option>
+                                <option value="pink">粉色</option>
+                                <option value="yellow">黄色</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">运行状态 <span class="required">*</span></label>
+                            <select class="form-control" id="skill-status">
+                                <option value="active">启用</option>
+                                <option value="inactive">停用</option>
+                            </select>
+                            <div class="error-text" id="status-error">请选择运行状态</div>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">关联模型</label>
+                            <select class="form-control" id="skill-model">
+                                <option value="">请选择关联模型</option>
+                                <option value="gpt4">GPT-4</option>
+                                <option value="gemini">Gemini</option>
+                                <option value="wenxin">文心一言</option>
+                                <option value="tongyi">通义千问</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-item" style="flex: 1 0 100%;">
+                            <label class="form-label">技能提示词</label>
+                            <textarea class="form-control textarea-control" id="skill-prompt" placeholder="请输入技能的提示词内容"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveSkill()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据
+        let skills = [
+            { id: 'SKL001', name: 'AI助手写作', description: '利用AI帮助您快速撰写高质量文章，支持多种写作场景，包括：文案撰写、报告生成、邮件写作等', category: 'writing', tags: '写作,AI,文案', icon: 'fa-pencil', iconColor: 'orange', status: 'active', prompt: '作为一名专业文案助手，帮助用户撰写高质量的文章内容。', model: 'gpt4', usageCount: 1256, updateTime: '2026-05-28' },
+            { id: 'SKL002', name: 'PPT文案写作', description: '自动生成PPT演示文稿内容，支持多种主题风格，快速生成专业演示文稿大纲和内容', category: 'writing', tags: 'PPT,演示,文案', icon: 'fa-file-text-o', iconColor: 'blue', status: 'active', prompt: '作为PPT文案专家，帮助用户撰写专业的演示文稿内容。', model: 'gpt4', usageCount: 892, updateTime: '2026-05-27' },
+            { id: 'SKL003', name: '工作总结写作', description: '根据工作内容自动生成工作总结报告，支持周总结、月总结、年终总结等多种格式', category: 'writing', tags: '总结,报告,工作', icon: 'fa-bar-chart', iconColor: 'purple', status: 'active', prompt: '作为工作总结助手，帮助用户撰写专业的工作总结报告。', model: 'wenxin', usageCount: 2134, updateTime: '2026-05-26' },
+            { id: 'SKL004', name: '小红书文案', description: '创作符合小红书风格的种草文案，吸引用户关注和互动', category: 'writing', tags: '小红书,种草,文案', icon: 'fa-image', iconColor: 'pink', status: 'active', prompt: '作为小红书文案专家，创作吸引人的种草文案。', model: 'gpt4', usageCount: 1567, updateTime: '2026-05-25' },
+            { id: 'SKL005', name: '市场分析报告', description: '深度分析市场数据，生成专业的市场分析报告，助力商业决策', category: 'analysis', tags: '分析,报告,市场', icon: 'fa-bar-chart', iconColor: 'green', status: 'active', prompt: '作为市场分析专家，帮助用户分析市场数据并生成专业报告。', model: 'tongyi', usageCount: 456, updateTime: '2026-05-24' },
+            { id: 'SKL006', name: '竞品分析', description: '全面分析竞争对手产品，生成竞品分析报告，发现市场机会', category: 'analysis', tags: '竞品,分析,报告', icon: 'fa-search', iconColor: 'cyan', status: 'active', prompt: '作为竞品分析专家，帮助用户分析竞争对手并生成分析报告。', model: 'gemini', usageCount: 328, updateTime: '2026-05-23' },
+            { id: 'SKL007', name: 'Deep Research', description: '深度研究特定主题，整合多源信息，生成详细的研究报告', category: 'research', tags: '研究,深度,报告', icon: 'fa-search', iconColor: 'purple', status: 'active', prompt: '作为研究助手，帮助用户进行深度研究并生成研究报告。', model: 'gpt4', usageCount: 298, updateTime: '2026-05-22' },
+            { id: 'SKL008', name: '翻译助手', description: '支持多语言互译，提供专业、准确的翻译服务', category: 'translation', tags: '翻译,多语言', icon: 'fa-language', iconColor: 'blue', status: 'active', prompt: '作为专业翻译助手，提供准确的多语言翻译服务。', model: 'gpt4', usageCount: 3421, updateTime: '2026-05-21' },
+            { id: 'SKL009', name: '创意设计灵感', description: '激发设计灵感，生成创意设计方案和概念描述', category: 'design', tags: '设计,创意,灵感', icon: 'fa-lightbulb-o', iconColor: 'yellow', status: 'active', prompt: '作为创意设计助手，帮助用户生成设计灵感和创意方案。', model: 'gemini', usageCount: 678, updateTime: '2026-05-20' },
+            { id: 'SKL010', name: '代码审查', description: '自动化代码审查，发现潜在问题和优化建议', category: 'other', tags: '代码,审查,编程', icon: 'fa-cog', iconColor: 'red', status: 'inactive', prompt: '作为代码审查专家，帮助用户发现代码中的问题和优化建议。', model: 'gpt4', usageCount: 189, updateTime: '2026-05-19' },
+            { id: 'SKL011', name: '邮件撰写', description: '快速撰写专业商务邮件，支持多种邮件模板', category: 'writing', tags: '邮件,商务,写作', icon: 'fa-pencil', iconColor: 'green', status: 'active', prompt: '作为邮件写作助手，帮助用户撰写专业的商务邮件。', model: 'wenxin', usageCount: 2345, updateTime: '2026-05-18' },
+            { id: 'SKL012', name: 'SEO优化建议', description: '分析网站内容，提供SEO优化建议，提升搜索引擎排名', category: 'other', tags: 'SEO,优化,网站', icon: 'fa-search', iconColor: 'orange', status: 'active', prompt: '作为SEO专家，帮助用户优化网站内容以提升搜索排名。', model: 'gpt4', usageCount: 567, updateTime: '2026-05-17' }
+        ];
+
+        let filteredSkills = [...skills];
+        let currentPage = 1;
+        let pageSize = 10;
+        let currentTab = 'all';
+
+        // 获取分类中文名
+        function getCategoryName(category) {
+            const names = {
+                'writing': '文案写作',
+                'analysis': '数据分析',
+                'design': '设计创意',
+                'research': '研究调研',
+                'translation': '翻译',
+                'other': '其他'
+            };
+            return names[category] || category;
+        }
+
+        // 渲染技能卡片
+        function renderSkills() {
+            const grid = document.getElementById('skill-grid');
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = startIndex + pageSize;
+            const pageSkills = filteredSkills.slice(startIndex, endIndex);
+
+            grid.innerHTML = pageSkills.map(skill => `
+                <div class="skill-card" onclick="viewSkill('${skill.id}')">
+                    <div class="skill-badge status ${skill.status}">${skill.status === 'active' ? '启用' : '停用'}</div>
+                    <div class="skill-header">
+                        <div class="skill-icon ${skill.iconColor}">
+                            <i class="fa ${skill.icon}"></i>
+                        </div>
+                        <div class="skill-info">
+                            <div class="skill-name">${skill.name}<span class="skill-id">(${skill.id})</span><span class="skill-category">${getCategoryName(skill.category)}</span></div>
+                            <div class="skill-tags">
+                                ${skill.tags.split(',').slice(0, 4).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-desc">${skill.description}</div>
+                    <div class="skill-footer">
+                        <div class="usage-count"><i class="fa fa-bar-chart"></i>${skill.usageCount}次使用</div>
+                        <div class="btn-add" onclick="addToAgent('${skill.id}'); event.stopPropagation()">添加</div>
+                    </div>
+                </div>
+            `).join('');
+
+            updatePagination();
+        }
+
+        // 更新分页信息
+        function updatePagination() {
+            const totalItems = filteredSkills.length;
+            const totalPages = Math.ceil(totalItems / pageSize);
+            const startItem = (currentPage - 1) * pageSize + 1;
+            const endItem = Math.min(currentPage * pageSize, totalItems);
+
+            document.getElementById('pagination-info').textContent = `显示 ${startItem}-${endItem} 条，共 ${totalItems} 条`;
+            document.getElementById('total-count').textContent = `共 ${totalItems} 条`;
+
+            // 更新页码按钮状态
+            const pagination = document.getElementById('pagination');
+            const buttons = pagination.querySelectorAll('.pagination-btn');
+            buttons.forEach((btn, index) => {
+                if (index === 0 || index === buttons.length - 1) return; // 跳过前后按钮
+                const pageNum = parseInt(btn.textContent);
+                btn.classList.toggle('active', pageNum === currentPage);
+                btn.style.display = pageNum <= totalPages ? 'flex' : 'none';
+            });
+        }
+
+        // 切换标签页
+        function switchTab(tab) {
+            currentTab = tab;
+            currentPage = 1;
+            
+            // 更新标签样式
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+            // 筛选技能
+            if (tab === 'all') {
+                filteredSkills = [...skills];
+            } else {
+                filteredSkills = skills.filter(s => s.category === tab);
+            }
+
+            // 应用搜索和状态筛选
+            applyFilters();
+        }
+
+        // 应用筛选条件
+        function applyFilters() {
+            const searchText = document.getElementById('search-input').value.toLowerCase();
+            const statusFilter = document.getElementById('status-filter').value;
+
+            let tempSkills = currentTab === 'all' ? [...skills] : skills.filter(s => s.category === currentTab);
+
+            if (searchText) {
+                tempSkills = tempSkills.filter(s => 
+                    s.name.toLowerCase().includes(searchText) || 
+                    (s.description && s.description.toLowerCase().includes(searchText))
+                );
+            }
+
+            if (statusFilter) {
+                tempSkills = tempSkills.filter(s => s.status === statusFilter);
+            }
+
+            filteredSkills = tempSkills;
+            currentPage = 1;
+            renderSkills();
+        }
+
+        // 搜索技能
+        function searchSkills() {
+            applyFilters();
+        }
+
+        // 重置搜索
+        function resetSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('status-filter').value = '';
+            applyFilters();
+        }
+
+        // 上一页
+        function prevPage() {
+            const totalPages = Math.ceil(filteredSkills.length / pageSize);
+            if (currentPage > 1) {
+                currentPage--;
+                renderSkills();
+            }
+        }
+
+        // 下一页
+        function nextPage() {
+            const totalPages = Math.ceil(filteredSkills.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderSkills();
+            }
+        }
+
+        // 跳转到指定页
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredSkills.length / pageSize);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                document.getElementById('page-input').value = page;
+                renderSkills();
+            }
+        }
+
+        // 跳转按钮
+        function jumpToPage() {
+            const page = parseInt(document.getElementById('page-input').value);
+            if (!isNaN(page)) {
+                goToPage(page);
+            }
+        }
+
+        // 页面大小改变
+        document.getElementById('page-size').addEventListener('change', function() {
+            pageSize = parseInt(this.value);
+            currentPage = 1;
+            renderSkills();
+        });
+
+        // 添加技能
+        function addSkill() {
+            document.getElementById('modal-title').textContent = '添加技能';
+            document.getElementById('edit-id').value = '';
+            document.getElementById('skill-name').value = '';
+            document.getElementById('skill-category').value = '';
+            document.getElementById('skill-description').value = '';
+            document.getElementById('skill-tags').value = '';
+            document.getElementById('skill-icon').value = 'fa-file-text-o';
+            document.getElementById('skill-icon-color').value = 'orange';
+            document.getElementById('skill-status').value = 'active';
+            document.getElementById('skill-prompt').value = '';
+            document.getElementById('skill-model').value = '';
+            
+            // 隐藏错误提示
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            
+            document.getElementById('skill-modal').classList.add('show');
+        }
+
+        // 查看技能详情
+        function viewSkill(id) {
+            const skill = skills.find(s => s.id === id);
+            if (skill) {
+                document.getElementById('modal-title').textContent = '编辑技能';
+                document.getElementById('edit-id').value = skill.id;
+                document.getElementById('skill-name').value = skill.name;
+                document.getElementById('skill-category').value = skill.category;
+                document.getElementById('skill-description').value = skill.description;
+                document.getElementById('skill-tags').value = skill.tags;
+                document.getElementById('skill-icon').value = skill.icon;
+                document.getElementById('skill-icon-color').value = skill.iconColor;
+                document.getElementById('skill-status').value = skill.status;
+                document.getElementById('skill-prompt').value = skill.prompt;
+                document.getElementById('skill-model').value = skill.model;
+                
+                document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+                
+                document.getElementById('skill-modal').classList.add('show');
+            }
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('skill-modal').classList.remove('show');
+        }
+
+        // 点击遮罩层关闭弹窗
+        function handleOverlayClick(event) {
+            if (event.target === document.getElementById('skill-modal')) {
+                closeModal();
+            }
+        }
+
+        // 保存技能
+        function saveSkill() {
+            const id = document.getElementById('edit-id').value;
+            const name = document.getElementById('skill-name').value.trim();
+            const category = document.getElementById('skill-category').value;
+            const status = document.getElementById('skill-status').value;
+
+            // 验证
+            let isValid = true;
+            
+            if (!name) {
+                document.getElementById('name-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('name-error').classList.remove('show');
+            }
+            
+            if (!category) {
+                document.getElementById('category-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('category-error').classList.remove('show');
+            }
+            
+            if (!status) {
+                document.getElementById('status-error').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('status-error').classList.remove('show');
+            }
+
+            if (!isValid) return;
+
+            const skillData = {
+                id: id || 'SKL' + String(skills.length + 1).padStart(3, '0'),
+                name: name,
+                description: document.getElementById('skill-description').value,
+                category: category,
+                tags: document.getElementById('skill-tags').value,
+                icon: document.getElementById('skill-icon').value,
+                iconColor: document.getElementById('skill-icon-color').value,
+                status: status,
+                prompt: document.getElementById('skill-prompt').value,
+                model: document.getElementById('skill-model').value,
+                usageCount: id ? skills.find(s => s.id === id)?.usageCount || 0 : 0,
+                updateTime: new Date().toISOString().split('T')[0]
+            };
+
+            if (id) {
+                const index = skills.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    skills[index] = skillData;
+                }
+            } else {
+                skills.push(skillData);
+            }
+
+            applyFilters();
+            closeModal();
+        }
+
+        // 添加到Agent
+        function addToAgent(id) {
+            const skill = skills.find(s => s.id === id);
+            if (skill) {
+                alert(`已将技能「${skill.name}」添加到Agent`);
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSkills();
+        });
+    </script>
+</body>
+</html>

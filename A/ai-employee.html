@@ -1206,14 +1206,14 @@
 
     <script>
         const employees = [
-            { id: 1, name: '我的秘书', position: '秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', status: 'published', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89 },
-            { id: 2, name: '项目经理', position: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', status: 'approved', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119 },
-            { id: 3, name: '会议纪要员', position: '会议纪要员', avatar: 'images/tx-1.png', type: 'general', typeLabel: '通用型', status: 'pending', desc: '负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。', tags: ['会议记录', '纪要整理', '要点提炼'], industry: '办公', matchRate: 98, tasks: 1500, rating: 4.9, price: 129 },
-            { id: 4, name: '销售工程师', position: '销售工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', status: 'offline', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99 },
-            { id: 5, name: '方案工程师', position: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '专家型', status: 'draft', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199 },
-            { id: 6, name: '产品经理', position: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', status: 'published', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119 },
-            { id: 7, name: '售后工程师', position: '售后工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', status: 'invalid', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149 },
-            { id: 8, name: '文件管理员', position: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业型', status: 'published', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89 }
+            { id: 1, name: '我的秘书', position: '秘书', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', status: 'published', desc: '协助日常事务处理，包括日程安排、邮件管理和文档整理等工作。', tags: ['日程管理', '邮件处理', '文档整理'], industry: '办公', matchRate: 95, tasks: 2800, rating: 4.8, price: 89, updateTime: '2025-06-01 09:30' },
+            { id: 2, name: '项目经理', position: '项目经理', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', status: 'approved', desc: '负责项目规划、进度跟踪和团队协调，确保项目按时高质量交付。', tags: ['项目规划', '进度管理', '团队协调'], industry: '项目管理', matchRate: 96, tasks: 1200, rating: 4.9, price: 119, updateTime: '2025-06-02 14:20' },
+            { id: 3, name: '会议纪要员', position: '会议纪要员', avatar: 'images/tx-1.png', type: 'general', typeLabel: '通用型', status: 'pending', desc: '负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。负责会议记录、纪要整理和要点提炼，帮助你快速掌握会议核心内容。', tags: ['会议记录', '纪要整理', '要点提炼'], industry: '办公', matchRate: 98, tasks: 1500, rating: 4.9, price: 129, updateTime: '2025-06-03 08:45' },
+            { id: 4, name: '销售工程师', position: '销售工程师', avatar: 'images/AI-1.png', type: 'industry', typeLabel: '行业型', status: 'offline', desc: '提供产品技术支持，协助客户选型和方案设计，促进销售达成。', tags: ['产品演示', '技术支持', '方案设计'], industry: '销售', matchRate: 94, tasks: 980, rating: 4.7, price: 99, updateTime: '2025-06-04 16:00' },
+            { id: 5, name: '方案工程师', position: '方案工程师', avatar: 'images/AI-3.png', type: 'expert', typeLabel: '专家型', status: 'draft', desc: '根据客户需求设计技术方案，提供专业的技术咨询和解决方案。', tags: ['需求分析', '方案设计', '技术咨询'], industry: '技术服务', matchRate: 99, tasks: 750, rating: 5.0, price: 199, updateTime: '2025-06-05 11:25' },
+            { id: 6, name: '产品经理', position: '产品经理', avatar: 'images/AI-2.png', type: 'general', typeLabel: '通用型', status: 'published', desc: '负责产品规划、需求分析和迭代管理，推动产品持续优化。', tags: ['需求分析', '产品规划', '迭代管理'], industry: '产品', matchRate: 97, tasks: 1400, rating: 4.8, price: 119, updateTime: '2025-06-06 10:10' },
+            { id: 7, name: '售后工程师', position: '售后工程师', avatar: 'images/tx-2.png', type: 'industry', typeLabel: '行业型', status: 'invalid', desc: '提供产品售后技术支持，解决客户使用过程中遇到的问题。', tags: ['技术支持', '故障排查', '客户服务'], industry: '售后', matchRate: 96, tasks: 2100, rating: 4.9, price: 149, updateTime: '2025-06-07 15:30' },
+            { id: 8, name: '文件管理员', position: '文件管理员', avatar: 'images/AI-4.png', type: 'industry', typeLabel: '行业型', status: 'published', desc: '负责文件分类、存储管理和检索服务，确保文件安全有序。', tags: ['文件分类', '存储管理', '检索服务'], industry: '文档管理', matchRate: 93, tasks: 3200, rating: 4.8, price: 89, updateTime: '2025-06-08 09:15' }
         ];
 
         function switchTab(tab) {
@@ -1347,6 +1347,7 @@
                 params.append('tasks', emp.tasks);
                 params.append('rating', emp.rating);
                 params.append('price', emp.price);
+                params.append('updateTime', emp.updateTime);
 
                 if (window.parent && window.parent !== window) {
                     window.parent.postMessage({
